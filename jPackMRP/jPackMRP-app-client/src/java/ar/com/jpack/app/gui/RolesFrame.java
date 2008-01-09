@@ -168,7 +168,7 @@ public class RolesFrame extends JInternalFrame {
     /** Edita el rol seleccionado o crea un nuevo rol */
     private void crearRolFrame(String titulo) {
         JInternalFrame x = verificar();
-        if (x != null) {
+        if ((x != null) && (x.getTitle().equals(titulo))) {
             ((JDesktopPane) this.getParent()).getDesktopManager().activateFrame(x);
         } else {
             RolFrame rolFrame = new RolFrame(modelo, titulo);

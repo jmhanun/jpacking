@@ -76,7 +76,7 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Leadtime");
 
-        stockArticuloTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        stockArticuloTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         stockMinimoArticuloTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
 
@@ -125,7 +125,7 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
                 .addGroup(articuloPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(leadTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         componentePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Componentes"));
@@ -191,7 +191,7 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
                     .addComponent(editarButton)
                     .addComponent(eliminarButton))
                 .addGap(11, 11, 11)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -251,7 +251,6 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
             }
         }
     }// </editor-fold>//GEN-END:initComponents
-
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelarButtonActionPerformed
@@ -259,9 +258,9 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
     private void aceptarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarButtonActionPerformed
         this.modelo.getArticulo().setCodigo(this.codigoArticuloTextField.getText());
         this.modelo.getArticulo().setDescripcion(this.descripcionArticuloTextField.getText());
-        this.modelo.getArticulo().setStock((Double)this.stockArticuloTextField.getValue());
-        this.modelo.getArticulo().setStockMinimo((Double)this.stockMinimoArticuloTextField.getValue());
-        this.modelo.getArticulo().setLeadTime((Double)this.leadTimeTextField.getValue());
+        this.modelo.getArticulo().setStock((Double) this.stockArticuloTextField.getValue());
+        this.modelo.getArticulo().setStockMinimo((Double) this.stockMinimoArticuloTextField.getValue());
+        this.modelo.getArticulo().setLeadTime((Double) this.leadTimeTextField.getValue());
         this.modelo.actualizarArticulo();
         this.dispose();
     }//GEN-LAST:event_aceptarButtonActionPerformed
@@ -291,6 +290,5 @@ public class ArticuloFrame extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField stockArticuloTextField;
     private javax.swing.JFormattedTextField stockMinimoArticuloTextField;
     // End of variables declaration//GEN-END:variables
-
     private ArticulosModelo modelo;
 }

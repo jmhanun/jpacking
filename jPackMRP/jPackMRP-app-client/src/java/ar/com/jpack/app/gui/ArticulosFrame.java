@@ -131,7 +131,6 @@ public class ArticulosFrame extends javax.swing.JInternalFrame {
         public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
-
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_salirButtonActionPerformed
@@ -161,7 +160,6 @@ public class ArticulosFrame extends javax.swing.JInternalFrame {
     private javax.swing.JButton salirButton;
     private javax.swing.JScrollPane tablaScrollPane;
     // End of variables declaration//GEN-END:variables
-
     private ArticulosModelo modelo;
 
     private JInternalFrame verificar() {
@@ -178,7 +176,7 @@ public class ArticulosFrame extends javax.swing.JInternalFrame {
 
     private void crearArticuloFrame(String titulo) {
         JInternalFrame x = verificar();
-        if (x != null) {
+        if ((x != null) && (x.getTitle().equals(titulo))) {
             ((JDesktopPane) this.getParent()).getDesktopManager().activateFrame(x);
         } else {
             ArticuloFrame rolFrame = new ArticuloFrame(modelo, titulo);

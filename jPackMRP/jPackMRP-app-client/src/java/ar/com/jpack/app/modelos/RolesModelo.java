@@ -20,13 +20,9 @@ import javax.swing.table.TableModel;
 public class RolesModelo {
 
     private TableModel rolesTableModel; //Modelo de datos de la tabla de roles
-
     private RolesSessionRemote rolesSession; //SessionBean de roles
-
     private List<RolesT> roles; //Lista de roles activos
-
     private RolesT rol; //Rol seleccionado
-
 
     /** Constructor de RolesModelo */
     public RolesModelo() {
@@ -35,54 +31,54 @@ public class RolesModelo {
 
         rolesTableModel = new AbstractTableModel() {
 
-                    @Override
-                    public String getColumnName(int col) {
-                        if (col == 0) {
-                            return "Id";
-                        } else if (col == 1) {
-                            return "Nombre";
-                        } else if (col == 2) {
-                            return "Descripcion";
-                        } else {
-                            return null;
-                        }
-                    //return columnNames[col].toString();
-                    }
+            @Override
+            public String getColumnName(int col) {
+                if (col == 0) {
+                    return "Id";
+                } else if (col == 1) {
+                    return "Nombre";
+                } else if (col == 2) {
+                    return "Descripcion";
+                } else {
+                    return null;
+                }
+            //return columnNames[col].toString();
+            }
 
-                    public int getRowCount() {
-                        return roles.size();
-                    //return rowData.length;
-                    }
+            public int getRowCount() {
+                return roles.size();
+            //return rowData.length;
+            }
 
-                    public int getColumnCount() {
-                        return 3;
-                    //return columnNames.length;
-                    }
+            public int getColumnCount() {
+                return 3;
+            //return columnNames.length;
+            }
 
-                    public Object getValueAt(int row, int col) {
-                        if (col == 0) {
-                            return roles.get(row).getIdRol();
-                        } else if (col == 1) {
-                            return roles.get(row).getRol();
-                        } else if (col == 2) {
-                            return roles.get(row).getDescripcion();
-                        } else {
-                            return null;
-                        }
-                    //return rowData[row][col];
-                    }
+            public Object getValueAt(int row, int col) {
+                if (col == 0) {
+                    return roles.get(row).getIdRol();
+                } else if (col == 1) {
+                    return roles.get(row).getRol();
+                } else if (col == 2) {
+                    return roles.get(row).getDescripcion();
+                } else {
+                    return null;
+                }
+            //return rowData[row][col];
+            }
 
-                    @Override
-                    public boolean isCellEditable(int row, int col) {
-                        return false;
-                    }
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
 
-                    @Override
-                    public void setValueAt(Object value, int row, int col) {
-                    //rowData[row][col] = value;
-                    //fireTableCellUpdated(row, col);
-                    }
-                };
+            @Override
+            public void setValueAt(Object value, int row, int col) {
+            //rowData[row][col] = value;
+            //fireTableCellUpdated(row, col);
+            }
+        };
     }
 
     /** Agrega o edita el rol seleccionado en la base de datos */
