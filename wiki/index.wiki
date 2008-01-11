@@ -1,0 +1,19 @@
+#summary One-sentence summary of this page.
+
+= Introduccion =
+
+Aqui va el contenido. A ver como queda
+
+
+= Detalles =
+
+Aqui va mas contenido.  Se puede formatear:
+  # Texto en  *bold* or _italic_
+  # Headings, paragraphs, and lists
+  # Automatic links to other wiki pages
+
+{{{
+verbatim code block
+}}}
+
+ a ver gaston  || table || cells || aaaaaa
