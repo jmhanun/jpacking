@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Es la primer pagina que hago a modo de prueba.
 
 = Introduccion =
 
@@ -15,5 +15,3 @@ Aqui va mas contenido.  Se puede formatear:
 {{{
 verbatim code block
 }}}
-
- a ver gaston  || table || cells || aaaaaa
