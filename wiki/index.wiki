@@ -9,7 +9,7 @@ Aqui va el contenido. A ver como queda
 
 Aqui va mas contenido.  Se puede formatear:
   # Texto en  *bold* or _italic_
-  # Headings, paragraphs, and lists
+  # Headings, paragraphs, [index] and lists
   # Automatic links to other wiki pages
 
 {{{
