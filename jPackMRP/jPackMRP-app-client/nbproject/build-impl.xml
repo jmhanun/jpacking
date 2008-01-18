@@ -23,9 +23,8 @@
     <import file="ant-deploy.xml"/>
     <target depends="dist,javadoc" description="Build whole project." name="default"/>
     <!-- 
-                ======================
-                INITIALIZATION SECTION 
-                ======================
+                ===============
+
             -->
     <target name="-pre-init">
         <!-- Empty placeholder for easier customization. -->
@@ -318,9 +317,8 @@
     </target>
     <target depends="-pre-init,-pre-init-am,-init-private,-init-user,-init-project,-do-init,-post-init,-init-check,-init-macrodef-property,-init-macrodef-javac,-init-macrodef-junit,-init-macrodef-java,-init-macrodef-nbjpda,-init-macrodef-debug,-init-macrodef-debug-appclient" name="init"/>
     <!--
-                ===================
-                COMPILATION SECTION
-                ===================
+                ============
+
             -->
     <target name="-check-main-class">
         <fail>
@@ -354,15 +352,12 @@
     <target depends="compile" name="library-inclusion-in-archive">
         <mkdir dir="${build.classes.dir}/META-INF/lib"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${build.classes.dir}/META-INF/lib"/>
-        <copy file="${libs.beans-binding.classpath}" todir="${build.classes.dir}/META-INF/lib"/>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <basename file="${reference.jPackMRP-ejb.dist}" property="included.lib.reference.jPackMRP-ejb.dist"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${dist.ear.dir}"/>
-        <basename file="${libs.beans-binding.classpath}" property="included.lib.libs.beans-binding.classpath"/>
-        <copy file="${libs.beans-binding.classpath}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} ${included.lib.libs.beans-binding.classpath} "/>
+            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
@@ -402,9 +397,8 @@
     </target>
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile-single,-do-compile-single,-post-compile-single" name="compile-single"/>
     <!--
-                ====================
-                DIST BUILDING SECTION
-                ====================
+                =============
+
             -->
     <target depends="init" name="-pre-pre-dist">
         <dirname file="${dist.jar}" property="dist.jar.dir"/>
@@ -457,9 +451,8 @@
     <target depends="init,compile,-pre-dist,-do-dist,-post-dist" description="Build distribution (JAR)." name="dist"/>
     <target depends="init,compile,-pre-dist,-do-ear-dist,-post-dist" description="Build distribution (JAR) to be packaged into an EAR." name="dist-ear"/>
     <!--
-                =================
-                EXECUTION SECTION
-                =================
+                ==========
+
             -->
     <target depends="dist,run-deploy,run-tool,run-jar,run-display-browser" description="Run a main class." name="run"/>
     <target depends="init" description="Run a main class." if="j2ee.clientName" name="run-jar" unless="j2ee.appclient.mainclass.args">
@@ -600,9 +593,8 @@
         <carproject:java classname="${run.class}"/>
     </target>
     <!--
-                =================
-                DEBUGGING SECTION
-                =================
+                ==========
+
             -->
     <target depends="init" if="netbeans.home" name="-debug-start-debugger">
         <carproject:nbjpdastart name="${debug.class}"/>
@@ -639,9 +631,8 @@
     </target>
     <target depends="init,-pre-debug-fix,-do-debug-fix" if="netbeans.home" name="debug-fix"/>
     <!--
-                ===============
-                JAVADOC SECTION
-                ===============
+                ========
+
             -->
     <target depends="init" name="-javadoc-build">
         <mkdir dir="${dist.javadoc.dir}"/>
@@ -661,9 +652,8 @@
     </target>
     <target depends="init,-javadoc-build,-javadoc-browse" description="Build Javadoc." name="javadoc"/>
     <!--
-                =========================
-                JUNIT COMPILATION SECTION
-                =========================
+                ==================
+
             -->
     <target depends="init,compile" if="have.tests" name="-pre-pre-compile-test">
         <mkdir dir="${build.test.classes.dir}"/>
@@ -704,9 +694,8 @@
     </target>
     <target depends="init,compile,-pre-pre-compile-test,-pre-compile-test-single,-do-compile-test-single,-post-compile-test-single" name="compile-test-single"/>
     <!--
-                =======================
-                JUNIT EXECUTION SECTION
-                =======================
+                ================
+
             -->
     <target depends="init" if="have.tests" name="-pre-test-run">
         <mkdir dir="${build.test.results.dir}"/>
@@ -732,9 +721,8 @@
     </target>
     <target depends="init,compile-test-single,-pre-test-run-single,-do-test-run-single,-post-test-run-single" description="Run single unit test." name="test-single"/>
     <!--
-                =======================
-                JUNIT DEBUGGING SECTION
-                =======================
+                ================
+
             -->
     <target depends="init,compile-test" if="have.tests" name="-debug-start-debuggee-test">
         <fail unless="test.class">Must select one file in the IDE or set test.class</fail>
@@ -759,9 +747,8 @@
     </target>
     <target depends="init,-pre-debug-fix,-do-debug-fix-test" if="netbeans.home" name="debug-fix-test"/>
     <!--
-                =========================
-                APPLET EXECUTION SECTION
-                =========================
+                ==================
+
             -->
     <target depends="init,compile-single" name="run-applet">
         <fail unless="applet.url">Must select one file in the IDE or set applet.url</fail>
@@ -772,9 +759,8 @@
         </carproject:java>
     </target>
     <!--
-                =========================
-                APPLET DEBUGGING  SECTION
-                =========================
+                ==================
+
             -->
     <target depends="init,compile-single" if="netbeans.home" name="-debug-start-debuggee-applet">
         <fail unless="applet.url">Must select one file in the IDE or set applet.url</fail>
@@ -786,13 +772,38 @@
     </target>
     <target depends="init,compile-single,-debug-start-debugger,-debug-start-debuggee-applet" if="netbeans.home" name="debug-applet"/>
     <!--
-                ===============
-                CLEANUP SECTION
-                ===============
+                ========
+
             -->
     <target depends="init" if="no.dist.ear.dir" name="deps-clean" unless="no.deps">
-        <ant antfile="${project.jPackMRP-ejb}/build.xml" inheritall="false" target="clean"/>
+        <property location="${build.test.results.dir}/TEST-${test.class}.xml" name="test.report.file"/>
+        <delete file="${test.report.file}"/>
+        <!-- the directory must exist, otherwise the XML formatter would fail -->
+        <mkdir dir="${build.test.results.dir}"/>
+        <carproject:debug classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner" classpath="${ant.home}/lib/ant.jar:${ant.home}/lib/ant-junit.jar:${debug.test.classpath}">
+            <customize>
+                <arg value="${test.class}"/>
+                <arg value="formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter"/>
+                <arg value="formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,${test.report.file}"/>
+            </customize>
+        </carproject:debug>
     </target>
+    <target depends="init,compile-test" if="netbeans.home+have.tests" name="-debug-start-debugger-test">
+        <carproject:nbjpdastart classpath="${debug.test.classpath}" name="${test.class}"/>
+    </target>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
@@ -804,3 +815,39 @@
     <target depends="init,deps-clean,-do-clean,-post-clean" description="Clean build products." name="clean"/>
     <target depends="clean" description="Clean build products." name="clean-ear"/>
 </project>
+                INITIALIZATION SECTION 
+                ===============
+
+                COMPILATION SECTION
+                ============
+
+                DIST BUILDING SECTION
+                =============
+
+                EXECUTION SECTION
+                ==========
+
+                DEBUGGING SECTION
+                ==========
+
+                JAVADOC SECTION
+                ========
+
+                JUNIT COMPILATION SECTION
+                ==================
+
+                JUNIT EXECUTION SECTION
+                ================
+
+                JUNIT DEBUGGING SECTION
+                ================
+
+                APPLET EXECUTION SECTION
+                ==================
+
+                APPLET DEBUGGING  SECTION
+                ==================
+
+                CLEANUP SECTION
+                ========
+
