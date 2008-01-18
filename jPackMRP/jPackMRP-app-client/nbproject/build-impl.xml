@@ -354,12 +354,15 @@
     <target depends="compile" name="library-inclusion-in-archive">
         <mkdir dir="${build.classes.dir}/META-INF/lib"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${build.classes.dir}/META-INF/lib"/>
+        <copy file="${libs.beans-binding.classpath}" todir="${build.classes.dir}/META-INF/lib"/>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <basename file="${reference.jPackMRP-ejb.dist}" property="included.lib.reference.jPackMRP-ejb.dist"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${dist.ear.dir}"/>
+        <basename file="${libs.beans-binding.classpath}" property="included.lib.libs.beans-binding.classpath"/>
+        <copy file="${libs.beans-binding.classpath}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} "/>
+            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} ${included.lib.libs.beans-binding.classpath} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
