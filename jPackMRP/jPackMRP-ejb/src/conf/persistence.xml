@@ -3,7 +3,6 @@
   <persistence-unit name="jPackMRP-ejbPU" transaction-type="JTA">
     <jta-data-source>jdbc/remoto.dbjpack</jta-data-source>
     <properties>
-      <property name="toplink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
 </persistence>
