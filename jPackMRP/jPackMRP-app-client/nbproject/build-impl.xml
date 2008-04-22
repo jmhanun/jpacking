@@ -354,12 +354,18 @@
     <target depends="compile" name="library-inclusion-in-archive">
         <mkdir dir="${build.classes.dir}/META-INF/lib"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${build.classes.dir}/META-INF/lib"/>
+        <copy file="${libs.swing-app-framework.classpath.libfile.2}" todir="${build.classes.dir}/META-INF/lib"/>
+        <copy file="${libs.swing-app-framework.classpath.libfile.1}" todir="${build.classes.dir}/META-INF/lib"/>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <basename file="${reference.jPackMRP-ejb.dist}" property="included.lib.reference.jPackMRP-ejb.dist"/>
         <copy file="${reference.jPackMRP-ejb.dist}" todir="${dist.ear.dir}"/>
+        <basename file="${libs.swing-app-framework.classpath.libfile.2}" property="included.lib.libs.swing-app-framework.classpath.2"/>
+        <basename file="${libs.swing-app-framework.classpath.libfile.1}" property="included.lib.libs.swing-app-framework.classpath.1"/>
+        <copy file="${libs.swing-app-framework.classpath.libfile.2}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.swing-app-framework.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} "/>
+            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} ${included.lib.libs.swing-app-framework.classpath.1} ${included.lib.libs.swing-app-framework.classpath.2} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
