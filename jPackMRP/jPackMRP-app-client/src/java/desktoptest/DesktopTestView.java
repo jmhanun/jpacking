@@ -95,6 +95,27 @@ public class DesktopTestView extends FrameView {
         DesktopTestApp.getApplication().show(aboutBox);
     }
 
+    @Action
+    public void showRolesFrame() {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        JInternalFrame x = null;
+        for (int i = 0; i < internalFrames.length; i++) {
+            JInternalFrame jInternalFrame = internalFrames[i];
+            if (jInternalFrame instanceof ar.com.jpack.app.gui.RolesFrame) {
+                x = jInternalFrame;
+            }
+        }
+        if (x != null) {
+            desktopPanel.getDesktopManager().activateFrame(x);
+        } else {
+            RolesFrame rolesFrame = new RolesFrame();
+            rolesFrame.setVisible(true);
+            desktopPanel.add(rolesFrame);
+            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
+        }
+        this.statusMessageLabel.setText("Roles por accion");
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -140,13 +161,9 @@ public class DesktopTestView extends FrameView {
         adminMenu.setText(resourceMap.getString("adminMenu.text")); // NOI18N
         adminMenu.setName("adminMenu"); // NOI18N
 
+        rolesMenuItem.setAction(actionMap.get("showRolesFrame")); // NOI18N
         rolesMenuItem.setText(resourceMap.getString("rolesMenuItem.text")); // NOI18N
         rolesMenuItem.setName("rolesMenuItem"); // NOI18N
-        rolesMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rolesMenuItemActionPerformed(evt);
-            }
-        });
         adminMenu.add(rolesMenuItem);
 
         menuBar.add(adminMenu);
@@ -201,25 +218,6 @@ public class DesktopTestView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
-    private void rolesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolesMenuItemActionPerformed
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        JInternalFrame x = null;
-        for (int i = 0; i < internalFrames.length; i++) {
-            JInternalFrame jInternalFrame = internalFrames[i];
-            if (jInternalFrame instanceof ar.com.jpack.app.gui.RolesFrame) {
-                x = jInternalFrame;
-            }
-        }
-        if (x != null) {
-            desktopPanel.getDesktopManager().activateFrame(x);
-        } else {
-            RolesFrame rolesFrame = new RolesFrame();
-            rolesFrame.setVisible(true);
-            desktopPanel.add(rolesFrame);
-            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
-        }
-        this.statusMessageLabel.setText("Roles?");
-    }//GEN-LAST:event_rolesMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu adminMenu;
