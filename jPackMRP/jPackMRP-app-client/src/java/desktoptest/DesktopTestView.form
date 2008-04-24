@@ -67,7 +67,6 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="desktoptest.DesktopTestView" id="showRolesFrame" methodName="showRolesFrame"/>
                 </Property>
-                <Property name="text" type="java.lang.String" resourceKey="rolesMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="rolesMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>

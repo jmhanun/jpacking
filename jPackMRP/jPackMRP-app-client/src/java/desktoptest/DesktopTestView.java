@@ -162,7 +162,6 @@ public class DesktopTestView extends FrameView {
         adminMenu.setName("adminMenu"); // NOI18N
 
         rolesMenuItem.setAction(actionMap.get("showRolesFrame")); // NOI18N
-        rolesMenuItem.setText(resourceMap.getString("rolesMenuItem.text")); // NOI18N
         rolesMenuItem.setName("rolesMenuItem"); // NOI18N
         adminMenu.add(rolesMenuItem);
 
