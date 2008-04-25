@@ -3,6 +3,7 @@
  */
 package desktoptest;
 
+import ar.com.jpack.app.gui.ArticulosFrame;
 import ar.com.jpack.app.gui.RolesFrame;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -97,14 +98,7 @@ public class DesktopTestView extends FrameView {
 
     @Action
     public void showRolesFrame() {
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        JInternalFrame x = null;
-        for (int i = 0; i < internalFrames.length; i++) {
-            JInternalFrame jInternalFrame = internalFrames[i];
-            if (jInternalFrame instanceof ar.com.jpack.app.gui.RolesFrame) {
-                x = jInternalFrame;
-            }
-        }
+        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
         if (x != null) {
             desktopPanel.getDesktopManager().activateFrame(x);
         } else {
@@ -114,6 +108,20 @@ public class DesktopTestView extends FrameView {
             desktopPanel.getDesktopManager().activateFrame(rolesFrame);
         }
         this.statusMessageLabel.setText("Roles por accion");
+    }
+
+    @Action
+    public void showArticulosFrame() {
+        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
+        if (x != null) {
+            desktopPanel.getDesktopManager().activateFrame(x);
+        } else {
+            ArticulosFrame articulosFrame = new ArticulosFrame();
+            articulosFrame.setVisible(true);
+            desktopPanel.add(articulosFrame);
+            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
+        }
+        this.statusMessageLabel.setText("Articulos por accion");
     }
 
     /** This method is called from within the constructor to
@@ -131,6 +139,8 @@ public class DesktopTestView extends FrameView {
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         adminMenu = new javax.swing.JMenu();
         rolesMenuItem = new javax.swing.JMenuItem();
+        prodMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -166,6 +176,15 @@ public class DesktopTestView extends FrameView {
         adminMenu.add(rolesMenuItem);
 
         menuBar.add(adminMenu);
+
+        prodMenu.setText(resourceMap.getString("prodMenu.text")); // NOI18N
+        prodMenu.setName("prodMenu"); // NOI18N
+
+        jMenuItem1.setAction(actionMap.get("showArticulosFrame")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        prodMenu.add(jMenuItem1);
+
+        menuBar.add(prodMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -221,8 +240,10 @@ public class DesktopTestView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu adminMenu;
     private javax.swing.JDesktopPane desktopPanel;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu prodMenu;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JMenuItem rolesMenuItem;
     private javax.swing.JLabel statusAnimationLabel;
@@ -235,4 +256,19 @@ public class DesktopTestView extends FrameView {
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
+
+    private JInternalFrame verificarInternalFrame(String clase) {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        JInternalFrame x = null;
+        int i = 0;
+        while ((i < internalFrames.length) && (x == null)) {
+            JInternalFrame jInternalFrame = internalFrames[i];
+            if (jInternalFrame.getClass().getCanonicalName().equals(clase)) {
+                x = jInternalFrame;
+            }
+            i++;
+        }
+
+        return x;
+    }
 }
