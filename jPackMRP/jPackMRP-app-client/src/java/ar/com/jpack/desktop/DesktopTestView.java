@@ -1,7 +1,7 @@
 /*
  * DesktopTestView.java
  */
-package desktoptest;
+package ar.com.jpack.desktop;
 
 import ar.com.jpack.app.gui.ArticulosFrame;
 import ar.com.jpack.app.gui.RolesFrame;
@@ -157,11 +157,11 @@ public class DesktopTestView extends FrameView {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktoptest.DesktopTestApp.class).getContext().getResourceMap(DesktopTestView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopTestApp.class).getContext().getResourceMap(DesktopTestView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(desktoptest.DesktopTestApp.class).getContext().getActionMap(DesktopTestView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopTestApp.class).getContext().getActionMap(DesktopTestView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);

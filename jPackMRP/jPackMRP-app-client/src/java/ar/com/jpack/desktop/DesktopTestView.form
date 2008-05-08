@@ -65,7 +65,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="rolesMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="desktoptest.DesktopTestView" id="showRolesFrame" methodName="showRolesFrame"/>
+                  <action class="ar.com.jpack.desktop.DesktopTestView" id="showRolesFrame" methodName="showRolesFrame"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="rolesMenuItem" noResource="true"/>
               </Properties>
@@ -81,7 +81,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="desktoptest.DesktopTestView" id="showArticulosFrame" methodName="showArticulosFrame"/>
+                  <action class="ar.com.jpack.desktop.DesktopTestView" id="showArticulosFrame" methodName="showArticulosFrame"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
               </Properties>
@@ -101,7 +101,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="desktoptest.DesktopTestView" id="showAboutBox" methodName="showAboutBox"/>
+                  <action class="ar.com.jpack.desktop.DesktopTestView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
               </Properties>

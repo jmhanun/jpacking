@@ -2,7 +2,7 @@
  * DesktopTestApp.java
  */
 
-package desktoptest;
+package ar.com.jpack.desktop;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
