@@ -10,13 +10,13 @@ import org.jdesktop.application.SingleFrameApplication;
 /**
  * The main class of the application.
  */
-public class DesktopTestApp extends SingleFrameApplication {
+public class DesktopApp extends SingleFrameApplication {
 
     /**
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new DesktopTestView(this));
+        show(new DesktopView(this));
     }
 
     /**
@@ -31,14 +31,14 @@ public class DesktopTestApp extends SingleFrameApplication {
      * A convenient static getter for the application instance.
      * @return the instance of DesktopTestApp
      */
-    public static DesktopTestApp getApplication() {
-        return Application.getInstance(DesktopTestApp.class);
+    public static DesktopApp getApplication() {
+        return Application.getInstance(DesktopApp.class);
     }
 
     /**
      * Main method launching the application.
      */
     public static void main(String[] args) {
-        launch(DesktopTestApp.class, args);
+        launch(DesktopApp.class, args);
     }
 }

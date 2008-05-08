@@ -21,9 +21,9 @@ import javax.swing.JInternalFrame;
 /**
  * The application's main frame.
  */
-public class DesktopTestView extends FrameView {
+public class DesktopView extends FrameView {
 
-    public DesktopTestView(SingleFrameApplication app) {
+    public DesktopView(SingleFrameApplication app) {
         super(app);
 
         initComponents();
@@ -89,11 +89,11 @@ public class DesktopTestView extends FrameView {
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
-            JFrame mainFrame = DesktopTestApp.getApplication().getMainFrame();
-            aboutBox = new DesktopTestAboutBox(mainFrame);
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            aboutBox = new DesktopAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
-        DesktopTestApp.getApplication().show(aboutBox);
+        DesktopApp.getApplication().show(aboutBox);
     }
 
     @Action
@@ -157,11 +157,11 @@ public class DesktopTestView extends FrameView {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopTestApp.class).getContext().getResourceMap(DesktopTestView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(DesktopView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopTestApp.class).getContext().getActionMap(DesktopTestView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
