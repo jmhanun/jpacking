@@ -124,6 +124,16 @@ public class DesktopView extends FrameView {
         this.statusMessageLabel.setText("Articulos por accion");
     }
 
+    @Action
+    public void closeAllFrames() {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        int i = 0;
+        while (i < internalFrames.length) {
+            internalFrames[i].dispose();
+            i++;
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
