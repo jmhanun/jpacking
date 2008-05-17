@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,12 +16,18 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "componentes")
-@NamedQueries({@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"), @NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"), @NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"), @NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad")})
+@NamedQueries({
+@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"),
+@NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"),
+@NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"),
+@NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad")
+})
 public class Componentes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ComponentesPK componentesPK;
@@ -118,5 +123,4 @@ public class Componentes implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Componentes[componentesPK=" + componentesPK + "]";
     }
-
 }

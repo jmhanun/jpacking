@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -22,16 +21,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "articulos")
-@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), 
-@NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), 
-@NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), 
-@NamedQuery(name = "Articulos.findByEstado", query = "SELECT a FROM Articulos a WHERE a.estado = :estado"), 
-@NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"), 
-@NamedQuery(name = "Articulos.obtenerArticulos", query = "SELECT a FROM Articulos a"), 
-@NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), 
-@NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime")})
-
+@NamedQueries({
+@NamedQuery(name = "Articulos.obtenerArticulos", query = "SELECT a FROM Articulos a"),
+@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"),
+@NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"),
+@NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"),
+@NamedQuery(name = "Articulos.findByEstado", query = "SELECT a FROM Articulos a WHERE a.estado = :estado"),
+@NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"),
+@NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"),
+@NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime")
+})
 public class Articulos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idArticulo", nullable = false)
@@ -49,9 +50,9 @@ public class Articulos implements Serializable {
     @Column(name = "leadTime", nullable = false)
     private Double leadTime;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
-    private Collection<Detalleremitos> detalleremitosCollection;
+    private Collection<DetalleRemitos> detalleremitosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
-    private Collection<Detallefacturas> detallefacturasCollection;
+    private Collection<DetalleFacturas> detallefacturasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Precios> preciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos")
@@ -132,19 +133,19 @@ public class Articulos implements Serializable {
         this.leadTime = leadTime;
     }
 
-    public Collection<Detalleremitos> getDetalleremitosCollection() {
+    public Collection<DetalleRemitos> getDetalleremitosCollection() {
         return detalleremitosCollection;
     }
 
-    public void setDetalleremitosCollection(Collection<Detalleremitos> detalleremitosCollection) {
+    public void setDetalleremitosCollection(Collection<DetalleRemitos> detalleremitosCollection) {
         this.detalleremitosCollection = detalleremitosCollection;
     }
 
-    public Collection<Detallefacturas> getDetallefacturasCollection() {
+    public Collection<DetalleFacturas> getDetallefacturasCollection() {
         return detallefacturasCollection;
     }
 
-    public void setDetallefacturasCollection(Collection<Detallefacturas> detallefacturasCollection) {
+    public void setDetallefacturasCollection(Collection<DetalleFacturas> detallefacturasCollection) {
         this.detallefacturasCollection = detallefacturasCollection;
     }
 
@@ -196,5 +197,4 @@ public class Articulos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Articulos[idArticulo=" + idArticulo + "]";
     }
-
 }

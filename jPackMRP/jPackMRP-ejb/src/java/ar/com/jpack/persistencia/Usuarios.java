@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -11,9 +10,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,12 +19,24 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "usuarios")
-@NamedQueries({@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"), @NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"), @NamedQuery(name = "Usuarios.findByTipoUsuario", query = "SELECT u FROM Usuarios u WHERE u.tipoUsuario = :tipoUsuario"), @NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado")})
+@NamedQueries({
+@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"),
+@NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"),
+@NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"),
+@NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"),
+@NamedQuery(name = "Usuarios.findByTipoUsuario", query = "SELECT u FROM Usuarios u WHERE u.tipoUsuario = :tipoUsuario"),
+@NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado"),
+@NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"),
+@NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"),
+@NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"),
+@NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")
+})
 public class Usuarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUsuario", nullable = false)
@@ -43,11 +52,16 @@ public class Usuarios implements Serializable {
     private String tipoUsuario;
     @Column(name = "estado")
     private String estado;
+    @Column(name = "nombres", nullable = false)
+    private String nombres;
+    @Column(name = "apellidos", nullable = false)
+    private String apellidos;
+    @Column(name = "mails", nullable = false)
+    private String mails;
+    @Column(name = "telefonos", nullable = false)
+    private String telefonos;
     @ManyToMany(mappedBy = "idUsuarioCollection")
     private Collection<Roles> idRolCollection;
-    @JoinColumn(name = "idPersona", referencedColumnName = "idPersona")
-    @ManyToOne
-    private Personas idPersona;
 
     public Usuarios() {
     }
@@ -56,10 +70,14 @@ public class Usuarios implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuarios(Integer idUsuario, String usuario, String contrasena) {
+    public Usuarios(Integer idUsuario, String usuario, String contrasena, String nombres, String apellidos, String mails, String telefonos) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contrasena = contrasena;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.mails = mails;
+        this.telefonos = telefonos;
     }
 
     public Integer getIdUsuario() {
@@ -110,20 +128,44 @@ public class Usuarios implements Serializable {
         this.estado = estado;
     }
 
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getMails() {
+        return mails;
+    }
+
+    public void setMails(String mails) {
+        this.mails = mails;
+    }
+
+    public String getTelefonos() {
+        return telefonos;
+    }
+
+    public void setTelefonos(String telefonos) {
+        this.telefonos = telefonos;
+    }
+
     public Collection<Roles> getIdRolCollection() {
         return idRolCollection;
     }
 
     public void setIdRolCollection(Collection<Roles> idRolCollection) {
         this.idRolCollection = idRolCollection;
-    }
-
-    public Personas getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(Personas idPersona) {
-        this.idPersona = idPersona;
     }
 
     @Override
@@ -150,5 +192,4 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Usuarios[idUsuario=" + idUsuario + "]";
     }
-
 }

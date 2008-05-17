@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -20,12 +19,16 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "provincias")
-@NamedQueries({@NamedQuery(name = "Provincias.findByIdProvincia", query = "SELECT p FROM Provincias p WHERE p.idProvincia = :idProvincia"), @NamedQuery(name = "Provincias.findByProvincia", query = "SELECT p FROM Provincias p WHERE p.provincia = :provincia")})
+@NamedQueries({
+@NamedQuery(name = "Provincias.findByIdProvincia", query = "SELECT p FROM Provincias p WHERE p.idProvincia = :idProvincia"),
+@NamedQuery(name = "Provincias.findByProvincia", query = "SELECT p FROM Provincias p WHERE p.provincia = :provincia")
+})
 public class Provincias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idProvincia", nullable = false)
@@ -106,5 +109,4 @@ public class Provincias implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Provincias[idProvincia=" + idProvincia + "]";
     }
-
 }

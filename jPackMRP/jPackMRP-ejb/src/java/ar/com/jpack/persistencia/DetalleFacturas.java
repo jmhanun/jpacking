@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,24 +16,31 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "detallefacturas")
-@NamedQueries({@NamedQuery(name = "Detallefacturas.findByIdDetalle", query = "SELECT d FROM Detallefacturas d WHERE d.idDetalle = :idDetalle"), @NamedQuery(name = "Detallefacturas.findByCantidad", query = "SELECT d FROM Detallefacturas d WHERE d.cantidad = :cantidad"), @NamedQuery(name = "Detallefacturas.findByPrecioUnitario", query = "SELECT d FROM Detallefacturas d WHERE d.precioUnitario = :precioUnitario"), @NamedQuery(name = "Detallefacturas.findByImporte", query = "SELECT d FROM Detallefacturas d WHERE d.importe = :importe"), @NamedQuery(name = "Detallefacturas.findByDescuento", query = "SELECT d FROM Detallefacturas d WHERE d.descuento = :descuento")})
-public class Detallefacturas implements Serializable {
+@NamedQueries({
+@NamedQuery(name = "Detallefacturas.findByIdDetalle", query = "SELECT d FROM Detallefacturas d WHERE d.idDetalle = :idDetalle"),
+@NamedQuery(name = "Detallefacturas.findByCantidad", query = "SELECT d FROM Detallefacturas d WHERE d.cantidad = :cantidad"),
+@NamedQuery(name = "Detallefacturas.findByPrecioUnitario", query = "SELECT d FROM Detallefacturas d WHERE d.precioUnitario = :precioUnitario"),
+@NamedQuery(name = "Detallefacturas.findByImporte", query = "SELECT d FROM Detallefacturas d WHERE d.importe = :importe"),
+@NamedQuery(name = "Detallefacturas.findByDescuento", query = "SELECT d FROM Detallefacturas d WHERE d.descuento = :descuento")
+})
+public class DetalleFacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idDetalle", nullable = false)
     private Integer idDetalle;
     @Column(name = "cantidad", nullable = false)
-    private int cantidad;
+    private Integer cantidad;
     @Column(name = "precioUnitario", nullable = false)
-    private double precioUnitario;
+    private Double precioUnitario;
     @Column(name = "importe", nullable = false)
-    private double importe;
+    private Double importe;
     @Column(name = "descuento", nullable = false)
-    private float descuento;
+    private Double descuento;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
@@ -42,14 +48,14 @@ public class Detallefacturas implements Serializable {
     @ManyToOne
     private Facturas idFactura;
 
-    public Detallefacturas() {
+    public DetalleFacturas() {
     }
 
-    public Detallefacturas(Integer idDetalle) {
+    public DetalleFacturas(Integer idDetalle) {
         this.idDetalle = idDetalle;
     }
 
-    public Detallefacturas(Integer idDetalle, int cantidad, double precioUnitario, double importe, float descuento) {
+    public DetalleFacturas(Integer idDetalle, Integer cantidad, Double precioUnitario, Double importe, Double descuento) {
         this.idDetalle = idDetalle;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
@@ -65,35 +71,35 @@ public class Detallefacturas implements Serializable {
         this.idDetalle = idDetalle;
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
-    public double getPrecioUnitario() {
+    public Double getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(double precioUnitario) {
+    public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
-    public double getImporte() {
+    public Double getImporte() {
         return importe;
     }
 
-    public void setImporte(double importe) {
+    public void setImporte(Double importe) {
         this.importe = importe;
     }
 
-    public float getDescuento() {
+    public Double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(float descuento) {
+    public void setDescuento(Double descuento) {
         this.descuento = descuento;
     }
 
@@ -123,10 +129,10 @@ public class Detallefacturas implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Detallefacturas)) {
+        if (!(object instanceof DetalleFacturas)) {
             return false;
         }
-        Detallefacturas other = (Detallefacturas) object;
+        DetalleFacturas other = (DetalleFacturas) object;
         if ((this.idDetalle == null && other.idDetalle != null) || (this.idDetalle != null && !this.idDetalle.equals(other.idDetalle))) {
             return false;
         }
@@ -137,5 +143,4 @@ public class Detallefacturas implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Detallefacturas[idDetalle=" + idDetalle + "]";
     }
-
 }

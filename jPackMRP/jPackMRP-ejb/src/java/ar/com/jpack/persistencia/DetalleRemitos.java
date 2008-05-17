@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,22 +16,28 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "detalleremitos")
-@NamedQueries({@NamedQuery(name = "Detalleremitos.findByIdDetalle", query = "SELECT d FROM Detalleremitos d WHERE d.idDetalle = :idDetalle"), @NamedQuery(name = "Detalleremitos.findByCantidad", query = "SELECT d FROM Detalleremitos d WHERE d.cantidad = :cantidad"), @NamedQuery(name = "Detalleremitos.findByPrecioUnitario", query = "SELECT d FROM Detalleremitos d WHERE d.precioUnitario = :precioUnitario"), @NamedQuery(name = "Detalleremitos.findByImporte", query = "SELECT d FROM Detalleremitos d WHERE d.importe = :importe")})
-public class Detalleremitos implements Serializable {
+@NamedQueries({
+@NamedQuery(name = "Detalleremitos.findByIdDetalle", query = "SELECT d FROM Detalleremitos d WHERE d.idDetalle = :idDetalle"),
+@NamedQuery(name = "Detalleremitos.findByCantidad", query = "SELECT d FROM Detalleremitos d WHERE d.cantidad = :cantidad"),
+@NamedQuery(name = "Detalleremitos.findByPrecioUnitario", query = "SELECT d FROM Detalleremitos d WHERE d.precioUnitario = :precioUnitario"),
+@NamedQuery(name = "Detalleremitos.findByImporte", query = "SELECT d FROM Detalleremitos d WHERE d.importe = :importe")
+})
+public class DetalleRemitos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idDetalle", nullable = false)
     private Integer idDetalle;
     @Column(name = "cantidad", nullable = false)
-    private int cantidad;
+    private Integer cantidad;
     @Column(name = "precioUnitario", nullable = false)
-    private double precioUnitario;
+    private Double precioUnitario;
     @Column(name = "importe", nullable = false)
-    private double importe;
+    private Double importe;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
@@ -40,14 +45,14 @@ public class Detalleremitos implements Serializable {
     @ManyToOne
     private Remitos idRemito;
 
-    public Detalleremitos() {
+    public DetalleRemitos() {
     }
 
-    public Detalleremitos(Integer idDetalle) {
+    public DetalleRemitos(Integer idDetalle) {
         this.idDetalle = idDetalle;
     }
 
-    public Detalleremitos(Integer idDetalle, int cantidad, double precioUnitario, double importe) {
+    public DetalleRemitos(Integer idDetalle, Integer cantidad, Double precioUnitario, Double importe) {
         this.idDetalle = idDetalle;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
@@ -62,27 +67,27 @@ public class Detalleremitos implements Serializable {
         this.idDetalle = idDetalle;
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
-    public double getPrecioUnitario() {
+    public Double getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(double precioUnitario) {
+    public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
-    public double getImporte() {
+    public Double getImporte() {
         return importe;
     }
 
-    public void setImporte(double importe) {
+    public void setImporte(Double importe) {
         this.importe = importe;
     }
 
@@ -112,10 +117,10 @@ public class Detalleremitos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Detalleremitos)) {
+        if (!(object instanceof DetalleRemitos)) {
             return false;
         }
-        Detalleremitos other = (Detalleremitos) object;
+        DetalleRemitos other = (DetalleRemitos) object;
         if ((this.idDetalle == null && other.idDetalle != null) || (this.idDetalle != null && !this.idDetalle.equals(other.idDetalle))) {
             return false;
         }
@@ -126,5 +131,4 @@ public class Detalleremitos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Detalleremitos[idDetalle=" + idDetalle + "]";
     }
-
 }

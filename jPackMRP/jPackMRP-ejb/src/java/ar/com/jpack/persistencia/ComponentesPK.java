@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Embeddable
 public class ComponentesPK implements Serializable {

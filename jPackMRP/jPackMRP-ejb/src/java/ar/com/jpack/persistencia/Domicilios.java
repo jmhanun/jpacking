@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,12 +16,21 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "domicilios")
-@NamedQueries({@NamedQuery(name = "Domicilios.findByIdDomicilio", query = "SELECT d FROM Domicilios d WHERE d.idDomicilio = :idDomicilio"), @NamedQuery(name = "Domicilios.findByCalle", query = "SELECT d FROM Domicilios d WHERE d.calle = :calle"), @NamedQuery(name = "Domicilios.findByNumero", query = "SELECT d FROM Domicilios d WHERE d.numero = :numero"), @NamedQuery(name = "Domicilios.findByBarrio", query = "SELECT d FROM Domicilios d WHERE d.barrio = :barrio"), @NamedQuery(name = "Domicilios.findByPiso", query = "SELECT d FROM Domicilios d WHERE d.piso = :piso"), @NamedQuery(name = "Domicilios.findByDepartamento", query = "SELECT d FROM Domicilios d WHERE d.departamento = :departamento"), @NamedQuery(name = "Domicilios.findByTorre", query = "SELECT d FROM Domicilios d WHERE d.torre = :torre")})
+@NamedQueries({
+@NamedQuery(name = "Domicilios.findByIdDomicilio", query = "SELECT d FROM Domicilios d WHERE d.idDomicilio = :idDomicilio"),
+@NamedQuery(name = "Domicilios.findByCalle", query = "SELECT d FROM Domicilios d WHERE d.calle = :calle"),
+@NamedQuery(name = "Domicilios.findByNumero", query = "SELECT d FROM Domicilios d WHERE d.numero = :numero"),
+@NamedQuery(name = "Domicilios.findByBarrio", query = "SELECT d FROM Domicilios d WHERE d.barrio = :barrio"),
+@NamedQuery(name = "Domicilios.findByPiso", query = "SELECT d FROM Domicilios d WHERE d.piso = :piso"),
+@NamedQuery(name = "Domicilios.findByDepartamento", query = "SELECT d FROM Domicilios d WHERE d.departamento = :departamento"),
+@NamedQuery(name = "Domicilios.findByTorre", query = "SELECT d FROM Domicilios d WHERE d.torre = :torre")
+})
 public class Domicilios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idDomicilio", nullable = false)
@@ -39,12 +47,12 @@ public class Domicilios implements Serializable {
     private String departamento;
     @Column(name = "torre")
     private String torre;
+    @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
+    @ManyToOne
+    private Clientes idCliente;
     @JoinColumn(name = "idLocalidad", referencedColumnName = "idLocalidad")
     @ManyToOne
     private Localidades idLocalidad;
-    @JoinColumn(name = "idPersona", referencedColumnName = "idPersona")
-    @ManyToOne
-    private Personas idPersona;
 
     public Domicilios() {
     }
@@ -116,20 +124,20 @@ public class Domicilios implements Serializable {
         this.torre = torre;
     }
 
+    public Clientes getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Clientes idCliente) {
+        this.idCliente = idCliente;
+    }
+
     public Localidades getIdLocalidad() {
         return idLocalidad;
     }
 
     public void setIdLocalidad(Localidades idLocalidad) {
         this.idLocalidad = idLocalidad;
-    }
-
-    public Personas getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(Personas idPersona) {
-        this.idPersona = idPersona;
     }
 
     @Override
@@ -156,5 +164,4 @@ public class Domicilios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Domicilios[idDomicilio=" + idDomicilio + "]";
     }
-
 }

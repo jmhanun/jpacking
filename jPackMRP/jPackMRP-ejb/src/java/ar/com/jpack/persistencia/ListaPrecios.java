@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -21,12 +20,18 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "listaprecios")
-@NamedQueries({@NamedQuery(name = "Listaprecios.findByIdLista", query = "SELECT l FROM Listaprecios l WHERE l.idLista = :idLista"), @NamedQuery(name = "Listaprecios.findByFechaDesde", query = "SELECT l FROM Listaprecios l WHERE l.fechaDesde = :fechaDesde"), @NamedQuery(name = "Listaprecios.findByFechaHasta", query = "SELECT l FROM Listaprecios l WHERE l.fechaHasta = :fechaHasta"), @NamedQuery(name = "Listaprecios.findByEstado", query = "SELECT l FROM Listaprecios l WHERE l.estado = :estado")})
-public class Listaprecios implements Serializable {
+@NamedQueries({
+@NamedQuery(name = "Listaprecios.findByIdLista", query = "SELECT l FROM Listaprecios l WHERE l.idLista = :idLista"),
+@NamedQuery(name = "Listaprecios.findByFechaDesde", query = "SELECT l FROM Listaprecios l WHERE l.fechaDesde = :fechaDesde"),
+@NamedQuery(name = "Listaprecios.findByFechaHasta", query = "SELECT l FROM Listaprecios l WHERE l.fechaHasta = :fechaHasta"),
+@NamedQuery(name = "Listaprecios.findByEstado", query = "SELECT l FROM Listaprecios l WHERE l.estado = :estado")
+})
+public class ListaPrecios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idLista", nullable = false)
@@ -42,14 +47,14 @@ public class Listaprecios implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLista")
     private Collection<Precios> preciosCollection;
 
-    public Listaprecios() {
+    public ListaPrecios() {
     }
 
-    public Listaprecios(Integer idLista) {
+    public ListaPrecios(Integer idLista) {
         this.idLista = idLista;
     }
 
-    public Listaprecios(Integer idLista, Date fechaDesde, String estado) {
+    public ListaPrecios(Integer idLista, Date fechaDesde, String estado) {
         this.idLista = idLista;
         this.fechaDesde = fechaDesde;
         this.estado = estado;
@@ -105,10 +110,10 @@ public class Listaprecios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Listaprecios)) {
+        if (!(object instanceof ListaPrecios)) {
             return false;
         }
-        Listaprecios other = (Listaprecios) object;
+        ListaPrecios other = (ListaPrecios) object;
         if ((this.idLista == null && other.idLista != null) || (this.idLista != null && !this.idLista.equals(other.idLista))) {
             return false;
         }
@@ -119,5 +124,4 @@ public class Listaprecios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Listaprecios[idLista=" + idLista + "]";
     }
-
 }

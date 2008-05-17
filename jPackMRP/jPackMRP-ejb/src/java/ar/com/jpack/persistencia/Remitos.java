@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -23,27 +22,34 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "remitos")
-@NamedQueries({@NamedQuery(name = "Remitos.findByIdRemito", query = "SELECT r FROM Remitos r WHERE r.idRemito = :idRemito"), @NamedQuery(name = "Remitos.findByNroRemito", query = "SELECT r FROM Remitos r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitos.findByFecha", query = "SELECT r FROM Remitos r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitos.findByImporte", query = "SELECT r FROM Remitos r WHERE r.importe = :importe"), @NamedQuery(name = "Remitos.findByEstado", query = "SELECT r FROM Remitos r WHERE r.estado = :estado")})
+@NamedQueries({
+@NamedQuery(name = "Remitos.findByIdRemito", query = "SELECT r FROM Remitos r WHERE r.idRemito = :idRemito"),
+@NamedQuery(name = "Remitos.findByNroRemito", query = "SELECT r FROM Remitos r WHERE r.nroRemito = :nroRemito"),
+@NamedQuery(name = "Remitos.findByFecha", query = "SELECT r FROM Remitos r WHERE r.fecha = :fecha"),
+@NamedQuery(name = "Remitos.findByImporte", query = "SELECT r FROM Remitos r WHERE r.importe = :importe"),
+@NamedQuery(name = "Remitos.findByEstado", query = "SELECT r FROM Remitos r WHERE r.estado = :estado")
+})
 public class Remitos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idRemito", nullable = false)
     private Integer idRemito;
     @Column(name = "nroRemito", nullable = false)
-    private int nroRemito;
+    private Integer nroRemito;
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "importe", nullable = false)
-    private double importe;
+    private Double importe;
     @Column(name = "estado", nullable = false)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRemito")
-    private Collection<Detalleremitos> detalleremitosCollection;
+    private Collection<DetalleRemitos> detalleremitosCollection;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
     @ManyToOne
     private Clientes idCliente;
@@ -55,7 +61,7 @@ public class Remitos implements Serializable {
         this.idRemito = idRemito;
     }
 
-    public Remitos(Integer idRemito, int nroRemito, Date fecha, double importe, String estado) {
+    public Remitos(Integer idRemito, Integer nroRemito, Date fecha, Double importe, String estado) {
         this.idRemito = idRemito;
         this.nroRemito = nroRemito;
         this.fecha = fecha;
@@ -71,11 +77,11 @@ public class Remitos implements Serializable {
         this.idRemito = idRemito;
     }
 
-    public int getNroRemito() {
+    public Integer getNroRemito() {
         return nroRemito;
     }
 
-    public void setNroRemito(int nroRemito) {
+    public void setNroRemito(Integer nroRemito) {
         this.nroRemito = nroRemito;
     }
 
@@ -87,11 +93,11 @@ public class Remitos implements Serializable {
         this.fecha = fecha;
     }
 
-    public double getImporte() {
+    public Double getImporte() {
         return importe;
     }
 
-    public void setImporte(double importe) {
+    public void setImporte(Double importe) {
         this.importe = importe;
     }
 
@@ -103,11 +109,11 @@ public class Remitos implements Serializable {
         this.estado = estado;
     }
 
-    public Collection<Detalleremitos> getDetalleremitosCollection() {
+    public Collection<DetalleRemitos> getDetalleremitosCollection() {
         return detalleremitosCollection;
     }
 
-    public void setDetalleremitosCollection(Collection<Detalleremitos> detalleremitosCollection) {
+    public void setDetalleremitosCollection(Collection<DetalleRemitos> detalleremitosCollection) {
         this.detalleremitosCollection = detalleremitosCollection;
     }
 
@@ -143,5 +149,4 @@ public class Remitos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Remitos[idRemito=" + idRemito + "]";
     }
-
 }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -13,21 +12,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), 
+@NamedQueries({
+@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"),
 @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"),
 @NamedQuery(name = "Roles.obtenerRoles", query = "SELECT r FROM Roles r"),
-@NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion")})
+@NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion")
+})
 public class Roles implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idRol", nullable = false)
@@ -39,6 +42,9 @@ public class Roles implements Serializable {
     @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")}, inverseJoinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")})
     @ManyToMany
     private Collection<Usuarios> idUsuarioCollection;
+    @JoinColumn(name = "idTipoRol", referencedColumnName = "idTipoRol")
+    @ManyToOne
+    private TiposRoles idTipoRol;
 
     public Roles() {
     }
@@ -85,6 +91,14 @@ public class Roles implements Serializable {
         this.idUsuarioCollection = idUsuarioCollection;
     }
 
+    public TiposRoles getIdTipoRol() {
+        return idTipoRol;
+    }
+
+    public void setIdTipoRol(TiposRoles idTipoRol) {
+        this.idTipoRol = idTipoRol;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -109,5 +123,4 @@ public class Roles implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Roles[idRol=" + idRol + "]";
     }
-
 }

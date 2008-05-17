@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -20,12 +19,18 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "localidades")
-@NamedQueries({@NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"), @NamedQuery(name = "Localidades.findByLocalidad", query = "SELECT l FROM Localidades l WHERE l.localidad = :localidad"), @NamedQuery(name = "Localidades.findByCodigoPostal", query = "SELECT l FROM Localidades l WHERE l.codigoPostal = :codigoPostal")})
+@NamedQueries({
+@NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"),
+@NamedQuery(name = "Localidades.findByLocalidad", query = "SELECT l FROM Localidades l WHERE l.localidad = :localidad"),
+@NamedQuery(name = "Localidades.findByCodigoPostal", query = "SELECT l FROM Localidades l WHERE l.codigoPostal = :codigoPostal"),
+@NamedQuery(name = "Localidades.findByIdCliente", query = "SELECT l FROM Localidades l WHERE l.idCliente = :idCliente")
+})
 public class Localidades implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idLocalidad", nullable = false)
@@ -34,6 +39,8 @@ public class Localidades implements Serializable {
     private String localidad;
     @Column(name = "codigoPostal", nullable = false)
     private String codigoPostal;
+    @Column(name = "idCliente", nullable = false)
+    private Integer idCliente;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLocalidad")
     private Collection<Domicilios> domiciliosCollection;
     @JoinColumn(name = "idProvincia", referencedColumnName = "idProvincia")
@@ -47,10 +54,11 @@ public class Localidades implements Serializable {
         this.idLocalidad = idLocalidad;
     }
 
-    public Localidades(Integer idLocalidad, String localidad, String codigoPostal) {
+    public Localidades(Integer idLocalidad, String localidad, String codigoPostal, Integer idCliente) {
         this.idLocalidad = idLocalidad;
         this.localidad = localidad;
         this.codigoPostal = codigoPostal;
+        this.idCliente = idCliente;
     }
 
     public Integer getIdLocalidad() {
@@ -75,6 +83,14 @@ public class Localidades implements Serializable {
 
     public void setCodigoPostal(String codigoPostal) {
         this.codigoPostal = codigoPostal;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
     public Collection<Domicilios> getDomiciliosCollection() {
@@ -117,5 +133,4 @@ public class Localidades implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Localidades[idLocalidad=" + idLocalidad + "]";
     }
-
 }

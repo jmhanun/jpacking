@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,24 +16,28 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "precios")
-@NamedQueries({@NamedQuery(name = "Precios.findByIdPrecio", query = "SELECT p FROM Precios p WHERE p.idPrecio = :idPrecio"), @NamedQuery(name = "Precios.findByPrecio", query = "SELECT p FROM Precios p WHERE p.precio = :precio")})
+@NamedQueries({
+@NamedQuery(name = "Precios.findByIdPrecio", query = "SELECT p FROM Precios p WHERE p.idPrecio = :idPrecio"),
+@NamedQuery(name = "Precios.findByPrecio", query = "SELECT p FROM Precios p WHERE p.precio = :precio")
+})
 public class Precios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idPrecio", nullable = false)
     private Integer idPrecio;
     @Column(name = "precio", nullable = false)
-    private double precio;
+    private Double precio;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
     @JoinColumn(name = "idLista", referencedColumnName = "idLista")
     @ManyToOne
-    private Listaprecios idLista;
+    private ListaPrecios idLista;
 
     public Precios() {
     }
@@ -43,7 +46,7 @@ public class Precios implements Serializable {
         this.idPrecio = idPrecio;
     }
 
-    public Precios(Integer idPrecio, double precio) {
+    public Precios(Integer idPrecio, Double precio) {
         this.idPrecio = idPrecio;
         this.precio = precio;
     }
@@ -56,11 +59,11 @@ public class Precios implements Serializable {
         this.idPrecio = idPrecio;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
@@ -72,11 +75,11 @@ public class Precios implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public Listaprecios getIdLista() {
+    public ListaPrecios getIdLista() {
         return idLista;
     }
 
-    public void setIdLista(Listaprecios idLista) {
+    public void setIdLista(ListaPrecios idLista) {
         this.idLista = idLista;
     }
 
@@ -104,5 +107,4 @@ public class Precios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Precios[idPrecio=" + idPrecio + "]";
     }
-
 }
