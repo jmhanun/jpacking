@@ -34,16 +34,16 @@ public class RolesSessionBean implements RolesSessionRemote {
 
     }
 
-    public void agregarRol(RolesT oRol) {
-        Roles rol = new Roles(oRol.getIdRol(), oRol.getRol(), oRol.getDescripcion());
+    public void agregarRol(RolesT rolesT) {
+        Roles rol = new Roles(rolesT.getIdRol(), rolesT.getRol(), rolesT.getDescripcion());
         em.persist(rol);
         em.flush();
     }
 
-    public void editarRol(RolesT oRol) {
-        Roles rol = em.find(Roles.class, oRol.getIdRol());
-        rol.setRol(oRol.getRol());
-        rol.setDescripcion(oRol.getDescripcion());
+    public void editarRol(RolesT rolesT) {
+        Roles rol = em.find(Roles.class, rolesT.getIdRol());
+        rol.setRol(rolesT.getRol());
+        rol.setDescripcion(rolesT.getDescripcion());
         em.merge(rol);
         em.flush();
     }

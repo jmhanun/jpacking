@@ -110,16 +110,6 @@ public class DataTransferHelper {
     }
 
     //USUARIOS
-    public static List<UsuariosT> copiarUsuariosALista(Collection items) {
-        List<UsuariosT> lista = new ArrayList<UsuariosT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarUsuario((Usuarios) i.next()));
-        }
-
-        return lista;
-    }
-
     public static UsuariosT copiarUsuario(Usuarios item) {
         UsuariosT t = null;
         if (item != null) {
