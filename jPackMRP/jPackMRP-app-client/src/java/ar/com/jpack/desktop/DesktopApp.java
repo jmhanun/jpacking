@@ -3,6 +3,8 @@
  */
 package ar.com.jpack.desktop;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -11,12 +13,22 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class DesktopApp extends SingleFrameApplication {
 
+    public JDialog loginBox;
+
     /**
      * At startup create and show the main frame of the application.
      */
     @Override
     protected void startup() {
         show(new DesktopView(this));
+    }
+
+    @Override
+    protected void ready() {
+        JFrame mainFrame = getApplication().getMainFrame();
+        loginBox = new DesktopLoginBox(mainFrame);
+        loginBox.setLocationRelativeTo(mainFrame);
+        getApplication().show(loginBox);
     }
 
     /**

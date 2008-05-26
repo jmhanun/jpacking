@@ -85,10 +85,7 @@ public class DesktopView extends FrameView {
             }
         });
 
-        JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
-        loginBox = new DesktopLoginBox(mainFrame);
-        loginBox.setLocationRelativeTo(mainFrame);
-        DesktopApp.getApplication().show(loginBox);
+
     }
 
     @Action
@@ -271,7 +268,6 @@ public class DesktopView extends FrameView {
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
-    private JDialog loginBox;
 
     private JInternalFrame verificarInternalFrame(String clase) {
         JInternalFrame[] internalFrames = desktopPanel.getAllFrames();

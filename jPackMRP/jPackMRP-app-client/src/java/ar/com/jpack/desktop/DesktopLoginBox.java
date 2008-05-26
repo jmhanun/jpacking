@@ -129,5 +129,6 @@ public class DesktopLoginBox extends javax.swing.JDialog {
         System.out.println(usuariosT.getUsuario());
         System.out.println(usuariosT.getContrasena());
         System.out.println("****************************");
+        setVisible(false);
     }
 }
