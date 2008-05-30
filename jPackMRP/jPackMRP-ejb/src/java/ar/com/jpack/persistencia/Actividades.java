@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -21,12 +22,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "actividades")
-@NamedQueries({
-@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"),
-@NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")
-})
+@NamedQueries({@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"), @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")})
 public class Actividades implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idActividad", nullable = false)
@@ -34,7 +31,7 @@ public class Actividades implements Serializable {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividades")
-    private Collection<HorasTrabajadas> horastrabajadasCollection;
+    private Collection<Horastrabajadas> horastrabajadasCollection;
 
     public Actividades() {
     }
@@ -64,11 +61,11 @@ public class Actividades implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Collection<HorasTrabajadas> getHorastrabajadasCollection() {
+    public Collection<Horastrabajadas> getHorastrabajadasCollection() {
         return horastrabajadasCollection;
     }
 
-    public void setHorastrabajadasCollection(Collection<HorasTrabajadas> horastrabajadasCollection) {
+    public void setHorastrabajadasCollection(Collection<Horastrabajadas> horastrabajadasCollection) {
         this.horastrabajadasCollection = horastrabajadasCollection;
     }
 
@@ -94,6 +91,7 @@ public class Actividades implements Serializable {
 
     @Override
     public String toString() {
-        return "persist.Actividades[idActividad=" + idActividad + "]";
+        return "ar.com.jpack.persistencia.Actividades[idActividad=" + idActividad + "]";
     }
+
 }

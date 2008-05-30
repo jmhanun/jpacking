@@ -5,6 +5,12 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.negocio.UsuariosFacadeRemote;
+import ar.com.jpack.transferencia.UsuariosT;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
 /**
@@ -12,6 +18,8 @@ import org.jdesktop.application.Action;
  * @author  jmhanun
  */
 public class DesktopLoginBox extends javax.swing.JDialog {
+
+    private UsuariosFacadeRemote usuariosFacade;
 
     /** Creates new form DesktopLoginBox */
     public DesktopLoginBox(java.awt.Frame parent) {
@@ -122,13 +130,31 @@ public class DesktopLoginBox extends javax.swing.JDialog {
     private ar.com.jpack.transferencia.UsuariosT usuariosT;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-  
     @Action
     public void validarLogin() {
         System.out.println("****************************");
         System.out.println(usuariosT.getUsuario());
         System.out.println(usuariosT.getContrasena());
         System.out.println("****************************");
-        setVisible(false);
+        usuariosFacade = lookupUsuariosFacade();
+
+        UsuariosT usuTemp = usuariosFacade.validarUsuario(usuariosT);
+        if (usuTemp != null) {
+            usuariosT = usuTemp;
+            DesktopApp.getApplication().setUsuarioLogueado(usuariosT);
+            setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "No existe usuario con ese nombre y contraseña");
+        }
+    }
+
+    private UsuariosFacadeRemote lookupUsuariosFacade() {
+        try {
+            Context c = new InitialContext();
+            return (UsuariosFacadeRemote) c.lookup("java:comp/env/UsuariosFacade");
+        } catch (NamingException ne) {
+            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 }

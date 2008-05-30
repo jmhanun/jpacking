@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -21,13 +22,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "paises")
-@NamedQueries({
-@NamedQuery(name = "Paises.findByIdPais", query = "SELECT p FROM Paises p WHERE p.idPais = :idPais"),
-@NamedQuery(name = "Paises.findByPais", query = "SELECT p FROM Paises p WHERE p.pais = :pais"),
-@NamedQuery(name = "Paises.findBySiglas", query = "SELECT p FROM Paises p WHERE p.siglas = :siglas")
-})
+@NamedQueries({@NamedQuery(name = "Paises.findByIdPais", query = "SELECT p FROM Paises p WHERE p.idPais = :idPais"), @NamedQuery(name = "Paises.findByPais", query = "SELECT p FROM Paises p WHERE p.pais = :pais"), @NamedQuery(name = "Paises.findBySiglas", query = "SELECT p FROM Paises p WHERE p.siglas = :siglas")})
 public class Paises implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idPais", nullable = false)
@@ -107,4 +103,5 @@ public class Paises implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Paises[idPais=" + idPais + "]";
     }
+
 }

@@ -3,6 +3,7 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.transferencia.UsuariosT;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import org.jdesktop.application.Application;
@@ -14,6 +15,15 @@ import org.jdesktop.application.SingleFrameApplication;
 public class DesktopApp extends SingleFrameApplication {
 
     public JDialog loginBox;
+    private UsuariosT usuarioLogueado;
+
+    public UsuariosT getUsuarioLogueado() {
+        return usuarioLogueado;
+    }
+
+    public void setUsuarioLogueado(UsuariosT usuarioLogueado) {
+        this.usuarioLogueado = usuarioLogueado;
+    }
 
     /**
      * At startup create and show the main frame of the application.

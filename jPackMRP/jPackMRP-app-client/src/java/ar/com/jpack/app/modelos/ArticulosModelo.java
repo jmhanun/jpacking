@@ -4,7 +4,7 @@
  */
 package ar.com.jpack.app.modelos;
 
-import ar.com.jpack.negocio.ArticulosSessionRemote;
+//import ar.com.jpack.negocio.ArticulosSessionRemote;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.swing.table.TableModel;
 public class ArticulosModelo {
 
     private TableModel articulosTableModel;
-    private ArticulosSessionRemote articulosSession;
+//    private ArticulosSessionRemote articulosSession;
     private List<ArticulosT> articulos;
     private ArticulosT articulo;
     private TableModel componentesTableModel;
@@ -32,7 +32,7 @@ public class ArticulosModelo {
     private ComboBoxModel componentesComboBoxModel;
 
     public ArticulosModelo() {
-        articulosSession = this.lookupArticulosSessionBean();
+//        articulosSession = this.lookupArticulosSessionBean();
         this.actualizarArticulos();
 
         articulosTableModel = new AbstractTableModel() {
@@ -105,26 +105,26 @@ public class ArticulosModelo {
 
     public void actualizarArticulo() {
         if (articulo.getIdArticulo() == null) {
-            articulosSession.agregarArticulo(articulo);
-        } else {
-            articulosSession.editarArticulo(articulo);
+//            articulosSession.agregarArticulo(articulo);
+//        } else {
+//            articulosSession.editarArticulo(articulo);
         }
         actualizarArticulos();
     }
 
     private void actualizarArticulos() {
-        articulos = articulosSession.obtenerArticulos();
+//        articulos = articulosSession.obtenerArticulos();
     }
 
-    private ArticulosSessionRemote lookupArticulosSessionBean() {
-        try {
-            Context c = new InitialContext();
-            return (ArticulosSessionRemote) c.lookup("java:comp/env/ArticulosSessionBean");
-        } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
+//    private ArticulosSessionRemote lookupArticulosSessionBean() {
+//        try {
+//            Context c = new InitialContext();
+//            return (ArticulosSessionRemote) c.lookup("java:comp/env/ArticulosSessionBean");
+//        } catch (NamingException ne) {
+//            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
+//            throw new RuntimeException(ne);
+//        }
+//    }
 
     public TableModel getArticulosTableModel() {
         return articulosTableModel;

@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -26,20 +27,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "clientes")
-@NamedQueries({
-@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"),
-@NamedQuery(name = "Clientes.findBySituacionIva", query = "SELECT c FROM Clientes c WHERE c.situacionIva = :situacionIva"),
-@NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"),
-@NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"),
-@NamedQuery(name = "Clientes.findByEstado", query = "SELECT c FROM Clientes c WHERE c.estado = :estado"),
-@NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"),
-@NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"),
-@NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"),
-@NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"),
-@NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta")
-})
+@NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findBySituacionIva", query = "SELECT c FROM Clientes c WHERE c.situacionIva = :situacionIva"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByEstado", query = "SELECT c FROM Clientes c WHERE c.estado = :estado"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta")})
 public class Clientes implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idCliente", nullable = false)
@@ -67,11 +56,11 @@ public class Clientes implements Serializable {
     private Collection<Remitos> remitosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
     private Collection<Domicilios> domiciliosCollection;
-    @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
-    @ManyToOne
-    private TiposDocumento idTipoDocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
     private Collection<Facturas> facturasCollection;
+    @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
+    @ManyToOne
+    private Tiposdocumento idTipoDocumento;
 
     public Clientes() {
     }
@@ -189,20 +178,20 @@ public class Clientes implements Serializable {
         this.domiciliosCollection = domiciliosCollection;
     }
 
-    public TiposDocumento getIdTipoDocumento() {
-        return idTipoDocumento;
-    }
-
-    public void setIdTipoDocumento(TiposDocumento idTipoDocumento) {
-        this.idTipoDocumento = idTipoDocumento;
-    }
-
     public Collection<Facturas> getFacturasCollection() {
         return facturasCollection;
     }
 
     public void setFacturasCollection(Collection<Facturas> facturasCollection) {
         this.facturasCollection = facturasCollection;
+    }
+
+    public Tiposdocumento getIdTipoDocumento() {
+        return idTipoDocumento;
+    }
+
+    public void setIdTipoDocumento(Tiposdocumento idTipoDocumento) {
+        this.idTipoDocumento = idTipoDocumento;
     }
 
     @Override
@@ -229,4 +218,5 @@ public class Clientes implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Clientes[idCliente=" + idCliente + "]";
     }
+
 }

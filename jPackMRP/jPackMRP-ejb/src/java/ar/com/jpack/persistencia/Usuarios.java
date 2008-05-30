@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -23,20 +24,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "usuarios")
-@NamedQueries({
-@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"),
-@NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"),
-@NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"),
-@NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"),
-@NamedQuery(name = "Usuarios.findByTipoUsuario", query = "SELECT u FROM Usuarios u WHERE u.tipoUsuario = :tipoUsuario"),
-@NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado"),
-@NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"),
-@NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"),
-@NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"),
-@NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")
-})
+@NamedQueries({@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"), @NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"), @NamedQuery(name = "Usuarios.findByTipoUsuario", query = "SELECT u FROM Usuarios u WHERE u.tipoUsuario = :tipoUsuario"), @NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado"), @NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"), @NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"), @NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"), @NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")})
 public class Usuarios implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUsuario", nullable = false)
@@ -192,4 +181,5 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Usuarios[idUsuario=" + idUsuario + "]";
     }
+
 }

@@ -16,7 +16,7 @@ public class RolesT implements Serializable {
     private Integer idRol;
     private String rol;
     private String descripcion;
-    private TiposRolesT tipoRol;
+    
  
     public Integer getIdRol() {
         return idRol;

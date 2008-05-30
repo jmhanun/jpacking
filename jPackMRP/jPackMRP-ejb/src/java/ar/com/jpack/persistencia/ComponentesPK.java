@@ -16,31 +16,31 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ComponentesPK implements Serializable {
     @Column(name = "idArticulo", nullable = false)
-    private Integer idArticulo;
+    private int idArticulo;
     @Column(name = "idComponente", nullable = false)
-    private Integer idComponente;
+    private int idComponente;
 
     public ComponentesPK() {
     }
 
-    public ComponentesPK(Integer idArticulo, Integer idComponente) {
+    public ComponentesPK(int idArticulo, int idComponente) {
         this.idArticulo = idArticulo;
         this.idComponente = idComponente;
     }
 
-    public Integer getIdArticulo() {
+    public int getIdArticulo() {
         return idArticulo;
     }
 
-    public void setIdArticulo(Integer idArticulo) {
+    public void setIdArticulo(int idArticulo) {
         this.idArticulo = idArticulo;
     }
 
-    public Integer getIdComponente() {
+    public int getIdComponente() {
         return idComponente;
     }
 
-    public void setIdComponente(Integer idComponente) {
+    public void setIdComponente(int idComponente) {
         this.idComponente = idComponente;
     }
 

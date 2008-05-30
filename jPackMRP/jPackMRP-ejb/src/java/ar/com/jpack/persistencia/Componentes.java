@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -20,27 +21,21 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "componentes")
-@NamedQueries({
-@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"),
-@NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"),
-@NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"),
-@NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad")
-})
+@NamedQueries({@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"), @NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"), @NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"), @NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad")})
 public class Componentes implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ComponentesPK componentesPK;
     @Column(name = "orden", nullable = false)
-    private Integer orden;
+    private int orden;
     @Column(name = "cantidad", nullable = false)
-    private Double cantidad;
+    private float cantidad;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo", insertable = false, updatable = false)
     @ManyToOne
     private Articulos articulos;
     @JoinColumn(name = "idComponente", referencedColumnName = "idArticulo", insertable = false, updatable = false)
     @ManyToOne
-    private Articulos componentes;
+    private Articulos articulos1;
 
     public Componentes() {
     }
@@ -49,13 +44,13 @@ public class Componentes implements Serializable {
         this.componentesPK = componentesPK;
     }
 
-    public Componentes(ComponentesPK componentesPK, Integer orden, Double cantidad) {
+    public Componentes(ComponentesPK componentesPK, int orden, float cantidad) {
         this.componentesPK = componentesPK;
         this.orden = orden;
         this.cantidad = cantidad;
     }
 
-    public Componentes(Integer idArticulo, Integer idComponente) {
+    public Componentes(int idArticulo, int idComponente) {
         this.componentesPK = new ComponentesPK(idArticulo, idComponente);
     }
 
@@ -71,15 +66,15 @@ public class Componentes implements Serializable {
         return orden;
     }
 
-    public void setOrden(Integer orden) {
+    public void setOrden(int orden) {
         this.orden = orden;
     }
 
-    public Double getCantidad() {
+    public float getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Double cantidad) {
+    public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -91,12 +86,12 @@ public class Componentes implements Serializable {
         this.articulos = articulos;
     }
 
-    public Articulos getComponentes() {
-        return componentes;
+    public Articulos getArticulos1() {
+        return articulos1;
     }
 
-    public void setComponentes(Articulos componentes) {
-        this.componentes = componentes;
+    public void setArticulos1(Articulos articulos1) {
+        this.articulos1 = articulos1;
     }
 
     @Override
@@ -123,4 +118,5 @@ public class Componentes implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Componentes[componentesPK=" + componentesPK + "]";
     }
+
 }

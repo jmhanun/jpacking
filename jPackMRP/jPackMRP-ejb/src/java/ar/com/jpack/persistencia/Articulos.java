@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -17,22 +18,12 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Pablo
+ * @author jmhanun
  */
 @Entity
 @Table(name = "articulos")
-@NamedQueries({
-@NamedQuery(name = "Articulos.obtenerArticulos", query = "SELECT a FROM Articulos a"),
-@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"),
-@NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"),
-@NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"),
-@NamedQuery(name = "Articulos.findByEstado", query = "SELECT a FROM Articulos a WHERE a.estado = :estado"),
-@NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"),
-@NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"),
-@NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime")
-})
+@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByEstado", query = "SELECT a FROM Articulos a WHERE a.estado = :estado"), @NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime")})
 public class Articulos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idArticulo", nullable = false)
@@ -44,21 +35,27 @@ public class Articulos implements Serializable {
     @Column(name = "estado", nullable = false)
     private String estado;
     @Column(name = "stock", nullable = false)
-    private Double stock;
+    private float stock;
     @Column(name = "stockMinimo", nullable = false)
-    private Double stockMinimo;
+    private float stockMinimo;
     @Column(name = "leadTime", nullable = false)
-    private Double leadTime;
+    private float leadTime;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
-    private Collection<DetalleRemitos> detalleremitosCollection;
+    private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
-    private Collection<DetalleFacturas> detallefacturasCollection;
+    private Collection<Stock> stockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    private Collection<Detallefacturas> detallefacturasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos")
+    private Collection<Componentes> componentesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos1")
+    private Collection<Componentes> componentesCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    private Collection<Detalleremitos> detalleremitosCollection;
+    @OneToMany(mappedBy = "idArticulo")
+    private Collection<Horastrabajadas> horastrabajadasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Precios> preciosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos")
-    private Collection<Componentes> articulosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "componentes")
-    private Collection<Componentes> componentesCollection;
 
     public Articulos() {
     }
@@ -67,7 +64,7 @@ public class Articulos implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public Articulos(Integer idArticulo, String codigo, String descripcion, String estado, Double stock, Double stockMinimo, Double leadTime) {
+    public Articulos(Integer idArticulo, String codigo, String descripcion, String estado, float stock, float stockMinimo, float leadTime) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -109,60 +106,52 @@ public class Articulos implements Serializable {
         this.estado = estado;
     }
 
-    public Double getStock() {
+    public float getStock() {
         return stock;
     }
 
-    public void setStock(Double stock) {
+    public void setStock(float stock) {
         this.stock = stock;
     }
 
-    public Double getStockMinimo() {
+    public float getStockMinimo() {
         return stockMinimo;
     }
 
-    public void setStockMinimo(Double stockMinimo) {
+    public void setStockMinimo(float stockMinimo) {
         this.stockMinimo = stockMinimo;
     }
 
-    public Double getLeadTime() {
+    public float getLeadTime() {
         return leadTime;
     }
 
-    public void setLeadTime(Double leadTime) {
+    public void setLeadTime(float leadTime) {
         this.leadTime = leadTime;
     }
 
-    public Collection<DetalleRemitos> getDetalleremitosCollection() {
-        return detalleremitosCollection;
+    public Collection<Detmovimientosstock> getDetmovimientosstockCollection() {
+        return detmovimientosstockCollection;
     }
 
-    public void setDetalleremitosCollection(Collection<DetalleRemitos> detalleremitosCollection) {
-        this.detalleremitosCollection = detalleremitosCollection;
+    public void setDetmovimientosstockCollection(Collection<Detmovimientosstock> detmovimientosstockCollection) {
+        this.detmovimientosstockCollection = detmovimientosstockCollection;
     }
 
-    public Collection<DetalleFacturas> getDetallefacturasCollection() {
+    public Collection<Stock> getStockCollection() {
+        return stockCollection;
+    }
+
+    public void setStockCollection(Collection<Stock> stockCollection) {
+        this.stockCollection = stockCollection;
+    }
+
+    public Collection<Detallefacturas> getDetallefacturasCollection() {
         return detallefacturasCollection;
     }
 
-    public void setDetallefacturasCollection(Collection<DetalleFacturas> detallefacturasCollection) {
+    public void setDetallefacturasCollection(Collection<Detallefacturas> detallefacturasCollection) {
         this.detallefacturasCollection = detallefacturasCollection;
-    }
-
-    public Collection<Precios> getPreciosCollection() {
-        return preciosCollection;
-    }
-
-    public void setPreciosCollection(Collection<Precios> preciosCollection) {
-        this.preciosCollection = preciosCollection;
-    }
-
-    public Collection<Componentes> getArticulosCollection() {
-        return articulosCollection;
-    }
-
-    public void setArticulosCollection(Collection<Componentes> articulosCollection) {
-        this.articulosCollection = articulosCollection;
     }
 
     public Collection<Componentes> getComponentesCollection() {
@@ -171,6 +160,38 @@ public class Articulos implements Serializable {
 
     public void setComponentesCollection(Collection<Componentes> componentesCollection) {
         this.componentesCollection = componentesCollection;
+    }
+
+    public Collection<Componentes> getComponentesCollection1() {
+        return componentesCollection1;
+    }
+
+    public void setComponentesCollection1(Collection<Componentes> componentesCollection1) {
+        this.componentesCollection1 = componentesCollection1;
+    }
+
+    public Collection<Detalleremitos> getDetalleremitosCollection() {
+        return detalleremitosCollection;
+    }
+
+    public void setDetalleremitosCollection(Collection<Detalleremitos> detalleremitosCollection) {
+        this.detalleremitosCollection = detalleremitosCollection;
+    }
+
+    public Collection<Horastrabajadas> getHorastrabajadasCollection() {
+        return horastrabajadasCollection;
+    }
+
+    public void setHorastrabajadasCollection(Collection<Horastrabajadas> horastrabajadasCollection) {
+        this.horastrabajadasCollection = horastrabajadasCollection;
+    }
+
+    public Collection<Precios> getPreciosCollection() {
+        return preciosCollection;
+    }
+
+    public void setPreciosCollection(Collection<Precios> preciosCollection) {
+        this.preciosCollection = preciosCollection;
     }
 
     @Override
@@ -197,4 +218,5 @@ public class Articulos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Articulos[idArticulo=" + idArticulo + "]";
     }
+
 }

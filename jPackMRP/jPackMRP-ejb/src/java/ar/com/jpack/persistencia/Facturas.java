@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -26,31 +27,21 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "facturas")
-@NamedQueries({
-@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"),
-@NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"),
-@NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"),
-@NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"),
-@NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"),
-@NamedQuery(name = "Facturas.findByRemitos", query = "SELECT f FROM Facturas f WHERE f.remitos = :remitos"),
-@NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"),
-@NamedQuery(name = "Facturas.findByEstado", query = "SELECT f FROM Facturas f WHERE f.estado = :estado")
-})
+@NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByRemitos", query = "SELECT f FROM Facturas f WHERE f.remitos = :remitos"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturas.findByEstado", query = "SELECT f FROM Facturas f WHERE f.estado = :estado")})
 public class Facturas implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idFactura", nullable = false)
     private Integer idFactura;
     @Column(name = "nroFactura", nullable = false)
-    private Integer nroFactura;
+    private int nroFactura;
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "letra", nullable = false)
     private String letra;
     @Column(name = "importe", nullable = false)
-    private Double importe;
+    private double importe;
     @Column(name = "remitos")
     private String remitos;
     @Column(name = "descuento")
@@ -58,7 +49,7 @@ public class Facturas implements Serializable {
     @Column(name = "estado", nullable = false)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFactura")
-    private Collection<DetalleFacturas> detallefacturasCollection;
+    private Collection<Detallefacturas> detallefacturasCollection;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
     @ManyToOne
     private Clientes idCliente;
@@ -70,7 +61,7 @@ public class Facturas implements Serializable {
         this.idFactura = idFactura;
     }
 
-    public Facturas(Integer idFactura, Integer nroFactura, Date fecha, String letra, Double importe, String estado) {
+    public Facturas(Integer idFactura, int nroFactura, Date fecha, String letra, double importe, String estado) {
         this.idFactura = idFactura;
         this.nroFactura = nroFactura;
         this.fecha = fecha;
@@ -87,11 +78,11 @@ public class Facturas implements Serializable {
         this.idFactura = idFactura;
     }
 
-    public Integer getNroFactura() {
+    public int getNroFactura() {
         return nroFactura;
     }
 
-    public void setNroFactura(Integer nroFactura) {
+    public void setNroFactura(int nroFactura) {
         this.nroFactura = nroFactura;
     }
 
@@ -111,11 +102,11 @@ public class Facturas implements Serializable {
         this.letra = letra;
     }
 
-    public Double getImporte() {
+    public double getImporte() {
         return importe;
     }
 
-    public void setImporte(Double importe) {
+    public void setImporte(double importe) {
         this.importe = importe;
     }
 
@@ -143,11 +134,11 @@ public class Facturas implements Serializable {
         this.estado = estado;
     }
 
-    public Collection<DetalleFacturas> getDetallefacturasCollection() {
+    public Collection<Detallefacturas> getDetallefacturasCollection() {
         return detallefacturasCollection;
     }
 
-    public void setDetallefacturasCollection(Collection<DetalleFacturas> detallefacturasCollection) {
+    public void setDetallefacturasCollection(Collection<Detallefacturas> detallefacturasCollection) {
         this.detallefacturasCollection = detallefacturasCollection;
     }
 
@@ -183,4 +174,5 @@ public class Facturas implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Facturas[idFactura=" + idFactura + "]";
     }
+
 }

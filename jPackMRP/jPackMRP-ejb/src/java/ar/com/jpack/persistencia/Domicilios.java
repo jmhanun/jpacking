@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -20,17 +21,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "domicilios")
-@NamedQueries({
-@NamedQuery(name = "Domicilios.findByIdDomicilio", query = "SELECT d FROM Domicilios d WHERE d.idDomicilio = :idDomicilio"),
-@NamedQuery(name = "Domicilios.findByCalle", query = "SELECT d FROM Domicilios d WHERE d.calle = :calle"),
-@NamedQuery(name = "Domicilios.findByNumero", query = "SELECT d FROM Domicilios d WHERE d.numero = :numero"),
-@NamedQuery(name = "Domicilios.findByBarrio", query = "SELECT d FROM Domicilios d WHERE d.barrio = :barrio"),
-@NamedQuery(name = "Domicilios.findByPiso", query = "SELECT d FROM Domicilios d WHERE d.piso = :piso"),
-@NamedQuery(name = "Domicilios.findByDepartamento", query = "SELECT d FROM Domicilios d WHERE d.departamento = :departamento"),
-@NamedQuery(name = "Domicilios.findByTorre", query = "SELECT d FROM Domicilios d WHERE d.torre = :torre")
-})
+@NamedQueries({@NamedQuery(name = "Domicilios.findByIdDomicilio", query = "SELECT d FROM Domicilios d WHERE d.idDomicilio = :idDomicilio"), @NamedQuery(name = "Domicilios.findByCalle", query = "SELECT d FROM Domicilios d WHERE d.calle = :calle"), @NamedQuery(name = "Domicilios.findByNumero", query = "SELECT d FROM Domicilios d WHERE d.numero = :numero"), @NamedQuery(name = "Domicilios.findByBarrio", query = "SELECT d FROM Domicilios d WHERE d.barrio = :barrio"), @NamedQuery(name = "Domicilios.findByPiso", query = "SELECT d FROM Domicilios d WHERE d.piso = :piso"), @NamedQuery(name = "Domicilios.findByDepartamento", query = "SELECT d FROM Domicilios d WHERE d.departamento = :departamento"), @NamedQuery(name = "Domicilios.findByTorre", query = "SELECT d FROM Domicilios d WHERE d.torre = :torre")})
 public class Domicilios implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idDomicilio", nullable = false)
@@ -164,4 +156,5 @@ public class Domicilios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Domicilios[idDomicilio=" + idDomicilio + "]";
     }
+
 }

@@ -4,7 +4,7 @@
  */
 package ar.com.jpack.app.modelos;
 
-import ar.com.jpack.negocio.RolesSessionRemote;
+//import ar.com.jpack.negocio.RolesSessionRemote;
 import ar.com.jpack.transferencia.RolesT;
 import java.util.List;
 import javax.naming.Context;
@@ -20,13 +20,13 @@ import javax.swing.table.TableModel;
 public class RolesModelo {
 
     private TableModel rolesTableModel; //Modelo de datos de la tabla de roles
-    private RolesSessionRemote rolesSession; //SessionBean de roles
+//    private RolesSessionRemote rolesSession; //SessionBean de roles
     private List<RolesT> roles; //Lista de roles activos
     private RolesT rol; //Rol seleccionado
 
     /** Constructor de RolesModelo */
     public RolesModelo() {
-        rolesSession = this.lookupRolesSessionBean();
+//        rolesSession = this.lookupRolesSessionBean();
         this.actualizarRoles();
 
         rolesTableModel = new AbstractTableModel() {
@@ -84,28 +84,28 @@ public class RolesModelo {
     /** Agrega o edita el rol seleccionado en la base de datos */
     public void actualizarRol() {
         if (rol.getIdRol() == null) {
-            rolesSession.agregarRol(rol); //Nuevo rol
-        } else {
-            rolesSession.editarRol(rol); //Editar rol
+//            rolesSession.agregarRol(rol); //Nuevo rol
+//        } else {
+//            rolesSession.editarRol(rol); //Editar rol
         }
         actualizarRoles();
     }
 
     /** Refresca la lista de roles activos contra la bbdd */
     private void actualizarRoles() {
-        roles = rolesSession.obtenerRoles();
+//        roles = rolesSession.obtenerRoles();
     }
 
     /** Obtiene el EJB */
-    private RolesSessionRemote lookupRolesSessionBean() {
-        try {
-            Context c = new InitialContext();
-            return (RolesSessionRemote) c.lookup("java:comp/env/RolesSessionBean");
-        } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
+//    private RolesSessionRemote lookupRolesSessionBean() {
+//        try {
+//            Context c = new InitialContext();
+//            return (RolesSessionRemote) c.lookup("java:comp/env/RolesSessionBean");
+//        } catch (NamingException ne) {
+//            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
+//            throw new RuntimeException(ne);
+//        }
+//    }
 
     /** Devuelve el modelo de datos de la tabla de roles */
     public TableModel getRolesTableModel() {

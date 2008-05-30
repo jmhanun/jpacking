@@ -36,14 +36,14 @@ public class DataTransferHelper {
     public static ArticulosT copiarArticulo(Articulos item) {
         ArticulosT t = null;
         if (item != null) {
-            t = new ArticulosT(item.getIdArticulo(),
-                    item.getCodigo(),
-                    item.getDescripcion(),
-                    item.getEstado(),
-                    item.getStock(),
-                    item.getStockMinimo(),
-                    item.getLeadTime(),
-                    copiarComponentesALista(item.getArticulosCollection()));
+//            t = new ArticulosT(item.getIdArticulo(),
+//                    item.getCodigo(),
+//                    item.getDescripcion(),
+//                    item.getEstado(),
+//                    item.getStock(),
+//                    item.getStockMinimo(),
+//                    item.getLeadTime(),
+//                    copiarComponentesALista(item.getArticulosCollection()));
         }
         return t;
     }
@@ -62,12 +62,12 @@ public class DataTransferHelper {
         ComponentesT t = null;
         if (item != null) {
 
-            t = new ComponentesT(item.getComponentesPK().getIdArticulo(),
-                    item.getComponentesPK().getIdComponente(),
-                    item.getOrden(),
-                    item.getCantidad(),
-                    copiarArticuloComponente(item.getArticulos()),
-                    copiarArticuloComponente(item.getComponentes()));
+//            t = new ComponentesT(item.getComponentesPK().getIdArticulo(),
+//                    item.getComponentesPK().getIdComponente(),
+//                    item.getOrden(),
+//                    item.getCantidad(),
+//                    copiarArticuloComponente(item.getArticulos()),
+//                    copiarArticuloComponente(item.getComponentes()));
         }
         return t;
     }
@@ -75,14 +75,14 @@ public class DataTransferHelper {
     public static ArticulosT copiarArticuloComponente(Articulos item) {
         ArticulosT t = null;
         if (item != null) {
-            t = new ArticulosT(item.getIdArticulo(),
-                    item.getCodigo(),
-                    item.getDescripcion(),
-                    item.getEstado(),
-                    item.getStock(),
-                    item.getStockMinimo(),
-                    item.getLeadTime(),
-                    null);
+//            t = new ArticulosT(item.getIdArticulo(),
+//                    item.getCodigo(),
+//                    item.getDescripcion(),
+//                    item.getEstado(),
+//                    item.getStock(),
+//                    item.getStockMinimo(),
+//                    item.getLeadTime(),
+//                    null);
         }
         return t;
     }

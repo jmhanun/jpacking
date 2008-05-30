@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -26,17 +27,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "empleados")
-@NamedQueries({
-@NamedQuery(name = "Empleados.findByIdEmpleado", query = "SELECT e FROM Empleados e WHERE e.idEmpleado = :idEmpleado"),
-@NamedQuery(name = "Empleados.findByNombres", query = "SELECT e FROM Empleados e WHERE e.nombres = :nombres"),
-@NamedQuery(name = "Empleados.findByApellidos", query = "SELECT e FROM Empleados e WHERE e.apellidos = :apellidos"),
-@NamedQuery(name = "Empleados.findByMails", query = "SELECT e FROM Empleados e WHERE e.mails = :mails"),
-@NamedQuery(name = "Empleados.findByTelefonos", query = "SELECT e FROM Empleados e WHERE e.telefonos = :telefonos"),
-@NamedQuery(name = "Empleados.findByFechaInicio", query = "SELECT e FROM Empleados e WHERE e.fechaInicio = :fechaInicio"),
-@NamedQuery(name = "Empleados.findByEstado", query = "SELECT e FROM Empleados e WHERE e.estado = :estado")
-})
+@NamedQueries({@NamedQuery(name = "Empleados.findByIdEmpleado", query = "SELECT e FROM Empleados e WHERE e.idEmpleado = :idEmpleado"), @NamedQuery(name = "Empleados.findByNombres", query = "SELECT e FROM Empleados e WHERE e.nombres = :nombres"), @NamedQuery(name = "Empleados.findByApellidos", query = "SELECT e FROM Empleados e WHERE e.apellidos = :apellidos"), @NamedQuery(name = "Empleados.findByMails", query = "SELECT e FROM Empleados e WHERE e.mails = :mails"), @NamedQuery(name = "Empleados.findByTelefonos", query = "SELECT e FROM Empleados e WHERE e.telefonos = :telefonos"), @NamedQuery(name = "Empleados.findByFechaInicio", query = "SELECT e FROM Empleados e WHERE e.fechaInicio = :fechaInicio"), @NamedQuery(name = "Empleados.findByEstado", query = "SELECT e FROM Empleados e WHERE e.estado = :estado")})
 public class Empleados implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idEmpleado", nullable = false)
@@ -55,10 +47,10 @@ public class Empleados implements Serializable {
     @Column(name = "estado", nullable = false)
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private Collection<HorasTrabajadas> horastrabajadasCollection;
+    private Collection<Horastrabajadas> horastrabajadasCollection;
     @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
     @ManyToOne
-    private TiposDocumento idTipoDocumento;
+    private Tiposdocumento idTipoDocumento;
 
     public Empleados() {
     }
@@ -133,19 +125,19 @@ public class Empleados implements Serializable {
         this.estado = estado;
     }
 
-    public Collection<HorasTrabajadas> getHorastrabajadasCollection() {
+    public Collection<Horastrabajadas> getHorastrabajadasCollection() {
         return horastrabajadasCollection;
     }
 
-    public void setHorastrabajadasCollection(Collection<HorasTrabajadas> horastrabajadasCollection) {
+    public void setHorastrabajadasCollection(Collection<Horastrabajadas> horastrabajadasCollection) {
         this.horastrabajadasCollection = horastrabajadasCollection;
     }
 
-    public TiposDocumento getIdTipoDocumento() {
+    public Tiposdocumento getIdTipoDocumento() {
         return idTipoDocumento;
     }
 
-    public void setIdTipoDocumento(TiposDocumento idTipoDocumento) {
+    public void setIdTipoDocumento(Tiposdocumento idTipoDocumento) {
         this.idTipoDocumento = idTipoDocumento;
     }
 
@@ -171,6 +163,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "persist.Empleados[idEmpleado=" + idEmpleado + "]";
+        return "ar.com.jpack.persistencia.Empleados[idEmpleado=" + idEmpleado + "]";
     }
+
 }

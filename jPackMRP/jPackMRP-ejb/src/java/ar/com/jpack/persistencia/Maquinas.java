@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -22,13 +23,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "maquinas")
-@NamedQueries({
-@NamedQuery(name = "Maquinas.findByIdMaquina", query = "SELECT m FROM Maquinas m WHERE m.idMaquina = :idMaquina"),
-@NamedQuery(name = "Maquinas.findByDescripcion", query = "SELECT m FROM Maquinas m WHERE m.descripcion = :descripcion"),
-@NamedQuery(name = "Maquinas.findByEstado", query = "SELECT m FROM Maquinas m WHERE m.estado = :estado")
-})
+@NamedQueries({@NamedQuery(name = "Maquinas.findByIdMaquina", query = "SELECT m FROM Maquinas m WHERE m.idMaquina = :idMaquina"), @NamedQuery(name = "Maquinas.findByDescripcion", query = "SELECT m FROM Maquinas m WHERE m.descripcion = :descripcion"), @NamedQuery(name = "Maquinas.findByEstado", query = "SELECT m FROM Maquinas m WHERE m.estado = :estado")})
 public class Maquinas implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idMaquina", nullable = false)
@@ -38,10 +34,10 @@ public class Maquinas implements Serializable {
     @Column(name = "estado", nullable = false)
     private String estado;
     @OneToMany(mappedBy = "idMaquina")
-    private Collection<HorasTrabajadas> horastrabajadasCollection;
+    private Collection<Horastrabajadas> horastrabajadasCollection;
     @JoinColumn(name = "idTipoMaquina", referencedColumnName = "idTipoMaquina")
     @ManyToOne
-    private TipoMaquina idTipoMaquina;
+    private Tiposmaquinas idTipoMaquina;
 
     public Maquinas() {
     }
@@ -80,19 +76,19 @@ public class Maquinas implements Serializable {
         this.estado = estado;
     }
 
-    public Collection<HorasTrabajadas> getHorastrabajadasCollection() {
+    public Collection<Horastrabajadas> getHorastrabajadasCollection() {
         return horastrabajadasCollection;
     }
 
-    public void setHorastrabajadasCollection(Collection<HorasTrabajadas> horastrabajadasCollection) {
+    public void setHorastrabajadasCollection(Collection<Horastrabajadas> horastrabajadasCollection) {
         this.horastrabajadasCollection = horastrabajadasCollection;
     }
 
-    public TipoMaquina getIdTipoMaquina() {
+    public Tiposmaquinas getIdTipoMaquina() {
         return idTipoMaquina;
     }
 
-    public void setIdTipoMaquina(TipoMaquina idTipoMaquina) {
+    public void setIdTipoMaquina(Tiposmaquinas idTipoMaquina) {
         this.idTipoMaquina = idTipoMaquina;
     }
 
@@ -118,6 +114,7 @@ public class Maquinas implements Serializable {
 
     @Override
     public String toString() {
-        return "persist.Maquinas[idMaquina=" + idMaquina + "]";
+        return "ar.com.jpack.persistencia.Maquinas[idMaquina=" + idMaquina + "]";
     }
+
 }
