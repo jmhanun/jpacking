@@ -367,6 +367,8 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.swing-app-framework.classpath.libfile.1}" todir="${build.classes.dir}/META-INF/lib"/>
         <copy file="${libs.beans-binding.classpath}" todir="${build.classes.dir}/META-INF/lib"/>
         <copy file="${libs.Nimbus.classpath}" todir="${build.classes.dir}/META-INF/lib"/>
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${build.classes.dir}/META-INF/lib"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${build.classes.dir}/META-INF/lib"/>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <basename file="${reference.jPackMRP-ejb.dist}" property="included.lib.reference.jPackMRP-ejb.dist"/>
@@ -379,8 +381,12 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.beans-binding.classpath}" todir="${dist.ear.dir}"/>
         <basename file="${libs.Nimbus.classpath}" property="included.lib.libs.Nimbus.classpath"/>
         <copy file="${libs.Nimbus.classpath}" todir="${dist.ear.dir}"/>
+        <basename file="${libs.toplink.classpath.libfile.2}" property="included.lib.libs.toplink.classpath.2"/>
+        <basename file="${libs.toplink.classpath.libfile.1}" property="included.lib.libs.toplink.classpath.1"/>
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} ${included.lib.libs.swing-app-framework.classpath.1} ${included.lib.libs.swing-app-framework.classpath.2} ${included.lib.libs.beans-binding.classpath} ${included.lib.libs.Nimbus.classpath} "/>
+            <attribute name="Class-Path" value="${included.lib.reference.jPackMRP-ejb.dist} ${included.lib.libs.swing-app-framework.classpath.1} ${included.lib.libs.swing-app-framework.classpath.2} ${included.lib.libs.beans-binding.classpath} ${included.lib.libs.Nimbus.classpath} ${included.lib.libs.toplink.classpath.1} ${included.lib.libs.toplink.classpath.2} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
