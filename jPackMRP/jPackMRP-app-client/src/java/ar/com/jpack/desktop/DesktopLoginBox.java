@@ -5,11 +5,6 @@
  */
 package ar.com.jpack.desktop;
 
-import ar.com.jpack.negocio.UsuariosFacadeRemote;
-import ar.com.jpack.transferencia.UsuariosT;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
@@ -19,9 +14,9 @@ import org.jdesktop.application.Action;
  */
 public class DesktopLoginBox extends javax.swing.JDialog {
 
-    private UsuariosFacadeRemote usuariosFacade;
-
-    /** Creates new form DesktopLoginBox */
+    /** Creates new form DesktopLoginBox
+     * @param parent 
+     */
     public DesktopLoginBox(java.awt.Frame parent) {
         super(parent);
         initComponents();
@@ -130,31 +125,22 @@ public class DesktopLoginBox extends javax.swing.JDialog {
     private ar.com.jpack.transferencia.UsuariosT usuariosT;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+    /**
+     * 
+     */
     @Action
     public void validarLogin() {
-        System.out.println("****************************");
-        System.out.println(usuariosT.getUsuario());
-        System.out.println(usuariosT.getContrasena());
-        System.out.println("****************************");
-        usuariosFacade = lookupUsuariosFacade();
 
-        UsuariosT usuTemp = usuariosFacade.validarUsuario(usuariosT);
-        if (usuTemp != null) {
-            usuariosT = usuTemp;
-            DesktopApp.getApplication().setUsuarioLogueado(usuariosT);
-            setVisible(false);
+        if (DesktopApp.getApplication().isUsuario(usuariosT)) {
+            
+            this.dispose();
         } else {
+            usuariosT.setNombres(null);
+            usuariosT.setContrasena(null);
+            usuarioTextField.setText("");
+            contrasenaPasswordField.setText("");
             JOptionPane.showMessageDialog(this, "No existe usuario con ese nombre y contraseña");
-        }
-    }
-
-    private UsuariosFacadeRemote lookupUsuariosFacade() {
-        try {
-            Context c = new InitialContext();
-            return (UsuariosFacadeRemote) c.lookup("java:comp/env/UsuariosFacade");
-        } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
+            usuarioTextField.requestFocus();
         }
     }
 }

@@ -3,8 +3,8 @@
  */
 package ar.com.jpack.desktop;
 
-import ar.com.jpack.app.gui.ArticulosFrame;
-import ar.com.jpack.app.gui.RolesFrame;
+import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.UsuariosT;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -12,6 +12,8 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -23,6 +25,10 @@ import javax.swing.JInternalFrame;
  */
 public class DesktopView extends FrameView {
 
+    /**
+     * 
+     * @param app
+     */
     public DesktopView(SingleFrameApplication app) {
         super(app);
 
@@ -88,6 +94,9 @@ public class DesktopView extends FrameView {
 
     }
 
+    /**
+     * 
+     */
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -98,34 +107,36 @@ public class DesktopView extends FrameView {
         DesktopApp.getApplication().show(aboutBox);
     }
 
-    @Action
-    public void showRolesFrame() {
-        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
-        if (x != null) {
-            desktopPanel.getDesktopManager().activateFrame(x);
-        } else {
-            RolesFrame rolesFrame = new RolesFrame();
-            rolesFrame.setVisible(true);
-            desktopPanel.add(rolesFrame);
-            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
-        }
-        this.statusMessageLabel.setText("Roles por accion");
-    }
+//    @Action
+//    public void showRolesFrame() {
+//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
+//        if (x != null) {
+//            desktopPanel.getDesktopManager().activateFrame(x);
+//        } else {
+//            RolesFrame rolesFrame = new RolesFrame();
+//            rolesFrame.setVisible(true);
+//            desktopPanel.add(rolesFrame);
+//            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
+//        }
+//        this.statusMessageLabel.setText("Roles por accion");
+//    }
 
-    @Action
-    public void showArticulosFrame() {
-        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
-        if (x != null) {
-            desktopPanel.getDesktopManager().activateFrame(x);
-        } else {
-            ArticulosFrame articulosFrame = new ArticulosFrame();
-            articulosFrame.setVisible(true);
-            desktopPanel.add(articulosFrame);
-            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
-        }
-        this.statusMessageLabel.setText("Articulos por accion");
-    }
-
+//    @Action
+//    public void showArticulosFrame() {
+//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
+//        if (x != null) {
+//            desktopPanel.getDesktopManager().activateFrame(x);
+//        } else {
+//            ArticulosFrame articulosFrame = new ArticulosFrame();
+//            articulosFrame.setVisible(true);
+//            desktopPanel.add(articulosFrame);
+//            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
+//        }
+//        this.statusMessageLabel.setText("Articulos por accion");
+//    }
+    /**
+     * 
+     */
     @Action
     public void closeAllFrames() {
         JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
@@ -145,14 +156,14 @@ public class DesktopView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        jSplitPane = new javax.swing.JSplitPane();
         desktopPanel = new javax.swing.JDesktopPane();
+        jPanelIzq = new javax.swing.JPanel();
+        jScrollPane = new javax.swing.JScrollPane();
+        jTreeMenu = new javax.swing.JTree();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-        adminMenu = new javax.swing.JMenu();
-        rolesMenuItem = new javax.swing.JMenuItem();
-        prodMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -164,8 +175,25 @@ public class DesktopView extends FrameView {
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setLayout(new java.awt.BorderLayout());
 
+        jSplitPane.setDividerLocation(100);
+        jSplitPane.setName("jSplitPane"); // NOI18N
+
         desktopPanel.setName("desktopPanel"); // NOI18N
-        mainPanel.add(desktopPanel, java.awt.BorderLayout.CENTER);
+        jSplitPane.setRightComponent(desktopPanel);
+
+        jPanelIzq.setName("jPanelIzq"); // NOI18N
+        jPanelIzq.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane.setName("jScrollPane"); // NOI18N
+
+        jTreeMenu.setName("jTreeMenu"); // NOI18N
+        jScrollPane.setViewportView(jTreeMenu);
+
+        jPanelIzq.add(jScrollPane, java.awt.BorderLayout.CENTER);
+
+        jSplitPane.setLeftComponent(jPanelIzq);
+
+        mainPanel.add(jSplitPane, java.awt.BorderLayout.CENTER);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -179,24 +207,6 @@ public class DesktopView extends FrameView {
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
-
-        adminMenu.setText(resourceMap.getString("adminMenu.text")); // NOI18N
-        adminMenu.setName("adminMenu"); // NOI18N
-
-        rolesMenuItem.setAction(actionMap.get("showRolesFrame")); // NOI18N
-        rolesMenuItem.setName("rolesMenuItem"); // NOI18N
-        adminMenu.add(rolesMenuItem);
-
-        menuBar.add(adminMenu);
-
-        prodMenu.setText(resourceMap.getString("prodMenu.text")); // NOI18N
-        prodMenu.setName("prodMenu"); // NOI18N
-
-        jMenuItem1.setAction(actionMap.get("showArticulosFrame")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        prodMenu.add(jMenuItem1);
-
-        menuBar.add(prodMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -226,7 +236,7 @@ public class DesktopView extends FrameView {
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -250,14 +260,14 @@ public class DesktopView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu adminMenu;
     private javax.swing.JDesktopPane desktopPanel;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanelIzq;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JSplitPane jSplitPane;
+    private javax.swing.JTree jTreeMenu;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenu prodMenu;
     private javax.swing.JProgressBar progressBar;
-    private javax.swing.JMenuItem rolesMenuItem;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
@@ -282,5 +292,26 @@ public class DesktopView extends FrameView {
         }
 
         return x;
+    }
+
+    /**
+     * 
+     */
+    public void cargaInicial() {
+        UsuariosT usuariosT = DesktopApp.getApplication().getUsuarioLogueado();
+        if (usuariosT != null) {
+            ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
+            if (rolesTs != null) {
+                //TODO ordenar rolesTs
+                for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
+                    RolesT rolesT = it.next();
+                    if (rolesT.getFuncion() == null) { //si getFuncion==null => es un jMenu
+//                        javax.swing.JMenu
+                    } else { //si getFuncion!=null => es un jItemMenu
+                    }
+
+                }
+            }
+        }
     }
 }

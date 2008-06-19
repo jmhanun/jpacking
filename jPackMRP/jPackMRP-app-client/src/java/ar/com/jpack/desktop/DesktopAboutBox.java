@@ -8,12 +8,19 @@ import org.jdesktop.application.Action;
 
 public class DesktopAboutBox extends javax.swing.JDialog {
 
+    /**
+     * Constructor de DesktopAboutBox indicando el padre
+     * @param parent - Frame padre de DesktopAboutBox
+     */
     public DesktopAboutBox(java.awt.Frame parent) {
         super(parent);
         initComponents();
         getRootPane().setDefaultButton(closeButton);
     }
 
+    /**
+     * Oculta el DesktopAboutBox
+     */
     @Action
     public void closeAboutBox() {
         setVisible(false);

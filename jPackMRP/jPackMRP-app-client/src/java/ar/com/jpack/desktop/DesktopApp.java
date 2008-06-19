@@ -3,7 +3,15 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import org.jdesktop.application.Application;
@@ -14,13 +22,39 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class DesktopApp extends SingleFrameApplication {
 
-    public JDialog loginBox;
+    private static InitialContext contexto;
+    private static UsuariosFacadeRemote usuariosFacade;
+    private JDialog loginBox;
     private UsuariosT usuarioLogueado;
 
+    /**
+     * 
+     * @return contexto - InitialContext de la aplicación
+     */
+    public static InitialContext getContexto() {
+        return contexto;
+    }
+
+    /**
+     * 
+     * @param contexto
+     */
+    public static void setContexto(InitialContext contexto) {
+        DesktopApp.contexto = contexto;
+    }
+
+    /**
+     * 
+     * @return
+     */
     public UsuariosT getUsuarioLogueado() {
         return usuarioLogueado;
     }
 
+    /**
+     * 
+     * @param usuarioLogueado
+     */
     public void setUsuarioLogueado(UsuariosT usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
     }
@@ -60,8 +94,41 @@ public class DesktopApp extends SingleFrameApplication {
 
     /**
      * Main method launching the application.
+     * Además instancia la variable DesktopApp.contexto
+     * que da 'visibilidad' a los objetos EJB
+     * @param args 
      */
     public static void main(String[] args) {
+        try {
+            Properties props = new Properties();
+            props.load(new FileInputStream("jndi.properties"));
+            setContexto(new InitialContext(props));
+        } catch (NamingException ex) {
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         launch(DesktopApp.class, args);
+    }
+
+    /**
+     * 
+     * @param usuariosT - Usuario que habrá que validar si existe en la BD
+     * @return - true si el usuarioT existe en la BD
+     * - false si el usuarioT no existe en la BD
+     */
+    public Boolean isUsuario(UsuariosT usuariosT) {
+        try {
+            usuariosFacade = (UsuariosFacadeRemote) DesktopApp.getContexto().lookup("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            setUsuarioLogueado(usuariosFacade.validarUsuario(usuariosT));
+            if (getUsuarioLogueado().getIdUsuario() != null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NamingException ex) {
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }
