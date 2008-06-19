@@ -25,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"), @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion")})
+@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"), @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion"), @NamedQuery(name = "Roles.findByComponente", query = "SELECT r FROM Roles r WHERE r.componente = :componente"), @NamedQuery(name = "Roles.findByFuncion", query = "SELECT r FROM Roles r WHERE r.funcion = :funcion")})
 public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -35,6 +35,10 @@ public class Roles implements Serializable {
     private String rol;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+    @Column(name = "componente")
+    private String componente;
+    @Column(name = "funcion")
+    private String funcion;
     @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")}, inverseJoinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")})
     @ManyToMany
     private Collection<Usuarios> idUsuarioCollection;
@@ -79,6 +83,22 @@ public class Roles implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getComponente() {
+        return componente;
+    }
+
+    public void setComponente(String componente) {
+        this.componente = componente;
+    }
+
+    public String getFuncion() {
+        return funcion;
+    }
+
+    public void setFuncion(String funcion) {
+        this.funcion = funcion;
     }
 
     public Collection<Usuarios> getIdUsuarioCollection() {

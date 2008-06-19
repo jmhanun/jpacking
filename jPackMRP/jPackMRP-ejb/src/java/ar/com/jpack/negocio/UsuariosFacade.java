@@ -6,7 +6,9 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.transferencia.UsuariosT;
+import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -49,12 +51,20 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         Query query = em.createQuery("SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
         query.setParameter("usuario", usuariosT.getUsuario());
         query.setParameter("contrasena", usuariosT.getContrasena());
+        Usuarios usuario = null;
         try {
-            return DataTransferHelper.copiarUsuario((Usuarios) query.getSingleResult());
+            usuario = (Usuarios) query.getSingleResult();
+            usuariosT = DataTransferHelper.copiarUsuario(usuario);
+            usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));
         } catch (NoResultException e) {
-            return null;
-        }catch (NonUniqueResultException e){
-            return null;
+            System.out.println("No hay resultados en SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
+        } catch (NonUniqueResultException e) {
+            System.out.println("No hay resultado unico en SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
         }
+        return usuariosT;
+    }
+
+    public String getMensaje() {
+        return "Hola Jose Miguel, soy una llamada remota";
     }
 }

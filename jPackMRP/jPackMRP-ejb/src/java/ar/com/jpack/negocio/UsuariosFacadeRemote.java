@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Usuarios;
@@ -27,6 +26,7 @@ public interface UsuariosFacadeRemote {
 
     List<Usuarios> findAll();
 
-    UsuariosT validarUsuario(UsuariosT usuariosT);
+    public UsuariosT validarUsuario(UsuariosT usuariosT);
 
+    public java.lang.String getMensaje();
 }

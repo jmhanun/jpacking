@@ -14,49 +14,33 @@ import java.util.Date;
  *
  * @author jmhanun
  */
-public class UsuariosT implements Serializable {
+public class UsuariosT implements Serializable{
+    
     private Integer idUsuario;
     private String usuario;
     private String contrasena;
     private Date ultimoAcceso;
-    private String tipoUsuario;
     private String estado;
     private String nombres;
     private String apellidos;
     private String mails;
     private String telefonos;
-    private Collection<RolesT> coleccionRolesT;
+    private Collection<RolesT> idRolCollection;
 
     public UsuariosT() {
-        this.coleccionRolesT = new ArrayList<RolesT>();
     }
 
-    public UsuariosT(Integer idUsuario, String usuario, String contrasena, Date ultimoAcceso, String tipoUsuario, String estado, String nombres, String apellidos, String mails, String telefonos) {
+    public UsuariosT(Integer idUsuario, String usuario, String contrasena, Date ultimoAcceso, String estado, String nombres, String apellidos, String mails, String telefonos, Collection<RolesT> idRolCollection) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.ultimoAcceso = ultimoAcceso;
-        this.tipoUsuario = tipoUsuario;
         this.estado = estado;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.mails = mails;
         this.telefonos = telefonos;
-        this.coleccionRolesT = new ArrayList<RolesT>();
-    }
-
-    public UsuariosT(Integer idUsuario, String usuario, String contrasena, Date ultimoAcceso, String tipoUsuario, String estado, String nombres, String apellidos, String mails, String telefonos, Collection<RolesT> coleccionRolesT) {
-        this.idUsuario = idUsuario;
-        this.usuario = usuario;
-        this.contrasena = contrasena;
-        this.ultimoAcceso = ultimoAcceso;
-        this.tipoUsuario = tipoUsuario;
-        this.estado = estado;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.mails = mails;
-        this.telefonos = telefonos;
-        this.coleccionRolesT = coleccionRolesT;
+        this.idRolCollection = idRolCollection;
     }
 
     public String getApellidos() {
@@ -65,14 +49,6 @@ public class UsuariosT implements Serializable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-    }
-
-    public Collection<RolesT> getColeccionRolesT() {
-        return coleccionRolesT;
-    }
-
-    public void setColeccionRolesT(Collection<RolesT> coleccionRolesT) {
-        this.coleccionRolesT = coleccionRolesT;
     }
 
     public String getContrasena() {
@@ -89,6 +65,14 @@ public class UsuariosT implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Collection<RolesT> getIdRolCollection() {
+        return idRolCollection;
+    }
+
+    public void setIdRolCollection(Collection<RolesT> idRolCollection) {
+        this.idRolCollection = idRolCollection;
     }
 
     public Integer getIdUsuario() {
@@ -123,14 +107,6 @@ public class UsuariosT implements Serializable {
         this.telefonos = telefonos;
     }
 
-    public String getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
-
     public Date getUltimoAcceso() {
         return ultimoAcceso;
     }
@@ -146,6 +122,5 @@ public class UsuariosT implements Serializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
-    
+
 }
