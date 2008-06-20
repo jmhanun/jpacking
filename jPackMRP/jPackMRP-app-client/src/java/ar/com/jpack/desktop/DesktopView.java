@@ -19,6 +19,9 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * The application's main frame.
@@ -302,16 +305,24 @@ public class DesktopView extends FrameView {
         if (usuariosT != null) {
             ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
             if (rolesTs != null) {
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                System.out.println(rolesTs.size());
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                DefaultMutableTreeNode raiz = new DefaultMutableTreeNode();
                 //TODO ordenar rolesTs
                 for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
                     RolesT rolesT = it.next();
-                    if (rolesT.getFuncion() == null) { //si getFuncion==null => es un jMenu
-//                        javax.swing.JMenu
-                    } else { //si getFuncion!=null => es un jItemMenu
-                    }
-
+                    raiz = addNode(raiz, rolesT);
                 }
+                jTreeMenu = new JTree(raiz);
+                jScrollPane.setViewportView(jTreeMenu);
             }
         }
+    }
+
+    private DefaultMutableTreeNode addNode(DefaultMutableTreeNode padre, RolesT rolesT) {
+        DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(rolesT);
+        padre.add(hijo);
+        return padre;
     }
 }

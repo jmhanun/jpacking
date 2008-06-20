@@ -132,7 +132,8 @@ public class DesktopLoginBox extends javax.swing.JDialog {
     public void validarLogin() {
 
         if (DesktopApp.getApplication().isUsuario(usuariosT)) {
-            
+            this.setVisible(false);
+            DesktopApp.getApplication().getDesktopView().cargaInicial();
             this.dispose();
         } else {
             usuariosT.setNombres(null);

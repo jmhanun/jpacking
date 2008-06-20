@@ -26,6 +26,15 @@ public class DesktopApp extends SingleFrameApplication {
     private static UsuariosFacadeRemote usuariosFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
+    private DesktopView desktopView;
+
+    public void setDesktopView(DesktopView desktopView) {
+        this.desktopView = desktopView;
+    }
+
+    public DesktopView getDesktopView() {
+        return desktopView;
+    }
 
     /**
      * 
@@ -64,7 +73,8 @@ public class DesktopApp extends SingleFrameApplication {
      */
     @Override
     protected void startup() {
-        show(new DesktopView(this));
+        setDesktopView(new DesktopView(this));
+        show(getDesktopView());
     }
 
     @Override

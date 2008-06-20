@@ -67,6 +67,9 @@
                       <Properties>
                         <Property name="name" type="java.lang.String" value="jTreeMenu" noResource="true"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="DesktopView_jTreeMenu"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
