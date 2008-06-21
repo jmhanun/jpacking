@@ -16,6 +16,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import oracle.toplink.essentials.config.HintValues;
+import oracle.toplink.essentials.config.TopLinkQueryHints;
 
 /**
  *
@@ -53,6 +55,7 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         query.setParameter("contrasena", usuariosT.getContrasena());
         Usuarios usuario = null;
         try {
+            query.setHint(TopLinkQueryHints.REFRESH, HintValues.TRUE);
             usuario = (Usuarios) query.getSingleResult();
             usuariosT = DataTransferHelper.copiarUsuario(usuario);
             usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));
@@ -62,9 +65,5 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
             System.out.println("No hay resultado unico en SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
         }
         return usuariosT;
-    }
-
-    public String getMensaje() {
-        return "Hola Jose Miguel, soy una llamada remota";
     }
 }

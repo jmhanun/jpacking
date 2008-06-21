@@ -263,9 +263,18 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target depends="compile" name="library-inclusion-in-archive"/>
+    <target depends="compile" name="library-inclusion-in-archive">
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${build.classes.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${build.classes.dir}"/>
+    </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
+        <basename file="${libs.toplink.classpath.libfile.2}" property="included.lib.libs.toplink.classpath.2"/>
+        <basename file="${libs.toplink.classpath.libfile.1}" property="included.lib.libs.toplink.classpath.1"/>
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${dist.ear.dir}"/>
+        <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Class-Path" value="${included.lib.libs.toplink.classpath.1} ${included.lib.libs.toplink.classpath.2} "/>
+        </manifest>
     </target>
     <target name="-copy-meta-inf">
         <copy todir="${classes.dir}">

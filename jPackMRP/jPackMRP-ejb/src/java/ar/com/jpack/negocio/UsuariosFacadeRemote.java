@@ -28,5 +28,4 @@ public interface UsuariosFacadeRemote {
 
     public UsuariosT validarUsuario(UsuariosT usuariosT);
 
-    public java.lang.String getMensaje();
 }
