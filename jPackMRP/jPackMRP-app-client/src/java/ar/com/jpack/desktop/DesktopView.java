@@ -14,14 +14,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.ActionMap;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import org.jdesktop.application.Application;
 
 /**
  * The application's main frame.
@@ -159,11 +160,7 @@ public class DesktopView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        jSplitPane = new javax.swing.JSplitPane();
         desktopPanel = new javax.swing.JDesktopPane();
-        jPanelIzq = new javax.swing.JPanel();
-        jScrollPane = new javax.swing.JScrollPane();
-        jTreeMenu = new javax.swing.JTree();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -178,25 +175,8 @@ public class DesktopView extends FrameView {
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setLayout(new java.awt.BorderLayout());
 
-        jSplitPane.setDividerLocation(100);
-        jSplitPane.setName("jSplitPane"); // NOI18N
-
         desktopPanel.setName("desktopPanel"); // NOI18N
-        jSplitPane.setRightComponent(desktopPanel);
-
-        jPanelIzq.setName("jPanelIzq"); // NOI18N
-        jPanelIzq.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane.setName("jScrollPane"); // NOI18N
-
-        jTreeMenu.setName("jTreeMenu"); // NOI18N
-        jScrollPane.setViewportView(jTreeMenu);
-
-        jPanelIzq.add(jScrollPane, java.awt.BorderLayout.CENTER);
-
-        jSplitPane.setLeftComponent(jPanelIzq);
-
-        mainPanel.add(jSplitPane, java.awt.BorderLayout.CENTER);
+        mainPanel.add(desktopPanel, java.awt.BorderLayout.PAGE_START);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -264,10 +244,6 @@ public class DesktopView extends FrameView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPanel;
-    private javax.swing.JPanel jPanelIzq;
-    private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JSplitPane jSplitPane;
-    private javax.swing.JTree jTreeMenu;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -301,28 +277,63 @@ public class DesktopView extends FrameView {
      * 
      */
     public void cargaInicial() {
+
+        JMenu fileMenu = new JMenu();
+        JMenuItem loginMenuItem = new JMenuItem();
+        JMenuItem exitMenuItem = new JMenuItem();
+        JMenu helpMenu = new JMenu();
+        JMenuItem aboutMenuItem = new JMenuItem();
+
         UsuariosT usuariosT = DesktopApp.getApplication().getUsuarioLogueado();
+
+        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+
+        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
+
+        menuBar.removeAll();
+
+        fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
+        fileMenu.setName("fileMenu"); // NOI18N
+
+        loginMenuItem.setAction(actionMap.get("showLoginBox")); // NOI18N
+        loginMenuItem.setName("loginMenuItem"); // NOI18N
+        fileMenu.add(loginMenuItem);
+
+        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setName("exitMenuItem"); // NOI18N
+        fileMenu.add(exitMenuItem);
+
+        menuBar.add(fileMenu);
+
         if (usuariosT != null) {
             ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
             if (rolesTs != null) {
                 System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 System.out.println(rolesTs.size());
                 System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                DefaultMutableTreeNode raiz = new DefaultMutableTreeNode();
                 //TODO ordenar rolesTs
                 for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
                     RolesT rolesT = it.next();
-                    raiz = addNode(raiz, rolesT);
+                    if (rolesT.getIdRolPadre() == null) {
+                        JMenu r = new JMenu();
+                        r.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+                        r.setName(rolesT.getComponente()); // NOI18N
+                        menuBar.add(r);
+                    }
                 }
-                jTreeMenu = new JTree(raiz);
-                jScrollPane.setViewportView(jTreeMenu);
+
             }
         }
-    }
 
-    private DefaultMutableTreeNode addNode(DefaultMutableTreeNode padre, RolesT rolesT) {
-        DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(rolesT);
-        padre.add(hijo);
-        return padre;
+        helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
+        helpMenu.setName("helpMenu"); // NOI18N
+
+        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
+        helpMenu.add(aboutMenuItem);
+
+        menuBar.add(helpMenu);
+
+        setMenuBar(menuBar);
     }
 }

@@ -14,6 +14,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -79,10 +80,7 @@ public class DesktopApp extends SingleFrameApplication {
 
     @Override
     protected void ready() {
-        JFrame mainFrame = getApplication().getMainFrame();
-        loginBox = new DesktopLoginBox(mainFrame);
-        loginBox.setLocationRelativeTo(mainFrame);
-        getApplication().show(loginBox);
+        showLoginBox();
     }
 
     /**
@@ -140,5 +138,13 @@ public class DesktopApp extends SingleFrameApplication {
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    @Action
+    public void showLoginBox() {
+        JFrame mainFrame = getApplication().getMainFrame();
+        loginBox = new DesktopLoginBox(mainFrame);
+        loginBox.setLocationRelativeTo(mainFrame);
+        getApplication().show(loginBox);
     }
 }
