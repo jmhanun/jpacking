@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Application;
 
 /**
@@ -111,6 +112,14 @@ public class DesktopView extends FrameView {
         DesktopApp.getApplication().show(aboutBox);
     }
 
+    @Action
+    public void showPrueba() {
+        JOptionPane.showMessageDialog(null, "holas, soy una prueba!");
+    }
+    @Action
+    public void showReporte() {
+        JOptionPane.showMessageDialog(null, "holas, soy el reporte de proveedores!");
+    }
 //    @Action
 //    public void showRolesFrame() {
 //        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
@@ -257,6 +266,7 @@ public class DesktopView extends FrameView {
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
+    ArrayList<RolesT> rolesTs;
 
     private JInternalFrame verificarInternalFrame(String clase) {
         JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
@@ -306,19 +316,17 @@ public class DesktopView extends FrameView {
         menuBar.add(fileMenu);
 
         if (usuariosT != null) {
-            ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
+            rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
             if (rolesTs != null) {
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                System.out.println(rolesTs.size());
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 //TODO ordenar rolesTs
                 for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
                     RolesT rolesT = it.next();
                     if (rolesT.getIdRolPadre() == null) {
-                        JMenu r = new JMenu();
-                        r.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
-                        r.setName(rolesT.getComponente()); // NOI18N
-                        menuBar.add(r);
+                        JMenu m = new JMenu();
+                        m.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+                        m.setName(rolesT.getComponente()); // NOI18N
+                        m = cargarMenu(m, rolesT);
+                        menuBar.add(m);
                     }
                 }
 
@@ -335,5 +343,33 @@ public class DesktopView extends FrameView {
         menuBar.add(helpMenu);
 
         setMenuBar(menuBar);
+    }
+
+    private JMenu cargarMenu(JMenu m, RolesT rolPadreT) {
+
+        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
+
+        for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
+            RolesT rolesT = it.next();
+            if (rolesT.getIdRolPadre() != null) {
+                if (rolesT.getIdRolPadre().getIdRol() == rolPadreT.getIdRol()) {
+                    if (rolesT.getFuncion() == null) {
+                        JMenu menuHijo = new JMenu();
+                        menuHijo.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+                        menuHijo.setName(rolesT.getComponente()); // NOI18N
+                        menuHijo = cargarMenu(menuHijo, rolesT);
+                        m.add(menuHijo);
+                    } else {
+                        JMenuItem item = new JMenuItem();
+                        item.setAction(actionMap.get(rolesT.getFuncion())); // NOI18N
+                        item.setName(rolesT.getComponente()); // NOI18N
+                        m.add(item);
+                    }
+
+                }
+            }
+        }
+        return m;
     }
 }
