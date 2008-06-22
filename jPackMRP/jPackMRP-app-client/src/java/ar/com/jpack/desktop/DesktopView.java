@@ -13,6 +13,7 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.ActionMap;
 import javax.swing.Timer;
@@ -116,6 +117,7 @@ public class DesktopView extends FrameView {
     public void showPrueba() {
         JOptionPane.showMessageDialog(null, "holas, soy una prueba!");
     }
+
     @Action
     public void showReporte() {
         JOptionPane.showMessageDialog(null, "holas, soy el reporte de proveedores!");
@@ -279,25 +281,24 @@ public class DesktopView extends FrameView {
             }
             i++;
         }
-
         return x;
     }
 
     /**
-     * 
+     * Funcion que se ejecuta automaticamente al finalizar el login exitoso.
+     * Es llamada desde DesktopLoginBox si el login fue exitos.
+     * Carga el menu de acuerdo a los roles asignados al usuario logueado.
      */
     public void cargaInicial() {
 
         JMenu fileMenu = new JMenu();
         JMenuItem loginMenuItem = new JMenuItem();
         JMenuItem exitMenuItem = new JMenuItem();
+        JMenu ventanaMenu = new JMenu();
         JMenu helpMenu = new JMenu();
         JMenuItem aboutMenuItem = new JMenuItem();
-
         UsuariosT usuariosT = DesktopApp.getApplication().getUsuarioLogueado();
-
         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
-
         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
 
         menuBar.removeAll();
@@ -318,7 +319,8 @@ public class DesktopView extends FrameView {
         if (usuariosT != null) {
             rolesTs = (ArrayList<RolesT>) usuariosT.getIdRolCollection();
             if (rolesTs != null) {
-                //TODO ordenar rolesTs
+                //ordena la lista rolesTs
+                Collections.sort(rolesTs);
                 for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
                     RolesT rolesT = it.next();
                     if (rolesT.getIdRolPadre() == null) {
@@ -333,6 +335,11 @@ public class DesktopView extends FrameView {
             }
         }
 
+        ventanaMenu.setText(resourceMap.getString("ventanaMenu.text")); // NOI18N
+        ventanaMenu.setName("ventanaMenu"); // NOI18N
+        
+        menuBar.add(ventanaMenu);
+
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
@@ -345,6 +352,7 @@ public class DesktopView extends FrameView {
         setMenuBar(menuBar);
     }
 
+    //Funcion recursiva para poblar la barra de menu.
     private JMenu cargarMenu(JMenu m, RolesT rolPadreT) {
 
         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
