@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -13,12 +12,14 @@ import java.util.Collection;
  * @author jmhanun
  */
 public class RolesT implements Serializable {
-    
+
     private Integer idRol;
     private String rol;
     private String descripcion;
     private String componente;
     private String funcion;
+    private int orden;
+    private int ordenHermano;
     private Collection<UsuariosT> idUsuarioCollection;
     private Collection<RolesT> rolesCollection;
     private RolesT idRolPadre;
@@ -26,14 +27,14 @@ public class RolesT implements Serializable {
     public RolesT() {
     }
 
-    public RolesT(Integer idRol, String rol, String descripcion, String componente, String funcion, Collection<UsuariosT> idUsuarioCollection, Collection<RolesT> rolesCollection, RolesT idRolPadre) {
+    public RolesT(Integer idRol, String rol, String descripcion, String componente, String funcion, int orden, int ordenHermano, RolesT idRolPadre) {
         this.idRol = idRol;
         this.rol = rol;
         this.descripcion = descripcion;
         this.componente = componente;
         this.funcion = funcion;
-        this.idUsuarioCollection = idUsuarioCollection;
-        this.rolesCollection = rolesCollection;
+        this.orden = orden;
+        this.ordenHermano = ordenHermano;
         this.idRolPadre = idRolPadre;
     }
 
@@ -85,6 +86,22 @@ public class RolesT implements Serializable {
         this.idUsuarioCollection = idUsuarioCollection;
     }
 
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
+    }
+
+    public int getOrdenHermano() {
+        return ordenHermano;
+    }
+
+    public void setOrdenHermano(int ordenHermano) {
+        this.ordenHermano = ordenHermano;
+    }
+
     public String getRol() {
         return rol;
     }
@@ -100,5 +117,4 @@ public class RolesT implements Serializable {
     public void setRolesCollection(Collection<RolesT> rolesCollection) {
         this.rolesCollection = rolesCollection;
     }
-    
 }

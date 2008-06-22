@@ -4,8 +4,10 @@
  */
 package ar.com.jpack.transferencia.helper;
 
+import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.persistencia.Usuarios;
+import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.ArrayList;
@@ -37,8 +39,8 @@ public class DataTransferHelper {
                     item.getDescripcion(),
                     item.getComponente(),
                     item.getFuncion(),
-                    null,
-                    null,
+                    item.getOrden(),
+                    item.getOrdenHermano(),
                     copiarRol(item.getIdRolPadre()));
         }
 
@@ -63,12 +65,31 @@ public class DataTransferHelper {
                     item.getUsuario(),
                     item.getContrasena(),
                     item.getUltimoAcceso(),
-                    item.getEstado(),
                     item.getNombres(),
                     item.getApellidos(),
                     item.getMails(),
                     item.getTelefonos(),
-                    null);
+                    copiarEstado(item.getIdEstado()));
+        }
+        return t;
+    }
+
+    //ESTADOS
+    public static List<EstadosT> copiarEstadosALista(Collection items) {
+        List<EstadosT> lista = new ArrayList<EstadosT>();
+        Iterator i = items.iterator();
+        while (i.hasNext()) {
+            lista.add(copiarEstado((Estados) i.next()));
+        }
+
+        return lista;
+    }
+
+    public static EstadosT copiarEstado(Estados item) {
+        EstadosT t = null;
+        if (item != null) {
+            t = new EstadosT(item.getIdEstado(),
+                    item.getDescripcion());
         }
         return t;
     }

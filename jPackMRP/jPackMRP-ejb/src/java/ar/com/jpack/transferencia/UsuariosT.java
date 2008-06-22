@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,33 +12,32 @@ import java.util.Date;
  *
  * @author jmhanun
  */
-public class UsuariosT implements Serializable{
-    
+public class UsuariosT implements Serializable {
+
     private Integer idUsuario;
     private String usuario;
     private String contrasena;
     private Date ultimoAcceso;
-    private String estado;
     private String nombres;
     private String apellidos;
     private String mails;
     private String telefonos;
     private Collection<RolesT> idRolCollection;
+    private EstadosT idEstado;
 
     public UsuariosT() {
     }
 
-    public UsuariosT(Integer idUsuario, String usuario, String contrasena, Date ultimoAcceso, String estado, String nombres, String apellidos, String mails, String telefonos, Collection<RolesT> idRolCollection) {
+    public UsuariosT(Integer idUsuario, String usuario, String contrasena, Date ultimoAcceso, String nombres, String apellidos, String mails, String telefonos, EstadosT idEstado) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.ultimoAcceso = ultimoAcceso;
-        this.estado = estado;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.mails = mails;
         this.telefonos = telefonos;
-        this.idRolCollection = idRolCollection;
+        this.idEstado = idEstado;
     }
 
     public String getApellidos() {
@@ -57,14 +54,6 @@ public class UsuariosT implements Serializable{
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public Collection<RolesT> getIdRolCollection() {
@@ -123,4 +112,11 @@ public class UsuariosT implements Serializable{
         this.usuario = usuario;
     }
 
+    public EstadosT getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(EstadosT idEstado) {
+        this.idEstado = idEstado;
+    }
 }

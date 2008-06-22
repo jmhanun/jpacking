@@ -8,8 +8,12 @@ import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -50,6 +54,9 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     public UsuariosT validarUsuario(UsuariosT usuariosT) {
+        StringBuffer codificado = codificar(usuariosT.getContrasena());
+        usuariosT.setContrasena(codificado.toString());
+
         Query query = em.createQuery("SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
         query.setParameter("usuario", usuariosT.getUsuario());
         query.setParameter("contrasena", usuariosT.getContrasena());
@@ -65,5 +72,27 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
             System.out.println("No hay resultado unico en SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
         }
         return usuariosT;
+    }
+
+    private StringBuffer codificar(String string) {
+
+        MessageDigest messagedigest = null;
+        try {
+            messagedigest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UsuariosFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        messagedigest.update(string.getBytes());
+        byte[] hash = messagedigest.digest();
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xFF & hash[i]);
+            if (hex.length() == 1) {
+                hexString.append("0" + hex);
+            } else {
+                hexString.append(hex);
+            }
+        }
+        return hexString;
     }
 }

@@ -11,7 +11,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,7 +26,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "usuarios")
-@NamedQueries({@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"), @NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"), @NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado"), @NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"), @NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"), @NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"), @NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")})
+@NamedQueries({@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"), @NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"), @NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"), @NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"), @NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"), @NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")})
 public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,8 +39,6 @@ public class Usuarios implements Serializable {
     @Column(name = "ultimoAcceso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimoAcceso;
-    @Column(name = "estado")
-    private String estado;
     @Column(name = "nombres", nullable = false)
     private String nombres;
     @Column(name = "apellidos", nullable = false)
@@ -49,6 +49,9 @@ public class Usuarios implements Serializable {
     private String telefonos;
     @ManyToMany(mappedBy = "idUsuarioCollection")
     private Collection<Roles> idRolCollection;
+    @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
+    @ManyToOne
+    private Estados idEstado;
 
     public Usuarios() {
     }
@@ -99,14 +102,6 @@ public class Usuarios implements Serializable {
         this.ultimoAcceso = ultimoAcceso;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public String getNombres() {
         return nombres;
     }
@@ -145,6 +140,14 @@ public class Usuarios implements Serializable {
 
     public void setIdRolCollection(Collection<Roles> idRolCollection) {
         this.idRolCollection = idRolCollection;
+    }
+
+    public Estados getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(Estados idEstado) {
+        this.idEstado = idEstado;
     }
 
     @Override

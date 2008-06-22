@@ -25,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"), @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion"), @NamedQuery(name = "Roles.findByComponente", query = "SELECT r FROM Roles r WHERE r.componente = :componente"), @NamedQuery(name = "Roles.findByFuncion", query = "SELECT r FROM Roles r WHERE r.funcion = :funcion")})
+@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"), @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion"), @NamedQuery(name = "Roles.findByComponente", query = "SELECT r FROM Roles r WHERE r.componente = :componente"), @NamedQuery(name = "Roles.findByFuncion", query = "SELECT r FROM Roles r WHERE r.funcion = :funcion"), @NamedQuery(name = "Roles.findByOrden", query = "SELECT r FROM Roles r WHERE r.orden = :orden"), @NamedQuery(name = "Roles.findByOrdenHermano", query = "SELECT r FROM Roles r WHERE r.ordenHermano = :ordenHermano")})
 public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,6 +39,10 @@ public class Roles implements Serializable {
     private String componente;
     @Column(name = "funcion")
     private String funcion;
+    @Column(name = "orden", nullable = false)
+    private int orden;
+    @Column(name = "ordenHermano", nullable = false)
+    private int ordenHermano;
     @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")}, inverseJoinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")})
     @ManyToMany
     private Collection<Usuarios> idUsuarioCollection;
@@ -55,10 +59,12 @@ public class Roles implements Serializable {
         this.idRol = idRol;
     }
 
-    public Roles(Integer idRol, String rol, String descripcion) {
+    public Roles(Integer idRol, String rol, String descripcion, int orden, int ordenHermano) {
         this.idRol = idRol;
         this.rol = rol;
         this.descripcion = descripcion;
+        this.orden = orden;
+        this.ordenHermano = ordenHermano;
     }
 
     public Integer getIdRol() {
@@ -99,6 +105,22 @@ public class Roles implements Serializable {
 
     public void setFuncion(String funcion) {
         this.funcion = funcion;
+    }
+
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
+    }
+
+    public int getOrdenHermano() {
+        return ordenHermano;
+    }
+
+    public void setOrdenHermano(int ordenHermano) {
+        this.ordenHermano = ordenHermano;
     }
 
     public Collection<Usuarios> getIdUsuarioCollection() {
