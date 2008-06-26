@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.jdesktop.application.Application;
@@ -223,6 +224,7 @@ public class DesktopView extends FrameView {
         JMenuItem exitMenuItem = new JMenuItem();
         JMenu ventanaMenu = new JMenu();
         JMenuItem lookMenuItem = new JMenuItem();
+        JMenuItem closeAllMenuItem = new JMenuItem();
         JMenu helpMenu = new JMenu();
         JMenuItem aboutMenuItem = new JMenuItem();
         UsuariosT usuariosT = DesktopApp.getApplication().getUsuarioLogueado();
@@ -270,6 +272,12 @@ public class DesktopView extends FrameView {
         lookMenuItem.setName("lookMenuItem"); // NOI18N
         ventanaMenu.add(lookMenuItem);
 
+        ventanaMenu.add(new JSeparator());
+        
+        closeAllMenuItem.setAction(actionMap.get("closeAllFrames")); // NOI18N
+        closeAllMenuItem.setName("closeAllMenuItem"); // NOI18N
+        ventanaMenu.add(closeAllMenuItem);
+
         menuBar.add(ventanaMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
@@ -285,20 +293,21 @@ public class DesktopView extends FrameView {
     }
 
     /**
-     * Muestra el frame de Acerca de...
+     * Metodo que recorre todas las ventanas agregadas al desktopPane
+     * y las va cerrando
      */
     @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
-            aboutBox = new DesktopAboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
+    public void closeAllFrames() {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        int i = internalFrames.length;
+        while (0 < i) {
+            i--;
+            internalFrames[i].dispose();
         }
-        DesktopApp.getApplication().show(aboutBox);
     }
 
     /**
-     * Cambia el Look&Feel .
+     * Cambia el Look&Feel.
      * Rota entre el lookAndFeel NimROD y el lookAndFeel por defecto del sistema.
      */
     @Action
@@ -325,39 +334,31 @@ public class DesktopView extends FrameView {
     }
 
     /**
+     * Muestra el frame de Acerca de...
+     */
+    @Action
+    public void showAboutBox() {
+        if (aboutBox == null) {
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            aboutBox = new DesktopAboutBox(mainFrame);
+            aboutBox.setLocationRelativeTo(mainFrame);
+        }
+        DesktopApp.getApplication().show(aboutBox);
+    }
+
+    /**
      * Muestra el InternalFrame GestionUsuarios
      */
     @Action
     public void showGestionUsuariosFrame() {
 
-        JInternalFrame x = verificarInternalFrame("ar.com.jpack.desktop.administracion.GestionUsuarios");
-        if (x != null) {
-            desktopPanel.getDesktopManager().activateFrame(x);
-        } else {
-            GestionUsuarios f =  new GestionUsuarios();
-            f.setVisible(true);
+        JInternalFrame f = GestionUsuarios.getGestionUsuarios();
+        if (!isOpen(f)) {
             desktopPanel.add(f);
-            desktopPanel.getDesktopManager().activateFrame(f);
         }
-        this.statusMessageLabel.setText("Articulos por accion");
-
-//        
-//        JInternalFrame f = GestionUsuarios.getGestionUsuarios();
-//        JInternalFrame[] list = desktopPanel.getAllFrames();
-//        f.setVisible(true);
-//        f.setLocation(500, 500);
-//        if (list.length == 0) {
-//            desktopPanel.add(f);
-//        } else {
-//            for (int i = 0; i < list.length; i++) {
-//                JInternalFrame j = list[i];
-//                if (j.getClass() == f.getClass()) {
-//                    desktopPanel.getDesktopManager().activateFrame(f);
-//                }
-//            }
-//        }
-//        desktopPanel.getDesktopManager().activateFrame(f);
-//        this.statusMessageLabel.setText("GestionarUsuarios por accion");
+        f.setVisible(true);
+        desktopPanel.getDesktopManager().activateFrame(f);
+        this.statusMessageLabel.setText("GestionUsuarios por accion");
     }
 //    @Action
 //    public void showRolesFrame() {
@@ -385,19 +386,6 @@ public class DesktopView extends FrameView {
 //        }
 //        this.statusMessageLabel.setText("Articulos por accion");
 //    }
-    /**
-     * 
-     */
-    @Action
-    public void closeAllFrames() {
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        int i = 0;
-        while (i < internalFrames.length) {
-            internalFrames[i].dispose();
-            i++;
-        }
-    }
-
     /**
      * Funcion recursiva para poblar el JMenu con los JMenu y los JMenuItems que dependen de el.
      * @param m JMenu que aun posee JMenu y/o JMenuItems que dependen de el.
@@ -429,6 +417,24 @@ public class DesktopView extends FrameView {
             }
         }
         return m;
+    }
+
+    /**
+     * Metodo para identificar si un JInternalFrame ya ha sido abierto en el desktopPanel.
+     * @param f - InternalFrame que se desea abrir.
+     * @return si el InternalFrame que se desea abrir ya se encuentra abierto.
+     */
+    private boolean isOpen(JInternalFrame f) {
+        JInternalFrame[] list = desktopPanel.getAllFrames();
+        int i = 0;
+        boolean open = false;
+        while ((i < list.length) && (!open)) {
+            if (f.getClass().getCanonicalName().equals(list[i].getClass().getCanonicalName())) {
+                open = true;
+            }
+            i++;
+        }
+        return open;
     }
 
     private JInternalFrame verificarInternalFrame(String clase) {
