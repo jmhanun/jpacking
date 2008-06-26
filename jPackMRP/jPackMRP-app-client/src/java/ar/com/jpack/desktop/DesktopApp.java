@@ -14,12 +14,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
 /**
  * The main class of the application.
+ * Clase principal de la aplicacion. Contiene el metodo main que da inicio a la aplicacion.
+ * @author  jmhanun
  */
 public class DesktopApp extends SingleFrameApplication {
 
@@ -29,16 +32,16 @@ public class DesktopApp extends SingleFrameApplication {
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
 
-    public void setDesktopView(DesktopView desktopView) {
-        this.desktopView = desktopView;
-    }
-
-    public DesktopView getDesktopView() {
-        return desktopView;
+    /**
+     * A convenient static getter for the application instance.
+     * @return the instance of DesktopTestApp
+     */
+    public static DesktopApp getApplication() {
+        return Application.getInstance(DesktopApp.class);
     }
 
     /**
-     * 
+     * Obtiene el contexto inicial (InitialContext) con la base de datos definido en jndi.properties
      * @return contexto - InitialContext de la aplicación
      */
     public static InitialContext getContexto() {
@@ -46,27 +49,70 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     /**
-     * 
-     * @param contexto
+     * Almacena en contexto inicial con la base de datos
+     * @param contexto - InitialContext definido en jndi.properties
      */
     public static void setContexto(InitialContext contexto) {
         DesktopApp.contexto = contexto;
     }
 
     /**
-     * 
-     * @return
+     * Obtiene el usuario logueado en la aplicacion
+     * @return Devuelve el usuario logueado en la aplicacion
      */
     public UsuariosT getUsuarioLogueado() {
         return usuarioLogueado;
     }
 
     /**
-     * 
+     * Almacena el usuario logueado en el sistema
      * @param usuarioLogueado
      */
     public void setUsuarioLogueado(UsuariosT usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
+    }
+
+    /**
+     * Obtiene el DesktopView definido en el DesktopApp.
+     * Se prefiere usar este metodo al DesktopApp.getApplication().getMainView() 
+     * para poder tener acceso a los metodos propios del DesktopView como por
+     * ejemplo: cargaInicial() Metodo usado para la carga de la barra del menu
+     * dependiendo de los roles asignados al usuario logueado.
+     * @return - Devuelve el MainFrame del DesktopApp
+     * 
+     */
+    public DesktopView getDesktopView() {
+        return desktopView;
+    }
+
+    /**
+     * Asigna el MainView del DesktopApp.
+     * @param desktopView - MainView del DesktopApp
+     */
+    public void setDesktopView(DesktopView desktopView) {
+        this.desktopView = desktopView;
+    }
+
+    /**
+     * Main method launching the application.
+     * Además instancia la variable DesktopApp.contexto
+     * que da 'visibilidad' a los objetos EJB
+     * @param args 
+     */
+    public static void main(String[] args) {
+        try {
+            Properties props = new Properties();
+            props.load(new FileInputStream("jndi.properties"));
+            setContexto(new InitialContext(props));
+            launch(DesktopApp.class, args);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un IOException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -78,6 +124,10 @@ public class DesktopApp extends SingleFrameApplication {
         show(getDesktopView());
     }
 
+    /**
+     * Una vez terminado el startup de la aplicacion se ejecuta el ready
+     * Muestra la ventana de login.
+     */
     @Override
     protected void ready() {
         showLoginBox();
@@ -93,41 +143,23 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     /**
-     * A convenient static getter for the application instance.
-     * @return the instance of DesktopTestApp
-     */
-    public static DesktopApp getApplication() {
-        return Application.getInstance(DesktopApp.class);
-    }
-
-    /**
-     * Main method launching the application.
-     * Además instancia la variable DesktopApp.contexto
-     * que da 'visibilidad' a los objetos EJB
-     * @param args 
-     */
-    public static void main(String[] args) {
-        try {
-            Properties props = new Properties();
-            props.load(new FileInputStream("jndi.properties"));
-            setContexto(new InitialContext(props));
-        } catch (NamingException ex) {
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        launch(DesktopApp.class, args);
-    }
-
-    /**
+     * Metodo que sirve para identificar si un usuario ingresado como parametro
+     * forma parte de la base de datos de usuario.
+     * El parametro enviado es un objeto UsuariosT que solo tiene asignados los
+     * valores usuario y contrasena, valores estos que son usados para hacer la
+     * busqueda en la base de datos.
+     * De encontrar un registro en la base de datos con los valores ingresado,
+     * el atributo usuarioLogueado de DesktopApp es seteado con todos los datos
+     * del usuario, asi como tambien los roles activos.
      * 
-     * @param usuariosT - Usuario que habrá que validar si existe en la BD
-     * @return - true si el usuarioT existe en la BD
+     * @param usuariosT - datos de usuariosT que habrá que validar si existe en la BD
+     * @return - true si el usuariosT existe en la BD
      * - false si el usuarioT no existe en la BD
      */
     public Boolean isUsuario(UsuariosT usuariosT) {
         try {
-            usuariosFacade = (UsuariosFacadeRemote) DesktopApp.getContexto().lookup("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            //valida los datos en la base y los asigna a usuarioLogueado
             setUsuarioLogueado(usuariosFacade.validarUsuario(usuariosT));
             if (getUsuarioLogueado().getIdUsuario() != null) {
                 return true;
@@ -135,16 +167,24 @@ public class DesktopApp extends SingleFrameApplication {
                 return false;
             }
         } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
 
+    /**
+     * Muestra el JDialog de Login
+     */
     @Action
     public void showLoginBox() {
         JFrame mainFrame = getApplication().getMainFrame();
         loginBox = new DesktopLoginBox(mainFrame);
         loginBox.setLocationRelativeTo(mainFrame);
         getApplication().show(loginBox);
+    }
+
+    private Object lookUp(String canonicalName) throws NamingException {
+        return DesktopApp.getContexto().lookup(canonicalName);
     }
 }

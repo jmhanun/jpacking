@@ -14,8 +14,9 @@
             <included-library files="1">reference.jPackMRP-ejb.dist</included-library>
             <included-library files="2">libs.swing-app-framework.classpath</included-library>
             <included-library files="1">libs.beans-binding.classpath</included-library>
-            <included-library files="1">libs.Nimbus.classpath</included-library>
+            <included-library files="1">file.reference.nimrodlf.jar</included-library>
             <included-library files="2">libs.toplink.classpath</included-library>
+            <included-library files="1">libs.absolutelayout.classpath</included-library>
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>

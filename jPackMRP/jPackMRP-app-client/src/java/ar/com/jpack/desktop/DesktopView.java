@@ -3,8 +3,12 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.desktop.administracion.GestionUsuarios;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -23,144 +27,15 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.jdesktop.application.Application;
 
 /**
  * The application's main frame.
+ * @author jmhanun
  */
 public class DesktopView extends FrameView {
-
-    /**
-     * 
-     * @param app
-     */
-    public DesktopView(SingleFrameApplication app) {
-        super(app);
-
-        initComponents();
-
-        // status bar initialization - message timeout, idle icon and busy animation, etc
-        ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                statusMessageLabel.setText("");
-            }
-        });
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        statusAnimationLabel.setIcon(idleIcon);
-        progressBar.setVisible(false);
-
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                    statusAnimationLabel.setIcon(idleIcon);
-                    progressBar.setVisible(false);
-                    progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    String text = (String) (evt.getNewValue());
-                    statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                    int value = (Integer) (evt.getNewValue());
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setValue(value);
-                }
-            }
-        });
-
-
-    }
-
-    /**
-     * 
-     */
-    @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
-            aboutBox = new DesktopAboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
-        }
-        DesktopApp.getApplication().show(aboutBox);
-    }
-
-    @Action
-    public void showPrueba() {
-        JOptionPane.showMessageDialog(null, "holas, soy una prueba!");
-    }
-
-    @Action
-    public void showReporte() {
-        JOptionPane.showMessageDialog(null, "holas, soy el reporte de proveedores!");
-    }
-//    @Action
-//    public void showRolesFrame() {
-//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
-//        if (x != null) {
-//            desktopPanel.getDesktopManager().activateFrame(x);
-//        } else {
-//            RolesFrame rolesFrame = new RolesFrame();
-//            rolesFrame.setVisible(true);
-//            desktopPanel.add(rolesFrame);
-//            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
-//        }
-//        this.statusMessageLabel.setText("Roles por accion");
-//    }
-
-//    @Action
-//    public void showArticulosFrame() {
-//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
-//        if (x != null) {
-//            desktopPanel.getDesktopManager().activateFrame(x);
-//        } else {
-//            ArticulosFrame articulosFrame = new ArticulosFrame();
-//            articulosFrame.setVisible(true);
-//            desktopPanel.add(articulosFrame);
-//            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
-//        }
-//        this.statusMessageLabel.setText("Articulos por accion");
-//    }
-    /**
-     * 
-     */
-    @Action
-    public void closeAllFrames() {
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        int i = 0;
-        while (i < internalFrames.length) {
-            internalFrames[i].dispose();
-            i++;
-        }
-    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -187,7 +62,7 @@ public class DesktopView extends FrameView {
         mainPanel.setLayout(new java.awt.BorderLayout());
 
         desktopPanel.setName("desktopPanel"); // NOI18N
-        mainPanel.add(desktopPanel, java.awt.BorderLayout.PAGE_START);
+        mainPanel.add(desktopPanel, java.awt.BorderLayout.CENTER);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -270,24 +145,76 @@ public class DesktopView extends FrameView {
     private JDialog aboutBox;
     ArrayList<RolesT> rolesTs;
 
-    private JInternalFrame verificarInternalFrame(String clase) {
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        JInternalFrame x = null;
-        int i = 0;
-        while ((i < internalFrames.length) && (x == null)) {
-            JInternalFrame jInternalFrame = internalFrames[i];
-            if (jInternalFrame.getClass().getCanonicalName().equals(clase)) {
-                x = jInternalFrame;
+    /**
+     * Instancia el DesktopView indicandole el DesktopApp de quien depende.
+     * @param app - DesktopApp del cual depende el DesktopView
+     */
+    public DesktopView(SingleFrameApplication app) {
+        super(app);
+        initComponents();
+        // status bar initialization - message timeout, idle icon and busy animation, etc
+        ResourceMap resourceMap = getResourceMap();
+        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
+        messageTimer = new Timer(messageTimeout, new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                statusMessageLabel.setText("");
             }
-            i++;
+        });
+        messageTimer.setRepeats(false);
+        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
+        for (int i = 0; i < busyIcons.length; i++) {
+            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
-        return x;
+        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
+                statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
+            }
+        });
+        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
+        statusAnimationLabel.setIcon(idleIcon);
+        progressBar.setVisible(false);
+        // connecting action tasks to status bar via TaskMonitor
+        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
+        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                String propertyName = evt.getPropertyName();
+                if ("started".equals(propertyName)) {
+                    if (!busyIconTimer.isRunning()) {
+                        statusAnimationLabel.setIcon(busyIcons[0]);
+                        busyIconIndex = 0;
+                        busyIconTimer.start();
+                    }
+                    progressBar.setVisible(true);
+                    progressBar.setIndeterminate(true);
+                } else if ("done".equals(propertyName)) {
+                    busyIconTimer.stop();
+                    statusAnimationLabel.setIcon(idleIcon);
+                    progressBar.setVisible(false);
+                    progressBar.setValue(0);
+                } else if ("message".equals(propertyName)) {
+                    String text = (String) (evt.getNewValue());
+                    statusMessageLabel.setText((text == null) ? "" : text);
+                    messageTimer.restart();
+                } else if ("progress".equals(propertyName)) {
+                    int value = (Integer) (evt.getNewValue());
+                    progressBar.setVisible(true);
+                    progressBar.setIndeterminate(false);
+                    progressBar.setValue(value);
+                }
+            }
+        });
     }
 
     /**
      * Funcion que se ejecuta automaticamente al finalizar el login exitoso.
-     * Es llamada desde DesktopLoginBox si el login fue exitos.
-     * Carga el menu de acuerdo a los roles asignados al usuario logueado.
+     * Es llamada desde DesktopLoginBox si el login fue exito.
+     * Primero carga el JMenu Archivo comun a todos los usuarios.
+     * Despues carga los JMenu de acuerdo a los roles asignados al usuario logueado.
+     * Finalmente carga los JMenu Ventanas y Ayuda comunes a todos los usuarios.
      */
     public void cargaInicial() {
 
@@ -295,6 +222,7 @@ public class DesktopView extends FrameView {
         JMenuItem loginMenuItem = new JMenuItem();
         JMenuItem exitMenuItem = new JMenuItem();
         JMenu ventanaMenu = new JMenu();
+        JMenuItem lookMenuItem = new JMenuItem();
         JMenu helpMenu = new JMenu();
         JMenuItem aboutMenuItem = new JMenuItem();
         UsuariosT usuariosT = DesktopApp.getApplication().getUsuarioLogueado();
@@ -327,7 +255,7 @@ public class DesktopView extends FrameView {
                         JMenu m = new JMenu();
                         m.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
                         m.setName(rolesT.getComponente()); // NOI18N
-                        m = cargarMenu(m, rolesT);
+                        m = cargarMenu(m, rolesT, resourceMap, actionMap);
                         menuBar.add(m);
                     }
                 }
@@ -337,7 +265,11 @@ public class DesktopView extends FrameView {
 
         ventanaMenu.setText(resourceMap.getString("ventanaMenu.text")); // NOI18N
         ventanaMenu.setName("ventanaMenu"); // NOI18N
-        
+
+        lookMenuItem.setAction(actionMap.get("changeLookFeel")); // NOI18N
+        lookMenuItem.setName("lookMenuItem"); // NOI18N
+        ventanaMenu.add(lookMenuItem);
+
         menuBar.add(ventanaMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
@@ -352,12 +284,131 @@ public class DesktopView extends FrameView {
         setMenuBar(menuBar);
     }
 
-    //Funcion recursiva para poblar la barra de menu.
-    private JMenu cargarMenu(JMenu m, RolesT rolPadreT) {
+    /**
+     * Muestra el frame de Acerca de...
+     */
+    @Action
+    public void showAboutBox() {
+        if (aboutBox == null) {
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            aboutBox = new DesktopAboutBox(mainFrame);
+            aboutBox.setLocationRelativeTo(mainFrame);
+        }
+        DesktopApp.getApplication().show(aboutBox);
+    }
 
-        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
-        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
+    /**
+     * Cambia el Look&Feel .
+     * Rota entre el lookAndFeel NimROD y el lookAndFeel por defecto del sistema.
+     */
+    @Action
+    public void changeLookFeel() {
+        try {
+            if (UIManager.getLookAndFeel().getName().equals("NimROD")) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } else {
+                UIManager.setLookAndFeel("com.nilo.plaf.nimrod.NimRODLookAndFeel");
+            }
+            SwingUtilities.updateComponentTreeUI(this.getFrame());
+            this.getFrame().invalidate();
+            this.getFrame().validate();
+            this.getFrame().repaint();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DesktopView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(DesktopView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DesktopView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(DesktopView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    /**
+     * Muestra el InternalFrame GestionUsuarios
+     */
+    @Action
+    public void showGestionUsuariosFrame() {
+
+        JInternalFrame x = verificarInternalFrame("ar.com.jpack.desktop.administracion.GestionUsuarios");
+        if (x != null) {
+            desktopPanel.getDesktopManager().activateFrame(x);
+        } else {
+            GestionUsuarios f =  new GestionUsuarios();
+            f.setVisible(true);
+            desktopPanel.add(f);
+            desktopPanel.getDesktopManager().activateFrame(f);
+        }
+        this.statusMessageLabel.setText("Articulos por accion");
+
+//        
+//        JInternalFrame f = GestionUsuarios.getGestionUsuarios();
+//        JInternalFrame[] list = desktopPanel.getAllFrames();
+//        f.setVisible(true);
+//        f.setLocation(500, 500);
+//        if (list.length == 0) {
+//            desktopPanel.add(f);
+//        } else {
+//            for (int i = 0; i < list.length; i++) {
+//                JInternalFrame j = list[i];
+//                if (j.getClass() == f.getClass()) {
+//                    desktopPanel.getDesktopManager().activateFrame(f);
+//                }
+//            }
+//        }
+//        desktopPanel.getDesktopManager().activateFrame(f);
+//        this.statusMessageLabel.setText("GestionarUsuarios por accion");
+    }
+//    @Action
+//    public void showRolesFrame() {
+//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
+//        if (x != null) {
+//            desktopPanel.getDesktopManager().activateFrame(x);
+//        } else {
+//            RolesFrame rolesFrame = new RolesFrame();
+//            rolesFrame.setVisible(true);
+//            desktopPanel.add(rolesFrame);
+//            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
+//        }
+//        this.statusMessageLabel.setText("Roles por accion");
+//    }
+//    @Action
+//    public void showArticulosFrame() {
+//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
+//        if (x != null) {
+//            desktopPanel.getDesktopManager().activateFrame(x);
+//        } else {
+//            ArticulosFrame articulosFrame = new ArticulosFrame();
+//            articulosFrame.setVisible(true);
+//            desktopPanel.add(articulosFrame);
+//            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
+//        }
+//        this.statusMessageLabel.setText("Articulos por accion");
+//    }
+    /**
+     * 
+     */
+    @Action
+    public void closeAllFrames() {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        int i = 0;
+        while (i < internalFrames.length) {
+            internalFrames[i].dispose();
+            i++;
+        }
+    }
+
+    /**
+     * Funcion recursiva para poblar el JMenu con los JMenu y los JMenuItems que dependen de el.
+     * @param m JMenu que aun posee JMenu y/o JMenuItems que dependen de el.
+     * @param rolPadreT Rol que define los datos del JMenu.
+     * - para el caso de un JMenu define el nombre del componente.
+     * - para el caso de un JMenuItem define la funcion que ejecutara.
+     * @param resourceMap
+     * @param actionMap
+     * @return Devuelve el JMenu con todos los JMenu y JMenuItems que dependen de el.
+     */
+    private JMenu cargarMenu(JMenu m, RolesT rolPadreT, ResourceMap resourceMap, ActionMap actionMap) {
         for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
             RolesT rolesT = it.next();
             if (rolesT.getIdRolPadre() != null) {
@@ -366,7 +417,7 @@ public class DesktopView extends FrameView {
                         JMenu menuHijo = new JMenu();
                         menuHijo.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
                         menuHijo.setName(rolesT.getComponente()); // NOI18N
-                        menuHijo = cargarMenu(menuHijo, rolesT);
+                        menuHijo = cargarMenu(menuHijo, rolesT, resourceMap, actionMap);
                         m.add(menuHijo);
                     } else {
                         JMenuItem item = new JMenuItem();
@@ -374,10 +425,24 @@ public class DesktopView extends FrameView {
                         item.setName(rolesT.getComponente()); // NOI18N
                         m.add(item);
                     }
-
                 }
             }
         }
         return m;
     }
+
+    private JInternalFrame verificarInternalFrame(String clase) {
+        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
+        JInternalFrame x = null;
+        int i = 0;
+        while ((i < internalFrames.length) && (x == null)) {
+            JInternalFrame jInternalFrame = internalFrames[i];
+            if (jInternalFrame.getClass().getCanonicalName().equals(clase)) {
+                x = jInternalFrame;
+            }
+            i++;
+        }
+        return x;
+    }
 }
+

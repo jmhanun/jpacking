@@ -9,19 +9,10 @@ import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
 /**
- *
+ * JDialog modal que se utiliza para loguearse a la aplicacion
  * @author  jmhanun
  */
 public class DesktopLoginBox extends javax.swing.JDialog {
-
-    /** Creates new form DesktopLoginBox
-     * @param parent 
-     */
-    public DesktopLoginBox(java.awt.Frame parent) {
-        super(parent);
-        initComponents();
-        getRootPane().setDefaultButton(aceptarButton);
-    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -41,11 +32,12 @@ public class DesktopLoginBox extends javax.swing.JDialog {
         salirButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(DesktopLoginBox.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setModal(true);
         setName("Form"); // NOI18N
         setResizable(false);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(DesktopLoginBox.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -125,8 +117,21 @@ public class DesktopLoginBox extends javax.swing.JDialog {
     private ar.com.jpack.transferencia.UsuariosT usuariosT;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+    /** Creates new form DesktopLoginBox
+     * @param parent - Frame al cual depende
+     */
+    public DesktopLoginBox(java.awt.Frame parent) {
+        super(parent);
+        initComponents();
+        DesktopApp.getApplication().getDesktopView().cargaInicial();
+        getRootPane().setDefaultButton(aceptarButton);
+    }
+
     /**
-     * 
+     * Valida los datos ingresados en el Frame.
+     * Si los datos concuerdan con algun registro en la tabla de Usuarios
+     * asigna el registro en usuarioLogueado del DesktopApp.
+     * En caso contrario limpia los campos y vuelve a preguntar.
      */
     @Action
     public void validarLogin() {
