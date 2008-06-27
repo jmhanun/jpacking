@@ -27,10 +27,12 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.jdesktop.application.Application;
+import org.jdesktop.application.Task;
 
 /**
  * The application's main frame.
@@ -273,7 +275,7 @@ public class DesktopView extends FrameView {
         ventanaMenu.add(lookMenuItem);
 
         ventanaMenu.add(new JSeparator());
-        
+
         closeAllMenuItem.setAction(actionMap.get("closeAllFrames")); // NOI18N
         closeAllMenuItem.setName("closeAllMenuItem"); // NOI18N
         ventanaMenu.add(closeAllMenuItem);
@@ -348,44 +350,61 @@ public class DesktopView extends FrameView {
 
     /**
      * Muestra el InternalFrame GestionUsuarios
+     * @return Devuelve la tarea de mostrar el InternalFrame GestionUsuarios.
+     * Corre en un hilo independiente.
      */
     @Action
-    public void showGestionUsuariosFrame() {
+    public Task showGestionUsuariosFrame() {
+        return new ShowGestionUsuariosFrame(getApplication());
 
-        JInternalFrame f = GestionUsuarios.getGestionUsuarios();
-        if (!isOpen(f)) {
-            desktopPanel.add(f);
-        }
-        f.setVisible(true);
-        desktopPanel.getDesktopManager().activateFrame(f);
-        this.statusMessageLabel.setText("GestionUsuarios por accion");
     }
-//    @Action
-//    public void showRolesFrame() {
-//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.RolesFrame");
-//        if (x != null) {
-//            desktopPanel.getDesktopManager().activateFrame(x);
-//        } else {
-//            RolesFrame rolesFrame = new RolesFrame();
-//            rolesFrame.setVisible(true);
-//            desktopPanel.add(rolesFrame);
-//            desktopPanel.getDesktopManager().activateFrame(rolesFrame);
-//        }
-//        this.statusMessageLabel.setText("Roles por accion");
-//    }
-//    @Action
-//    public void showArticulosFrame() {
-//        JInternalFrame x = verificarInternalFrame("ar.com.jpack.app.gui.ArticulosFrame");
-//        if (x != null) {
-//            desktopPanel.getDesktopManager().activateFrame(x);
-//        } else {
-//            ArticulosFrame articulosFrame = new ArticulosFrame();
-//            articulosFrame.setVisible(true);
-//            desktopPanel.add(articulosFrame);
-//            desktopPanel.getDesktopManager().activateFrame(articulosFrame);
-//        }
-//        this.statusMessageLabel.setText("Articulos por accion");
-//    }
+
+    /**
+     * InnerClass para mostrar el InternalFrame GestionUsuarios
+     * @author jmhanun
+     */
+    class ShowGestionUsuariosFrame extends Task<String, Void> {
+
+        public ShowGestionUsuariosFrame(Application application) {
+            super(application);
+        }
+
+        @Override
+        protected String doInBackground() throws Exception {
+            JInternalFrame f = GestionUsuarios.getGestionUsuarios();
+            if (!isOpen(f)) {
+                desktopPanel.add(f);
+            }
+            f.setVisible(true);
+            desktopPanel.getDesktopManager().activateFrame(f);
+            return "Gestion de Usuarios";
+        }
+
+        @Override
+        protected void succeeded(String result) {
+            super.succeeded(result);
+            statusMessageLabel.setText(result);
+            messageTimer.restart();
+        }
+
+        @Override
+        protected void cancelled() {
+            super.cancelled();
+            JOptionPane.showMessageDialog(desktopPanel, "La tarea ha sido cancelada.");
+        }
+
+        @Override
+        protected void failed(Throwable cause) {
+            super.failed(cause);
+            JOptionPane.showMessageDialog(desktopPanel, "No es posible acceder a la base. Consulte con el administrador.");
+        }
+
+        @Override
+        protected void finished() {
+            super.finished();
+        }
+    }
+
     /**
      * Funcion recursiva para poblar el JMenu con los JMenu y los JMenuItems que dependen de el.
      * @param m JMenu que aun posee JMenu y/o JMenuItems que dependen de el.
@@ -435,20 +454,6 @@ public class DesktopView extends FrameView {
             i++;
         }
         return open;
-    }
-
-    private JInternalFrame verificarInternalFrame(String clase) {
-        JInternalFrame[] internalFrames = desktopPanel.getAllFrames();
-        JInternalFrame x = null;
-        int i = 0;
-        while ((i < internalFrames.length) && (x == null)) {
-            JInternalFrame jInternalFrame = internalFrames[i];
-            if (jInternalFrame.getClass().getCanonicalName().equals(clase)) {
-                x = jInternalFrame;
-            }
-            i++;
-        }
-        return x;
     }
 }
 
