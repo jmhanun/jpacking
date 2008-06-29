@@ -36,7 +36,6 @@ public class GestionUsuarios extends JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree = new javax.swing.JTree();
         derPanel = new javax.swing.JPanel();
-        deshabilitarButton = new javax.swing.JButton();
         nuevoButton = new javax.swing.JButton();
         tabPanel = new javax.swing.JTabbedPane();
         datosPanel = new javax.swing.JPanel();
@@ -54,6 +53,7 @@ public class GestionUsuarios extends JInternalFrame {
         contrasenaPasswordField = new javax.swing.JPasswordField();
         grabarButton = new javax.swing.JButton();
         rolesPanel = new javax.swing.JPanel();
+        deshabilitarToggleButton = new javax.swing.JToggleButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -90,9 +90,6 @@ public class GestionUsuarios extends JInternalFrame {
         jSplitPane.setLeftComponent(izqPanel);
 
         derPanel.setName("derPanel"); // NOI18N
-
-        deshabilitarButton.setText(resourceMap.getString("deshabilitarButton.text")); // NOI18N
-        deshabilitarButton.setName("deshabilitarButton"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(GestionUsuarios.class, this);
         nuevoButton.setAction(actionMap.get("nuevoUsuario")); // NOI18N
@@ -162,7 +159,6 @@ public class GestionUsuarios extends JInternalFrame {
         });
 
         grabarButton.setAction(actionMap.get("grabarUsuario")); // NOI18N
-        grabarButton.setEnabled(false);
         grabarButton.setName("grabarButton"); // NOI18N
 
         javax.swing.GroupLayout datosPanelLayout = new javax.swing.GroupLayout(datosPanel);
@@ -244,6 +240,10 @@ public class GestionUsuarios extends JInternalFrame {
 
         tabPanel.addTab(resourceMap.getString("rolesPanel.TabConstraints.tabTitle"), rolesPanel); // NOI18N
 
+        deshabilitarToggleButton.setAction(actionMap.get("deshabilitarUsuario")); // NOI18N
+        deshabilitarToggleButton.setText(resourceMap.getString("deshabilitarToggleButton.text")); // NOI18N
+        deshabilitarToggleButton.setName("deshabilitarToggleButton"); // NOI18N
+
         javax.swing.GroupLayout derPanelLayout = new javax.swing.GroupLayout(derPanel);
         derPanel.setLayout(derPanelLayout);
         derPanelLayout.setHorizontalGroup(
@@ -253,11 +253,11 @@ public class GestionUsuarios extends JInternalFrame {
                 .addContainerGap(133, Short.MAX_VALUE)
                 .addComponent(nuevoButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deshabilitarButton)
+                .addComponent(deshabilitarToggleButton)
                 .addContainerGap())
         );
 
-        derPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deshabilitarButton, nuevoButton});
+        derPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deshabilitarToggleButton, nuevoButton});
 
         derPanelLayout.setVerticalGroup(
             derPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +265,7 @@ public class GestionUsuarios extends JInternalFrame {
                 .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(derPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deshabilitarButton)
+                    .addComponent(deshabilitarToggleButton)
                     .addComponent(nuevoButton))
                 .addContainerGap())
         );
@@ -328,7 +328,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private javax.swing.JPasswordField contrasenaPasswordField;
     private javax.swing.JPanel datosPanel;
     private javax.swing.JPanel derPanel;
-    private javax.swing.JButton deshabilitarButton;
+    private javax.swing.JToggleButton deshabilitarToggleButton;
     private javax.swing.JTextField emailTextField;
     private javax.swing.JTextField estadoTextField;
     private javax.swing.JButton grabarButton;
@@ -372,8 +372,8 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         for (Iterator<UsuariosT> it = usuariosTs.iterator(); it.hasNext();) {
             UsuariosT usuario = it.next();
             if (usu != null) {
-                if (usu.equals(usuario)) {
-                    index = iteration;
+                if (usu.toString().equals(usuario.toString())) {
+                    index = iteration + 1;
                 }
             }
             DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
@@ -392,6 +392,11 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         this.estadoTextField.setText(usuariosT.getIdEstado() != null ? usuariosT.getIdEstado().getDescripcion() : "");
         this.nombresTextField.setText(usuariosT.getNombres());
         this.usuarioTextField.setText(usuariosT.getUsuario());
+        if (usuariosT.getIdEstado() != null) {
+            this.deshabilitarToggleButton.setSelected(usuariosT.getIdEstado().getIdEstado() == 1 ? false : true);
+        } else {
+            this.deshabilitarToggleButton.setSelected(false);
+        }
     }
 
     @Action
@@ -408,5 +413,15 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         grabarButton.setEnabled(true);
         usuarioTextField.setEnabled(true);
         contrasenaPasswordField.setEnabled(true);
+    }
+
+    @Action
+    public void deshabilitarUsuario() {
+        if (usuariosT.getIdEstado().getIdEstado() == 1) {
+            usuariosT.getIdEstado().setIdEstado(3);
+        } else {
+            usuariosT.getIdEstado().setIdEstado(1);
+        }
+        grabarUsuario();
     }
 }

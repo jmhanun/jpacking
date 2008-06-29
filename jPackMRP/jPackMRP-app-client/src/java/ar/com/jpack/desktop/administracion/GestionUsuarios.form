@@ -102,9 +102,9 @@
                   <Component id="tabPanel" alignment="0" pref="327" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="133" max="32767" attributes="0"/>
-                      <Component id="nuevoButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="nuevoButton" linkSize="4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="deshabilitarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="deshabilitarToggleButton" linkSize="4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -115,7 +115,7 @@
                       <Component id="tabPanel" pref="312" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="deshabilitarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="deshabilitarToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="nuevoButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -124,12 +124,6 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="deshabilitarButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="deshabilitarButton.text"/>
-                <Property name="name" type="java.lang.String" value="deshabilitarButton" noResource="true"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JButton" name="nuevoButton">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -319,7 +313,6 @@
                         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                           <action class="ar.com.jpack.desktop.administracion.GestionUsuarios" id="grabarUsuario" methodName="grabarUsuario"/>
                         </Property>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="grabarButton" noResource="true"/>
                       </Properties>
                     </Component>
@@ -352,6 +345,15 @@
                 </Container>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JToggleButton" name="deshabilitarToggleButton">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="ar.com.jpack.desktop.administracion.GestionUsuarios" id="deshabilitarUsuario" methodName="deshabilitarUsuario"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="deshabilitarToggleButton.text"/>
+                <Property name="name" type="java.lang.String" value="deshabilitarToggleButton" noResource="true"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
