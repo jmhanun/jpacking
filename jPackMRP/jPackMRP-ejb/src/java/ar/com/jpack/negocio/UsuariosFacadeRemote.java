@@ -16,7 +16,11 @@ import javax.ejb.Remote;
 @Remote
 public interface UsuariosFacadeRemote {
 
-    void create(Usuarios usuarios);
+    public UsuariosT editUsuariosT(UsuariosT usuariosT);
+
+    public List<UsuariosT> findAllUsuariosT();
+
+    Usuarios create(Usuarios usuarios);
 
     void edit(Usuarios usuarios);
 

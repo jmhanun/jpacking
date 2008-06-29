@@ -4,6 +4,7 @@
  */
 package ar.com.jpack.negocio;
 
+import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.transferencia.RolesT;
@@ -33,8 +34,9 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(Usuarios usuarios) {
+    public Usuarios create(Usuarios usuarios) {
         em.persist(usuarios);
+        return usuarios;
     }
 
     public void edit(Usuarios usuarios) {
@@ -94,5 +96,39 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
             }
         }
         return hexString;
+    }
+
+    public List<UsuariosT> findAllUsuariosT() {
+        List<Usuarios> usuarios = findAll();
+        return DataTransferHelper.copiarUsuariosALista(usuarios);
+    }
+
+    public UsuariosT editUsuariosT(UsuariosT usuariosT) {
+        Usuarios usuarios = new Usuarios();
+
+        //si el numero de usuario es null, significa que es un nuevo usuario.
+        if (usuariosT.getIdUsuario() != null) {
+            usuarios = em.find(Usuarios.class, usuariosT.getIdUsuario());
+            
+            usuarios.setApellidos(usuariosT.getApellidos());
+            usuarios.setMails(usuariosT.getMails());
+            usuarios.setNombres(usuariosT.getNombres());            
+            edit(usuarios);
+        } else {
+            StringBuffer codificado = codificar(usuariosT.getContrasena());
+            usuariosT.setContrasena(codificado.toString());
+            usuarios.setApellidos(usuariosT.getApellidos());
+            usuarios.setContrasena(usuariosT.getContrasena());
+            usuarios.setMails(usuariosT.getMails());
+            usuarios.setNombres(usuariosT.getNombres());
+            usuarios.setUsuario(usuariosT.getUsuario());
+            Estados estado = em.find(Estados.class, 1);
+            usuarios.setIdEstado(estado);
+            usuarios.setTelefonos("");
+            
+            create(usuarios);
+            em.flush();
+        }
+        return DataTransferHelper.copiarUsuario(usuarios);
     }
 }

@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -31,6 +33,7 @@ public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUsuario", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idUsuario;
     @Column(name = "usuario", nullable = false)
     private String usuario;

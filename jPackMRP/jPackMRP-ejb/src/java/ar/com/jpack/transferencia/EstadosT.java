@@ -183,6 +183,9 @@ public class EstadosT implements Serializable {
     public void setUsuariosCollection(Collection<UsuariosT> usuariosCollection) {
         this.usuariosCollection = usuariosCollection;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return getDescripcion();
+    }
 }

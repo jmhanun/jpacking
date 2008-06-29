@@ -119,4 +119,9 @@ public class UsuariosT implements Serializable {
     public void setIdEstado(EstadosT idEstado) {
         this.idEstado = idEstado;
     }
+
+    @Override
+    public String toString() {
+        return getUsuario();
+    }
 }
