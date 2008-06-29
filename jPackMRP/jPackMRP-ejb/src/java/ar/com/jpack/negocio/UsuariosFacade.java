@@ -109,10 +109,11 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         //si el numero de usuario es null, significa que es un nuevo usuario.
         if (usuariosT.getIdUsuario() != null) {
             usuarios = em.find(Usuarios.class, usuariosT.getIdUsuario());
-            
             usuarios.setApellidos(usuariosT.getApellidos());
             usuarios.setMails(usuariosT.getMails());
-            usuarios.setNombres(usuariosT.getNombres());            
+            usuarios.setNombres(usuariosT.getNombres()); 
+            Estados estado = em.find(Estados.class, usuariosT.getIdEstado().getIdEstado());
+            usuarios.setIdEstado(estado);
             edit(usuarios);
         } else {
             StringBuffer codificado = codificar(usuariosT.getContrasena());
@@ -125,7 +126,6 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
             Estados estado = em.find(Estados.class, 1);
             usuarios.setIdEstado(estado);
             usuarios.setTelefonos("");
-            
             create(usuarios);
             em.flush();
         }
