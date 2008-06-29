@@ -130,7 +130,7 @@ public class DesktopView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
-
+//<editor-fold defaultstate="coolapsed" desc="Declaracion de variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPanel;
     private javax.swing.JPanel mainPanel;
@@ -147,7 +147,7 @@ public class DesktopView extends FrameView {
     private int busyIconIndex = 0;
     private JDialog aboutBox;
     ArrayList<RolesT> rolesTs;
-
+//</editor-fold>
     /**
      * Instancia el DesktopView indicandole el DesktopApp de quien depende.
      * @param app - DesktopApp del cual depende el DesktopView
@@ -210,6 +210,11 @@ public class DesktopView extends FrameView {
                 }
             }
         });
+    }
+
+    public void setStatusMessage(String result) {
+        statusMessageLabel.setText(result);
+        messageTimer.restart();
     }
 
     /**
@@ -371,6 +376,7 @@ public class DesktopView extends FrameView {
 
         @Override
         protected String doInBackground() throws Exception {
+            statusMessageLabel.setText("Abriendo Gestion de Usuarios...");
             JInternalFrame f = GestionUsuarios.getGestionUsuarios();
             if (!isOpen(f)) {
                 desktopPanel.add(f);
@@ -383,8 +389,7 @@ public class DesktopView extends FrameView {
         @Override
         protected void succeeded(String result) {
             super.succeeded(result);
-            statusMessageLabel.setText(result);
-            messageTimer.restart();
+            setStatusMessage(result);
         }
 
         @Override

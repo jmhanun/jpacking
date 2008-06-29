@@ -7,6 +7,7 @@ import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,15 +158,45 @@ public class DesktopApp extends SingleFrameApplication {
      * - false si el usuarioT no existe en la BD
      */
     public Boolean isUsuario(UsuariosT usuariosT) {
-        try {
-            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            //valida los datos en la base y los asigna a usuarioLogueado
-            setUsuarioLogueado(usuariosFacade.validarUsuario(usuariosT));
-            if (getUsuarioLogueado().getIdUsuario() != null) {
-                return true;
+        if (usuariosT != null) {
+            if (usuariosT.getUsuario() != null && usuariosT.getContrasena() != null) {
+                try {
+                    usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+                    //valida los datos en la base y los asigna a usuarioLogueado
+                    setUsuarioLogueado(usuariosFacade.validarUsuario(usuariosT));
+                    if (getUsuarioLogueado().getIdUsuario() != null) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (NamingException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+                    Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
             } else {
                 return false;
             }
+        } else {
+            return false;
+        }
+    }
+
+    public List<UsuariosT> getAllUsuarios() {
+        try {
+            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            return usuariosFacade.findAllUsuariosT();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public UsuariosT grabarUsuarioT(UsuariosT usuariosT) {
+        try {
+            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            return usuariosFacade.editUsuariosT(usuariosT);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,13 +209,14 @@ public class DesktopApp extends SingleFrameApplication {
      */
     @Action
     public void showLoginBox() {
+        getDesktopView().closeAllFrames();
         JFrame mainFrame = getApplication().getMainFrame();
         loginBox = new DesktopLoginBox(mainFrame);
         loginBox.setLocationRelativeTo(mainFrame);
         getApplication().show(loginBox);
     }
 
-    private Object lookUp(String canonicalName) throws NamingException {
+    private synchronized Object lookUp(String canonicalName) throws NamingException {
         return DesktopApp.getContexto().lookup(canonicalName);
     }
 }

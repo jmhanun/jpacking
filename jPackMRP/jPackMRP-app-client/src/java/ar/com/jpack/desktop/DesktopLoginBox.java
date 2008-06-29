@@ -137,9 +137,14 @@ public class DesktopLoginBox extends javax.swing.JDialog {
     public void validarLogin() {
 
         if (DesktopApp.getApplication().isUsuario(usuariosT)) {
-            this.setVisible(false);
-            DesktopApp.getApplication().getDesktopView().cargaInicial();
-            this.dispose();
+            if (DesktopApp.getApplication().getUsuarioLogueado().getIdEstado().getIdEstado() == 1) {
+                this.setVisible(false);
+                DesktopApp.getApplication().getDesktopView().cargaInicial();
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "El usuario ingresado no esta habilitado");
+                usuarioTextField.requestFocus();
+            }
         } else {
             usuariosT.setNombres(null);
             usuariosT.setContrasena(null);
