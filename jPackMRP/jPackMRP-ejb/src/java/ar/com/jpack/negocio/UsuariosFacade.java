@@ -105,23 +105,20 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
 
     public UsuariosT editUsuariosT(UsuariosT usuariosT) {
         Usuarios usuarios = new Usuarios();
-
+        usuarios.setApellidos(usuariosT.getApellidos());
+        usuarios.setMails(usuariosT.getMails());
+        usuarios.setNombres(usuariosT.getNombres());
         //si el numero de usuario es null, significa que es un nuevo usuario.
         if (usuariosT.getIdUsuario() != null) {
             usuarios = em.find(Usuarios.class, usuariosT.getIdUsuario());
-            usuarios.setApellidos(usuariosT.getApellidos());
-            usuarios.setMails(usuariosT.getMails());
-            usuarios.setNombres(usuariosT.getNombres()); 
+            usuarios.setUltimoAcceso(usuariosT.getUltimoAcceso());
             Estados estado = em.find(Estados.class, usuariosT.getIdEstado().getIdEstado());
             usuarios.setIdEstado(estado);
             edit(usuarios);
         } else {
             StringBuffer codificado = codificar(usuariosT.getContrasena());
             usuariosT.setContrasena(codificado.toString());
-            usuarios.setApellidos(usuariosT.getApellidos());
             usuarios.setContrasena(usuariosT.getContrasena());
-            usuarios.setMails(usuariosT.getMails());
-            usuarios.setNombres(usuariosT.getNombres());
             usuarios.setUsuario(usuariosT.getUsuario());
             Estados estado = em.find(Estados.class, 1);
             usuarios.setIdEstado(estado);
