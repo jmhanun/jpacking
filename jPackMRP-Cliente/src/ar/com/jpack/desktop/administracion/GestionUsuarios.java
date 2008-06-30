@@ -6,9 +6,11 @@
 package ar.com.jpack.desktop.administracion;
 // <editor-fold defaultstate="collapsed" desc="Imports">
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -54,6 +56,12 @@ public class GestionUsuarios extends JInternalFrame {
         contrasenaPasswordField = new javax.swing.JPasswordField();
         grabarButton = new javax.swing.JButton();
         rolesPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         deshabilitarToggleButton = new javax.swing.JToggleButton();
 
         setClosable(true);
@@ -228,15 +236,65 @@ public class GestionUsuarios extends JInternalFrame {
 
         rolesPanel.setName("rolesPanel"); // NOI18N
 
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jList1.setName("jList1"); // NOI18N
+        jScrollPane2.setViewportView(jList1);
+
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        jList2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jList2.setName("jList2"); // NOI18N
+        jScrollPane3.setViewportView(jList2);
+
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+
+        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
+        jButton2.setName("jButton2"); // NOI18N
+
         javax.swing.GroupLayout rolesPanelLayout = new javax.swing.GroupLayout(rolesPanel);
         rolesPanel.setLayout(rolesPanelLayout);
         rolesPanelLayout.setHorizontalGroup(
             rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 319, Short.MAX_VALUE)
+            .addGroup(rolesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        rolesPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane2, jScrollPane3});
+
         rolesPanelLayout.setVerticalGroup(
             rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
+            .addGroup(rolesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(rolesPanelLayout.createSequentialGroup()
+                        .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rolesPanelLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(103, 103, 103))))
         );
 
         tabPanel.addTab(resourceMap.getString("rolesPanel.TabConstraints.tabTitle"), rolesPanel); // NOI18N
@@ -334,13 +392,19 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private javax.swing.JTextField estadoTextField;
     private javax.swing.JButton grabarButton;
     private javax.swing.JPanel izqPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JList jList1;
+    private javax.swing.JList jList2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JTree jTree;
     private javax.swing.JTextField nombresTextField;
@@ -351,6 +415,8 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private ar.com.jpack.transferencia.UsuariosT usuariosT;
     // End of variables declaration//GEN-END:variables
     private static GestionUsuarios gestionUsuarios = new GestionUsuarios();
+    private List<RolesT> disponiblesRolesTs = null;
+    private List<RolesT> asignadosRolesTs = null;
 //</editor-fold>
     /** Creates new form GestionUsuarios */
     private GestionUsuarios() {
@@ -384,6 +450,12 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         jTree.setModel(new DefaultTreeModel(padre));
         jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         jTree.setSelectionRow(index);
+        datosPanel.requestFocus();
+        if (index > 0) {
+            rolesPanel.setEnabled(false);
+        }else{
+            rolesPanel.setEnabled(true);
+        }
     }
 
     private void cargar() {
@@ -418,15 +490,21 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
     @Action
     public void deshabilitarUsuario() {
-        if (usuariosT.getIdUsuario() != DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario()) {
-            if (usuariosT.getIdEstado().getIdEstado() == 1) {
-                usuariosT.getIdEstado().setIdEstado(3);
+        if (usuariosT.getIdUsuario() != null) {
+            if (!usuariosT.getIdUsuario().equals(DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario())) {
+                if (usuariosT.getIdEstado().getIdEstado() == 1) {
+                    usuariosT.getIdEstado().setIdEstado(3);
+                } else {
+                    usuariosT.getIdEstado().setIdEstado(1);
+                }
+                grabarUsuario();
             } else {
-                usuariosT.getIdEstado().setIdEstado(1);
+                JOptionPane.showMessageDialog(this, "No es posible deshabilitar el usuario, ya que es SU usuario");
             }
-            grabarUsuario();
-        } else {
-            JOptionPane.showMessageDialog(this, "No es posible deshabilitar el usuario, ya que es SU usuario");
         }
+    }
+
+    @Action
+    public void agregarRoles() {
     }
 }

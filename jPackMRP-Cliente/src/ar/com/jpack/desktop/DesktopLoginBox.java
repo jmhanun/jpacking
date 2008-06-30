@@ -5,6 +5,7 @@
  */
 package ar.com.jpack.desktop;
 
+import java.util.Date;
 import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
@@ -138,6 +139,8 @@ public class DesktopLoginBox extends javax.swing.JDialog {
 
         if (DesktopApp.getApplication().isUsuario(usuariosT)) {
             if (DesktopApp.getApplication().getUsuarioLogueado().getIdEstado().getIdEstado() == 1) {
+                DesktopApp.getApplication().getUsuarioLogueado().setUltimoAcceso(new Date());
+                DesktopApp.getApplication().grabarUsuarioT(DesktopApp.getApplication().getUsuarioLogueado());
                 this.setVisible(false);
                 DesktopApp.getApplication().getDesktopView().cargaInicial();
                 this.dispose();
