@@ -9,8 +9,10 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -57,11 +59,11 @@ public class GestionUsuarios extends JInternalFrame {
         grabarButton = new javax.swing.JButton();
         rolesPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        disponiblesList = new javax.swing.JList();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        asignadosList = new javax.swing.JList();
+        agregarRolButton = new javax.swing.JButton();
+        quitarRolButton = new javax.swing.JButton();
         deshabilitarToggleButton = new javax.swing.JToggleButton();
 
         setClosable(true);
@@ -238,63 +240,65 @@ public class GestionUsuarios extends JInternalFrame {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        disponiblesList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane2.setViewportView(jList1);
+        disponiblesList.setName("disponiblesList"); // NOI18N
+        jScrollPane2.setViewportView(disponiblesList);
 
         jScrollPane3.setName("jScrollPane3"); // NOI18N
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        asignadosList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList2.setName("jList2"); // NOI18N
-        jScrollPane3.setViewportView(jList2);
+        asignadosList.setName("asignadosList"); // NOI18N
+        jScrollPane3.setViewportView(asignadosList);
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        agregarRolButton.setAction(actionMap.get("agregarRoles")); // NOI18N
+        agregarRolButton.setText(resourceMap.getString("agregarRolButton.text")); // NOI18N
+        agregarRolButton.setName("agregarRolButton"); // NOI18N
 
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
+        quitarRolButton.setAction(actionMap.get("quitarRoles")); // NOI18N
+        quitarRolButton.setText(resourceMap.getString("quitarRolButton.text")); // NOI18N
+        quitarRolButton.setName("quitarRolButton"); // NOI18N
 
         javax.swing.GroupLayout rolesPanelLayout = new javax.swing.GroupLayout(rolesPanel);
         rolesPanel.setLayout(rolesPanelLayout);
         rolesPanelLayout.setHorizontalGroup(
             rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rolesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, rolesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, rolesPanelLayout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(agregarRolButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(quitarRolButton)))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
-        rolesPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane2, jScrollPane3});
+        rolesPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {agregarRolButton, quitarRolButton});
 
         rolesPanelLayout.setVerticalGroup(
             rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rolesPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rolesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(rolesPanelLayout.createSequentialGroup()
-                        .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rolesPanelLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(103, 103, 103))))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(rolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregarRolButton)
+                    .addComponent(quitarRolButton))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         tabPanel.addTab(resourceMap.getString("rolesPanel.TabConstraints.tabTitle"), rolesPanel); // NOI18N
@@ -344,16 +348,21 @@ private void jTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
     if (node == null) {
         usuariosT = new UsuariosT();
+        tabPanel.setEnabledAt(1, false);
     } else {
         if (node.getUserObject() instanceof UsuariosT) {
             usuariosT = (UsuariosT) node.getUserObject();
+            tabPanel.setEnabledAt(1, true);
         } else {
             usuariosT = new UsuariosT();
+            tabPanel.setEnabledAt(1, false);
         }
     }
+    tabPanel.setSelectedIndex(0);
     grabarButton.setEnabled(false);
     usuarioTextField.setEnabled(false);
     contrasenaPasswordField.setEnabled(false);
+    disponiblesList.clearSelection();
     cargar();
 }//GEN-LAST:event_jTreeValueChanged
 
@@ -383,25 +392,24 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_emailTextFieldKeyTyped
     //<editor-fold defaultstate="collapsed" desc="Declaracion de variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarRolButton;
     private javax.swing.JTextField apellidosTextField;
+    private javax.swing.JList asignadosList;
     private javax.swing.JPasswordField contrasenaPasswordField;
     private javax.swing.JPanel datosPanel;
     private javax.swing.JPanel derPanel;
     private javax.swing.JToggleButton deshabilitarToggleButton;
+    private javax.swing.JList disponiblesList;
     private javax.swing.JTextField emailTextField;
     private javax.swing.JTextField estadoTextField;
     private javax.swing.JButton grabarButton;
     private javax.swing.JPanel izqPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -409,6 +417,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private javax.swing.JTree jTree;
     private javax.swing.JTextField nombresTextField;
     private javax.swing.JButton nuevoButton;
+    private javax.swing.JButton quitarRolButton;
     private javax.swing.JPanel rolesPanel;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JTextField usuarioTextField;
@@ -433,6 +442,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private void iniciar(UsuariosT usu) {
         ResourceMap resourceMap = DesktopApp.getApplication().getContext().getResourceMap(GestionUsuarios.class);
         ArrayList<UsuariosT> usuariosTs = (ArrayList<UsuariosT>) DesktopApp.getApplication().getAllUsuarios();
+        ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) DesktopApp.getApplication().getAllRoles();
         DefaultMutableTreeNode padre = new DefaultMutableTreeNode(resourceMap.getString("usuarios"));
         int index = -1;
         int iteration = 0;
@@ -447,15 +457,17 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
             padre.add(hijo);
             iteration++;
         }
+        DefaultListModel disponiblesListModel = new DefaultListModel();
+        for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
+            RolesT rolesT = it.next();
+            if (rolesT.getFuncion() != null) {
+                disponiblesListModel.addElement(rolesT);
+            }
+        }
+        disponiblesList.setModel(disponiblesListModel);
         jTree.setModel(new DefaultTreeModel(padre));
         jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         jTree.setSelectionRow(index);
-        datosPanel.requestFocus();
-        if (index > 0) {
-            rolesPanel.setEnabled(false);
-        }else{
-            rolesPanel.setEnabled(true);
-        }
     }
 
     private void cargar() {
@@ -470,6 +482,14 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         } else {
             this.deshabilitarToggleButton.setSelected(false);
         }
+        DefaultListModel asignadosListModel = new DefaultListModel();
+        for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+            RolesT rolesT = it.next();
+            if (rolesT.getFuncion() != null) {
+                asignadosListModel.addElement(rolesT);
+            }
+        }
+        asignadosList.setModel(asignadosListModel);
     }
 
     @Action
@@ -477,7 +497,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         usuariosT = DesktopApp.getApplication().grabarUsuarioT(usuariosT);
         cargar();
         iniciar(usuariosT);
-        DesktopApp.getApplication().getDesktopView().setStatusMessage("Cambios aplicados");
+        DesktopApp.getApplication().getDesktopView().setStatusMessage("Cambios del usuario aplicados");
     }
 
     @Action
@@ -486,6 +506,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         grabarButton.setEnabled(true);
         usuarioTextField.setEnabled(true);
         contrasenaPasswordField.setEnabled(true);
+        DesktopApp.getApplication().getDesktopView().setStatusMessage("Ingrese los datos del nuevo usuario");
     }
 
     @Action
@@ -506,5 +527,50 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
     @Action
     public void agregarRoles() {
+        List<RolesT> asignarRolesFromJList = cargarListaRoles(disponiblesList.getSelectedValues());
+        if (asignadosList.getModel().getSize() > 0) {
+            asignadosList.setSelectionInterval(0, asignadosList.getModel().getSize() - 1);
+        }
+        List<RolesT> asignadosRolesFromJList = cargarListaRoles(asignadosList.getSelectedValues());
+        asignadosList.clearSelection();
+        //Primero quitar los roles seleccionados que ya esten asignado.       
+        asignarRolesFromJList = quitarRolesRepetidos(asignarRolesFromJList, asignadosRolesFromJList);
+        boolean cambio = asignarRolesFromJList.removeAll(asignadosRolesFromJList);
+
+        //Luego validar que haya quedado algo seleccionado.
+        if (asignarRolesFromJList.size() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un rol no asignado");
+        } else {
+
+            DesktopApp.getApplication().getDesktopView().setStatusMessage("Roles asignados");
+        }
+    }
+
+    @Action
+    public void quitarRoles() {
+        DesktopApp.getApplication().getDesktopView().setStatusMessage("Roles quitados");
+    }
+
+    private List<RolesT> cargarListaRoles(Object[] o) {
+        List<RolesT> roles = new ArrayList<RolesT>();
+        for (int i = 0; i < o.length; i++) {
+            RolesT rol = (RolesT) o[i];
+            roles.add(rol);
+        }
+        return roles;
+    }
+
+    private List<RolesT> quitarRolesRepetidos(List<RolesT> origenes, List<RolesT> duplicados) {
+        List<RolesT> copia = origenes;
+        for (Iterator<RolesT> it = origenes.iterator(); it.hasNext();) {
+            RolesT origen = it.next();
+            for (Iterator<RolesT> i = duplicados.iterator(); i.hasNext();) {
+                RolesT duplicado = i.next();
+                if (origen.equals(duplicado)) {
+                    copia.remove(origen);
+                }
+            }
+        }
+        return copia;
     }
 }

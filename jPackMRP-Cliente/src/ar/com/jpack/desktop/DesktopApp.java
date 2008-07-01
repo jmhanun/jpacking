@@ -3,7 +3,9 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.negocio.RolesFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
+import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class DesktopApp extends SingleFrameApplication {
 
     private static InitialContext contexto;
     private static UsuariosFacadeRemote usuariosFacade;
+    private static RolesFacadeRemote rolesFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
@@ -107,7 +110,7 @@ public class DesktopApp extends SingleFrameApplication {
             setContexto(new InitialContext(props));
             launch(DesktopApp.class, args);
         } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.(chabon)");
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un IOException. Consulte al administrador.");
@@ -186,6 +189,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
             return usuariosFacade.findAllUsuariosT();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<RolesT> getAllRoles() {
+        try {
+            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
+            return rolesFacade.findAllUsuariosT();
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
