@@ -4,7 +4,6 @@
  */
 package ar.com.jpack.transferencia;
 
-import ar.com.jpack.util.StringHelper;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -119,6 +118,11 @@ public class RolesT implements Serializable, Comparable<RolesT> {
         this.rolesCollection = rolesCollection;
     }
 
+    @Override
+    public String toString() {
+        return this.getRol();
+    }
+
     public int compareTo(RolesT rolesT) {
         int resultValue = 0;
         Integer thisOrden = this.orden;
@@ -130,6 +134,5 @@ public class RolesT implements Serializable, Comparable<RolesT> {
             resultValue = thisHermano.compareTo(anotherHermano);
         }
         return resultValue;
-
     }
 }

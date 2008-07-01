@@ -12,6 +12,7 @@ import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,7 +101,15 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
 
     public List<UsuariosT> findAllUsuariosT() {
         List<Usuarios> usuarios = findAll();
-        return DataTransferHelper.copiarUsuariosALista(usuarios);
+        List<UsuariosT> usuariosTs = new ArrayList<UsuariosT>();
+        for (Iterator<Usuarios> it = usuarios.iterator(); it.hasNext();) {
+            Usuarios usuario = it.next();
+            UsuariosT usuariosT;
+            usuariosT = DataTransferHelper.copiarUsuario(usuario);
+            usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));
+            usuariosTs.add(usuariosT);
+        }
+        return usuariosTs;
     }
 
     public UsuariosT editUsuariosT(UsuariosT usuariosT) {
