@@ -41,6 +41,9 @@ public class Ordenesproduccion implements Serializable {
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
+    @JoinColumn(name = "idRemito", referencedColumnName = "idRemito")
+    @ManyToOne
+    private Remitos idRemito;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
@@ -94,6 +97,14 @@ public class Ordenesproduccion implements Serializable {
         this.idEstado = idEstado;
     }
 
+    public Remitos getIdRemito() {
+        return idRemito;
+    }
+
+    public void setIdRemito(Remitos idRemito) {
+        this.idRemito = idRemito;
+    }
+
     public Tiposcomprobantes getIdTipoComprobante() {
         return idTipoComprobante;
     }
@@ -127,7 +138,7 @@ public class Ordenesproduccion implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Ordenesproduccion)) {
             return false;
         }

@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tiposcomprobantes")
-@NamedQueries({@NamedQuery(name = "Tiposcomprobantes.findByIdTipoComprobante", query = "SELECT t FROM Tiposcomprobantes t WHERE t.idTipoComprobante = :idTipoComprobante"), @NamedQuery(name = "Tiposcomprobantes.findByDescripcion", query = "SELECT t FROM Tiposcomprobantes t WHERE t.descripcion = :descripcion"), @NamedQuery(name = "Tiposcomprobantes.findByAbreviatura", query = "SELECT t FROM Tiposcomprobantes t WHERE t.abreviatura = :abreviatura"), @NamedQuery(name = "Tiposcomprobantes.findBySigno", query = "SELECT t FROM Tiposcomprobantes t WHERE t.signo = :signo")})
+@NamedQueries({@NamedQuery(name = "Tiposcomprobantes.findByIdTipoComprobante", query = "SELECT t FROM Tiposcomprobantes t WHERE t.idTipoComprobante = :idTipoComprobante"), @NamedQuery(name = "Tiposcomprobantes.findByDescripcion", query = "SELECT t FROM Tiposcomprobantes t WHERE t.descripcion = :descripcion"), @NamedQuery(name = "Tiposcomprobantes.findByAbreviatura", query = "SELECT t FROM Tiposcomprobantes t WHERE t.abreviatura = :abreviatura"), @NamedQuery(name = "Tiposcomprobantes.findBySignoStock", query = "SELECT t FROM Tiposcomprobantes t WHERE t.signoStock = :signoStock")})
 public class Tiposcomprobantes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,8 +32,8 @@ public class Tiposcomprobantes implements Serializable {
     private String descripcion;
     @Column(name = "abreviatura", nullable = false)
     private String abreviatura;
-    @Column(name = "signo", nullable = false)
-    private String signo;
+    @Column(name = "signoStock")
+    private String signoStock;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
@@ -58,11 +58,10 @@ public class Tiposcomprobantes implements Serializable {
         this.idTipoComprobante = idTipoComprobante;
     }
 
-    public Tiposcomprobantes(Integer idTipoComprobante, String descripcion, String abreviatura, String signo) {
+    public Tiposcomprobantes(Integer idTipoComprobante, String descripcion, String abreviatura) {
         this.idTipoComprobante = idTipoComprobante;
         this.descripcion = descripcion;
         this.abreviatura = abreviatura;
-        this.signo = signo;
     }
 
     public Integer getIdTipoComprobante() {
@@ -89,12 +88,12 @@ public class Tiposcomprobantes implements Serializable {
         this.abreviatura = abreviatura;
     }
 
-    public String getSigno() {
-        return signo;
+    public String getSignoStock() {
+        return signoStock;
     }
 
-    public void setSigno(String signo) {
-        this.signo = signo;
+    public void setSignoStock(String signoStock) {
+        this.signoStock = signoStock;
     }
 
     public Collection<Ordenesproduccion> getOrdenesproduccionCollection() {
@@ -170,7 +169,7 @@ public class Tiposcomprobantes implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Tiposcomprobantes)) {
             return false;
         }

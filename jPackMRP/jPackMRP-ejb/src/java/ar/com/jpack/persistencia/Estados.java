@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "estados")
-@NamedQueries({@NamedQuery(name = "Estados.findByIdEstado", query = "SELECT e FROM Estados e WHERE e.idEstado = :idEstado"), @NamedQuery(name = "Estados.findByDescripcion", query = "SELECT e FROM Estados e WHERE e.descripcion = :descripcion")})
+@NamedQueries({@NamedQuery(name = "Estados.findByIdEstado", query = "SELECT e FROM Estados e WHERE e.idEstado = :idEstado"), @NamedQuery(name = "Estados.findByDescripcion", query = "SELECT e FROM Estados e WHERE e.descripcion = :descripcion"), @NamedQuery(name = "Estados.findByNotas", query = "SELECT e FROM Estados e WHERE e.notas = :notas")})
 public class Estados implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,6 +30,8 @@ public class Estados implements Serializable {
     private Integer idEstado;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+    @Column(name = "notas", nullable = false)
+    private String notas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
@@ -38,7 +40,7 @@ public class Estados implements Serializable {
     private Collection<Remitos> remitosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Facturascompras> facturascomprasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
+    @OneToMany(mappedBy = "idEstado")
     private Collection<Domicilios> domiciliosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Remitosingreso> remitosingresoCollection;
@@ -70,9 +72,10 @@ public class Estados implements Serializable {
         this.idEstado = idEstado;
     }
 
-    public Estados(Integer idEstado, String descripcion) {
+    public Estados(Integer idEstado, String descripcion, String notas) {
         this.idEstado = idEstado;
         this.descripcion = descripcion;
+        this.notas = notas;
     }
 
     public Integer getIdEstado() {
@@ -89,6 +92,14 @@ public class Estados implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
     }
 
     public Collection<Ordenesproduccion> getOrdenesproduccionCollection() {
@@ -228,7 +239,7 @@ public class Estados implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Estados)) {
             return false;
         }

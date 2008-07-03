@@ -135,4 +135,26 @@ public class RolesT implements Serializable, Comparable<RolesT> {
         }
         return resultValue;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RolesT other = (RolesT) obj;
+        if (this.idRol != other.idRol && (this.idRol == null || !this.idRol.equals(other.idRol))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + (this.idRol != null ? this.idRol.hashCode() : 0);
+        return hash;
+    }
 }

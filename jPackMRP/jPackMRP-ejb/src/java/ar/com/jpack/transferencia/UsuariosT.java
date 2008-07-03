@@ -124,4 +124,28 @@ public class UsuariosT implements Serializable {
     public String toString() {
         return getUsuario();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UsuariosT other = (UsuariosT) obj;
+        if (this.idUsuario != other.idUsuario && (this.idUsuario == null || !this.idUsuario.equals(other.idUsuario))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
+        return hash;
+    }
+
+
 }

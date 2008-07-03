@@ -7,7 +7,6 @@ package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "provincias")
-@NamedQueries({@NamedQuery(name = "Provincias.findByIdProvincia", query = "SELECT p FROM Provincias p WHERE p.idProvincia = :idProvincia"), @NamedQuery(name = "Provincias.findByProvincia", query = "SELECT p FROM Provincias p WHERE p.provincia = :provincia")})
+@NamedQueries({@NamedQuery(name = "Provincias.findByIdProvincia", query = "SELECT p FROM Provincias p WHERE p.idProvincia = :idProvincia"), @NamedQuery(name = "Provincias.findByProvincia", query = "SELECT p FROM Provincias p WHERE p.provincia = :provincia"), @NamedQuery(name = "Provincias.findByLetra", query = "SELECT p FROM Provincias p WHERE p.letra = :letra")})
 public class Provincias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,10 +31,12 @@ public class Provincias implements Serializable {
     private Integer idProvincia;
     @Column(name = "provincia", nullable = false)
     private String provincia;
+    @Column(name = "letra")
+    private String letra;
     @JoinColumn(name = "idPais", referencedColumnName = "idPais")
     @ManyToOne
     private Paises idPais;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProvincia")
+    @OneToMany(mappedBy = "idProvincia")
     private Collection<Localidades> localidadesCollection;
 
     public Provincias() {
@@ -66,6 +67,14 @@ public class Provincias implements Serializable {
         this.provincia = provincia;
     }
 
+    public String getLetra() {
+        return letra;
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
     public Paises getIdPais() {
         return idPais;
     }
@@ -91,7 +100,7 @@ public class Provincias implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Provincias)) {
             return false;
         }

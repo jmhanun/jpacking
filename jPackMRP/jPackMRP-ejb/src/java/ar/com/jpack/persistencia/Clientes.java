@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "clientes")
-@NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findBySituacionIva", query = "SELECT c FROM Clientes c WHERE c.situacionIva = :situacionIva"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta")})
+@NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findBySituacionIva", query = "SELECT c FROM Clientes c WHERE c.situacionIva = :situacionIva"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta"), @NamedQuery(name = "Clientes.findByCuit", query = "SELECT c FROM Clientes c WHERE c.cuit = :cuit")})
 public class Clientes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,19 +37,21 @@ public class Clientes implements Serializable {
     private String situacionIva;
     @Column(name = "limiteCredito", nullable = false)
     private int limiteCredito;
-    @Column(name = "observaciones", nullable = false)
+    @Column(name = "observaciones")
     private String observaciones;
     @Column(name = "nombres", nullable = false)
     private String nombres;
-    @Column(name = "apellidos", nullable = false)
+    @Column(name = "apellidos")
     private String apellidos;
-    @Column(name = "mails", nullable = false)
+    @Column(name = "mails")
     private String mails;
-    @Column(name = "telefonos", nullable = false)
+    @Column(name = "telefonos")
     private String telefonos;
     @Column(name = "fechaAlta", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
+    @Column(name = "cuit")
+    private String cuit;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
     private Collection<Remitos> remitosCollection;
     @OneToMany(mappedBy = "idCliente")
@@ -72,15 +74,11 @@ public class Clientes implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public Clientes(Integer idCliente, String situacionIva, int limiteCredito, String observaciones, String nombres, String apellidos, String mails, String telefonos, Date fechaAlta) {
+    public Clientes(Integer idCliente, String situacionIva, int limiteCredito, String nombres, Date fechaAlta) {
         this.idCliente = idCliente;
         this.situacionIva = situacionIva;
         this.limiteCredito = limiteCredito;
-        this.observaciones = observaciones;
         this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.mails = mails;
-        this.telefonos = telefonos;
         this.fechaAlta = fechaAlta;
     }
 
@@ -156,6 +154,14 @@ public class Clientes implements Serializable {
         this.fechaAlta = fechaAlta;
     }
 
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
     public Collection<Remitos> getRemitosCollection() {
         return remitosCollection;
     }
@@ -213,7 +219,7 @@ public class Clientes implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Clientes)) {
             return false;
         }

@@ -27,11 +27,11 @@ public class Domicilios implements Serializable {
     @Id
     @Column(name = "idDomicilio", nullable = false)
     private Integer idDomicilio;
-    @Column(name = "calle", nullable = false)
+    @Column(name = "calle")
     private String calle;
-    @Column(name = "numero", nullable = false)
+    @Column(name = "numero")
     private String numero;
-    @Column(name = "barrio", nullable = false)
+    @Column(name = "barrio")
     private String barrio;
     @Column(name = "piso")
     private String piso;
@@ -57,13 +57,6 @@ public class Domicilios implements Serializable {
 
     public Domicilios(Integer idDomicilio) {
         this.idDomicilio = idDomicilio;
-    }
-
-    public Domicilios(Integer idDomicilio, String calle, String numero, String barrio) {
-        this.idDomicilio = idDomicilio;
-        this.calle = calle;
-        this.numero = numero;
-        this.barrio = barrio;
     }
 
     public Integer getIdDomicilio() {
@@ -163,7 +156,7 @@ public class Domicilios implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Domicilios)) {
             return false;
         }

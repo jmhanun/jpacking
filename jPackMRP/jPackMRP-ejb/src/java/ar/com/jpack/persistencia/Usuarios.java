@@ -46,9 +46,9 @@ public class Usuarios implements Serializable {
     private String nombres;
     @Column(name = "apellidos", nullable = false)
     private String apellidos;
-    @Column(name = "mails", nullable = false)
+    @Column(name = "mails")
     private String mails;
-    @Column(name = "telefonos", nullable = false)
+    @Column(name = "telefonos")
     private String telefonos;
     @ManyToMany(mappedBy = "idUsuarioCollection")
     private Collection<Roles> idRolCollection;
@@ -63,14 +63,12 @@ public class Usuarios implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuarios(Integer idUsuario, String usuario, String contrasena, String nombres, String apellidos, String mails, String telefonos) {
+    public Usuarios(Integer idUsuario, String usuario, String contrasena, String nombres, String apellidos) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.mails = mails;
-        this.telefonos = telefonos;
     }
 
     public Integer getIdUsuario() {
@@ -162,7 +160,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Usuarios)) {
             return false;
         }

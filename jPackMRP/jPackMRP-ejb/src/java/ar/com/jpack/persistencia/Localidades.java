@@ -7,7 +7,6 @@ package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,19 +23,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "localidades")
-@NamedQueries({@NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"), @NamedQuery(name = "Localidades.findByLocalidad", query = "SELECT l FROM Localidades l WHERE l.localidad = :localidad"), @NamedQuery(name = "Localidades.findByCodigoPostal", query = "SELECT l FROM Localidades l WHERE l.codigoPostal = :codigoPostal"), @NamedQuery(name = "Localidades.findByIdCliente", query = "SELECT l FROM Localidades l WHERE l.idCliente = :idCliente")})
+@NamedQueries({@NamedQuery(name = "Localidades.findByIdLocalidad", query = "SELECT l FROM Localidades l WHERE l.idLocalidad = :idLocalidad"), @NamedQuery(name = "Localidades.findByLocalidad", query = "SELECT l FROM Localidades l WHERE l.localidad = :localidad"), @NamedQuery(name = "Localidades.findByCodigoPostal", query = "SELECT l FROM Localidades l WHERE l.codigoPostal = :codigoPostal")})
 public class Localidades implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idLocalidad", nullable = false)
     private Integer idLocalidad;
-    @Column(name = "localidad", nullable = false)
+    @Column(name = "localidad")
     private String localidad;
-    @Column(name = "codigoPostal", nullable = false)
+    @Column(name = "codigoPostal")
     private String codigoPostal;
-    @Column(name = "idCliente", nullable = false)
-    private int idCliente;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLocalidad")
+    @OneToMany(mappedBy = "idLocalidad")
     private Collection<Domicilios> domiciliosCollection;
     @JoinColumn(name = "idProvincia", referencedColumnName = "idProvincia")
     @ManyToOne
@@ -47,13 +44,6 @@ public class Localidades implements Serializable {
 
     public Localidades(Integer idLocalidad) {
         this.idLocalidad = idLocalidad;
-    }
-
-    public Localidades(Integer idLocalidad, String localidad, String codigoPostal, int idCliente) {
-        this.idLocalidad = idLocalidad;
-        this.localidad = localidad;
-        this.codigoPostal = codigoPostal;
-        this.idCliente = idCliente;
     }
 
     public Integer getIdLocalidad() {
@@ -78,14 +68,6 @@ public class Localidades implements Serializable {
 
     public void setCodigoPostal(String codigoPostal) {
         this.codigoPostal = codigoPostal;
-    }
-
-    public int getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
     }
 
     public Collection<Domicilios> getDomiciliosCollection() {
@@ -113,7 +95,7 @@ public class Localidades implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Localidades)) {
             return false;
         }

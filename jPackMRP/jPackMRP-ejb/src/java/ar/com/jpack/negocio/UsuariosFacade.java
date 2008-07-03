@@ -5,7 +5,9 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Estados;
+import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.persistencia.Usuarios;
+import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
@@ -113,28 +115,46 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     public UsuariosT editUsuariosT(UsuariosT usuariosT) {
-        Usuarios usuarios = new Usuarios();
-        usuarios.setApellidos(usuariosT.getApellidos());
-        usuarios.setMails(usuariosT.getMails());
-        usuarios.setNombres(usuariosT.getNombres());
+
+        Usuarios usuarios = null;
         //si el numero de usuario es null, significa que es un nuevo usuario.
         if (usuariosT.getIdUsuario() != null) {
             usuarios = em.find(Usuarios.class, usuariosT.getIdUsuario());
             usuarios.setUltimoAcceso(usuariosT.getUltimoAcceso());
-            Estados estado = em.find(Estados.class, usuariosT.getIdEstado().getIdEstado());
-            usuarios.setIdEstado(estado);
+            cargarDatos(usuariosT, usuarios);
             edit(usuarios);
         } else {
+            usuarios = new Usuarios();
             StringBuffer codificado = codificar(usuariosT.getContrasena());
             usuariosT.setContrasena(codificado.toString());
             usuarios.setContrasena(usuariosT.getContrasena());
             usuarios.setUsuario(usuariosT.getUsuario());
-            Estados estado = em.find(Estados.class, 1);
-            usuarios.setIdEstado(estado);
-            usuarios.setTelefonos("");
+            usuariosT.setIdEstado(new EstadosT(1, "HABILITADO"));
+            cargarDatos(usuariosT, usuarios);
             create(usuarios);
-            em.flush();
         }
-        return DataTransferHelper.copiarUsuario(usuarios);
+        em.flush();
+        usuariosT = DataTransferHelper.copiarUsuario(usuarios);
+        usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuarios.getIdRolCollection()));
+        return usuariosT;
+    }
+
+    private void cargarDatos(UsuariosT usuariosT, Usuarios usuarios) {
+        Estados estado = em.find(Estados.class, usuariosT.getIdEstado().getIdEstado());
+        usuarios.setIdEstado(estado);
+        usuarios.setApellidos(usuariosT.getApellidos());
+        usuarios.setMails(usuariosT.getMails());
+        usuarios.setNombres(usuariosT.getNombres());
+        if (usuariosT.getIdRolCollection() != null) {
+            List<Roles> roles = new ArrayList<Roles>();
+            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                if (rolesT.getIdRol() != null) {
+                    Roles rol = em.find(Roles.class, rolesT.getIdRol());
+                    roles.add(rol);
+                }
+            }
+            usuarios.setIdRolCollection(roles);
+        }
     }
 }
