@@ -4,8 +4,10 @@
 package ar.com.jpack.desktop;
 
 import ar.com.jpack.desktop.administracion.GestionUsuarios;
+import ar.com.jpack.desktop.ventas.RegistroRemitos;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import ar.com.jpack.util.StringHelper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -16,6 +18,7 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -360,30 +363,49 @@ public class DesktopView extends FrameView {
      */
     @Action
     public Task showGestionUsuariosFrame() {
-        return new ShowGestionUsuariosFrame(getApplication());
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.GestionUsuarios", "Gestion de usuarios");
+    }
 
+    @Action
+    public Task showRegistroRemitosFrame() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos");
     }
 
     /**
-     * InnerClass para mostrar el InternalFrame GestionUsuarios
+     * InnerClass para mostrar los InternalFrame
      * @author jmhanun
      */
-    class ShowGestionUsuariosFrame extends Task<String, Void> {
+    class ShowFrame extends Task<String, Void> {
 
-        public ShowGestionUsuariosFrame(Application application) {
+        String jInternalFrame;
+        String mensaje;
+
+        /**
+         * 
+         * @param application DesktopApp.getApplication()
+         * @param jInternalFrame String del internalFrame al que deseo invocar (canonicalname de la clase)
+         * @param mensaje String del mensaje que deseo aparezca en el status bar una vez finalizada la tarea
+         */
+        public ShowFrame(Application application, String jInternalFrame, String mensaje) {
             super(application);
+            this.jInternalFrame = jInternalFrame;
+            this.mensaje = mensaje;
         }
 
         @Override
         protected String doInBackground() throws Exception {
-            statusMessageLabel.setText("Abriendo Gestion de Usuarios...");
-            JInternalFrame f = GestionUsuarios.getGestionUsuarios();
+            statusMessageLabel.setText("Abriendo " + mensaje + "...");
+            String[] partes = StringHelper.split(jInternalFrame, ".");
+            int indice = partes.length - 1;
+            Class c = Class.forName(jInternalFrame);
+            Method m = c.getMethod("get" + partes[indice]);
+            JInternalFrame f = (JInternalFrame) m.invoke(null);
             if (!isOpen(f)) {
                 desktopPanel.add(f);
             }
             f.setVisible(true);
             desktopPanel.getDesktopManager().activateFrame(f);
-            return "Gestion de Usuarios";
+            return mensaje;
         }
 
         @Override
@@ -393,20 +415,9 @@ public class DesktopView extends FrameView {
         }
 
         @Override
-        protected void cancelled() {
-            super.cancelled();
-            JOptionPane.showMessageDialog(desktopPanel, "La tarea ha sido cancelada.");
-        }
-
-        @Override
         protected void failed(Throwable cause) {
             super.failed(cause);
-            JOptionPane.showMessageDialog(desktopPanel, "No es posible acceder a la base. Consulte con el administrador.");
-        }
-
-        @Override
-        protected void finished() {
-            super.finished();
+            JOptionPane.showMessageDialog(desktopPanel, "Parece que no es posible ejecutar la tarea. Consulte con el administrador.");
         }
     }
 

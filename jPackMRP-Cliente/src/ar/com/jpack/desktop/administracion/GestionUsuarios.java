@@ -8,7 +8,6 @@ package ar.com.jpack.desktop.administracion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
