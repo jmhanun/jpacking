@@ -556,7 +556,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
                 nuevosRoles.add(rolesT);
             }
 
-            
+
 //            usuariosT.setIdRolCollection(nuevosRoles);
             asignarRolesFromJList = new ArrayList<RolesT>();
             for (Iterator<RolesT> it = nuevosRoles.iterator(); it.hasNext();) {
@@ -567,11 +567,50 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
             grabarUsuario();
         }
         disponiblesList.clearSelection();
+        asignadosList.clearSelection();
     }
 
     @Action
     public void quitarRoles() {
-        DesktopApp.getApplication().getDesktopView().setStatusMessage("Roles quitados");
+        //Cargo la lista de roles para quitar
+        //Son los roles seleccionados en el JList asignadosList
+        List<RolesT> quitarRolesFromJList = cargarListaRoles(asignadosList.getSelectedValues());
+
+        //Luego valido que haya algo seleccionado.
+        if (quitarRolesFromJList.size() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un rol");
+        } else {
+            //Elimino de la lista de roles asignados al usuario
+            //los roles seleccionados en la lista anterior
+            usuariosT.getIdRolCollection().removeAll(quitarRolesFromJList);
+            //Hago una lista con los los roles que me quedaron que sean funcion
+            List<RolesT> nuevos = new ArrayList<RolesT>();
+            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                if (rolesT.getFuncion() != null) {
+                    nuevos.add(rolesT);
+                }
+            }
+            //Agrego los padres que hagan falta
+            //En el hashset me van a quedar todos los roles que quedaron
+            //con los padres que sean necesarios para verlos
+            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
+            for (Iterator<RolesT> it = nuevos.iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                nuevosRoles.add(rolesT);
+                nuevosRoles = getPadres(nuevosRoles, rolesT);
+            }
+            
+            nuevos = new ArrayList<RolesT>();
+            for (Iterator<RolesT> it = nuevosRoles.iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                nuevos.add(rolesT);
+            }
+            usuariosT.setIdRolCollection(nuevos);
+            grabarUsuario();
+        }
+        disponiblesList.clearSelection();
+        asignadosList.clearSelection();
     }
 
     private List<RolesT> cargarListaRoles(Object[] o) {
