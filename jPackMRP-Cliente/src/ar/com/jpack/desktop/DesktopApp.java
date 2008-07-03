@@ -104,7 +104,12 @@ public class DesktopApp extends SingleFrameApplication {
      * @param args 
      */
     public static void main(String[] args) {
+
         try {
+//            java.net.URL url = new java.net.URL("http", "192.168.1.4", "jndi.properties");
+//            java.io.FileInputStream pin = new java.io.FileInputStream(url.getFile());
+//            Properties props = new Properties();
+//            props.load(pin);
             Properties props = new Properties();
             props.load(new FileInputStream("jndi.properties"));
             setContexto(new InitialContext(props));

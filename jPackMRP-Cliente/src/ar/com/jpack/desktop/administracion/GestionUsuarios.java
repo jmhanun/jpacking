@@ -8,8 +8,9 @@ package ar.com.jpack.desktop.administracion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.lang.Integer;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -372,7 +373,7 @@ private void usuarioTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:
 }//GEN-LAST:event_usuarioTextFieldKeyTyped
 
 private void contrasenaPasswordFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasenaPasswordFieldKeyTyped
-    usuariosT.setContrasena(contrasenaPasswordField.getText() + String.valueOf(evt.getKeyChar()));
+    usuariosT.setContrasena(String.copyValueOf(contrasenaPasswordField.getPassword()) + String.valueOf(evt.getKeyChar()));
     grabarButton.setEnabled(true);
 }//GEN-LAST:event_contrasenaPasswordFieldKeyTyped
 
@@ -424,8 +425,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private ar.com.jpack.transferencia.UsuariosT usuariosT;
     // End of variables declaration//GEN-END:variables
     private static GestionUsuarios gestionUsuarios = new GestionUsuarios();
-    private List<RolesT> disponiblesRolesTs = null;
-    private List<RolesT> asignadosRolesTs = null;
+    private ArrayList<RolesT> rolesTs;
 //</editor-fold>
     /** Creates new form GestionUsuarios */
     private GestionUsuarios() {
@@ -442,7 +442,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private void iniciar(UsuariosT usu) {
         ResourceMap resourceMap = DesktopApp.getApplication().getContext().getResourceMap(GestionUsuarios.class);
         ArrayList<UsuariosT> usuariosTs = (ArrayList<UsuariosT>) DesktopApp.getApplication().getAllUsuarios();
-        ArrayList<RolesT> rolesTs = (ArrayList<RolesT>) DesktopApp.getApplication().getAllRoles();
+        rolesTs = (ArrayList<RolesT>) DesktopApp.getApplication().getAllRoles();
         DefaultMutableTreeNode padre = new DefaultMutableTreeNode(resourceMap.getString("usuarios"));
         int index = -1;
         int iteration = 0;
@@ -483,10 +483,12 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
             this.deshabilitarToggleButton.setSelected(false);
         }
         DefaultListModel asignadosListModel = new DefaultListModel();
-        for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
-            RolesT rolesT = it.next();
-            if (rolesT.getFuncion() != null) {
-                asignadosListModel.addElement(rolesT);
+        if (usuariosT.getIdRolCollection() != null) {
+            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                if (rolesT.getFuncion() != null) {
+                    asignadosListModel.addElement(rolesT);
+                }
             }
         }
         asignadosList.setModel(asignadosListModel);
@@ -527,23 +529,44 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
     @Action
     public void agregarRoles() {
+        //Cargo la lista de roles para agregar
+        //Son los roles seleccionados en el JList disponiblesList
         List<RolesT> asignarRolesFromJList = cargarListaRoles(disponiblesList.getSelectedValues());
-        if (asignadosList.getModel().getSize() > 0) {
-            asignadosList.setSelectionInterval(0, asignadosList.getModel().getSize() - 1);
-        }
-        List<RolesT> asignadosRolesFromJList = cargarListaRoles(asignadosList.getSelectedValues());
-        asignadosList.clearSelection();
-        //Primero quitar los roles seleccionados que ya esten asignado.       
-        asignarRolesFromJList = quitarRolesRepetidos(asignarRolesFromJList, asignadosRolesFromJList);
-        boolean cambio = asignarRolesFromJList.removeAll(asignadosRolesFromJList);
 
-        //Luego validar que haya quedado algo seleccionado.
+        //Elimino de la lista anterior los roles seleccionados 
+        //que ya esten asignado al usuario.       
+        asignarRolesFromJList.removeAll(usuariosT.getIdRolCollection());
+
+        //Luego valido que haya quedado algo seleccionado.
         if (asignarRolesFromJList.size() == 0) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar al menos un rol no asignado");
         } else {
+            //De los roles que si se van a agregar, agregar los padres.
+            //Creo el Set de roles a asignar con los roles seleccionados
+            //ademas de los padres de esos roles
+            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
+            for (Iterator<RolesT> it = asignarRolesFromJList.iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                nuevosRoles.add(rolesT);
+                nuevosRoles = getPadres(nuevosRoles, rolesT);
+            }
+            //Agrego a los nuevos roles los que ya estaban asignados al usuario
+            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                nuevosRoles.add(rolesT);
+            }
 
-            DesktopApp.getApplication().getDesktopView().setStatusMessage("Roles asignados");
+            
+//            usuariosT.setIdRolCollection(nuevosRoles);
+            asignarRolesFromJList = new ArrayList<RolesT>();
+            for (Iterator<RolesT> it = nuevosRoles.iterator(); it.hasNext();) {
+                RolesT rolesT = it.next();
+                asignarRolesFromJList.add(rolesT);
+            }
+            usuariosT.setIdRolCollection(asignarRolesFromJList);
+            grabarUsuario();
         }
+        disponiblesList.clearSelection();
     }
 
     @Action
@@ -560,17 +583,16 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         return roles;
     }
 
-    private List<RolesT> quitarRolesRepetidos(List<RolesT> origenes, List<RolesT> duplicados) {
-        List<RolesT> copia = origenes;
-        for (Iterator<RolesT> it = origenes.iterator(); it.hasNext();) {
-            RolesT origen = it.next();
-            for (Iterator<RolesT> i = duplicados.iterator(); i.hasNext();) {
-                RolesT duplicado = i.next();
-                if (origen.equals(duplicado)) {
-                    copia.remove(origen);
+    private HashSet<RolesT> getPadres(HashSet<RolesT> nuevosRoles, RolesT rolHijo) {
+        if (rolHijo.getIdRolPadre() != null) {
+            for (int i = 0; i < rolesTs.size(); i++) {
+                RolesT rolPadre = rolesTs.get(i);
+                if (rolHijo.getIdRolPadre().getIdRol() == rolPadre.getIdRol()) {
+                    nuevosRoles.add(rolPadre);
+                    nuevosRoles = getPadres(nuevosRoles, rolPadre);
                 }
             }
         }
-        return copia;
+        return nuevosRoles;
     }
 }
