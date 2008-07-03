@@ -124,16 +124,6 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
             cargarDatos(usuariosT, usuarios);
             edit(usuarios);
             em.flush();
-            for (Iterator<Roles> it = usuarios.getIdRolCollection().iterator(); it.hasNext();) {
-                Roles roles = it.next();
-                if (roles.getIdUsuarioCollection().contains(usuarios)) {
-                } else {
-                    roles.getIdUsuarioCollection().add(usuarios);
-                }
-                em.merge(roles);
-            }
-            em.flush();
-
         } else {
             usuarios = new Usuarios();
             StringBuffer codificado = codificar(usuariosT.getContrasena());

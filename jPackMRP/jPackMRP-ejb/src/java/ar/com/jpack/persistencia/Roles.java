@@ -44,8 +44,8 @@ public class Roles implements Serializable {
     private int orden;
     @Column(name = "ordenHermano", nullable = false)
     private int ordenHermano;
-    @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")}, inverseJoinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")})
-    @ManyToMany
+
+    @ManyToMany(mappedBy="idRolCollection")
     private Collection<Usuarios> idUsuarioCollection;
     @OneToMany(mappedBy = "idRolPadre")
     private Collection<Roles> rolesCollection;

@@ -52,7 +52,8 @@ public class Usuarios implements Serializable {
     private String mails;
     @Column(name = "telefonos")
     private String telefonos;
-    @ManyToMany(mappedBy = "idUsuarioCollection")
+    @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")}, inverseJoinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")})
+    @ManyToMany
     private Collection<Roles> idRolCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
