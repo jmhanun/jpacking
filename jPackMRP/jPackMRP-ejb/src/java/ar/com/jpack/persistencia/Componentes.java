@@ -35,7 +35,7 @@ public class Componentes implements Serializable {
     private Articulos articulos;
     @JoinColumn(name = "idComponente", referencedColumnName = "idArticulo", insertable = false, updatable = false)
     @ManyToOne
-    private Articulos articulos1;
+    private Articulos componentes;
 
     public Componentes() {
     }
@@ -87,11 +87,11 @@ public class Componentes implements Serializable {
     }
 
     public Articulos getArticulos1() {
-        return articulos1;
+        return componentes;
     }
 
     public void setArticulos1(Articulos articulos1) {
-        this.articulos1 = articulos1;
+        this.componentes = articulos1;
     }
 
     @Override

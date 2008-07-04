@@ -61,9 +61,9 @@ public class Articulos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detallefacturas> detallefacturasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos")
+    private Collection<Componentes> articulosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "componentes")
     private Collection<Componentes> componentesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos1")
-    private Collection<Componentes> componentesCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detalleremitos> detalleremitosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
@@ -212,19 +212,19 @@ public class Articulos implements Serializable {
     }
 
     public Collection<Componentes> getComponentesCollection() {
-        return componentesCollection;
+        return articulosCollection;
     }
 
     public void setComponentesCollection(Collection<Componentes> componentesCollection) {
-        this.componentesCollection = componentesCollection;
+        this.articulosCollection = componentesCollection;
     }
 
     public Collection<Componentes> getComponentesCollection1() {
-        return componentesCollection1;
+        return componentesCollection;
     }
 
     public void setComponentesCollection1(Collection<Componentes> componentesCollection1) {
-        this.componentesCollection1 = componentesCollection1;
+        this.componentesCollection = componentesCollection1;
     }
 
     public Collection<Detalleremitos> getDetalleremitosCollection() {

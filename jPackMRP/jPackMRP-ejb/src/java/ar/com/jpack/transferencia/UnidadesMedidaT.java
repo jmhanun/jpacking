@@ -12,66 +12,44 @@ import java.util.Collection;
  *
  * @author jmhanun
  */
- public class ArticulosT implements Serializable{
-    private Integer idArticulo;
-    private String codigo;
+public class UnidadesMedidaT implements Serializable{
+    private Integer idUnidMedida;
     private String descripcion;
-    private float stock;
-    private float stockMinimo;
-    private float leadTime;
+    private String abreviatura;
     private Collection<DetNotasCreditoT> detnotascreditoCollection;
-    private EstadosT idEstado;
-    private UnidadesMedidaT idUnidMedida;
+    private Collection<ArticulosT> articulosCollection;
     private Collection<DetOrdenesProduccionT> detordenesproduccionCollection;
     private Collection<DetMovimientosStockT> detmovimientosstockCollection;
     private Collection<DetalleFactComprasT> detallefactcomprasCollection;
     private Collection<DetNotasDebitoT> detnotasdebitoCollection;
-    private Collection<StockT> stockCollection;
     private Collection<DetalleFacturasT> detallefacturasCollection;
-    private Collection<ComponentesT> articulosCollection;
-    private Collection<ComponentesT> componentesCollection;
     private Collection<DetalleRemitosT> detalleremitosCollection;
     private Collection<DetOrdenesDepositoT> detordenesdepositoCollection;
-    private Collection<ProduccionT> produccionCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
-    private Collection<PreciosT> preciosCollection;
 
-    public ArticulosT() {
+    public UnidadesMedidaT() {
     }
 
-    public ArticulosT(Integer idArticulo, String codigo, String descripcion, float stock, float stockMinimo, float leadTime, EstadosT idEstado, UnidadesMedidaT idUnidMedida) {
-        this.idArticulo = idArticulo;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.stock = stock;
-        this.stockMinimo = stockMinimo;
-        this.leadTime = leadTime;
-        this.idEstado = idEstado;
+    public UnidadesMedidaT(Integer idUnidMedida, String descripcion, String abreviatura) {
         this.idUnidMedida = idUnidMedida;
+        this.descripcion = descripcion;
+        this.abreviatura = abreviatura;
     }
 
-    public Collection<ComponentesT> getArticulosCollection() {
+    public String getAbreviatura() {
+        return abreviatura;
+    }
+
+    public void setAbreviatura(String abreviatura) {
+        this.abreviatura = abreviatura;
+    }
+
+    public Collection<ArticulosT> getArticulosCollection() {
         return articulosCollection;
     }
 
-    public void setArticulosCollection(Collection<ComponentesT> articulosCollection) {
+    public void setArticulosCollection(Collection<ArticulosT> articulosCollection) {
         this.articulosCollection = articulosCollection;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public Collection<ComponentesT> getComponentesCollection() {
-        return componentesCollection;
-    }
-
-    public void setComponentesCollection(Collection<ComponentesT> componentesCollection) {
-        this.componentesCollection = componentesCollection;
     }
 
     public String getDescripcion() {
@@ -154,75 +132,13 @@ import java.util.Collection;
         this.detrtosingresoCollection = detrtosingresoCollection;
     }
 
-    public Integer getIdArticulo() {
-        return idArticulo;
-    }
-
-    public void setIdArticulo(Integer idArticulo) {
-        this.idArticulo = idArticulo;
-    }
-
-    public EstadosT getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(EstadosT idEstado) {
-        this.idEstado = idEstado;
-    }
-
-    public UnidadesMedidaT getIdUnidMedida() {
+    public Integer getIdUnidMedida() {
         return idUnidMedida;
     }
 
-    public void setIdUnidMedida(UnidadesMedidaT idUnidMedida) {
+    public void setIdUnidMedida(Integer idUnidMedida) {
         this.idUnidMedida = idUnidMedida;
     }
-
-    public float getLeadTime() {
-        return leadTime;
-    }
-
-    public void setLeadTime(float leadTime) {
-        this.leadTime = leadTime;
-    }
-
-    public Collection<PreciosT> getPreciosCollection() {
-        return preciosCollection;
-    }
-
-    public void setPreciosCollection(Collection<PreciosT> preciosCollection) {
-        this.preciosCollection = preciosCollection;
-    }
-
-    public Collection<ProduccionT> getProduccionCollection() {
-        return produccionCollection;
-    }
-
-    public void setProduccionCollection(Collection<ProduccionT> produccionCollection) {
-        this.produccionCollection = produccionCollection;
-    }
-
-    public float getStock() {
-        return stock;
-    }
-
-    public void setStock(float stock) {
-        this.stock = stock;
-    }
-
-    public Collection<StockT> getStockCollection() {
-        return stockCollection;
-    }
-
-    public void setStockCollection(Collection<StockT> stockCollection) {
-        this.stockCollection = stockCollection;
-    }
-
-    public float getStockMinimo() {
-        return stockMinimo;
-    }
-
-    public void setStockMinimo(float stockMinimo) {
-        this.stockMinimo = stockMinimo;
-    }
+    
+    
 }
