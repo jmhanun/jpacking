@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -11,7 +10,8 @@ import java.io.Serializable;
  *
  * @author jmhanun
  */
-public class ComponentesT implements Serializable{
+public class ComponentesT implements Serializable {
+
     protected ComponentesPKT componentesPK;
     private int orden;
     private float cantidad;
@@ -23,6 +23,14 @@ public class ComponentesT implements Serializable{
 
     public ComponentesT(ComponentesPKT componentesPK, int orden, float cantidad, ArticulosT articulos, ArticulosT componentes) {
         this.componentesPK = componentesPK;
+        this.orden = orden;
+        this.cantidad = cantidad;
+        this.articulos = articulos;
+        this.componentes = componentes;
+    }
+
+    public ComponentesT(int idArticulo, int idComponente, int orden, float cantidad, ArticulosT articulos, ArticulosT componentes) {
+        this.componentesPK = new ComponentesPKT(idArticulo, idComponente);
         this.orden = orden;
         this.cantidad = cantidad;
         this.articulos = articulos;
@@ -68,5 +76,4 @@ public class ComponentesT implements Serializable{
     public void setOrden(int orden) {
         this.orden = orden;
     }
-    
 }
