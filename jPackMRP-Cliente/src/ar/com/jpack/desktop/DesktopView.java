@@ -3,8 +3,6 @@
  */
 package ar.com.jpack.desktop;
 
-import ar.com.jpack.desktop.administracion.GestionUsuarios;
-import ar.com.jpack.desktop.ventas.RegistroRemitos;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.util.StringHelper;
