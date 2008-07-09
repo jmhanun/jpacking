@@ -441,6 +441,7 @@ public class DesktopView extends FrameView {
                         menuHijo = cargarMenu(menuHijo, rolesT, resourceMap, actionMap);
                         m.add(menuHijo);
                     } else {
+
                         JMenuItem item = new JMenuItem();
                         item.setAction(actionMap.get(rolesT.getFuncion())); // NOI18N
                         item.setName(rolesT.getComponente()); // NOI18N

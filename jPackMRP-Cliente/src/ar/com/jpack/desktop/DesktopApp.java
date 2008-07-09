@@ -7,8 +7,10 @@ import ar.com.jpack.negocio.RolesFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -104,15 +106,24 @@ public class DesktopApp extends SingleFrameApplication {
      * @param args 
      */
     public static void main(String[] args) {
+        DesktopApp myObject=new DesktopApp();
+        myObject.levantar(args);
+    }
 
+    private void levantar(String[] args) {
         try {
 //            java.net.URL url = new java.net.URL("http", "192.168.1.4", "jndi.properties");
 //            java.io.FileInputStream pin = new java.io.FileInputStream(url.getFile());
 //            Properties props = new Properties();
 //            props.load(pin);
             Properties props = new Properties();
-            props.load(new FileInputStream("jndi.properties"));
+            
+            InputStream io = this.getClass().getResourceAsStream("/ar/com/jpack/desktop/resources/jndi.properties");
+
+            props.load(io);
+
             setContexto(new InitialContext(props));
+            
             launch(DesktopApp.class, args);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
@@ -121,7 +132,6 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un IOException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
