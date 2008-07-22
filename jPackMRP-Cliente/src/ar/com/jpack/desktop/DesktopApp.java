@@ -3,14 +3,13 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -20,6 +19,8 @@ import javax.naming.NamingException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -34,6 +35,7 @@ public class DesktopApp extends SingleFrameApplication {
     private static InitialContext contexto;
     private static UsuariosFacadeRemote usuariosFacade;
     private static RolesFacadeRemote rolesFacade;
+    private static ReportesFacadeRemote reportesFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
@@ -233,6 +235,15 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public JasperPrint getReporteUsuarios(){
+        try {
+            reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
+            return reportesFacade.getReporteUsuarios();            
+        } catch (NamingException ex) {
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
     /**
      * Muestra el JDialog de Login
      */

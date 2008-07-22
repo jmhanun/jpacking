@@ -3,16 +3,27 @@
  *
  * Created on 3 de julio de 2008, 15:42
  */
-
 package ar.com.jpack.desktop.ventas;
+
+import ar.com.jpack.desktop.DesktopApp;
+import java.io.InputStream;
+import com.mysql.jdbc.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
+import org.jdesktop.application.Action;
 
 /**
  *
  * @author  jmhanun
  */
 public class RegistroRemitos extends javax.swing.JInternalFrame {
-
-
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -181,7 +192,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -192,7 +203,8 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
 
-        jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(RegistroRemitos.class, this);
+        jButton3.setAction(actionMap.get("runReport")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,8 +242,6 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -253,8 +263,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
-
-private static RegistroRemitos registroRemitos = new RegistroRemitos();
+    private static RegistroRemitos registroRemitos = new RegistroRemitos();
 
     /** Creates new form RegistroRemitos */
     public RegistroRemitos() {
@@ -266,4 +275,12 @@ private static RegistroRemitos registroRemitos = new RegistroRemitos();
 
     }
 
+    @Action
+    public void runReport() {
+
+        JasperPrint jp = DesktopApp.getApplication().getReporteUsuarios();
+        JasperViewer jv = new JasperViewer(jp,false);
+        jv.setTitle("Hola cabron!");
+        jv.setVisible(true);
+    }
 }
