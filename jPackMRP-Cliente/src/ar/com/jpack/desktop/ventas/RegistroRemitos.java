@@ -266,12 +266,12 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
 
     }
 
-    @Action
-    public void runReport() {
-
-        JasperPrint jp = DesktopApp.getApplication().getReporteUsuarios();
-        JasperViewer jv = new JasperViewer(jp,false);
-        jv.setTitle("Hola cabron!");
-        jv.setVisible(true);
-    }
+//    @Action
+//    public void runReport() {
+//
+//        JasperPrint jp = DesktopApp.getApplication().getReporteUsuarios();
+//        JasperViewer jv = new JasperViewer(jp,false);
+//        jv.setTitle("Hola cabron!");
+//        jv.setVisible(true);
+//    }
 }

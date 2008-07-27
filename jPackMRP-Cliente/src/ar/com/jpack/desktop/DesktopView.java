@@ -3,6 +3,7 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.desktop.reportes.ReporteStock;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.util.StringHelper;
@@ -32,6 +33,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Task;
 
@@ -352,6 +355,19 @@ public class DesktopView extends FrameView {
             aboutBox.setLocationRelativeTo(mainFrame);
         }
         DesktopApp.getApplication().show(aboutBox);
+    }
+
+    @Action
+    public void showReporteUsuarios() {
+        JasperPrint jp = DesktopApp.getApplication().getReporteUsuarios();
+        JasperViewer jv = new JasperViewer(jp, false);
+        jv.setTitle("Reporte de Usuarios");
+        jv.setVisible(true);
+    }
+
+    @Action
+    public Task showReporteStock() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock");
     }
 
     /**
