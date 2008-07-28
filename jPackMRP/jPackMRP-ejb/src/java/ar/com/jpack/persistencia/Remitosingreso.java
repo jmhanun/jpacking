@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "remitosingreso")
-@NamedQueries({@NamedQuery(name = "Remitosingreso.findByIdRtoIngreso", query = "SELECT r FROM Remitosingreso r WHERE r.idRtoIngreso = :idRtoIngreso"), @NamedQuery(name = "Remitosingreso.findByNroRemito", query = "SELECT r FROM Remitosingreso r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitosingreso.findByFecha", query = "SELECT r FROM Remitosingreso r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitosingreso.findByLetra", query = "SELECT r FROM Remitosingreso r WHERE r.letra = :letra"), @NamedQuery(name = "Remitosingreso.findByImporte", query = "SELECT r FROM Remitosingreso r WHERE r.importe = :importe"), @NamedQuery(name = "Remitosingreso.findByDescuento", query = "SELECT r FROM Remitosingreso r WHERE r.descuento = :descuento")})
+@NamedQueries({@NamedQuery(name = "Remitosingreso.findByIdRtoIngreso", query = "SELECT r FROM Remitosingreso r WHERE r.idRtoIngreso = :idRtoIngreso"), @NamedQuery(name = "Remitosingreso.findByNroRemito", query = "SELECT r FROM Remitosingreso r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitosingreso.findByFecha", query = "SELECT r FROM Remitosingreso r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitosingreso.findByLetra", query = "SELECT r FROM Remitosingreso r WHERE r.letra = :letra"), @NamedQuery(name = "Remitosingreso.findByImporte", query = "SELECT r FROM Remitosingreso r WHERE r.importe = :importe"), @NamedQuery(name = "Remitosingreso.findByDescuento", query = "SELECT r FROM Remitosingreso r WHERE r.descuento = :descuento"), @NamedQuery(name = "Remitosingreso.findByFechaModificacion", query = "SELECT r FROM Remitosingreso r WHERE r.fechaModificacion = :fechaModificacion")})
 public class Remitosingreso implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +44,9 @@ public class Remitosingreso implements Serializable {
     private double importe;
     @Column(name = "descuento", nullable = false)
     private float descuento;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @OneToMany(mappedBy = "idRtoIngreso")
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
@@ -55,6 +58,9 @@ public class Remitosingreso implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitosingreso")
     private Collection<Detrtosingreso> detrtosingresoCollection;
 
@@ -65,13 +71,14 @@ public class Remitosingreso implements Serializable {
         this.idRtoIngreso = idRtoIngreso;
     }
 
-    public Remitosingreso(Integer idRtoIngreso, int nroRemito, Date fecha, String letra, double importe, float descuento) {
+    public Remitosingreso(Integer idRtoIngreso, int nroRemito, Date fecha, String letra, double importe, float descuento, Date fechaModificacion) {
         this.idRtoIngreso = idRtoIngreso;
         this.nroRemito = nroRemito;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
         this.descuento = descuento;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdRtoIngreso() {
@@ -122,6 +129,14 @@ public class Remitosingreso implements Serializable {
         this.descuento = descuento;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Collection<Detmovimientosstock> getDetmovimientosstockCollection() {
         return detmovimientosstockCollection;
     }
@@ -152,6 +167,14 @@ public class Remitosingreso implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Detrtosingreso> getDetrtosingresoCollection() {

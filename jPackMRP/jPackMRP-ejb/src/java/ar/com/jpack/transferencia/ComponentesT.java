@@ -5,6 +5,7 @@
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -15,26 +16,55 @@ public class ComponentesT implements Serializable {
     protected ComponentesPKT componentesPK;
     private int orden;
     private float cantidad;
+    private Date fechaAlta;
+    private Date fechaModificacion;
     private ArticulosT articulos;
     private ArticulosT componentes;
 
     public ComponentesT() {
     }
 
-    public ComponentesT(ComponentesPKT componentesPK, int orden, float cantidad, ArticulosT articulos, ArticulosT componentes) {
+    public ComponentesT(ComponentesPKT componentesPK, 
+            int orden, float cantidad, 
+            Date fechaAlta,
+            Date fechaModificacion,
+            ArticulosT articulos, ArticulosT componentes) {
         this.componentesPK = componentesPK;
         this.orden = orden;
         this.cantidad = cantidad;
+        this.fechaAlta = fechaAlta;
+        this.fechaModificacion = fechaModificacion;
         this.articulos = articulos;
         this.componentes = componentes;
     }
 
-    public ComponentesT(int idArticulo, int idComponente, int orden, float cantidad, ArticulosT articulos, ArticulosT componentes) {
+    public ComponentesT(int idArticulo, int idComponente, int orden, float cantidad, 
+            Date fechaAlta,
+            Date fechaModificacion,
+            ArticulosT articulos, ArticulosT componentes) {
         this.componentesPK = new ComponentesPKT(idArticulo, idComponente);
         this.orden = orden;
         this.cantidad = cantidad;
+        this.fechaAlta = fechaAlta;
+        this.fechaModificacion = fechaModificacion;
         this.articulos = articulos;
         this.componentes = componentes;
+    }
+
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 
     public ArticulosT getArticulos() {

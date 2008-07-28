@@ -20,26 +20,51 @@ public class RemitosT implements Serializable{
     private double importe;
     private Date fechaAcordada;
     private Date fechaEntrega;
+    private Date fechaModificacion;
     private Collection<FacturasT> idFacturaCollection;
     private Collection<OrdenesProduccionT> ordenesproduccionCollection;
     private ClientesT idCliente;
     private EstadosT idEstado;
     private TiposComprobantesT idTipoComprobante;
+    private UsuariosT idUsuario;
     private Collection<DetMovimientosStockT> detmovimientosstockCollection;
     private Collection<DetalleRemitosT> detalleremitosCollection;
 
     public RemitosT() {
     }
 
-    public RemitosT(Integer idRemito, int nroRemito, Date fecha, double importe, Date fechaAcordada, Date fechaEntrega, ClientesT idCliente, EstadosT idEstado) {
+    public RemitosT(Integer idRemito, int nroRemito, Date fecha, 
+            double importe, Date fechaAcordada, Date fechaEntrega, 
+            Date fechaModificacion,ClientesT idCliente, EstadosT idEstado,
+            TiposComprobantesT idTipoComprobante,
+            UsuariosT idUsuario) {
         this.idRemito = idRemito;
         this.nroRemito = nroRemito;
         this.fecha = fecha;
         this.importe = importe;
         this.fechaAcordada = fechaAcordada;
         this.fechaEntrega = fechaEntrega;
+        this.fechaModificacion = fechaModificacion;
         this.idCliente = idCliente;
         this.idEstado = idEstado;
+        this.idTipoComprobante = idTipoComprobante;
+        this.idUsuario = idUsuario;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public UsuariosT getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(UsuariosT idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<DetalleRemitosT> getDetalleremitosCollection() {

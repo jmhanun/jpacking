@@ -5,10 +5,9 @@
 
 package ar.com.jpack.negocio;
 
+import java.util.HashMap;
 import javax.ejb.Remote;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -17,7 +16,7 @@ import net.sf.jasperreports.view.JasperViewer;
 @Remote
 public interface ReportesFacadeRemote {
 
-    public JasperPrint getReporteUsuarios();
+    public JasperPrint getReporte(String reporte, HashMap parametros);
     
 
 }

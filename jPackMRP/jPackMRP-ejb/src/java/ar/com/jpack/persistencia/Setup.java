@@ -6,12 +6,17 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -19,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "setup")
-@NamedQueries({@NamedQuery(name = "Setup.findByIdSetup", query = "SELECT s FROM Setup s WHERE s.idSetup = :idSetup"), @NamedQuery(name = "Setup.findByDescripcion", query = "SELECT s FROM Setup s WHERE s.descripcion = :descripcion"), @NamedQuery(name = "Setup.findByValor", query = "SELECT s FROM Setup s WHERE s.valor = :valor")})
+@NamedQueries({@NamedQuery(name = "Setup.findByIdSetup", query = "SELECT s FROM Setup s WHERE s.idSetup = :idSetup"), @NamedQuery(name = "Setup.findByDescripcion", query = "SELECT s FROM Setup s WHERE s.descripcion = :descripcion"), @NamedQuery(name = "Setup.findByValor", query = "SELECT s FROM Setup s WHERE s.valor = :valor"), @NamedQuery(name = "Setup.findByFechaModificacion", query = "SELECT s FROM Setup s WHERE s.fechaModificacion = :fechaModificacion")})
 public class Setup implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,6 +34,12 @@ public class Setup implements Serializable {
     private String descripcion;
     @Column(name = "valor", nullable = false)
     private String valor;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Setup() {
     }
@@ -37,10 +48,11 @@ public class Setup implements Serializable {
         this.idSetup = idSetup;
     }
 
-    public Setup(Integer idSetup, String descripcion, String valor) {
+    public Setup(Integer idSetup, String descripcion, String valor, Date fechaModificacion) {
         this.idSetup = idSetup;
         this.descripcion = descripcion;
         this.valor = valor;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdSetup() {
@@ -65,6 +77,22 @@ public class Setup implements Serializable {
 
     public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

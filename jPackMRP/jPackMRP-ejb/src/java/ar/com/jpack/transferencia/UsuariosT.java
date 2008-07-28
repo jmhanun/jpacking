@@ -23,6 +23,18 @@ public class UsuariosT implements Serializable {
     private String mails;
     private String telefonos;
     private Collection<RolesT> idRolCollection;
+    private Collection<OrdenesProduccionT> ordenesproduccionCollection;
+    private Collection<ArticulosT> articulosCollection;
+    private Collection<RemitosT> remitosCollection;
+    private Collection<FacturasComprasT> facturascomprasCollection;
+    private Collection<RemitosIngresoT> remitosingresoCollection;
+    private Collection<StockT> stockCollection;
+    private Collection<ListasPreciosT> listaspreciosCollection;
+    private Collection<SetupT> setupCollection;
+    private Collection<ComponentesT> componentesCollection;
+    private Collection<NotasDebitoT> notasdebitoCollection;
+    private Collection<OrdenesDepositoT> ordenesdepositoCollection;
+    private Collection<PreciosT> preciosCollection;
     private EstadosT idEstado;
 
     public UsuariosT() {
@@ -38,6 +50,102 @@ public class UsuariosT implements Serializable {
         this.mails = mails;
         this.telefonos = telefonos;
         this.idEstado = idEstado;
+    }
+
+    public Collection<ArticulosT> getArticulosCollection() {
+        return articulosCollection;
+    }
+
+    public void setArticulosCollection(Collection<ArticulosT> articulosCollection) {
+        this.articulosCollection = articulosCollection;
+    }
+
+    public Collection<ComponentesT> getComponentesCollection() {
+        return componentesCollection;
+    }
+
+    public void setComponentesCollection(Collection<ComponentesT> componentesCollection) {
+        this.componentesCollection = componentesCollection;
+    }
+
+    public Collection<FacturasComprasT> getFacturascomprasCollection() {
+        return facturascomprasCollection;
+    }
+
+    public void setFacturascomprasCollection(Collection<FacturasComprasT> facturascomprasCollection) {
+        this.facturascomprasCollection = facturascomprasCollection;
+    }
+
+    public Collection<ListasPreciosT> getListaspreciosCollection() {
+        return listaspreciosCollection;
+    }
+
+    public void setListaspreciosCollection(Collection<ListasPreciosT> listaspreciosCollection) {
+        this.listaspreciosCollection = listaspreciosCollection;
+    }
+
+    public Collection<NotasDebitoT> getNotasdebitoCollection() {
+        return notasdebitoCollection;
+    }
+
+    public void setNotasdebitoCollection(Collection<NotasDebitoT> notasdebitoCollection) {
+        this.notasdebitoCollection = notasdebitoCollection;
+    }
+
+    public Collection<OrdenesDepositoT> getOrdenesdepositoCollection() {
+        return ordenesdepositoCollection;
+    }
+
+    public void setOrdenesdepositoCollection(Collection<OrdenesDepositoT> ordenesdepositoCollection) {
+        this.ordenesdepositoCollection = ordenesdepositoCollection;
+    }
+
+    public Collection<OrdenesProduccionT> getOrdenesproduccionCollection() {
+        return ordenesproduccionCollection;
+    }
+
+    public void setOrdenesproduccionCollection(Collection<OrdenesProduccionT> ordenesproduccionCollection) {
+        this.ordenesproduccionCollection = ordenesproduccionCollection;
+    }
+
+    public Collection<PreciosT> getPreciosCollection() {
+        return preciosCollection;
+    }
+
+    public void setPreciosCollection(Collection<PreciosT> preciosCollection) {
+        this.preciosCollection = preciosCollection;
+    }
+
+    public Collection<RemitosT> getRemitosCollection() {
+        return remitosCollection;
+    }
+
+    public void setRemitosCollection(Collection<RemitosT> remitosCollection) {
+        this.remitosCollection = remitosCollection;
+    }
+
+    public Collection<RemitosIngresoT> getRemitosingresoCollection() {
+        return remitosingresoCollection;
+    }
+
+    public void setRemitosingresoCollection(Collection<RemitosIngresoT> remitosingresoCollection) {
+        this.remitosingresoCollection = remitosingresoCollection;
+    }
+
+    public Collection<SetupT> getSetupCollection() {
+        return setupCollection;
+    }
+
+    public void setSetupCollection(Collection<SetupT> setupCollection) {
+        this.setupCollection = setupCollection;
+    }
+
+    public Collection<StockT> getStockCollection() {
+        return stockCollection;
+    }
+
+    public void setStockCollection(Collection<StockT> stockCollection) {
+        this.stockCollection = stockCollection;
     }
 
     public String getApellidos() {

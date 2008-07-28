@@ -6,6 +6,7 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "detmovimientosstock")
-@NamedQueries({@NamedQuery(name = "Detmovimientosstock.findByIdDetMovStock", query = "SELECT d FROM Detmovimientosstock d WHERE d.idDetMovStock = :idDetMovStock"), @NamedQuery(name = "Detmovimientosstock.findByDescripcion", query = "SELECT d FROM Detmovimientosstock d WHERE d.descripcion = :descripcion"), @NamedQuery(name = "Detmovimientosstock.findByCantidad", query = "SELECT d FROM Detmovimientosstock d WHERE d.cantidad = :cantidad")})
+@NamedQueries({@NamedQuery(name = "Detmovimientosstock.findByIdDetMovStock", query = "SELECT d FROM Detmovimientosstock d WHERE d.idDetMovStock = :idDetMovStock"), @NamedQuery(name = "Detmovimientosstock.findByDescripcion", query = "SELECT d FROM Detmovimientosstock d WHERE d.descripcion = :descripcion"), @NamedQuery(name = "Detmovimientosstock.findByCantidad", query = "SELECT d FROM Detmovimientosstock d WHERE d.cantidad = :cantidad"), @NamedQuery(name = "Detmovimientosstock.findByFechaMovimiento", query = "SELECT d FROM Detmovimientosstock d WHERE d.fechaMovimiento = :fechaMovimiento")})
 public class Detmovimientosstock implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,6 +34,9 @@ public class Detmovimientosstock implements Serializable {
     private String descripcion;
     @Column(name = "cantidad", nullable = false)
     private double cantidad;
+    @Column(name = "fechaMovimiento")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaMovimiento;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
@@ -91,6 +97,14 @@ public class Detmovimientosstock implements Serializable {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Date getFechaMovimiento() {
+        return fechaMovimiento;
+    }
+
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        this.fechaMovimiento = fechaMovimiento;
     }
 
     public Articulos getIdArticulo() {

@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "ordenesdeposito")
-@NamedQueries({@NamedQuery(name = "Ordenesdeposito.findByIdOrdenDeposito", query = "SELECT o FROM Ordenesdeposito o WHERE o.idOrdenDeposito = :idOrdenDeposito"), @NamedQuery(name = "Ordenesdeposito.findByNroOrdenDep", query = "SELECT o FROM Ordenesdeposito o WHERE o.nroOrdenDep = :nroOrdenDep"), @NamedQuery(name = "Ordenesdeposito.findByFecha", query = "SELECT o FROM Ordenesdeposito o WHERE o.fecha = :fecha")})
+@NamedQueries({@NamedQuery(name = "Ordenesdeposito.findByIdOrdenDeposito", query = "SELECT o FROM Ordenesdeposito o WHERE o.idOrdenDeposito = :idOrdenDeposito"), @NamedQuery(name = "Ordenesdeposito.findByNroOrdenDep", query = "SELECT o FROM Ordenesdeposito o WHERE o.nroOrdenDep = :nroOrdenDep"), @NamedQuery(name = "Ordenesdeposito.findByFecha", query = "SELECT o FROM Ordenesdeposito o WHERE o.fecha = :fecha"), @NamedQuery(name = "Ordenesdeposito.findByFechaModificacion", query = "SELECT o FROM Ordenesdeposito o WHERE o.fechaModificacion = :fechaModificacion")})
 public class Ordenesdeposito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,6 +38,9 @@ public class Ordenesdeposito implements Serializable {
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @OneToMany(mappedBy = "idOrdenDeposito")
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesdeposito")
@@ -48,6 +51,9 @@ public class Ordenesdeposito implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Ordenesdeposito() {
     }
@@ -56,10 +62,11 @@ public class Ordenesdeposito implements Serializable {
         this.idOrdenDeposito = idOrdenDeposito;
     }
 
-    public Ordenesdeposito(Integer idOrdenDeposito, int nroOrdenDep, Date fecha) {
+    public Ordenesdeposito(Integer idOrdenDeposito, int nroOrdenDep, Date fecha, Date fechaModificacion) {
         this.idOrdenDeposito = idOrdenDeposito;
         this.nroOrdenDep = nroOrdenDep;
         this.fecha = fecha;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdOrdenDeposito() {
@@ -84,6 +91,14 @@ public class Ordenesdeposito implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Collection<Detmovimientosstock> getDetmovimientosstockCollection() {
@@ -116,6 +131,14 @@ public class Ordenesdeposito implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

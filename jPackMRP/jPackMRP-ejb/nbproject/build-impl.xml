@@ -264,8 +264,6 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="compile" name="library-inclusion-in-archive">
-        <copy file="${libs.toplink.classpath.libfile.2}" todir="${build.classes.dir}"/>
-        <copy file="${libs.toplink.classpath.libfile.1}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReports.classpath.libfile.19}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReports.classpath.libfile.18}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReports.classpath.libfile.17}" todir="${build.classes.dir}"/>
@@ -286,12 +284,10 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.JasperReports.classpath.libfile.2}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReports.classpath.libfile.1}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" todir="${build.classes.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${build.classes.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${build.classes.dir}"/>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <basename file="${libs.toplink.classpath.libfile.2}" property="included.lib.libs.toplink.classpath.2"/>
-        <basename file="${libs.toplink.classpath.libfile.1}" property="included.lib.libs.toplink.classpath.1"/>
-        <copy file="${libs.toplink.classpath.libfile.2}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.toplink.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <basename file="${libs.JasperReports.classpath.libfile.19}" property="included.lib.libs.JasperReports.classpath.19"/>
         <basename file="${libs.JasperReports.classpath.libfile.18}" property="included.lib.libs.JasperReports.classpath.18"/>
         <basename file="${libs.JasperReports.classpath.libfile.17}" property="included.lib.libs.JasperReports.classpath.17"/>
@@ -332,8 +328,12 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.JasperReports.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <basename file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" property="included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar"/>
         <copy file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${libs.toplink.classpath.libfile.2}" property="included.lib.libs.toplink.classpath.2"/>
+        <basename file="${libs.toplink.classpath.libfile.1}" property="included.lib.libs.toplink.classpath.1"/>
+        <copy file="${libs.toplink.classpath.libfile.2}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.toplink.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.libs.toplink.classpath.1} ${included.lib.libs.toplink.classpath.2} ${included.lib.libs.JasperReports.classpath.1} ${included.lib.libs.JasperReports.classpath.2} ${included.lib.libs.JasperReports.classpath.3} ${included.lib.libs.JasperReports.classpath.4} ${included.lib.libs.JasperReports.classpath.5} ${included.lib.libs.JasperReports.classpath.6} ${included.lib.libs.JasperReports.classpath.7} ${included.lib.libs.JasperReports.classpath.8} ${included.lib.libs.JasperReports.classpath.9} ${included.lib.libs.JasperReports.classpath.10} ${included.lib.libs.JasperReports.classpath.11} ${included.lib.libs.JasperReports.classpath.12} ${included.lib.libs.JasperReports.classpath.13} ${included.lib.libs.JasperReports.classpath.14} ${included.lib.libs.JasperReports.classpath.15} ${included.lib.libs.JasperReports.classpath.16} ${included.lib.libs.JasperReports.classpath.17} ${included.lib.libs.JasperReports.classpath.18} ${included.lib.libs.JasperReports.classpath.19} ${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} "/>
+            <attribute name="Class-Path" value="${included.lib.libs.JasperReports.classpath.1} ${included.lib.libs.JasperReports.classpath.2} ${included.lib.libs.JasperReports.classpath.3} ${included.lib.libs.JasperReports.classpath.4} ${included.lib.libs.JasperReports.classpath.5} ${included.lib.libs.JasperReports.classpath.6} ${included.lib.libs.JasperReports.classpath.7} ${included.lib.libs.JasperReports.classpath.8} ${included.lib.libs.JasperReports.classpath.9} ${included.lib.libs.JasperReports.classpath.10} ${included.lib.libs.JasperReports.classpath.11} ${included.lib.libs.JasperReports.classpath.12} ${included.lib.libs.JasperReports.classpath.13} ${included.lib.libs.JasperReports.classpath.14} ${included.lib.libs.JasperReports.classpath.15} ${included.lib.libs.JasperReports.classpath.16} ${included.lib.libs.JasperReports.classpath.17} ${included.lib.libs.JasperReports.classpath.18} ${included.lib.libs.JasperReports.classpath.19} ${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} ${included.lib.libs.toplink.classpath.1} ${included.lib.libs.toplink.classpath.2} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">

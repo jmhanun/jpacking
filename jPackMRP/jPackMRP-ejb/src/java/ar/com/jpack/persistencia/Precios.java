@@ -6,6 +6,7 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "precios")
-@NamedQueries({@NamedQuery(name = "Precios.findByIdPrecio", query = "SELECT p FROM Precios p WHERE p.idPrecio = :idPrecio"), @NamedQuery(name = "Precios.findByPrecio", query = "SELECT p FROM Precios p WHERE p.precio = :precio")})
+@NamedQueries({@NamedQuery(name = "Precios.findByIdPrecio", query = "SELECT p FROM Precios p WHERE p.idPrecio = :idPrecio"), @NamedQuery(name = "Precios.findByPrecio", query = "SELECT p FROM Precios p WHERE p.precio = :precio"), @NamedQuery(name = "Precios.findByFechaModificacion", query = "SELECT p FROM Precios p WHERE p.fechaModificacion = :fechaModificacion")})
 public class Precios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,12 +32,18 @@ public class Precios implements Serializable {
     private Integer idPrecio;
     @Column(name = "precio", nullable = false)
     private double precio;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
     @JoinColumn(name = "idLista", referencedColumnName = "idLista")
     @ManyToOne
     private Listasprecios idLista;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Precios() {
     }
@@ -43,9 +52,10 @@ public class Precios implements Serializable {
         this.idPrecio = idPrecio;
     }
 
-    public Precios(Integer idPrecio, double precio) {
+    public Precios(Integer idPrecio, double precio, Date fechaModificacion) {
         this.idPrecio = idPrecio;
         this.precio = precio;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdPrecio() {
@@ -64,6 +74,14 @@ public class Precios implements Serializable {
         this.precio = precio;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Articulos getIdArticulo() {
         return idArticulo;
     }
@@ -78,6 +96,14 @@ public class Precios implements Serializable {
 
     public void setIdLista(Listasprecios idLista) {
         this.idLista = idLista;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

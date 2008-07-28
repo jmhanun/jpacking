@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "listasprecios")
-@NamedQueries({@NamedQuery(name = "Listasprecios.findByIdLista", query = "SELECT l FROM Listasprecios l WHERE l.idLista = :idLista"), @NamedQuery(name = "Listasprecios.findByFechaDesde", query = "SELECT l FROM Listasprecios l WHERE l.fechaDesde = :fechaDesde"), @NamedQuery(name = "Listasprecios.findByFechaHasta", query = "SELECT l FROM Listasprecios l WHERE l.fechaHasta = :fechaHasta")})
+@NamedQueries({@NamedQuery(name = "Listasprecios.findByIdLista", query = "SELECT l FROM Listasprecios l WHERE l.idLista = :idLista"), @NamedQuery(name = "Listasprecios.findByFechaDesde", query = "SELECT l FROM Listasprecios l WHERE l.fechaDesde = :fechaDesde"), @NamedQuery(name = "Listasprecios.findByFechaHasta", query = "SELECT l FROM Listasprecios l WHERE l.fechaHasta = :fechaHasta"), @NamedQuery(name = "Listasprecios.findByFechaModificacion", query = "SELECT l FROM Listasprecios l WHERE l.fechaModificacion = :fechaModificacion")})
 public class Listasprecios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,9 +39,15 @@ public class Listasprecios implements Serializable {
     @Column(name = "fechaHasta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLista")
     private Collection<Precios> preciosCollection;
 
@@ -52,9 +58,10 @@ public class Listasprecios implements Serializable {
         this.idLista = idLista;
     }
 
-    public Listasprecios(Integer idLista, Date fechaDesde) {
+    public Listasprecios(Integer idLista, Date fechaDesde, Date fechaModificacion) {
         this.idLista = idLista;
         this.fechaDesde = fechaDesde;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdLista() {
@@ -81,12 +88,28 @@ public class Listasprecios implements Serializable {
         this.fechaHasta = fechaHasta;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Estados getIdEstado() {
         return idEstado;
     }
 
     public void setIdEstado(Estados idEstado) {
         this.idEstado = idEstado;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Precios> getPreciosCollection() {

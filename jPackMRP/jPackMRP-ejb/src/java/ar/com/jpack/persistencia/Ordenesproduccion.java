@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "ordenesproduccion")
-@NamedQueries({@NamedQuery(name = "Ordenesproduccion.findByIdOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByNroOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.nroOrdenProduccion = :nroOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByFecha", query = "SELECT o FROM Ordenesproduccion o WHERE o.fecha = :fecha")})
+@NamedQueries({@NamedQuery(name = "Ordenesproduccion.findByIdOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByNroOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.nroOrdenProduccion = :nroOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByFecha", query = "SELECT o FROM Ordenesproduccion o WHERE o.fecha = :fecha"), @NamedQuery(name = "Ordenesproduccion.findByFechaModificacion", query = "SELECT o FROM Ordenesproduccion o WHERE o.fechaModificacion = :fechaModificacion")})
 public class Ordenesproduccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,6 +38,9 @@ public class Ordenesproduccion implements Serializable {
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
@@ -47,6 +50,9 @@ public class Ordenesproduccion implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesproduccion")
     private Collection<Detordenesproduccion> detordenesproduccionCollection;
     @OneToMany(mappedBy = "idOrdenProduccion")
@@ -59,10 +65,11 @@ public class Ordenesproduccion implements Serializable {
         this.idOrdenProduccion = idOrdenProduccion;
     }
 
-    public Ordenesproduccion(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha) {
+    public Ordenesproduccion(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha, Date fechaModificacion) {
         this.idOrdenProduccion = idOrdenProduccion;
         this.nroOrdenProduccion = nroOrdenProduccion;
         this.fecha = fecha;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdOrdenProduccion() {
@@ -89,6 +96,14 @@ public class Ordenesproduccion implements Serializable {
         this.fecha = fecha;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Estados getIdEstado() {
         return idEstado;
     }
@@ -111,6 +126,14 @@ public class Ordenesproduccion implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Detordenesproduccion> getDetordenesproduccionCollection() {

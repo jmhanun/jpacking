@@ -7,6 +7,7 @@ package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -24,7 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "articulos")
-@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime")})
+@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime"), @NamedQuery(name = "Articulos.findByFechaAlta", query = "SELECT a FROM Articulos a WHERE a.fechaAlta = :fechaAlta"), @NamedQuery(name = "Articulos.findByFechaModificacion", query = "SELECT a FROM Articulos a WHERE a.fechaModificacion = :fechaModificacion")})
 public class Articulos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,6 +43,12 @@ public class Articulos implements Serializable {
     private float stockMinimo;
     @Column(name = "leadTime", nullable = false)
     private float leadTime;
+    @Column(name = "fechaAlta", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAlta;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detnotascredito> detnotascreditoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
@@ -48,6 +57,9 @@ public class Articulos implements Serializable {
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
     @ManyToOne
     private Unidadesmedida idUnidMedida;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detordenesproduccion> detordenesproduccionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
@@ -82,13 +94,15 @@ public class Articulos implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public Articulos(Integer idArticulo, String codigo, String descripcion, float stock, float stockMinimo, float leadTime) {
+    public Articulos(Integer idArticulo, String codigo, String descripcion, float stock, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.stock = stock;
         this.stockMinimo = stockMinimo;
         this.leadTime = leadTime;
+        this.fechaAlta = fechaAlta;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdArticulo() {
@@ -139,6 +153,22 @@ public class Articulos implements Serializable {
         this.leadTime = leadTime;
     }
 
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Collection<Detnotascredito> getDetnotascreditoCollection() {
         return detnotascreditoCollection;
     }
@@ -161,6 +191,14 @@ public class Articulos implements Serializable {
 
     public void setIdUnidMedida(Unidadesmedida idUnidMedida) {
         this.idUnidMedida = idUnidMedida;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Detordenesproduccion> getDetordenesproduccionCollection() {
@@ -211,20 +249,20 @@ public class Articulos implements Serializable {
         this.detallefacturasCollection = detallefacturasCollection;
     }
 
-    public Collection<Componentes> getComponentesCollection() {
+    public Collection<Componentes> getArticulosCollection() {
         return articulosCollection;
     }
 
-    public void setComponentesCollection(Collection<Componentes> componentesCollection) {
-        this.articulosCollection = componentesCollection;
+    public void setArticulosCollection(Collection<Componentes> articulosCollection) {
+        this.articulosCollection = articulosCollection;
     }
 
-    public Collection<Componentes> getComponentesCollection1() {
+    public Collection<Componentes> getComponentesCollection() {
         return componentesCollection;
     }
 
-    public void setComponentesCollection1(Collection<Componentes> componentesCollection1) {
-        this.componentesCollection = componentesCollection1;
+    public void setComponentesCollection(Collection<Componentes> componentesCollection) {
+        this.componentesCollection = componentesCollection;
     }
 
     public Collection<Detalleremitos> getDetalleremitosCollection() {

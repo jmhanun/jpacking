@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "facturascompras")
-@NamedQueries({@NamedQuery(name = "Facturascompras.findByIdFactCompra", query = "SELECT f FROM Facturascompras f WHERE f.idFactCompra = :idFactCompra"), @NamedQuery(name = "Facturascompras.findByNroFactura", query = "SELECT f FROM Facturascompras f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturascompras.findByFecha", query = "SELECT f FROM Facturascompras f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturascompras.findByLetra", query = "SELECT f FROM Facturascompras f WHERE f.letra = :letra"), @NamedQuery(name = "Facturascompras.findByImporte", query = "SELECT f FROM Facturascompras f WHERE f.importe = :importe"), @NamedQuery(name = "Facturascompras.findByDescuento", query = "SELECT f FROM Facturascompras f WHERE f.descuento = :descuento")})
+@NamedQueries({@NamedQuery(name = "Facturascompras.findByIdFactCompra", query = "SELECT f FROM Facturascompras f WHERE f.idFactCompra = :idFactCompra"), @NamedQuery(name = "Facturascompras.findByNroFactura", query = "SELECT f FROM Facturascompras f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturascompras.findByFecha", query = "SELECT f FROM Facturascompras f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturascompras.findByLetra", query = "SELECT f FROM Facturascompras f WHERE f.letra = :letra"), @NamedQuery(name = "Facturascompras.findByImporte", query = "SELECT f FROM Facturascompras f WHERE f.importe = :importe"), @NamedQuery(name = "Facturascompras.findByDescuento", query = "SELECT f FROM Facturascompras f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturascompras.findByFechaModificacion", query = "SELECT f FROM Facturascompras f WHERE f.fechaModificacion = :fechaModificacion")})
 public class Facturascompras implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +44,9 @@ public class Facturascompras implements Serializable {
     private double importe;
     @Column(name = "descuento", nullable = false)
     private float descuento;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
@@ -53,6 +56,9 @@ public class Facturascompras implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturascompras")
     private Collection<Detallefactcompras> detallefactcomprasCollection;
 
@@ -63,13 +69,14 @@ public class Facturascompras implements Serializable {
         this.idFactCompra = idFactCompra;
     }
 
-    public Facturascompras(Integer idFactCompra, int nroFactura, Date fecha, String letra, double importe, float descuento) {
+    public Facturascompras(Integer idFactCompra, int nroFactura, Date fecha, String letra, double importe, float descuento, Date fechaModificacion) {
         this.idFactCompra = idFactCompra;
         this.nroFactura = nroFactura;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
         this.descuento = descuento;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdFactCompra() {
@@ -120,6 +127,14 @@ public class Facturascompras implements Serializable {
         this.descuento = descuento;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Estados getIdEstado() {
         return idEstado;
     }
@@ -142,6 +157,14 @@ public class Facturascompras implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Detallefactcompras> getDetallefactcomprasCollection() {

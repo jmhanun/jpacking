@@ -28,38 +28,22 @@ public class ReportesFacade implements ReportesFacadeRemote {
     @PersistenceContext
     private EntityManager em;
 
-    public JasperPrint getReporteUsuarios() {
-//        try {
-//            String reportName = "ar/com/jpack/reportes/usuarios.jasper";
-//            InputStream is = this.getClass().getClassLoader().getResourceAsStream(reportName);
-////            Class.forName("org.gjt.mm.mysql.Driver");
-//
-//            Connection conn = jdbcRemotedbjPack.getConnection();
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(is, new HashMap(), conn);
-////            JasperViewer jv = new JasperViewer(jasperPrint);
-////            jv.setVisible(true);
-//            return jasperPrint;
-////        } catch (ClassNotFoundException ex) {
-////            return null;
-//        } catch (JRException ex) {
-//            return null;
-//        } catch (SQLException ex) {
-//            return null;
-//        }
+    public JasperPrint getReporte(String reporte, HashMap parametros) {
         try {
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream("ar/com/jpack/reportes/usuarios.jasper");
-//            Class.forName("org.gjt.mm.mysql.Driver");
+            if (parametros == null) {
+                parametros = new HashMap();
+            }
+//            InputStream is = this.getClass().getClassLoader().getResourceAsStream("ar/com/jpack/reportes/usuarios.jasper");
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream("ar/com/jpack/reportes/" + reporte + ".jasper");
             Connection conn = jdbcRemotedbjPack.getConnection();
-            JasperPrint jp = JasperFillManager.fillReport(is, new HashMap(), conn);
+            JasperPrint jp = JasperFillManager.fillReport(is, parametros, conn);
             return jp;
-
-
         } catch (JRException ex) {
             ex.printStackTrace();
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
-
     }
 }

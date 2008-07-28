@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +33,6 @@ import javax.persistence.TemporalType;
 @Table(name = "usuarios")
 @NamedQueries({@NamedQuery(name = "Usuarios.findByIdUsuario", query = "SELECT u FROM Usuarios u WHERE u.idUsuario = :idUsuario"), @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario"), @NamedQuery(name = "Usuarios.findByContrasena", query = "SELECT u FROM Usuarios u WHERE u.contrasena = :contrasena"), @NamedQuery(name = "Usuarios.findByUltimoAcceso", query = "SELECT u FROM Usuarios u WHERE u.ultimoAcceso = :ultimoAcceso"), @NamedQuery(name = "Usuarios.findByNombres", query = "SELECT u FROM Usuarios u WHERE u.nombres = :nombres"), @NamedQuery(name = "Usuarios.findByApellidos", query = "SELECT u FROM Usuarios u WHERE u.apellidos = :apellidos"), @NamedQuery(name = "Usuarios.findByMails", query = "SELECT u FROM Usuarios u WHERE u.mails = :mails"), @NamedQuery(name = "Usuarios.findByTelefonos", query = "SELECT u FROM Usuarios u WHERE u.telefonos = :telefonos")})
 public class Usuarios implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUsuario", nullable = false)
@@ -55,6 +56,30 @@ public class Usuarios implements Serializable {
     @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")}, inverseJoinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")})
     @ManyToMany
     private Collection<Roles> idRolCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Ordenesproduccion> ordenesproduccionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Articulos> articulosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Remitos> remitosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Facturascompras> facturascomprasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Remitosingreso> remitosingresoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Stock> stockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Listasprecios> listaspreciosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Setup> setupCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Componentes> componentesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Notasdebito> notasdebitoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Ordenesdeposito> ordenesdepositoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Precios> preciosCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
@@ -146,6 +171,102 @@ public class Usuarios implements Serializable {
         this.idRolCollection = idRolCollection;
     }
 
+    public Collection<Ordenesproduccion> getOrdenesproduccionCollection() {
+        return ordenesproduccionCollection;
+    }
+
+    public void setOrdenesproduccionCollection(Collection<Ordenesproduccion> ordenesproduccionCollection) {
+        this.ordenesproduccionCollection = ordenesproduccionCollection;
+    }
+
+    public Collection<Articulos> getArticulosCollection() {
+        return articulosCollection;
+    }
+
+    public void setArticulosCollection(Collection<Articulos> articulosCollection) {
+        this.articulosCollection = articulosCollection;
+    }
+
+    public Collection<Remitos> getRemitosCollection() {
+        return remitosCollection;
+    }
+
+    public void setRemitosCollection(Collection<Remitos> remitosCollection) {
+        this.remitosCollection = remitosCollection;
+    }
+
+    public Collection<Facturascompras> getFacturascomprasCollection() {
+        return facturascomprasCollection;
+    }
+
+    public void setFacturascomprasCollection(Collection<Facturascompras> facturascomprasCollection) {
+        this.facturascomprasCollection = facturascomprasCollection;
+    }
+
+    public Collection<Remitosingreso> getRemitosingresoCollection() {
+        return remitosingresoCollection;
+    }
+
+    public void setRemitosingresoCollection(Collection<Remitosingreso> remitosingresoCollection) {
+        this.remitosingresoCollection = remitosingresoCollection;
+    }
+
+    public Collection<Stock> getStockCollection() {
+        return stockCollection;
+    }
+
+    public void setStockCollection(Collection<Stock> stockCollection) {
+        this.stockCollection = stockCollection;
+    }
+
+    public Collection<Listasprecios> getListaspreciosCollection() {
+        return listaspreciosCollection;
+    }
+
+    public void setListaspreciosCollection(Collection<Listasprecios> listaspreciosCollection) {
+        this.listaspreciosCollection = listaspreciosCollection;
+    }
+
+    public Collection<Setup> getSetupCollection() {
+        return setupCollection;
+    }
+
+    public void setSetupCollection(Collection<Setup> setupCollection) {
+        this.setupCollection = setupCollection;
+    }
+
+    public Collection<Componentes> getComponentesCollection() {
+        return componentesCollection;
+    }
+
+    public void setComponentesCollection(Collection<Componentes> componentesCollection) {
+        this.componentesCollection = componentesCollection;
+    }
+
+    public Collection<Notasdebito> getNotasdebitoCollection() {
+        return notasdebitoCollection;
+    }
+
+    public void setNotasdebitoCollection(Collection<Notasdebito> notasdebitoCollection) {
+        this.notasdebitoCollection = notasdebitoCollection;
+    }
+
+    public Collection<Ordenesdeposito> getOrdenesdepositoCollection() {
+        return ordenesdepositoCollection;
+    }
+
+    public void setOrdenesdepositoCollection(Collection<Ordenesdeposito> ordenesdepositoCollection) {
+        this.ordenesdepositoCollection = ordenesdepositoCollection;
+    }
+
+    public Collection<Precios> getPreciosCollection() {
+        return preciosCollection;
+    }
+
+    public void setPreciosCollection(Collection<Precios> preciosCollection) {
+        this.preciosCollection = preciosCollection;
+    }
+
     public Estados getIdEstado() {
         return idEstado;
     }
@@ -178,4 +299,5 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Usuarios[idUsuario=" + idUsuario + "]";
     }
+
 }

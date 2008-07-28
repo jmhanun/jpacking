@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,7 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "notascredito")
-@NamedQueries({@NamedQuery(name = "Notascredito.findByIdNotaCredito", query = "SELECT n FROM Notascredito n WHERE n.idNotaCredito = :idNotaCredito"), @NamedQuery(name = "Notascredito.findByNroNotaCredito", query = "SELECT n FROM Notascredito n WHERE n.nroNotaCredito = :nroNotaCredito"), @NamedQuery(name = "Notascredito.findByFecha", query = "SELECT n FROM Notascredito n WHERE n.fecha = :fecha"), @NamedQuery(name = "Notascredito.findByLetra", query = "SELECT n FROM Notascredito n WHERE n.letra = :letra"), @NamedQuery(name = "Notascredito.findByImporte", query = "SELECT n FROM Notascredito n WHERE n.importe = :importe"), @NamedQuery(name = "Notascredito.findByDescuento", query = "SELECT n FROM Notascredito n WHERE n.descuento = :descuento")})
+@NamedQueries({@NamedQuery(name = "Notascredito.findByIdNotaCredito", query = "SELECT n FROM Notascredito n WHERE n.idNotaCredito = :idNotaCredito"), @NamedQuery(name = "Notascredito.findByNroNotaCredito", query = "SELECT n FROM Notascredito n WHERE n.nroNotaCredito = :nroNotaCredito"), @NamedQuery(name = "Notascredito.findByFecha", query = "SELECT n FROM Notascredito n WHERE n.fecha = :fecha"), @NamedQuery(name = "Notascredito.findByLetra", query = "SELECT n FROM Notascredito n WHERE n.letra = :letra"), @NamedQuery(name = "Notascredito.findByImporte", query = "SELECT n FROM Notascredito n WHERE n.importe = :importe"), @NamedQuery(name = "Notascredito.findByDescuento", query = "SELECT n FROM Notascredito n WHERE n.descuento = :descuento"), @NamedQuery(name = "Notascredito.findByIdUsuario", query = "SELECT n FROM Notascredito n WHERE n.idUsuario = :idUsuario"), @NamedQuery(name = "Notascredito.findByFechaModificacion", query = "SELECT n FROM Notascredito n WHERE n.fechaModificacion = :fechaModificacion")})
 public class Notascredito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +45,11 @@ public class Notascredito implements Serializable {
     private double importe;
     @Column(name = "descuento", nullable = false)
     private float descuento;
+    @Column(name = "idUsuario", nullable = false)
+    private int idUsuario;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notascredito")
     private Collection<Detnotascredito> detnotascreditoCollection;
     @OneToMany(mappedBy = "idNotaCredito")
@@ -57,6 +63,11 @@ public class Notascredito implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "notascredito1")
+    private Notascredito notascredito;
+    @JoinColumn(name = "idNotaCredito", referencedColumnName = "idNotaCredito", insertable = false, updatable = false)
+    @OneToOne
+    private Notascredito notascredito1;
 
     public Notascredito() {
     }
@@ -65,13 +76,15 @@ public class Notascredito implements Serializable {
         this.idNotaCredito = idNotaCredito;
     }
 
-    public Notascredito(Integer idNotaCredito, int nroNotaCredito, Date fecha, String letra, double importe, float descuento) {
+    public Notascredito(Integer idNotaCredito, int nroNotaCredito, Date fecha, String letra, double importe, float descuento, int idUsuario, Date fechaModificacion) {
         this.idNotaCredito = idNotaCredito;
         this.nroNotaCredito = nroNotaCredito;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
         this.descuento = descuento;
+        this.idUsuario = idUsuario;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdNotaCredito() {
@@ -122,6 +135,22 @@ public class Notascredito implements Serializable {
         this.descuento = descuento;
     }
 
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Collection<Detnotascredito> getDetnotascreditoCollection() {
         return detnotascreditoCollection;
     }
@@ -160,6 +189,22 @@ public class Notascredito implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Notascredito getNotascredito() {
+        return notascredito;
+    }
+
+    public void setNotascredito(Notascredito notascredito) {
+        this.notascredito = notascredito;
+    }
+
+    public Notascredito getNotascredito1() {
+        return notascredito1;
+    }
+
+    public void setNotascredito1(Notascredito notascredito1) {
+        this.notascredito1 = notascredito1;
     }
 
     @Override

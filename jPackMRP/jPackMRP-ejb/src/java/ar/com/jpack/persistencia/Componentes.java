@@ -6,6 +6,7 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "componentes")
-@NamedQueries({@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"), @NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"), @NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"), @NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad")})
+@NamedQueries({@NamedQuery(name = "Componentes.findByIdArticulo", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idArticulo = :idArticulo"), @NamedQuery(name = "Componentes.findByIdComponente", query = "SELECT c FROM Componentes c WHERE c.componentesPK.idComponente = :idComponente"), @NamedQuery(name = "Componentes.findByOrden", query = "SELECT c FROM Componentes c WHERE c.orden = :orden"), @NamedQuery(name = "Componentes.findByCantidad", query = "SELECT c FROM Componentes c WHERE c.cantidad = :cantidad"), @NamedQuery(name = "Componentes.findByFechaAlta", query = "SELECT c FROM Componentes c WHERE c.fechaAlta = :fechaAlta"), @NamedQuery(name = "Componentes.findByFechaModificacion", query = "SELECT c FROM Componentes c WHERE c.fechaModificacion = :fechaModificacion")})
 public class Componentes implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -30,12 +33,21 @@ public class Componentes implements Serializable {
     private int orden;
     @Column(name = "cantidad", nullable = false)
     private float cantidad;
+    @Column(name = "fechaAlta", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAlta;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo", insertable = false, updatable = false)
     @ManyToOne
     private Articulos articulos;
     @JoinColumn(name = "idComponente", referencedColumnName = "idArticulo", insertable = false, updatable = false)
     @ManyToOne
     private Articulos componentes;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Componentes() {
     }
@@ -44,10 +56,12 @@ public class Componentes implements Serializable {
         this.componentesPK = componentesPK;
     }
 
-    public Componentes(ComponentesPK componentesPK, int orden, float cantidad) {
+    public Componentes(ComponentesPK componentesPK, int orden, float cantidad, Date fechaAlta, Date fechaModificacion) {
         this.componentesPK = componentesPK;
         this.orden = orden;
         this.cantidad = cantidad;
+        this.fechaAlta = fechaAlta;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Componentes(int idArticulo, int idComponente) {
@@ -78,6 +92,22 @@ public class Componentes implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Articulos getArticulos() {
         return articulos;
     }
@@ -86,12 +116,20 @@ public class Componentes implements Serializable {
         this.articulos = articulos;
     }
 
-    public Articulos getArticulos1() {
+    public Articulos getComponentes() {
         return componentes;
     }
 
-    public void setArticulos1(Articulos articulos1) {
-        this.componentes = articulos1;
+    public void setComponentes(Articulos componentes) {
+        this.componentes = componentes;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

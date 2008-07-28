@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "remitos")
-@NamedQueries({@NamedQuery(name = "Remitos.findByIdRemito", query = "SELECT r FROM Remitos r WHERE r.idRemito = :idRemito"), @NamedQuery(name = "Remitos.findByNroRemito", query = "SELECT r FROM Remitos r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitos.findByFecha", query = "SELECT r FROM Remitos r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitos.findByImporte", query = "SELECT r FROM Remitos r WHERE r.importe = :importe"), @NamedQuery(name = "Remitos.findByFechaAcordada", query = "SELECT r FROM Remitos r WHERE r.fechaAcordada = :fechaAcordada"), @NamedQuery(name = "Remitos.findByFechaEntrega", query = "SELECT r FROM Remitos r WHERE r.fechaEntrega = :fechaEntrega")})
+@NamedQueries({@NamedQuery(name = "Remitos.findByIdRemito", query = "SELECT r FROM Remitos r WHERE r.idRemito = :idRemito"), @NamedQuery(name = "Remitos.findByNroRemito", query = "SELECT r FROM Remitos r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitos.findByFecha", query = "SELECT r FROM Remitos r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitos.findByImporte", query = "SELECT r FROM Remitos r WHERE r.importe = :importe"), @NamedQuery(name = "Remitos.findByFechaAcordada", query = "SELECT r FROM Remitos r WHERE r.fechaAcordada = :fechaAcordada"), @NamedQuery(name = "Remitos.findByFechaEntrega", query = "SELECT r FROM Remitos r WHERE r.fechaEntrega = :fechaEntrega"), @NamedQuery(name = "Remitos.findByFechaModificacion", query = "SELECT r FROM Remitos r WHERE r.fechaModificacion = :fechaModificacion")})
 public class Remitos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,6 +47,9 @@ public class Remitos implements Serializable {
     @Column(name = "fechaEntrega")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEntrega;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @ManyToMany(mappedBy = "idRemitoCollection")
     private Collection<Facturas> idFacturaCollection;
     @OneToMany(mappedBy = "idRemito")
@@ -60,6 +63,9 @@ public class Remitos implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @OneToMany(mappedBy = "idRemito")
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitos")
@@ -72,10 +78,11 @@ public class Remitos implements Serializable {
         this.idRemito = idRemito;
     }
 
-    public Remitos(Integer idRemito, int nroRemito, double importe) {
+    public Remitos(Integer idRemito, int nroRemito, double importe, Date fechaModificacion) {
         this.idRemito = idRemito;
         this.nroRemito = nroRemito;
         this.importe = importe;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdRemito() {
@@ -126,6 +133,14 @@ public class Remitos implements Serializable {
         this.fechaEntrega = fechaEntrega;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Collection<Facturas> getIdFacturaCollection() {
         return idFacturaCollection;
     }
@@ -164,6 +179,14 @@ public class Remitos implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<Detmovimientosstock> getDetmovimientosstockCollection() {

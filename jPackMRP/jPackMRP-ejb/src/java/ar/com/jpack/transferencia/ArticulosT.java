@@ -7,6 +7,7 @@ package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
@@ -19,9 +20,12 @@ import java.util.Collection;
     private float stock;
     private float stockMinimo;
     private float leadTime;
+    private Date fechaAlta;
+    private Date fechaModificacion;
     private Collection<DetNotasCreditoT> detnotascreditoCollection;
     private EstadosT idEstado;
     private UnidadesMedidaT idUnidMedida;
+    private UsuariosT idUsuario;
     private Collection<DetOrdenesProduccionT> detordenesproduccionCollection;
     private Collection<DetMovimientosStockT> detmovimientosstockCollection;
     private Collection<DetalleFactComprasT> detallefactcomprasCollection;
@@ -39,15 +43,50 @@ import java.util.Collection;
     public ArticulosT() {
     }
 
-    public ArticulosT(Integer idArticulo, String codigo, String descripcion, float stock, float stockMinimo, float leadTime, EstadosT idEstado, UnidadesMedidaT idUnidMedida) {
+    public ArticulosT(Integer idArticulo, String codigo, 
+            String descripcion, 
+            float stock, 
+            float stockMinimo, 
+            float leadTime, 
+            Date fechaAlta,
+            Date fechaModificacion,
+            EstadosT idEstado, UnidadesMedidaT idUnidMedida,
+            UsuariosT idUsuario) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.stock = stock;
         this.stockMinimo = stockMinimo;
         this.leadTime = leadTime;
+        this.fechaAlta = fechaAlta;
+        this.fechaModificacion = fechaModificacion;
         this.idEstado = idEstado;
         this.idUnidMedida = idUnidMedida;
+        this.idUsuario = idUsuario;
+    }
+
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public UsuariosT getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(UsuariosT idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Collection<ComponentesT> getArticulosCollection() {

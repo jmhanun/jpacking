@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "facturas")
-@NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento")})
+@NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturas.findByIdUsuario", query = "SELECT f FROM Facturas f WHERE f.idUsuario = :idUsuario"), @NamedQuery(name = "Facturas.findByFechaModificacion", query = "SELECT f FROM Facturas f WHERE f.fechaModificacion = :fechaModificacion")})
 public class Facturas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,6 +46,11 @@ public class Facturas implements Serializable {
     private double importe;
     @Column(name = "descuento")
     private Float descuento;
+    @Column(name = "idUsuario", nullable = false)
+    private int idUsuario;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @JoinTable(name = "remitosxfactura", joinColumns = {@JoinColumn(name = "idFactura", referencedColumnName = "idFactura")}, inverseJoinColumns = {@JoinColumn(name = "idRemito", referencedColumnName = "idRemito")})
     @ManyToMany
     private Collection<Remitos> idRemitoCollection;
@@ -68,12 +73,14 @@ public class Facturas implements Serializable {
         this.idFactura = idFactura;
     }
 
-    public Facturas(Integer idFactura, int nroFactura, Date fecha, String letra, double importe) {
+    public Facturas(Integer idFactura, int nroFactura, Date fecha, String letra, double importe, int idUsuario, Date fechaModificacion) {
         this.idFactura = idFactura;
         this.nroFactura = nroFactura;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
+        this.idUsuario = idUsuario;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdFactura() {
@@ -122,6 +129,22 @@ public class Facturas implements Serializable {
 
     public void setDescuento(Float descuento) {
         this.descuento = descuento;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Collection<Remitos> getIdRemitoCollection() {

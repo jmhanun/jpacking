@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "notasdebito")
-@NamedQueries({@NamedQuery(name = "Notasdebito.findByIdNotaDebito", query = "SELECT n FROM Notasdebito n WHERE n.idNotaDebito = :idNotaDebito"), @NamedQuery(name = "Notasdebito.findByNroNotaDebito", query = "SELECT n FROM Notasdebito n WHERE n.nroNotaDebito = :nroNotaDebito"), @NamedQuery(name = "Notasdebito.findByFecha", query = "SELECT n FROM Notasdebito n WHERE n.fecha = :fecha"), @NamedQuery(name = "Notasdebito.findByLetra", query = "SELECT n FROM Notasdebito n WHERE n.letra = :letra"), @NamedQuery(name = "Notasdebito.findByImporte", query = "SELECT n FROM Notasdebito n WHERE n.importe = :importe"), @NamedQuery(name = "Notasdebito.findByDescuento", query = "SELECT n FROM Notasdebito n WHERE n.descuento = :descuento")})
+@NamedQueries({@NamedQuery(name = "Notasdebito.findByIdNotaDebito", query = "SELECT n FROM Notasdebito n WHERE n.idNotaDebito = :idNotaDebito"), @NamedQuery(name = "Notasdebito.findByNroNotaDebito", query = "SELECT n FROM Notasdebito n WHERE n.nroNotaDebito = :nroNotaDebito"), @NamedQuery(name = "Notasdebito.findByFecha", query = "SELECT n FROM Notasdebito n WHERE n.fecha = :fecha"), @NamedQuery(name = "Notasdebito.findByLetra", query = "SELECT n FROM Notasdebito n WHERE n.letra = :letra"), @NamedQuery(name = "Notasdebito.findByImporte", query = "SELECT n FROM Notasdebito n WHERE n.importe = :importe"), @NamedQuery(name = "Notasdebito.findByDescuento", query = "SELECT n FROM Notasdebito n WHERE n.descuento = :descuento"), @NamedQuery(name = "Notasdebito.findByFechaModificacion", query = "SELECT n FROM Notasdebito n WHERE n.fechaModificacion = :fechaModificacion")})
 public class Notasdebito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +44,9 @@ public class Notasdebito implements Serializable {
     private double importe;
     @Column(name = "descuento", nullable = false)
     private float descuento;
+    @Column(name = "fechaModificacion", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
     @OneToMany(mappedBy = "idNotaDebito")
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notasdebito")
@@ -57,6 +60,9 @@ public class Notasdebito implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Notasdebito() {
     }
@@ -65,13 +71,14 @@ public class Notasdebito implements Serializable {
         this.idNotaDebito = idNotaDebito;
     }
 
-    public Notasdebito(Integer idNotaDebito, int nroNotaDebito, Date fecha, String letra, double importe, float descuento) {
+    public Notasdebito(Integer idNotaDebito, int nroNotaDebito, Date fecha, String letra, double importe, float descuento, Date fechaModificacion) {
         this.idNotaDebito = idNotaDebito;
         this.nroNotaDebito = nroNotaDebito;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
         this.descuento = descuento;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public Integer getIdNotaDebito() {
@@ -122,6 +129,14 @@ public class Notasdebito implements Serializable {
         this.descuento = descuento;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Collection<Detmovimientosstock> getDetmovimientosstockCollection() {
         return detmovimientosstockCollection;
     }
@@ -160,6 +175,14 @@ public class Notasdebito implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

@@ -6,6 +6,7 @@
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -15,6 +16,7 @@ public class DetMovimientosStockT implements Serializable{
     private Integer idDetMovStock;
     private String descripcion;
     private double cantidad;
+    private Date fechaMovimiento;
     private ArticulosT idArticulo;
     private NotasCreditoT idNotaCredito;
     private NotasDebitoT idNotaDebito;
@@ -27,10 +29,13 @@ public class DetMovimientosStockT implements Serializable{
     public DetMovimientosStockT() {
     }
 
-    public DetMovimientosStockT(Integer idDetMovStock, String descripcion, double cantidad, ArticulosT idArticulo, NotasCreditoT idNotaCredito, NotasDebitoT idNotaDebito, OrdenesDepositoT idOrdenDeposito, OrdenesProduccionT idOrdenProduccion, RemitosT idRemito, RemitosIngresoT idRtoIngreso, UnidadesMedidaT idUnidMedida) {
+    public DetMovimientosStockT(Integer idDetMovStock, 
+            String descripcion, double cantidad, Date fechaMovimiento,
+            ArticulosT idArticulo, NotasCreditoT idNotaCredito, NotasDebitoT idNotaDebito, OrdenesDepositoT idOrdenDeposito, OrdenesProduccionT idOrdenProduccion, RemitosT idRemito, RemitosIngresoT idRtoIngreso, UnidadesMedidaT idUnidMedida) {
         this.idDetMovStock = idDetMovStock;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
+        this.fechaMovimiento = fechaMovimiento;
         this.idArticulo = idArticulo;
         this.idNotaCredito = idNotaCredito;
         this.idNotaDebito = idNotaDebito;
@@ -39,6 +44,14 @@ public class DetMovimientosStockT implements Serializable{
         this.idRemito = idRemito;
         this.idRtoIngreso = idRtoIngreso;
         this.idUnidMedida = idUnidMedida;
+    }
+
+    public Date getFechaMovimiento() {
+        return fechaMovimiento;
+    }
+
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        this.fechaMovimiento = fechaMovimiento;
     }
 
     public double getCantidad() {

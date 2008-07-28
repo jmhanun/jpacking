@@ -38,6 +38,9 @@ public class Stock implements Serializable {
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Stock() {
     }
@@ -82,6 +85,14 @@ public class Stock implements Serializable {
 
     public void setIdArticulo(Articulos idArticulo) {
         this.idArticulo = idArticulo;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
