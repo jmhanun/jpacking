@@ -4,6 +4,7 @@
 <jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<parameter name="pfechadesde" class="java.sql.Timestamp"/>
 	<parameter name="pfechahasta" class="java.sql.Timestamp"/>
+	<parameter name="pcodigo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      detmovimientosstock.`descripcion` AS detmovimientosstock_descripcion,
@@ -24,6 +25,7 @@ FROM
      LEFT OUTER JOIN `remitos` remitos ON detmovimientosstock.`idRemito` = remitos.`idRemito`
      LEFT OUTER JOIN `remitosingreso` remitosingreso ON detmovimientosstock.`idRtoIngreso` = remitosingreso.`idRtoIngreso`
 WHERE detmovimientosstock.`fechaMovimiento` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
+  AND articulos.`codigo` = $P{pcodigo}
 order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion`]]>
 	</queryString>
 	<field name="detmovimientosstock_descripcion" class="java.lang.String">
@@ -81,9 +83,9 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="35">
+			<band height="45">
 				<line direction="BottomUp">
-					<reportElement key="line" x="1" y="28" width="554" height="1"/>
+					<reportElement key="line" x="1" y="37" width="554" height="1"/>
 				</line>
 				<textField evaluationTime="Group" evaluationGroup="detmovimientosstock_descripcion" pattern="###0" hyperlinkType="None">
 					<reportElement x="451" y="4" width="100" height="20"/>
@@ -118,7 +120,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Movimientos de Stock]]></text>
+				<text><![CDATA[Movimientos de Stock por Artículo]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -193,9 +195,9 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="209">
+		<band height="220">
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField" x="516" y="184" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="516" y="194" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -208,7 +210,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField" x="344" y="184" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="344" y="194" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -221,7 +223,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField" x="3" y="184" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" x="3" y="194" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -233,37 +235,30 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
-			<pie3DChart>
-				<chart isShowLegend="false" hyperlinkType="None">
-					<reportElement x="142" y="10" width="283" height="164"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<pieDataset>
-					<keyExpression><![CDATA[$F{detmovimientosstock_descripcion}]]></keyExpression>
-					<valueExpression><![CDATA[$V{countmovimientos}]]></valueExpression>
-					<labelExpression><![CDATA[$F{detmovimientosstock_descripcion}]]></labelExpression>
-					<sectionHyperlink hyperlinkType="None"/>
-				</pieDataset>
-				<pie3DPlot>
-					<plot>
-						<seriesColor seriesOrder="0" color="#FFFFCC"/>
-						<seriesColor seriesOrder="1" color="#FFFF66"/>
-						<seriesColor seriesOrder="2" color="#FFFF00"/>
-						<seriesColor seriesOrder="3" color="#CCCC00"/>
-						<seriesColor seriesOrder="4" color="#666600"/>
-						<seriesColor seriesOrder="5" color="#333300"/>
-						<seriesColor seriesOrder="6" color="#CC9900"/>
-						<seriesColor seriesOrder="7" color="#330000"/>
-					</plot>
-				</pie3DPlot>
-			</pie3DChart>
 			<textField evaluationTime="Report" pattern="###0" hyperlinkType="None">
 				<reportElement x="451" y="10" width="100" height="20" forecolor="#FFFFFF"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Number"><![CDATA[$V{counttotal}]]></textFieldExpression>
 			</textField>
+			<lineChart>
+				<chart isShowLegend="false">
+					<reportElement x="150" y="30" width="265" height="136"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{tipocomprobante}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{detmovimientosstock_fechaMovimiento}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{detmovimientosstock_cantidad}]]></valueExpression>
+						<itemHyperlink/>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+				</linePlot>
+			</lineChart>
 		</band>
 	</pageFooter>
 	<summary>
