@@ -241,7 +241,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<textFieldExpression class="java.lang.Number"><![CDATA[$V{counttotal}]]></textFieldExpression>
 			</textField>
 			<lineChart>
-				<chart isShowLegend="false">
+				<chart isShowLegend="false" hyperlinkType="None">
 					<reportElement x="150" y="30" width="265" height="136"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -252,11 +252,20 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 						<seriesExpression><![CDATA[$F{tipocomprobante}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{detmovimientosstock_fechaMovimiento}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{detmovimientosstock_cantidad}]]></valueExpression>
-						<itemHyperlink/>
+						<itemHyperlink hyperlinkType="None"/>
 					</categorySeries>
 				</categoryDataset>
 				<linePlot>
-					<plot/>
+					<plot>
+						<seriesColor seriesOrder="0" color="#FFFF99"/>
+						<seriesColor seriesOrder="1" color="#FFFF66"/>
+						<seriesColor seriesOrder="2" color="#FFFF00"/>
+						<seriesColor seriesOrder="3" color="#CCCC00"/>
+						<seriesColor seriesOrder="4" color="#666600"/>
+						<seriesColor seriesOrder="5" color="#333300"/>
+						<seriesColor seriesOrder="6" color="#CC9900"/>
+						<seriesColor seriesOrder="7" color="#CCCC00"/>
+					</plot>
 				</linePlot>
 			</lineChart>
 		</band>
