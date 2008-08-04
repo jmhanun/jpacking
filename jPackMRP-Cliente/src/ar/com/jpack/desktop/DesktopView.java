@@ -5,7 +5,7 @@ package ar.com.jpack.desktop;
 
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import ar.com.jpack.util.StringHelper;
+import ar.com.jpack.helpers.StringHelper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;

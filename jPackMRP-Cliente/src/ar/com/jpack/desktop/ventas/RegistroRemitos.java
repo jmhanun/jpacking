@@ -5,10 +5,12 @@
  */
 package ar.com.jpack.desktop.ventas;
 
+import ar.com.jpack.desktop.lov.Clientes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.transferencia.ClientesT;
-import ar.com.jpack.util.AuxiliarDetalleRemitosT;
+import ar.com.jpack.helpers.DetalleRemitosTHelper;
+import ar.com.jpack.helpers.LOVHelper;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,27 +19,12 @@ import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 import org.jdesktop.beansbinding.Binding;
-import org.jdesktop.beansbinding.BindingGroup;
 
 /**
  *
  * @author  jmhanun
  */
 public class RegistroRemitos extends javax.swing.JInternalFrame {
-
-    private Binding findBinding(BindingGroup bindingGroup, Object source, Object target) {
-        for (Iterator<Binding> i = bindingGroup.getBindings().iterator(); i.hasNext();) {
-            Binding b = i.next();
-            boolean found =
-                    (source == null || b.getSourceObject() == source) &&
-                    (target == null || b.getTargetObject() == target);
-            if (found) {
-                return b;
-            }
-
-        }
-        return null;
-    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -49,7 +36,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        arrayList1 = new java.util.ArrayList<ar.com.jpack.util.AuxiliarDetalleRemitosT>();
+        arrayList1 = new java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper>();
         remitoPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -292,7 +279,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarButton;
-    private java.util.ArrayList<ar.com.jpack.util.AuxiliarDetalleRemitosT> arrayList1;
+    private java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper> arrayList1;
     private javax.swing.JPanel articulosPanel;
     private javax.swing.JTable articulosTable;
     private javax.swing.JButton borrarButton;
@@ -315,7 +302,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private static RegistroRemitos registroRemitos = new RegistroRemitos();
-    private LOVClientes lOVClientes = null;
+    private Clientes lOVClientes = null;
     private ClientesT clienteT;
 
     /** Creates new form RegistroRemitos */
@@ -340,7 +327,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     public void showLOVClientes() {
         if (lOVClientes == null) {
             JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
-            lOVClientes = new LOVClientes(mainFrame, true);
+            lOVClientes = new Clientes(mainFrame, true);
             lOVClientes.setLocationRelativeTo(mainFrame);
         } else {
             lOVClientes.limpiar();
@@ -370,9 +357,9 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
 
     private boolean isDetalleCompleto() {
         boolean detalleCompleto = true;
-        Iterator<AuxiliarDetalleRemitosT> it = arrayList1.iterator();
+        Iterator<DetalleRemitosTHelper> it = arrayList1.iterator();
         while (it.hasNext() && detalleCompleto) {
-            AuxiliarDetalleRemitosT auxiliarDetalleRemitosT = it.next();
+            DetalleRemitosTHelper auxiliarDetalleRemitosT = it.next();
             detalleCompleto = auxiliarDetalleRemitosT.isCompleto();
         }
         return detalleCompleto;
@@ -385,7 +372,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         cuitTextField.setText("");
         situacionIvaTextField.setText("");
         if (!arrayList1.isEmpty()) {
-            Binding b = findBinding(bindingGroup, arrayList1, articulosTable);
+            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
             b.unbind();
             arrayList1.clear();
             b.bind();
@@ -425,9 +412,9 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
         if (n == JOptionPane.YES_OPTION) {
             int[] selected = articulosTable.getSelectedRows();
-            List<AuxiliarDetalleRemitosT> toRemove = new ArrayList<AuxiliarDetalleRemitosT>(selected.length);
+            List<DetalleRemitosTHelper> toRemove = new ArrayList<DetalleRemitosTHelper>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                AuxiliarDetalleRemitosT aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[idx]));
+                DetalleRemitosTHelper aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(aux);
             }
             arrayList1.removeAll(toRemove);
@@ -438,10 +425,10 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     public void agregarItem() {
         if (clienteT != null && isDetalleCompleto()) {
             if (arrayList1 == null) {
-                arrayList1 = new ArrayList<AuxiliarDetalleRemitosT>();
+                arrayList1 = new ArrayList<DetalleRemitosTHelper>();
             }
-            AuxiliarDetalleRemitosT aux = new AuxiliarDetalleRemitosT();
-            Binding b = findBinding(bindingGroup, arrayList1, articulosTable);
+            DetalleRemitosTHelper aux = new DetalleRemitosTHelper();
+            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
             b.unbind();
             arrayList1.add(aux);
             b.bind();

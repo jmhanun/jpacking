@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Component class="java.util.ArrayList" name="arrayList1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.util.AuxiliarDetalleRemitosT&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.util.DetalleRemitosTHelper&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>

@@ -3,12 +3,16 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.negocio.ArticulosFacadeRemote;
 import ar.com.jpack.negocio.ClientesFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
+import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
+import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +44,8 @@ public class DesktopApp extends SingleFrameApplication {
     private RolesFacadeRemote rolesFacade;
     private ReportesFacadeRemote reportesFacade;
     private ClientesFacadeRemote clientesFacade;
+    private ArticulosFacadeRemote articulosFacade;
+    private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
@@ -63,14 +69,47 @@ public class DesktopApp extends SingleFrameApplication {
     public List<ClientesT> getClientes(HashMap parametros) {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
-            if (parametros.isEmpty()){
+            if (parametros.isEmpty()) {
                 parametros.put("pIdCliente", new Integer(-1));
             }
             List<ClientesT> clientes = clientesFacade.findClientesT(parametros);
-            if(clientes == null){
+            if (clientes == null) {
                 clientes = Collections.emptyList();
             }
             return clientes;
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<ArticulosT> getArticulos(HashMap parametros) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            if (parametros.isEmpty()) {
+                parametros.put("pIdArticulo", new Integer(-1));
+            }
+            List<ArticulosT> articulos = articulosFacade.findArticulosT(parametros);
+            if (articulos == null) {
+                articulos = Collections.emptyList();
+            }
+            return articulos;
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<UnidadesMedidaT> getUnidadesMedida() {
+        try {
+            unidadesMedidaFacade = (UnidadesmedidaFacadeRemote) lookUp("ar.com.jpack.negocio.UnidadesmedidaFacadeRemote");
+            List<UnidadesMedidaT> unidadesMedida = unidadesMedidaFacade.findAllUnidadesMedidaT();
+            if (unidadesMedida == null) {
+                unidadesMedida = Collections.emptyList();
+            }
+            return unidadesMedida;
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -234,7 +273,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-    
+
     public List<ClientesT> getAllClientes() {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");

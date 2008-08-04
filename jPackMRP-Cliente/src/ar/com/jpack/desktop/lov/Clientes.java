@@ -1,18 +1,18 @@
 /*
- * LOVClientes.java
+ * Clientes.java
  *
  * Created on 31 de julio de 2008, 14:10
  */
-package ar.com.jpack.desktop.ventas;
+package ar.com.jpack.desktop.lov;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.helpers.LOVHelper;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -20,16 +20,15 @@ import javax.swing.event.ListSelectionListener;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 import org.jdesktop.beansbinding.Binding;
-import org.jdesktop.beansbinding.BindingGroup;
 
 /**
  *
  * @author  jmhanun
  */
-public class LOVClientes extends javax.swing.JDialog {
+public class Clientes extends javax.swing.JDialog {
 
-    /** Creates new form LOVClientes */
-    public LOVClientes(java.awt.Frame parent, boolean modal) {
+    /** Creates new form Clientes */
+    public Clientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         clientesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -93,7 +92,7 @@ public class LOVClientes extends javax.swing.JDialog {
         aceptarButton.setEnabled(false);
         setClienteTSeleccionado(null);
         if (clientesTs != null) {
-            Binding b = findBinding(bindingGroup, clientesTs, clientesTable);
+            Binding b = LOVHelper.findBinding(bindingGroup, clientesTs, clientesTable);
             b.unbind();
 
             clientesTs.clear();
@@ -118,6 +117,7 @@ public class LOVClientes extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        idClienteTextField = new javax.swing.JTextField();
         nombresTextField = new javax.swing.JTextField();
         cuitTextField = new javax.swing.JTextField();
         buscarButton = new javax.swing.JButton();
@@ -125,12 +125,11 @@ public class LOVClientes extends javax.swing.JDialog {
         clientesTable = new javax.swing.JTable();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
-        idClienteTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(LOVClientes.class);
-        setTitle(resourceMap.getString("LOVClienteDialog.title")); // NOI18N
-        setName("LOVClienteDialog"); // NOI18N
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(Clientes.class);
+        setTitle(resourceMap.getString("ClienteDialog.title")); // NOI18N
+        setName("ClienteDialog"); // NOI18N
         setResizable(false);
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -142,11 +141,13 @@ public class LOVClientes extends javax.swing.JDialog {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
+        idClienteTextField.setName("idClienteTextField"); // NOI18N
+
         nombresTextField.setName("nombresTextField"); // NOI18N
 
         cuitTextField.setName("cuitTextField"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(LOVClientes.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(Clientes.class, this);
         buscarButton.setAction(actionMap.get("buscarClientes")); // NOI18N
         buscarButton.setName("buscarButton"); // NOI18N
 
@@ -179,8 +180,6 @@ public class LOVClientes extends javax.swing.JDialog {
 
         aceptarButton.setAction(actionMap.get("seleccionarCliente")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
-
-        idClienteTextField.setName("idClienteTextField"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -266,7 +265,7 @@ public class LOVClientes extends javax.swing.JDialog {
                 clientesTs = new ArrayList<ClientesT>();
             }
             
-            Binding b = findBinding(bindingGroup, clientesTs, clientesTable);
+            Binding b = LOVHelper.findBinding(bindingGroup, clientesTs, clientesTable);
             b.unbind();
 
             clientesTs.clear();
@@ -308,19 +307,7 @@ public class LOVClientes extends javax.swing.JDialog {
         }
     }
     
-    public Binding findBinding(BindingGroup bindingGroup, Object source, Object target){
-        for(Iterator<Binding>i= bindingGroup.getBindings().iterator();i.hasNext();){
-            Binding b = i.next();
-            boolean found = 
-                    (source == null || b.getSourceObject() == source) &&
-                    (target == null || b.getTargetObject() == target);
-            if(found){
-                return b;
-            }
-            
-        }
-        return null;
-    }
+   
 
     @Action
     public void seleccionarCliente() {
