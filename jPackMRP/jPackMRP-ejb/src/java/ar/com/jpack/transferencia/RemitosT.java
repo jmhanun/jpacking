@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -13,7 +14,9 @@ import java.util.Date;
  *
  * @author jmhanun
  */
-public class RemitosT implements Serializable{
+public class RemitosT implements Serializable {
+
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private Integer idRemito;
     private int nroRemito;
     private Date fecha;
@@ -33,9 +36,9 @@ public class RemitosT implements Serializable{
     public RemitosT() {
     }
 
-    public RemitosT(Integer idRemito, int nroRemito, Date fecha, 
-            double importe, Date fechaAcordada, Date fechaEntrega, 
-            Date fechaModificacion,ClientesT idCliente, EstadosT idEstado,
+    public RemitosT(Integer idRemito, int nroRemito, Date fecha,
+            double importe, Date fechaAcordada, Date fechaEntrega,
+            Date fechaModificacion, ClientesT idCliente, EstadosT idEstado,
             TiposComprobantesT idTipoComprobante,
             UsuariosT idUsuario) {
         this.idRemito = idRemito;
@@ -56,7 +59,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setFechaModificacion(Date fechaModificacion) {
+        Date oldFechaModificacion = this.fechaModificacion;
         this.fechaModificacion = fechaModificacion;
+        changeSupport.firePropertyChange("fechaModificacion", oldFechaModificacion, fechaModificacion);
     }
 
     public UsuariosT getIdUsuario() {
@@ -64,7 +69,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setIdUsuario(UsuariosT idUsuario) {
+        UsuariosT oldIdUsuario = this.idUsuario;
         this.idUsuario = idUsuario;
+        changeSupport.firePropertyChange("idUsuario", oldIdUsuario, idUsuario);
     }
 
     public Collection<DetalleRemitosT> getDetalleremitosCollection() {
@@ -88,7 +95,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setFecha(Date fecha) {
+        Date oldFecha = this.fecha;
         this.fecha = fecha;
+        changeSupport.firePropertyChange("fecha", oldFecha, fecha);
     }
 
     public Date getFechaAcordada() {
@@ -96,7 +105,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setFechaAcordada(Date fechaAcordada) {
+        Date oldFechaAcordada = this.fechaAcordada;
         this.fechaAcordada = fechaAcordada;
+        changeSupport.firePropertyChange("fechaAcordada", oldFechaAcordada, fechaAcordada);
     }
 
     public Date getFechaEntrega() {
@@ -104,7 +115,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setFechaEntrega(Date fechaEntrega) {
+        Date oldFechaEntrega = this.fechaEntrega;
         this.fechaEntrega = fechaEntrega;
+        changeSupport.firePropertyChange("fechaEntrega", oldFechaEntrega, fechaEntrega);
     }
 
     public ClientesT getIdCliente() {
@@ -112,7 +125,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setIdCliente(ClientesT idCliente) {
+        ClientesT oldIdCliente = this.idCliente;
         this.idCliente = idCliente;
+        changeSupport.firePropertyChange("idCliente", oldIdCliente, idCliente);
     }
 
     public EstadosT getIdEstado() {
@@ -120,7 +135,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setIdEstado(EstadosT idEstado) {
+        EstadosT oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
+        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public Collection<FacturasT> getIdFacturaCollection() {
@@ -136,7 +153,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setIdRemito(Integer idRemito) {
+        Integer oldIdRemito = this.idRemito;
         this.idRemito = idRemito;
+        changeSupport.firePropertyChange("idRemito", oldIdRemito, idRemito);
     }
 
     public TiposComprobantesT getIdTipoComprobante() {
@@ -144,7 +163,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setIdTipoComprobante(TiposComprobantesT idTipoComprobante) {
+        TiposComprobantesT oldIdTipoComprobante = this.idTipoComprobante;
         this.idTipoComprobante = idTipoComprobante;
+        changeSupport.firePropertyChange("idTipoComprobante", oldIdTipoComprobante, idTipoComprobante);
     }
 
     public double getImporte() {
@@ -152,7 +173,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setImporte(double importe) {
+        double oldImporte = this.importe;
         this.importe = importe;
+        changeSupport.firePropertyChange("importe", oldImporte, importe);
     }
 
     public int getNroRemito() {
@@ -160,7 +183,9 @@ public class RemitosT implements Serializable{
     }
 
     public void setNroRemito(int nroRemito) {
+        int oldNroRemito = this.nroRemito;
         this.nroRemito = nroRemito;
+        changeSupport.firePropertyChange("nroRemito", oldNroRemito, nroRemito);
     }
 
     public Collection<OrdenesProduccionT> getOrdenesproduccionCollection() {
@@ -171,4 +196,21 @@ public class RemitosT implements Serializable{
         this.ordenesproduccionCollection = ordenesproduccionCollection;
     }
 
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
+    }
 }

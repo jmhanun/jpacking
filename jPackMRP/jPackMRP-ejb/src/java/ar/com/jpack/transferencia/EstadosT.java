@@ -4,6 +4,8 @@
  */
 package ar.com.jpack.transferencia;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -13,6 +15,7 @@ import java.util.Collection;
  */
 public class EstadosT implements Serializable {
 
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private Integer idEstado;
     private String descripcion;
     private Collection<OrdenesProduccionT> ordenesproduccionCollection;
@@ -61,7 +64,9 @@ public class EstadosT implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
+        String oldDescripcion = this.descripcion;
         this.descripcion = descripcion;
+        changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
     }
 
     public Collection<DomiciliosT> getDomiciliosCollection() {
@@ -101,7 +106,9 @@ public class EstadosT implements Serializable {
     }
 
     public void setIdEstado(Integer idEstado) {
+        Integer oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
+        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public Collection<ListasPreciosT> getListaspreciosCollection() {
@@ -186,6 +193,25 @@ public class EstadosT implements Serializable {
 
     @Override
     public String toString() {
+        //TODO: modificar para que se use el Render en lugar del toString(futuro)
         return getDescripcion();
+    }
+
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 }

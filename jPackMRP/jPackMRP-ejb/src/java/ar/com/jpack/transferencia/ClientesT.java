@@ -4,6 +4,8 @@
  */
 package ar.com.jpack.transferencia;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -12,8 +14,10 @@ import java.util.Date;
  *
  * @author jmhanun
  */
-public class ClientesT implements Serializable {
+public class ClientesT implements Serializable, Comparable<ClientesT> {
 
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+    private static final long serialVersionUID = 9999L;
     private Integer idCliente;
     private String situacionIva;
     private int limiteCredito;
@@ -54,7 +58,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setApellidos(String apellidos) {
+        String oldApellidos = this.apellidos;
         this.apellidos = apellidos;
+        changeSupport.firePropertyChange("apellidos", oldApellidos, apellidos);
     }
 
     public String getCuit() {
@@ -62,7 +68,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setCuit(String cuit) {
+        String oldCuit = this.cuit;
         this.cuit = cuit;
+        changeSupport.firePropertyChange("cuit", oldCuit, cuit);
     }
 
     public Collection<DomiciliosT> getDomiciliosCollection() {
@@ -86,7 +94,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setFechaAlta(Date fechaAlta) {
+        Date oldFechaAlta = this.fechaAlta;
         this.fechaAlta = fechaAlta;
+        changeSupport.firePropertyChange("fechaAlta", oldFechaAlta, fechaAlta);
     }
 
     public Integer getIdCliente() {
@@ -94,7 +104,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setIdCliente(Integer idCliente) {
+        Integer oldIdCliente = this.idCliente;
         this.idCliente = idCliente;
+        changeSupport.firePropertyChange("idCliente", oldIdCliente, idCliente);
     }
 
     public EstadosT getIdEstado() {
@@ -102,7 +114,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setIdEstado(EstadosT idEstado) {
+        EstadosT oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
+        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public TiposDocumentoT getIdTipoDocumento() {
@@ -110,7 +124,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setIdTipoDocumento(TiposDocumentoT idTipoDocumento) {
+        TiposDocumentoT oldIdTipoDocumento = this.idTipoDocumento;
         this.idTipoDocumento = idTipoDocumento;
+        changeSupport.firePropertyChange("idTipoDocumento", oldIdTipoDocumento, idTipoDocumento);
     }
 
     public int getLimiteCredito() {
@@ -118,7 +134,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setLimiteCredito(int limiteCredito) {
+        int oldLimiteCredito = this.limiteCredito;
         this.limiteCredito = limiteCredito;
+        changeSupport.firePropertyChange("limiteCredito", oldLimiteCredito, limiteCredito);
     }
 
     public String getMails() {
@@ -126,7 +144,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setMails(String mails) {
+        String oldMails = this.mails;
         this.mails = mails;
+        changeSupport.firePropertyChange("mails", oldMails, mails);
     }
 
     public String getNombres() {
@@ -134,7 +154,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setNombres(String nombres) {
+        String oldNombres = this.nombres;
         this.nombres = nombres;
+        changeSupport.firePropertyChange("nombres", oldNombres, nombres);
     }
 
     public Collection<NotasDebitoT> getNotasdebitoCollection() {
@@ -150,7 +172,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setObservaciones(String observaciones) {
+        String oldObservaciones = this.observaciones;
         this.observaciones = observaciones;
+        changeSupport.firePropertyChange("observaciones", oldObservaciones, observaciones);
     }
 
     public Collection<RemitosT> getRemitosCollection() {
@@ -166,7 +190,9 @@ public class ClientesT implements Serializable {
     }
 
     public void setSituacionIva(String situacionIva) {
+        String oldSituacionIva = this.observaciones;
         this.situacionIva = situacionIva;
+        changeSupport.firePropertyChange("situacionIva", oldSituacionIva, situacionIva);
     }
 
     public String getTelefonos() {
@@ -174,6 +200,32 @@ public class ClientesT implements Serializable {
     }
 
     public void setTelefonos(String telefonos) {
+        String oldTelefonos = this.telefonos;
         this.telefonos = telefonos;
+        changeSupport.firePropertyChange("telefonos", oldTelefonos, telefonos);
+    }
+
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
+    }
+
+    public int compareTo(ClientesT clientesT) {
+        Integer thisIdCliente = this.idCliente;
+        Integer anotherIdCliente = clientesT.getIdCliente();
+        return thisIdCliente.compareTo(anotherIdCliente);
     }
 }

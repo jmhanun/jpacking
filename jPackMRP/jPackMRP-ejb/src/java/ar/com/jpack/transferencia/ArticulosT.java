@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -13,7 +14,9 @@ import java.util.Date;
  *
  * @author jmhanun
  */
- public class ArticulosT implements Serializable{
+public class ArticulosT implements Serializable {
+
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private Integer idArticulo;
     private String codigo;
     private String descripcion;
@@ -43,11 +46,11 @@ import java.util.Date;
     public ArticulosT() {
     }
 
-    public ArticulosT(Integer idArticulo, String codigo, 
-            String descripcion, 
-            float stock, 
-            float stockMinimo, 
-            float leadTime, 
+    public ArticulosT(Integer idArticulo, String codigo,
+            String descripcion,
+            float stock,
+            float stockMinimo,
+            float leadTime,
             Date fechaAlta,
             Date fechaModificacion,
             EstadosT idEstado, UnidadesMedidaT idUnidMedida,
@@ -70,7 +73,9 @@ import java.util.Date;
     }
 
     public void setFechaAlta(Date fechaAlta) {
+        Date oldFechaAlta = this.fechaAlta;
         this.fechaAlta = fechaAlta;
+        changeSupport.firePropertyChange("fechaAlta", oldFechaAlta, fechaAlta);
     }
 
     public Date getFechaModificacion() {
@@ -78,7 +83,9 @@ import java.util.Date;
     }
 
     public void setFechaModificacion(Date fechaModificacion) {
+        Date oldFechaModificacion = this.fechaModificacion;
         this.fechaModificacion = fechaModificacion;
+        changeSupport.firePropertyChange("fechaModificacion", oldFechaModificacion, fechaModificacion);
     }
 
     public UsuariosT getIdUsuario() {
@@ -86,7 +93,9 @@ import java.util.Date;
     }
 
     public void setIdUsuario(UsuariosT idUsuario) {
+        UsuariosT oldIdUsuario = this.idUsuario;
         this.idUsuario = idUsuario;
+        changeSupport.firePropertyChange("idUsuario", oldIdUsuario, idUsuario);
     }
 
     public Collection<ComponentesT> getArticulosCollection() {
@@ -102,7 +111,9 @@ import java.util.Date;
     }
 
     public void setCodigo(String codigo) {
+        String oldCodigo = this.codigo;
         this.codigo = codigo;
+        changeSupport.firePropertyChange("codigo", oldCodigo, codigo);
     }
 
     public Collection<ComponentesT> getComponentesCollection() {
@@ -118,7 +129,9 @@ import java.util.Date;
     }
 
     public void setDescripcion(String descripcion) {
+        String oldDescripcion = this.descripcion;
         this.descripcion = descripcion;
+        changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
     }
 
     public Collection<DetalleFactComprasT> getDetallefactcomprasCollection() {
@@ -198,7 +211,9 @@ import java.util.Date;
     }
 
     public void setIdArticulo(Integer idArticulo) {
+        Integer oldIdArticulo = this.idArticulo;
         this.idArticulo = idArticulo;
+        changeSupport.firePropertyChange("idArticulo", oldIdArticulo, idArticulo);
     }
 
     public EstadosT getIdEstado() {
@@ -206,7 +221,9 @@ import java.util.Date;
     }
 
     public void setIdEstado(EstadosT idEstado) {
+        EstadosT oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
+        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public UnidadesMedidaT getIdUnidMedida() {
@@ -214,7 +231,9 @@ import java.util.Date;
     }
 
     public void setIdUnidMedida(UnidadesMedidaT idUnidMedida) {
+        UnidadesMedidaT oldIdUnidMedida = this.idUnidMedida;
         this.idUnidMedida = idUnidMedida;
+        changeSupport.firePropertyChange("idUnidMedida", oldIdUnidMedida, idUnidMedida);
     }
 
     public float getLeadTime() {
@@ -222,7 +241,9 @@ import java.util.Date;
     }
 
     public void setLeadTime(float leadTime) {
+        float oldLeadTime = this.leadTime;
         this.leadTime = leadTime;
+        changeSupport.firePropertyChange("leadTime", oldLeadTime, leadTime);
     }
 
     public Collection<PreciosT> getPreciosCollection() {
@@ -246,7 +267,9 @@ import java.util.Date;
     }
 
     public void setStock(float stock) {
+        float oldStock = this.stock;
         this.stock = stock;
+        changeSupport.firePropertyChange("stock", oldStock, stock);
     }
 
     public Collection<StockT> getStockCollection() {
@@ -262,6 +285,26 @@ import java.util.Date;
     }
 
     public void setStockMinimo(float stockMinimo) {
+        float oldStockMinimo = this.stockMinimo;
         this.stockMinimo = stockMinimo;
+        changeSupport.firePropertyChange("stockMinimo", oldStockMinimo, stockMinimo);
+    }
+
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 }
