@@ -4,15 +4,19 @@
  */
 package ar.com.jpack.transferencia.helper;
 
+import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.persistencia.Clientes;
 import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.persistencia.Tiposdocumento;
+import ar.com.jpack.persistencia.Unidadesmedida;
 import ar.com.jpack.persistencia.Usuarios;
+import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
+import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,8 +29,38 @@ import java.util.List;
  */
 public class DataTransferHelper {
 
+    // ARTICULOS 1
+    public static ArticulosT copiarArticulos(Articulos item) {
+        ArticulosT t = null;
+        if (item != null) {
+            t = new ArticulosT(item.getIdArticulo(),
+                    item.getCodigo(),
+                    item.getDescripcion(),
+                    item.getStock(),
+                    item.getStockMinimo(),
+                    item.getLeadTime(),
+                    item.getFechaAlta(),
+                    item.getFechaModificacion(),
+                    copiarEstado(item.getIdEstado()),
+                    copiarUnidadMedida(item.getIdUnidMedida()),
+                    copiarUsuario(item.getIdUsuario()));
+        }
+        return t;
+    }
+
+    // ARTICULOS muchos
+    public static List<ArticulosT> copiarArticulosALista(List<Articulos> items) {
+        List<ArticulosT> lista = new ArrayList<ArticulosT>();
+        Iterator i = items.iterator();
+        while (i.hasNext()) {
+            lista.add(copiarArticulos((Articulos) i.next()));
+        }
+
+        return lista;
+    }
+
     // CLIENTES 1
-    public static ClientesT copiarClientes(Clientes item) {
+    public static ClientesT copiarCliente(Clientes item) {
         ClientesT t = null;
         if (item != null) {
             t = new ClientesT();
@@ -50,7 +84,7 @@ public class DataTransferHelper {
         List<ClientesT> lista = new ArrayList<ClientesT>();
         Iterator i = items.iterator();
         while (i.hasNext()) {
-            lista.add(copiarClientes((Clientes) i.next()));
+            lista.add(copiarCliente((Clientes) i.next()));
         }
 
         return lista;
@@ -133,10 +167,30 @@ public class DataTransferHelper {
     }
 
     // TIPOS DOCUMENTOS 1
-    private static TiposDocumentoT copiarTipoDocumento(Tiposdocumento item) {
+    public static TiposDocumentoT copiarTipoDocumento(Tiposdocumento item) {
         TiposDocumentoT t = null;
         if (item != null) {
             t = new TiposDocumentoT(item.getIdTipoDocumento(),
+                    item.getDescripcion(),
+                    item.getAbreviatura());
+        }
+        return t;
+    }
+    // UNIDADES MEDIDA muchos
+    public static List<UnidadesMedidaT> copiarUnidadesMedidaALista(List<Unidadesmedida> items) {
+        List<UnidadesMedidaT> lista = new ArrayList<UnidadesMedidaT>();
+        Iterator i = items.iterator();
+        while (i.hasNext()) {
+            lista.add(copiarUnidadMedida((Unidadesmedida) i.next()));
+        }
+
+        return lista;
+    }
+    // UNIDADES MEDIDA 1
+    public static UnidadesMedidaT copiarUnidadMedida(Unidadesmedida item) {
+        UnidadesMedidaT t = null;
+        if (item != null) {
+            t = new UnidadesMedidaT(item.getIdUnidMedida(),
                     item.getDescripcion(),
                     item.getAbreviatura());
         }

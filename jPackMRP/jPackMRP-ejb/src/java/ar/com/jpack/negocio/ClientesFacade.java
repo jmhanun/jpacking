@@ -85,43 +85,6 @@ public class ClientesFacade implements ClientesFacadeRemote {
             query.setParameter("cuit", parametros.get("pCuit"));            
         }
 
-//        Expression exp = null;
-//        Expression idCliente = null;
-//        Expression nombres = null;
-//        Expression cuit = null;
-//        ExpressionBuilder eb = new ExpressionBuilder(Clientes.class);
-//
-//        if (parametros.containsKey("pIdCliente")) {
-//            idCliente = eb.get("pIdCliente").likeIgnoreCase(parametros.get("pIdCliente") + "%");
-//            exp = idCliente;
-//        }
-//        if (parametros.containsKey("pNombres")) {
-//            nombres = eb.get("pNombres").likeIgnoreCase(parametros.get("pNombres") + "%");
-//            if (exp != null) {
-//                exp = exp.and(nombres);
-//            } else {
-//                exp = nombres;
-//            }
-//        }
-//        if (parametros.containsKey("pCuit")) {
-//            cuit = eb.get("pCuit").likeIgnoreCase(parametros.get("pCuit") + "%");
-//            if (exp != null) {
-//                exp = exp.and(cuit);
-//            } else {
-//                exp = cuit;
-//            }
-//        }
-//        Query query = null;
-//        if (exp != null) {
-//            query = ((oracle.toplink.essentials.ejb.cmp3.EntityManager) em.getDelegate()).createQuery(exp, Clientes.class);
-//        }
-//
-//        if (query != null) {
-//            query.setParameter("pIdCliente", parametros.get("pIdCliente"));
-//            query.setParameter("pNombres", parametros.get("pNombres"));
-//            query.setParameter("pCuit", parametros.get("pCuit"));
-//        }
-//
         return DataTransferHelper.copiarClientesALista(query.getResultList());
     }
 }
