@@ -3,7 +3,6 @@
  */
 package ar.com.jpack.desktop;
 
-import ar.com.jpack.desktop.reportes.ReporteStock;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import ar.com.jpack.util.StringHelper;
@@ -272,7 +271,6 @@ public class DesktopView extends FrameView {
                         menuBar.add(m);
                     }
                 }
-
             }
         }
 
@@ -417,6 +415,7 @@ public class DesktopView extends FrameView {
             if (!isOpen(f)) {
                 desktopPanel.add(f);
             }
+            SwingUtilities.updateComponentTreeUI(f);
             f.setVisible(true);
             desktopPanel.getDesktopManager().activateFrame(f);
             return mensaje;
