@@ -10,8 +10,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" resourceKey="ArticuloDialog.title"/>
-    <Property name="name" type="java.lang.String" value="ArticuloDialog" noResource="true"/>
+    <Property name="title" type="java.lang.String" resourceKey="Articulos.title"/>
+    <Property name="name" type="java.lang.String" value="Articulos" noResource="true"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -130,7 +130,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="buscarButton">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="buscarButton.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.lov.Articulos" id="buscarArticulos" methodName="buscarArticulos"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="buscarButton" noResource="true"/>
       </Properties>
     </Component>
@@ -191,13 +193,18 @@
     </Container>
     <Component class="javax.swing.JButton" name="cancelarButton">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="cancelarButton.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.lov.Articulos" id="cancelar" methodName="cancelar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="aceptarButton.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.lov.Articulos" id="seleccionarArticulo" methodName="seleccionarArticulo"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
       </Properties>
     </Component>

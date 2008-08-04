@@ -128,8 +128,8 @@ public class Clientes extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(Clientes.class);
-        setTitle(resourceMap.getString("ClienteDialog.title")); // NOI18N
-        setName("ClienteDialog"); // NOI18N
+        setTitle(resourceMap.getString("Clientes.title")); // NOI18N
+        setName("Clientes"); // NOI18N
         setResizable(false);
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -179,6 +179,7 @@ public class Clientes extends javax.swing.JDialog {
         cancelarButton.setName("cancelarButton"); // NOI18N
 
         aceptarButton.setAction(actionMap.get("seleccionarCliente")); // NOI18N
+        aceptarButton.setEnabled(false);
         aceptarButton.setName("aceptarButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -10,8 +10,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" resourceKey="ClienteDialog.title"/>
-    <Property name="name" type="java.lang.String" value="ClienteDialog" noResource="true"/>
+    <Property name="title" type="java.lang.String" resourceKey="Clientes.title"/>
+    <Property name="name" type="java.lang.String" value="Clientes" noResource="true"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -208,6 +208,7 @@
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
           <action class="ar.com.jpack.desktop.ventas.LOVClientes" id="seleccionarCliente" methodName="seleccionarCliente"/>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
       </Properties>
     </Component>

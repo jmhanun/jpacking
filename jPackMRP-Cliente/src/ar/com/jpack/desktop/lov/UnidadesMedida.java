@@ -106,7 +106,10 @@ public class UnidadesMedida extends javax.swing.JDialog {
         aceptarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setName("Form"); // NOI18N
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(UnidadesMedida.class);
+        setTitle(resourceMap.getString("UnidadesMedida.title")); // NOI18N
+        setName("UnidadesMedida"); // NOI18N
+        setResizable(false);
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -126,11 +129,12 @@ public class UnidadesMedida extends javax.swing.JDialog {
         jTableBinding.bind();
         jScrollPane1.setViewportView(unidadesMedidaTable);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(UnidadesMedida.class);
-        cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(UnidadesMedida.class, this);
+        cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
         cancelarButton.setName("cancelarButton"); // NOI18N
 
-        aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
+        aceptarButton.setAction(actionMap.get("seleccionarUnidadMedida")); // NOI18N
+        aceptarButton.setEnabled(false);
         aceptarButton.setName("aceptarButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,7 +146,7 @@ public class UnidadesMedida extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(13, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(250, Short.MAX_VALUE)
+                .addContainerGap(246, Short.MAX_VALUE)
                 .addComponent(aceptarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelarButton)
@@ -170,7 +174,7 @@ public class UnidadesMedida extends javax.swing.JDialog {
 
 
     @Action
-    public void seleccionarArticulo() {
+    public void seleccionarUnidadMedida() {
         setUnidadMedidaTSeleccionado(unidadesMedidaTs.get(unidadesMedidaTable.getSelectedRow()));
         setVisible(false);
     }

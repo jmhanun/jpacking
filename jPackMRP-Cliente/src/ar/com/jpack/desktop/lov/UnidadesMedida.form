@@ -10,7 +10,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+    <Property name="title" type="java.lang.String" resourceKey="UnidadesMedida.title"/>
+    <Property name="name" type="java.lang.String" value="UnidadesMedida" noResource="true"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -35,7 +37,7 @@
               <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="250" max="32767" attributes="0"/>
+              <EmptySpace pref="246" max="32767" attributes="0"/>
               <Component id="aceptarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -91,13 +93,18 @@
     </Container>
     <Component class="javax.swing.JButton" name="cancelarButton">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="cancelarButton.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.lov.UnidadesMedida" id="cancelar" methodName="cancelar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="aceptarButton.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.lov.UnidadesMedida" id="seleccionarUnidadMedida" methodName="seleccionarUnidadMedida"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
       </Properties>
     </Component>

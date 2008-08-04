@@ -107,8 +107,8 @@ public class Articulos extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(Articulos.class);
-        setTitle(resourceMap.getString("ArticuloDialog.title")); // NOI18N
-        setName("ArticuloDialog"); // NOI18N
+        setTitle(resourceMap.getString("Articulos.title")); // NOI18N
+        setName("Articulos"); // NOI18N
         setResizable(false);
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -129,7 +129,8 @@ public class Articulos extends javax.swing.JDialog {
         descripcionTextField.setText(resourceMap.getString("descripcionTextField.text")); // NOI18N
         descripcionTextField.setName("descripcionTextField"); // NOI18N
 
-        buscarButton.setText(resourceMap.getString("buscarButton.text")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(Articulos.class, this);
+        buscarButton.setAction(actionMap.get("buscarArticulos")); // NOI18N
         buscarButton.setName("buscarButton"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -156,10 +157,11 @@ public class Articulos extends javax.swing.JDialog {
         articulosTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title1")); // NOI18N
         articulosTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title2")); // NOI18N
 
-        cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
+        cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
         cancelarButton.setName("cancelarButton"); // NOI18N
 
-        aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
+        aceptarButton.setAction(actionMap.get("seleccionarArticulo")); // NOI18N
+        aceptarButton.setEnabled(false);
         aceptarButton.setName("aceptarButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,14 +224,14 @@ public class Articulos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     @Action
-    public Task buscarClientes() {
-        return new BuscarClientesTask(DesktopApp.getApplication(),"Busqueda Iniciada");
+    public Task buscarArticulos() {
+        return new BuscarArticulosTask(DesktopApp.getApplication(),"Busqueda Iniciada");
     }
 
-    private class BuscarClientesTask extends org.jdesktop.application.Task<String, Void> {
+    private class BuscarArticulosTask extends org.jdesktop.application.Task<String, Void> {
         DesktopView view;
         String mensaje;
-        BuscarClientesTask(DesktopApp app, String mensaje) {
+        BuscarArticulosTask(DesktopApp app, String mensaje) {
             super(app);
             this.view = app.getDesktopView();
             this.mensaje=mensaje;

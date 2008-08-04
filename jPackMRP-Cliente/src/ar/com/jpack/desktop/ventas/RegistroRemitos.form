@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Component class="java.util.ArrayList" name="arrayList1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.util.DetalleRemitosTHelper&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.helpers.DetalleRemitosTHelper&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -35,7 +35,7 @@
           <Component id="articulosPanel" alignment="0" max="32767" attributes="1"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="340" max="32767" attributes="0"/>
-              <Component id="jButton2" linkSize="1" min="-2" max="-2" attributes="0"/>
+              <Component id="aceptarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -52,7 +52,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
@@ -101,7 +101,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jFormattedTextField1" linkSize="5" min="-2" max="-2" attributes="0"/>
+                              <Component id="fechaFormattedTextField" linkSize="5" min="-2" max="-2" attributes="0"/>
                               <Component id="situacionIvaTextField" linkSize="5" alignment="1" min="-2" pref="147" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -110,7 +110,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="nombresTextField" pref="278" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                          <Component id="buscarButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -122,7 +122,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jFormattedTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="fechaFormattedTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -130,7 +130,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="idClienteTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buscarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="nombresTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -204,20 +204,20 @@
             <Property name="name" type="java.lang.String" value="jLabel5" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="buscarButton">
           <Properties>
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="ar.com.jpack.desktop.ventas.RegistroRemitos" id="showLOVClientes" methodName="showLOVClientes"/>
             </Property>
-            <Property name="text" type="java.lang.String" resourceKey="jButton4.text"/>
-            <Property name="name" type="java.lang.String" value="jButton4" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="buscarButton.text"/>
+            <Property name="name" type="java.lang.String" value="buscarButton" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
+        <Component class="javax.swing.JFormattedTextField" name="fechaFormattedTextField">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" resourceKey="jFormattedTextField1.text"/>
-            <Property name="name" type="java.lang.String" value="jFormattedTextField1" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="fechaFormattedTextField.text"/>
+            <Property name="name" type="java.lang.String" value="fechaFormattedTextField" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="situacionIvaTextField">
@@ -262,7 +262,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="141" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="137" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="borrarButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -338,12 +338,12 @@
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
           <action class="ar.com.jpack.desktop.ventas.RegistroRemitos" id="grabarRemito" methodName="grabarRemito"/>
         </Property>
-        <Property name="name" type="java.lang.String" value="jButton2" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
