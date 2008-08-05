@@ -12,10 +12,13 @@ import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.helpers.DetalleRemitosTHelper;
 import ar.com.jpack.helpers.LOVHelper;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.jdesktop.application.Action;
@@ -39,6 +42,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         arrayList1 = new java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper>();
+        articuloCellEditor1 = new ar.com.jpack.desktop.ventas.ArticuloCellEditor();
         remitoPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -50,7 +54,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         buscarButton = new javax.swing.JButton();
-        fechaFormattedTextField = new javax.swing.JFormattedTextField();
+        fechaAcordadaFormattedTextField = new javax.swing.JFormattedTextField();
         situacionIvaTextField = new javax.swing.JTextField();
         articulosPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -105,9 +109,10 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         buscarButton.setText(resourceMap.getString("buscarButton.text")); // NOI18N
         buscarButton.setName("buscarButton"); // NOI18N
 
-        fechaFormattedTextField.setEditable(false);
-        fechaFormattedTextField.setText(resourceMap.getString("fechaFormattedTextField.text")); // NOI18N
-        fechaFormattedTextField.setName("fechaFormattedTextField"); // NOI18N
+        fechaAcordadaFormattedTextField.setEditable(false);
+        fechaAcordadaFormattedTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        fechaAcordadaFormattedTextField.setText(resourceMap.getString("fechaAcordadaFormattedTextField.text")); // NOI18N
+        fechaAcordadaFormattedTextField.setName("fechaAcordadaFormattedTextField"); // NOI18N
 
         situacionIvaTextField.setEditable(false);
         situacionIvaTextField.setText(resourceMap.getString("situacionIvaTextField.text")); // NOI18N
@@ -129,35 +134,35 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                         .addGroup(remitoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(remitoPanelLayout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
                                 .addGap(9, 9, 9))
                             .addGroup(remitoPanelLayout.createSequentialGroup()
                                 .addComponent(cuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                                 .addComponent(jLabel5)
                                 .addGap(12, 12, 12)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(remitoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(fechaFormattedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fechaAcordadaFormattedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(situacionIvaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(remitoPanelLayout.createSequentialGroup()
                         .addComponent(idClienteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                        .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buscarButton)))
                 .addContainerGap())
         );
 
-        remitoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cuitTextField, fechaFormattedTextField, jTextField1, situacionIvaTextField});
+        remitoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cuitTextField, fechaAcordadaFormattedTextField, jTextField1, situacionIvaTextField});
 
         remitoPanelLayout.setVerticalGroup(
             remitoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(remitoPanelLayout.createSequentialGroup()
                 .addGroup(remitoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(fechaFormattedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaAcordadaFormattedTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -201,6 +206,13 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(articulosTable);
+        articulosTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title0")); // NOI18N
+        articulosTable.getColumnModel().getColumn(0).setCellEditor(articuloCellEditor1);
+        articulosTable.getColumnModel().getColumn(0).setCellRenderer(null);
+        articulosTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title1")); // NOI18N
+        articulosTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title2")); // NOI18N
+        articulosTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title3")); // NOI18N
+        articulosTable.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title4")); // NOI18N
 
         borrarButton.setAction(actionMap.get("borrarItem")); // NOI18N
         borrarButton.setEnabled(false);
@@ -213,16 +225,15 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         articulosPanel.setLayout(articulosPanelLayout);
         articulosPanelLayout.setHorizontalGroup(
             articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
-                .addContainerGap(332, Short.MAX_VALUE)
-                .addComponent(agregarButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(borrarButton)
-                .addContainerGap())
             .addGroup(articulosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
+                        .addComponent(agregarButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(borrarButton))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         articulosPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {agregarButton, borrarButton});
@@ -231,7 +242,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(borrarButton)
@@ -252,7 +263,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             .addComponent(remitoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(articulosPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(340, Short.MAX_VALUE)
+                .addContainerGap(361, Short.MAX_VALUE)
                 .addComponent(aceptarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelarButton)
@@ -272,24 +283,26 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton agregarButton;
     private java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper> arrayList1;
+    private ar.com.jpack.desktop.ventas.ArticuloCellEditor articuloCellEditor1;
     private javax.swing.JPanel articulosPanel;
     private javax.swing.JTable articulosTable;
     private javax.swing.JButton borrarButton;
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton cancelarButton;
     private javax.swing.JTextField cuitTextField;
-    private javax.swing.JFormattedTextField fechaFormattedTextField;
+    private javax.swing.JFormattedTextField fechaAcordadaFormattedTextField;
     private javax.swing.JTextField idClienteTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -310,7 +323,8 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     /** Creates new form RegistroRemitos */
     public RegistroRemitos() {
         initComponents();
-                articulosTable.getSelectionModel().addListSelectionListener(
+        fechaAcordadaFormattedTextField.setValue(new Date());
+        articulosTable.getSelectionModel().addListSelectionListener(
                 new ListSelectionListener() {
 
                     public void valueChanged(ListSelectionEvent e) {
@@ -382,12 +396,14 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         nombresTextField.setText("");
         cuitTextField.setText("");
         situacionIvaTextField.setText("");
+        fechaAcordadaFormattedTextField.setValue(new Date());
         if (!arrayList1.isEmpty()) {
             Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
             b.unbind();
             arrayList1.clear();
             b.bind();
             articulosTable.repaint();
+            borrarButton.setEnabled(false);
         }
     }
 
@@ -428,7 +444,11 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 DetalleRemitosTHelper aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(aux);
             }
+            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
+            b.unbind();
             arrayList1.removeAll(toRemove);
+            b.bind();
+            articulosTable.repaint();
         }
     }
 
@@ -449,6 +469,14 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             articulosTable.scrollRectToVisible(articulosTable.getCellRect(row, 0, true));
         } else {
             JOptionPane.showMessageDialog(null, "Debe completar los datos antes de continuar");
+            if (clienteT == null) {
+                buscarButton.requestFocus();
+            } else {
+                int row = articulosTable.getRowCount() - 1;
+                articulosTable.setRowSelectionInterval(row, row);
+                articulosTable.scrollRectToVisible(articulosTable.getCellRect(row, 0, true));
+                articulosTable.requestFocus();
+            }
         }
     }
 }

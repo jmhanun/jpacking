@@ -263,6 +263,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public Boolean isArticulo(Integer idArticulo) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            return articulosFacade.isArticulo(idArticulo);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
     public List<UsuariosT> getAllUsuarios() {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
