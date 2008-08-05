@@ -30,4 +30,6 @@ public interface ArticulosFacadeRemote {
     public List<ArticulosT> findAllArticulosT();
 
     public List<ArticulosT> findArticulosT(HashMap parametros);
+    
+    public Boolean isArticulo(Integer idArticulo);
 }

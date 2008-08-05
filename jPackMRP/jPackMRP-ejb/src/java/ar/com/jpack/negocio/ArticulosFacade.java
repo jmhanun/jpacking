@@ -12,7 +12,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import oracle.toplink.essentials.config.HintValues;
+import oracle.toplink.essentials.config.TopLinkQueryHints;
 
 /**
  *
@@ -86,5 +90,21 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
 
         return DataTransferHelper.copiarArticulosALista(query.getResultList());
 
+    }
+
+    public Boolean isArticulo(Integer idArticulo) {
+        Boolean existe = true;
+        Query query = em.createQuery("SELECT a FROM Articulos as a WHERE a.idArticulo= :idArticulo");
+        query.setParameter("idArticulo", idArticulo);
+        Articulos articulo = null;
+        try {
+            query.setHint(TopLinkQueryHints.REFRESH, HintValues.TRUE);
+            articulo = (Articulos) query.getSingleResult();
+        } catch (NoResultException e) {
+            existe = false;
+        } catch (NonUniqueResultException e) {
+            existe = false;
+        }
+        return existe;
     }
 }
