@@ -4,10 +4,8 @@
   <NonVisualComponents>
     <Component class="java.util.ArrayList" name="arrayList1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.helpers.DetalleRemitosTHelper&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ar.com.jpack.transferencia.DetalleRemitosT&gt;"/>
       </AuxValues>
-    </Component>
-    <Component class="ar.com.jpack.desktop.ventas.ArticuloCellEditor" name="articuloCellEditor1">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -56,7 +54,7 @@
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -253,7 +251,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
+                          <Component id="articuloCellRenderer1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="148" max="32767" attributes="0"/>
                           <Component id="agregarButton" linkSize="6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="editarButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="borrarButton" linkSize="6" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -267,11 +269,13 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="127" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="123" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="borrarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="agregarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="articuloCellRenderer1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="editarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -296,10 +300,10 @@
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title resourceKey="articulosTable.columnModel.title0"/>
                       <Editor editor="org.netbeans.modules.form.ComponentChooserEditor">
-                        <ComponentRef name="articuloCellEditor1"/>
+                        <ComponentRef name="null"/>
                       </Editor>
                       <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                        <ComponentRef name="null"/>
+                        <ComponentRef name="articuloCellRenderer1"/>
                       </Renderer>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -333,13 +337,13 @@
                 <BindingProperty name="elements" source="arrayList1" target="articulosTable" targetPath="elements" updateStrategy="0" immediately="true">
                   <Property name="name" type="java.lang.String" value="jTable"/>
                   <Subbinding sourcePath="${idArticulo}">
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="ar.com.jpack.transferencia.ArticulosT.class"/>
                   </Subbinding>
                   <Subbinding sourcePath="${cantidad}">
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                   </Subbinding>
-                  <Subbinding sourcePath="${idUnidadMedida}">
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                  <Subbinding sourcePath="${idUnidMedida}">
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="ar.com.jpack.transferencia.UnidadesMedidaT.class"/>
                   </Subbinding>
                   <Subbinding sourcePath="${precioUnitario}">
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
@@ -357,7 +361,6 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="ar.com.jpack.desktop.ventas.RegistroRemitos" id="borrarItem" methodName="borrarItem"/>
             </Property>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="borrarButton" noResource="true"/>
           </Properties>
         </Component>
@@ -367,6 +370,20 @@
               <action class="ar.com.jpack.desktop.ventas.RegistroRemitos" id="agregarItem" methodName="agregarItem"/>
             </Property>
             <Property name="name" type="java.lang.String" value="agregarButton" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="ar.com.jpack.desktop.ventas.ArticuloCellRenderer" name="articuloCellRenderer1">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="articuloCellRenderer1.text"/>
+            <Property name="name" type="java.lang.String" value="articuloCellRenderer1" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="editarButton">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="ar.com.jpack.desktop.ventas.RegistroRemitos" id="editarItem" methodName="editarItem"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="editarButton" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

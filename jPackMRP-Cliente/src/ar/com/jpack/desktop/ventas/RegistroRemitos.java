@@ -8,17 +8,15 @@ package ar.com.jpack.desktop.ventas;
 import ar.com.jpack.desktop.lov.Clientes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
-import ar.com.jpack.transferencia.ClientesT;
-import ar.com.jpack.helpers.DetalleRemitosTHelper;
+import ar.com.jpack.desktop.lov.Articulos;
 import ar.com.jpack.helpers.LOVHelper;
+import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.DetalleRemitosT;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.jdesktop.application.Action;
@@ -41,8 +39,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        arrayList1 = new java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper>();
-        articuloCellEditor1 = new ar.com.jpack.desktop.ventas.ArticuloCellEditor();
+        arrayList1 = new java.util.ArrayList<ar.com.jpack.transferencia.DetalleRemitosT>();
         remitoPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -61,6 +58,8 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         articulosTable = new javax.swing.JTable();
         borrarButton = new javax.swing.JButton();
         agregarButton = new javax.swing.JButton();
+        articuloCellRenderer1 = new ar.com.jpack.desktop.ventas.ArticuloCellRenderer();
+        editarButton = new javax.swing.JButton();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
 
@@ -190,13 +189,13 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, arrayList1, articulosTable, "jTable");
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idArticulo}"));
         columnBinding.setColumnName("Id Articulo");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(ar.com.jpack.transferencia.ArticulosT.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cantidad}"));
         columnBinding.setColumnName("Cantidad");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idUnidadMedida}"));
-        columnBinding.setColumnName("Id Unidad Medida");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idUnidMedida}"));
+        columnBinding.setColumnName("Id Unid Medida");
+        columnBinding.setColumnClass(ar.com.jpack.transferencia.UnidadesMedidaT.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${precioUnitario}"));
         columnBinding.setColumnName("Precio Unitario");
         columnBinding.setColumnClass(Double.class);
@@ -207,19 +206,24 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         jTableBinding.bind();
         jScrollPane1.setViewportView(articulosTable);
         articulosTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title0")); // NOI18N
-        articulosTable.getColumnModel().getColumn(0).setCellEditor(articuloCellEditor1);
-        articulosTable.getColumnModel().getColumn(0).setCellRenderer(null);
+        articulosTable.getColumnModel().getColumn(0).setCellEditor(null);
+        articulosTable.getColumnModel().getColumn(0).setCellRenderer(articuloCellRenderer1);
         articulosTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title1")); // NOI18N
         articulosTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title2")); // NOI18N
         articulosTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title3")); // NOI18N
         articulosTable.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title4")); // NOI18N
 
         borrarButton.setAction(actionMap.get("borrarItem")); // NOI18N
-        borrarButton.setEnabled(false);
         borrarButton.setName("borrarButton"); // NOI18N
 
         agregarButton.setAction(actionMap.get("agregarItem")); // NOI18N
         agregarButton.setName("agregarButton"); // NOI18N
+
+        articuloCellRenderer1.setText(resourceMap.getString("articuloCellRenderer1.text")); // NOI18N
+        articuloCellRenderer1.setName("articuloCellRenderer1"); // NOI18N
+
+        editarButton.setAction(actionMap.get("editarItem")); // NOI18N
+        editarButton.setName("editarButton"); // NOI18N
 
         javax.swing.GroupLayout articulosPanelLayout = new javax.swing.GroupLayout(articulosPanel);
         articulosPanel.setLayout(articulosPanelLayout);
@@ -229,7 +233,11 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
+                        .addComponent(articuloCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                         .addComponent(agregarButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(borrarButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE))
@@ -242,11 +250,13 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(borrarButton)
-                    .addComponent(agregarButton))
+                    .addComponent(agregarButton)
+                    .addComponent(articuloCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editarButton))
                 .addContainerGap())
         );
 
@@ -283,7 +293,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -294,14 +304,15 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton agregarButton;
-    private java.util.ArrayList<ar.com.jpack.helpers.DetalleRemitosTHelper> arrayList1;
-    private ar.com.jpack.desktop.ventas.ArticuloCellEditor articuloCellEditor1;
+    private java.util.ArrayList<ar.com.jpack.transferencia.DetalleRemitosT> arrayList1;
+    private ar.com.jpack.desktop.ventas.ArticuloCellRenderer articuloCellRenderer1;
     private javax.swing.JPanel articulosPanel;
     private javax.swing.JTable articulosTable;
     private javax.swing.JButton borrarButton;
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton cancelarButton;
     private javax.swing.JTextField cuitTextField;
+    private javax.swing.JButton editarButton;
     private javax.swing.JFormattedTextField fechaAcordadaFormattedTextField;
     private javax.swing.JTextField idClienteTextField;
     private javax.swing.JLabel jLabel1;
@@ -318,6 +329,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     private static RegistroRemitos registroRemitos = new RegistroRemitos();
     private Clientes lOVClientes = null;
+    private Articulos lOVArticulos = null;
     private ClientesT clienteT;
 
     /** Creates new form RegistroRemitos */
@@ -380,16 +392,15 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         return new GrabarRemitoTask(DesktopApp.getApplication(), "Grabando remito...");
     }
 
-    private boolean isDetalleCompleto() {
-        boolean detalleCompleto = true;
-        Iterator<DetalleRemitosTHelper> it = arrayList1.iterator();
-        while (it.hasNext() && detalleCompleto) {
-            DetalleRemitosTHelper auxiliarDetalleRemitosT = it.next();
-            detalleCompleto = auxiliarDetalleRemitosT.isCompleto();
-        }
-        return detalleCompleto;
-    }
-
+//    private boolean isDetalleCompleto() {
+//        boolean detalleCompleto = true;
+////        Iterator<DetalleRemitosTHelper> it = arrayList1.iterator();
+////        while (it.hasNext() && detalleCompleto) {
+////            DetalleRemitosTHelper auxiliarDetalleRemitosT = it.next();
+////            detalleCompleto = auxiliarDetalleRemitosT.isCompleto();
+////        }
+//        return detalleCompleto;
+//    }
     private void limpiar() {
         setClienteT(null);
         idClienteTextField.setText("");
@@ -398,12 +409,12 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         situacionIvaTextField.setText("");
         fechaAcordadaFormattedTextField.setValue(new Date());
         if (!arrayList1.isEmpty()) {
-            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
-            b.unbind();
-            arrayList1.clear();
-            b.bind();
-            articulosTable.repaint();
-            borrarButton.setEnabled(false);
+//            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
+//            b.unbind();
+//            arrayList1.clear();
+//            b.bind();
+//            articulosTable.repaint();
+//            borrarButton.setEnabled(false);
         }
     }
 
@@ -439,9 +450,9 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
         if (n == JOptionPane.YES_OPTION) {
             int[] selected = articulosTable.getSelectedRows();
-            List<DetalleRemitosTHelper> toRemove = new ArrayList<DetalleRemitosTHelper>(selected.length);
+            List<DetalleRemitosT> toRemove = new ArrayList<DetalleRemitosT>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                DetalleRemitosTHelper aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[idx]));
+                DetalleRemitosT aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(aux);
             }
             Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
@@ -454,29 +465,69 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
 
     @Action
     public void agregarItem() {
-        if (clienteT != null && isDetalleCompleto()) {
-            if (arrayList1 == null) {
-                arrayList1 = new ArrayList<DetalleRemitosTHelper>();
-            }
-            DetalleRemitosTHelper aux = new DetalleRemitosTHelper();
-            Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
-            b.unbind();
-            arrayList1.add(aux);
-            b.bind();
-            articulosTable.repaint();
-            int row = articulosTable.getRowCount() - 1;
-            articulosTable.setRowSelectionInterval(row, row);
-            articulosTable.scrollRectToVisible(articulosTable.getCellRect(row, 0, true));
+        DetalleRemitosT nuevoDetalle = new DetalleRemitosT();
+        if (lOVArticulos == null) {
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            lOVArticulos = new Articulos(mainFrame, true);
+            lOVArticulos.setLocationRelativeTo(mainFrame);
         } else {
-            JOptionPane.showMessageDialog(null, "Debe completar los datos antes de continuar");
-            if (clienteT == null) {
-                buscarButton.requestFocus();
-            } else {
-                int row = articulosTable.getRowCount() - 1;
-                articulosTable.setRowSelectionInterval(row, row);
-                articulosTable.scrollRectToVisible(articulosTable.getCellRect(row, 0, true));
-                articulosTable.requestFocus();
+            lOVArticulos.limpiar();
+        }
+        DesktopApp.getApplication().show(lOVArticulos);
+
+        if (lOVArticulos.getArticuloTSeleccionado() != null) {
+            nuevoDetalle.setIdArticulo(lOVArticulos.getArticuloTSeleccionado());
+            nuevoDetalle.setIdUnidMedida(lOVArticulos.getArticuloTSeleccionado().getIdUnidMedida());
+//////////////////////////////////////////////////////////////////
+
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            ModificaArticulo modifica = new ModificaArticulo(mainFrame, true);
+            modifica.setLocationRelativeTo(mainFrame);
+            modifica.setTitle(nuevoDetalle.getIdArticulo().getCodigo() + " - " + nuevoDetalle.getIdArticulo().getDescripcion());
+            DesktopApp.getApplication().show(modifica);
+            nuevoDetalle.setCantidad(modifica.getCantidad());
+            nuevoDetalle.setPrecioUnitario(modifica.getPrecioUnitario());
+            nuevoDetalle.setImporte(modifica.getCantidad() * modifica.getPrecioUnitario());
+
+            if (nuevoDetalle.getCantidad() != 0) {
+                Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
+                b.unbind();
+                arrayList1.add(nuevoDetalle);
+                b.bind();
+                articulosTable.getColumnModel().getColumn(0).setCellRenderer(articuloCellRenderer1);
+                articulosTable.repaint();
             }
+//////////////////////////////////////////////////////////////////
+
+        } else {
+            limpiar();
+        }
+    }
+
+    @Action
+    public void editarItem() {
+        int[] selected = articulosTable.getSelectedRows();
+        if (selected.length == 1) {
+            DetalleRemitosT aux = arrayList1.get(articulosTable.convertRowIndexToModel(selected[0]));
+            arrayList1.remove(aux);
+            JFrame mainFrame = DesktopApp.getApplication().getMainFrame();
+            ModificaArticulo modifica = new ModificaArticulo(mainFrame, true);
+            modifica.setLocationRelativeTo(mainFrame);
+            modifica.setTitle(aux.getIdArticulo().getCodigo() + " - " + aux.getIdArticulo().getDescripcion());
+            DesktopApp.getApplication().show(modifica);
+            aux.setCantidad(modifica.getCantidad());
+            aux.setPrecioUnitario(modifica.getPrecioUnitario());
+            aux.setImporte(modifica.getCantidad() * modifica.getPrecioUnitario());
+
+            if (aux.getCantidad() != 0) {
+                Binding b = LOVHelper.findBinding(bindingGroup, arrayList1, articulosTable);
+                b.unbind();
+                arrayList1.add(aux);
+                b.bind();
+                articulosTable.repaint();
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar solo un articulo");
         }
     }
 }
