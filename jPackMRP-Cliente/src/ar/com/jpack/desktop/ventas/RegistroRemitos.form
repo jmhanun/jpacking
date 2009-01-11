@@ -54,7 +54,7 @@
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -299,9 +299,7 @@
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title resourceKey="articulosTable.columnModel.title0"/>
-                      <Editor editor="org.netbeans.modules.form.ComponentChooserEditor">
-                        <ComponentRef name="null"/>
-                      </Editor>
+                      <Editor/>
                       <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
                         <ComponentRef name="articuloCellRenderer1"/>
                       </Renderer>

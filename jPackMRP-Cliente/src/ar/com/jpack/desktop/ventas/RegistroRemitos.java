@@ -375,7 +375,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             idClienteTextField.setText(clienteT.getIdCliente().toString());
             nombresTextField.setText(clienteT.getNombres());
             cuitTextField.setText(clienteT.getCuit());
-            situacionIvaTextField.setText(clienteT.getSituacionIva());
+//            situacionIvaTextField.setText(clienteT.getSituacionIva());
         } else {
             limpiar();
         }
