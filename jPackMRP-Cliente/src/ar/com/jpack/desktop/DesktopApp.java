@@ -314,26 +314,22 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public JasperPrint getReporteUsuarios() {
+/**
+ * Devuelve el reporte solicitado
+ * @param nombreReporte String con el nombre del reporte (sin extension)
+ * @param parametro HashMap con los parametros. Si no tiene parametros = null
+ * @return
+ */
+    public JasperPrint getReporte(String nombreReporte, HashMap parametro) {
         try {
             reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
-            return reportesFacade.getReporte("usuarios", null);
+            return reportesFacade.getReporte(nombreReporte, parametro);
         } catch (NamingException ex) {
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-
-    public JasperPrint getReporteStock(HashMap parametro) {
-        try {
-            reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
-            return reportesFacade.getReporte("stock", parametro);
-        } catch (NamingException ex) {
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
+    
     /**
      * Muestra el JDialog de Login
      */

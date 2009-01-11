@@ -12,6 +12,7 @@ import ar.com.jpack.desktop.lov.Articulos;
 import ar.com.jpack.helpers.LOVHelper;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.RemitosT;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -331,6 +332,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
     private Clientes lOVClientes = null;
     private Articulos lOVArticulos = null;
     private ClientesT clienteT;
+    private RemitosT remitoT;
 
     /** Creates new form RegistroRemitos */
     public RegistroRemitos() {
@@ -360,6 +362,14 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         this.clienteT = clienteT;
     }
 
+    public RemitosT getRemitosT() {
+        return remitoT;
+    }
+    
+    public void setRemitosT(RemitosT remitoT) {
+        this.remitoT = remitoT;
+    }
+    
     @Action
     public void showLOVClientes() {
         if (lOVClientes == null) {

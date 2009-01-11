@@ -357,7 +357,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showReporteUsuarios() {
-        JasperPrint jp = DesktopApp.getApplication().getReporteUsuarios();
+        JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", null);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Usuarios");
         jv.setVisible(true);

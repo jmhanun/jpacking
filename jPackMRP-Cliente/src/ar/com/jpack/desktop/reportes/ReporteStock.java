@@ -56,7 +56,7 @@ public class ReporteStock extends javax.swing.JInternalFrame {
             if (!codigoTextField.getText().isEmpty()) {
                 parametro.put("pCodigo", codigoTextField.getText());
             }
-            JasperPrint jp = DesktopApp.getApplication().getReporteStock(parametro);
+            JasperPrint jp = DesktopApp.getApplication().getReporte("stock", parametro);
             JasperViewer jv = new JasperViewer(jp, false);
             jv.setTitle("Reporte de Stock");
             jv.setVisible(true);
