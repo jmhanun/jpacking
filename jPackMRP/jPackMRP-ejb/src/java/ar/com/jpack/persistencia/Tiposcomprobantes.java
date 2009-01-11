@@ -41,6 +41,8 @@ public class Tiposcomprobantes implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
     private Collection<Facturascompras> facturascomprasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    private Collection<Ajustesstock> ajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
     private Collection<Remitosingreso> remitosingresoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
     private Collection<Notascredito> notascreditoCollection;
@@ -118,6 +120,14 @@ public class Tiposcomprobantes implements Serializable {
 
     public void setFacturascomprasCollection(Collection<Facturascompras> facturascomprasCollection) {
         this.facturascomprasCollection = facturascomprasCollection;
+    }
+
+    public Collection<Ajustesstock> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
     }
 
     public Collection<Remitosingreso> getRemitosingresoCollection() {

@@ -17,6 +17,7 @@ public class DetMovimientosStockT implements Serializable{
     private String descripcion;
     private double cantidad;
     private Date fechaMovimiento;
+    private AjustesStockT idAjusteStock;
     private ArticulosT idArticulo;
     private NotasCreditoT idNotaCredito;
     private NotasDebitoT idNotaDebito;
@@ -30,12 +31,13 @@ public class DetMovimientosStockT implements Serializable{
     }
 
     public DetMovimientosStockT(Integer idDetMovStock, 
-            String descripcion, double cantidad, Date fechaMovimiento,
+            String descripcion, double cantidad, Date fechaMovimiento, AjustesStockT idAjusteStock,
             ArticulosT idArticulo, NotasCreditoT idNotaCredito, NotasDebitoT idNotaDebito, OrdenesDepositoT idOrdenDeposito, OrdenesProduccionT idOrdenProduccion, RemitosT idRemito, RemitosIngresoT idRtoIngreso, UnidadesMedidaT idUnidMedida) {
         this.idDetMovStock = idDetMovStock;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
         this.fechaMovimiento = fechaMovimiento;
+        this.idAjusteStock = idAjusteStock;
         this.idArticulo = idArticulo;
         this.idNotaCredito = idNotaCredito;
         this.idNotaDebito = idNotaDebito;
@@ -44,6 +46,14 @@ public class DetMovimientosStockT implements Serializable{
         this.idRemito = idRemito;
         this.idRtoIngreso = idRtoIngreso;
         this.idUnidMedida = idUnidMedida;
+    }
+
+    public AjustesStockT getIdAjusteStock() {
+        return idAjusteStock;
+    }
+
+    public void setIdAjusteStock(AjustesStockT idAjusteStock) {
+        this.idAjusteStock = idAjusteStock;
     }
 
     public Date getFechaMovimiento() {

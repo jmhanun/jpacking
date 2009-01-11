@@ -65,6 +65,8 @@ public class Usuarios implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Facturascompras> facturascomprasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Ajustesstock> ajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Remitosingreso> remitosingresoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Stock> stockCollection;
@@ -72,6 +74,8 @@ public class Usuarios implements Serializable {
     private Collection<Listasprecios> listaspreciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Setup> setupCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Facturas> facturasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Componentes> componentesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
@@ -203,6 +207,14 @@ public class Usuarios implements Serializable {
         this.facturascomprasCollection = facturascomprasCollection;
     }
 
+    public Collection<Ajustesstock> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
+    }
+
     public Collection<Remitosingreso> getRemitosingresoCollection() {
         return remitosingresoCollection;
     }
@@ -233,6 +245,14 @@ public class Usuarios implements Serializable {
 
     public void setSetupCollection(Collection<Setup> setupCollection) {
         this.setupCollection = setupCollection;
+    }
+
+    public Collection<Facturas> getFacturasCollection() {
+        return facturasCollection;
+    }
+
+    public void setFacturasCollection(Collection<Facturas> facturasCollection) {
+        this.facturasCollection = facturasCollection;
     }
 
     public Collection<Componentes> getComponentesCollection() {

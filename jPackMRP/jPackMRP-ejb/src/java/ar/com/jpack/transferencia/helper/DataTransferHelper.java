@@ -65,7 +65,7 @@ public class DataTransferHelper {
         if (item != null) {
             t = new ClientesT();
             t.setIdCliente(item.getIdCliente());
-            t.setSituacionIva(item.getSituacionIva());
+            t.setIdTipoIva(item.getIdTipoIva());
             t.setLimiteCredito(item.getLimiteCredito());
             t.setObservaciones(item.getObservaciones());
             t.setNombres(item.getNombres());

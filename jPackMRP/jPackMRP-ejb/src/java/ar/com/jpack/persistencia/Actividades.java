@@ -6,11 +6,14 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "actividades")
-@NamedQueries({@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"), @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")})
+@NamedQueries({@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"), @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Actividades.findByLeadTime", query = "SELECT a FROM Actividades a WHERE a.leadTime = :leadTime")})
 public class Actividades implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,6 +30,10 @@ public class Actividades implements Serializable {
     private Integer idActividad;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+    @Column(name = "leadTime")
+    private Float leadTime;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idActividad")
+    private Collection<Tiposmaquinas> tiposmaquinasCollection;
 
     public Actividades() {
     }
@@ -54,6 +61,22 @@ public class Actividades implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Float getLeadTime() {
+        return leadTime;
+    }
+
+    public void setLeadTime(Float leadTime) {
+        this.leadTime = leadTime;
+    }
+
+    public Collection<Tiposmaquinas> getTiposmaquinasCollection() {
+        return tiposmaquinasCollection;
+    }
+
+    public void setTiposmaquinasCollection(Collection<Tiposmaquinas> tiposmaquinasCollection) {
+        this.tiposmaquinasCollection = tiposmaquinasCollection;
     }
 
     @Override

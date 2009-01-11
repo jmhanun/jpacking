@@ -24,6 +24,7 @@ public class UnidadesMedidaT implements Serializable{
     private Collection<DetNotasDebitoT> detnotasdebitoCollection;
     private Collection<DetalleFacturasT> detallefacturasCollection;
     private Collection<DetalleRemitosT> detalleremitosCollection;
+    private Collection<DetAjustesStockT> detajustesstockCollection;
     private Collection<DetOrdenesDepositoT> detordenesdepositoCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
 
@@ -34,6 +35,14 @@ public class UnidadesMedidaT implements Serializable{
         this.idUnidMedida = idUnidMedida;
         this.descripcion = descripcion;
         this.abreviatura = abreviatura;
+    }
+
+    public Collection<DetAjustesStockT> getDetajustesstockCollection() {
+        return detajustesstockCollection;
+    }
+
+    public void setDetajustesstockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
+        this.detajustesstockCollection = detajustesstockCollection;
     }
 
     public String getAbreviatura() {

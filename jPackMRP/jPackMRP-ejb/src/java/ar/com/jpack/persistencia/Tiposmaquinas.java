@@ -11,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -32,6 +34,9 @@ public class Tiposmaquinas implements Serializable {
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoMaquina")
     private Collection<Maquinas> maquinasCollection;
+    @JoinColumn(name = "idActividad", referencedColumnName = "idActividad")
+    @ManyToOne
+    private Actividades idActividad;
 
     public Tiposmaquinas() {
     }
@@ -67,6 +72,14 @@ public class Tiposmaquinas implements Serializable {
 
     public void setMaquinasCollection(Collection<Maquinas> maquinasCollection) {
         this.maquinasCollection = maquinasCollection;
+    }
+
+    public Actividades getIdActividad() {
+        return idActividad;
+    }
+
+    public void setIdActividad(Actividades idActividad) {
+        this.idActividad = idActividad;
     }
 
     @Override

@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "facturas")
-@NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturas.findByIdUsuario", query = "SELECT f FROM Facturas f WHERE f.idUsuario = :idUsuario"), @NamedQuery(name = "Facturas.findByFechaModificacion", query = "SELECT f FROM Facturas f WHERE f.fechaModificacion = :fechaModificacion")})
+@NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturas.findByFechaModificacion", query = "SELECT f FROM Facturas f WHERE f.fechaModificacion = :fechaModificacion")})
 public class Facturas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,8 +46,6 @@ public class Facturas implements Serializable {
     private double importe;
     @Column(name = "descuento")
     private Float descuento;
-    @Column(name = "idUsuario", nullable = false)
-    private int idUsuario;
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
@@ -65,6 +63,9 @@ public class Facturas implements Serializable {
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
     @ManyToOne
     private Tiposcomprobantes idTipoComprobante;
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    private Usuarios idUsuario;
 
     public Facturas() {
     }
@@ -73,13 +74,12 @@ public class Facturas implements Serializable {
         this.idFactura = idFactura;
     }
 
-    public Facturas(Integer idFactura, int nroFactura, Date fecha, String letra, double importe, int idUsuario, Date fechaModificacion) {
+    public Facturas(Integer idFactura, int nroFactura, Date fecha, String letra, double importe, Date fechaModificacion) {
         this.idFactura = idFactura;
         this.nroFactura = nroFactura;
         this.fecha = fecha;
         this.letra = letra;
         this.importe = importe;
-        this.idUsuario = idUsuario;
         this.fechaModificacion = fechaModificacion;
     }
 
@@ -131,14 +131,6 @@ public class Facturas implements Serializable {
         this.descuento = descuento;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     public Date getFechaModificacion() {
         return fechaModificacion;
     }
@@ -185,6 +177,14 @@ public class Facturas implements Serializable {
 
     public void setIdTipoComprobante(Tiposcomprobantes idTipoComprobante) {
         this.idTipoComprobante = idTipoComprobante;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

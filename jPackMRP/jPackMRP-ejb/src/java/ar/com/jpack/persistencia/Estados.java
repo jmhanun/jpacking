@@ -43,6 +43,8 @@ public class Estados implements Serializable {
     @OneToMany(mappedBy = "idEstado")
     private Collection<Domicilios> domiciliosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
+    private Collection<Ajustesstock> ajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Remitosingreso> remitosingresoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Notascredito> notascreditoCollection;
@@ -52,6 +54,8 @@ public class Estados implements Serializable {
     private Collection<Facturas> facturasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Notasdebito> notasdebitoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
+    private Collection<Tiposiva> tiposivaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
     private Collection<Maquinas> maquinasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
@@ -142,6 +146,14 @@ public class Estados implements Serializable {
         this.domiciliosCollection = domiciliosCollection;
     }
 
+    public Collection<Ajustesstock> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
+    }
+
     public Collection<Remitosingreso> getRemitosingresoCollection() {
         return remitosingresoCollection;
     }
@@ -180,6 +192,14 @@ public class Estados implements Serializable {
 
     public void setNotasdebitoCollection(Collection<Notasdebito> notasdebitoCollection) {
         this.notasdebitoCollection = notasdebitoCollection;
+    }
+
+    public Collection<Tiposiva> getTiposivaCollection() {
+        return tiposivaCollection;
+    }
+
+    public void setTiposivaCollection(Collection<Tiposiva> tiposivaCollection) {
+        this.tiposivaCollection = tiposivaCollection;
     }
 
     public Collection<Maquinas> getMaquinasCollection() {

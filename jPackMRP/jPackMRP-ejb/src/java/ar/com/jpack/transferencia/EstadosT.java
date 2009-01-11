@@ -23,6 +23,7 @@ public class EstadosT implements Serializable {
     private Collection<RemitosT> remitosCollection;
     private Collection<FacturasComprasT> facturascomprasCollection;
     private Collection<DomiciliosT> domiciliosCollection;
+    private Collection<AjustesStockT> ajustesstockCollection;
     private Collection<RemitosIngresoT> remitosingresoCollection;
     private Collection<NotasCreditoT> notascreditoCollection;
     private Collection<ListasPreciosT> listaspreciosCollection;
@@ -45,6 +46,14 @@ public class EstadosT implements Serializable {
 
     public Collection<ArticulosT> getArticulosCollection() {
         return articulosCollection;
+    }
+
+    public Collection<AjustesStockT> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<AjustesStockT> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
     }
 
     public void setArticulosCollection(Collection<ArticulosT> articulosCollection) {

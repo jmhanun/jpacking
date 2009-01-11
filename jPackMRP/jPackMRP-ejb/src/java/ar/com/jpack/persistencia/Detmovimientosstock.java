@@ -37,6 +37,9 @@ public class Detmovimientosstock implements Serializable {
     @Column(name = "fechaMovimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovimiento;
+    @JoinColumn(name = "idAjusteStock", referencedColumnName = "idAjusteStock")
+    @ManyToOne
+    private Ajustesstock idAjusteStock;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne
     private Articulos idArticulo;
@@ -105,6 +108,14 @@ public class Detmovimientosstock implements Serializable {
 
     public void setFechaMovimiento(Date fechaMovimiento) {
         this.fechaMovimiento = fechaMovimiento;
+    }
+
+    public Ajustesstock getIdAjusteStock() {
+        return idAjusteStock;
+    }
+
+    public void setIdAjusteStock(Ajustesstock idAjusteStock) {
+        this.idAjusteStock = idAjusteStock;
     }
 
     public Articulos getIdArticulo() {

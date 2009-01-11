@@ -38,6 +38,7 @@ public class ArticulosT implements Serializable {
     private Collection<ComponentesT> articulosCollection;
     private Collection<ComponentesT> componentesCollection;
     private Collection<DetalleRemitosT> detalleremitosCollection;
+    private Collection<DetAjustesStockT> detajustesstockCollection;
     private Collection<DetOrdenesDepositoT> detordenesdepositoCollection;
     private Collection<ProduccionT> produccionCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
@@ -188,6 +189,14 @@ public class ArticulosT implements Serializable {
 
     public void setDetordenesdepositoCollection(Collection<DetOrdenesDepositoT> detordenesdepositoCollection) {
         this.detordenesdepositoCollection = detordenesdepositoCollection;
+    }
+
+    public Collection<DetAjustesStockT> getDetAjustesStockCollection() {
+        return detajustesstockCollection;
+    }
+
+    public void setDetAjustesStockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
+        this.detajustesstockCollection = detajustesstockCollection;
     }
 
     public Collection<DetOrdenesProduccionT> getDetordenesproduccionCollection() {

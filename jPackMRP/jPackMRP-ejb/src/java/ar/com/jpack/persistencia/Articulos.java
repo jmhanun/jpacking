@@ -79,6 +79,8 @@ public class Articulos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detalleremitos> detalleremitosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    private Collection<Detajustesstock> detajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
     private Collection<Detordenesdeposito> detordenesdepositoCollection;
     @OneToMany(mappedBy = "idArticulo")
     private Collection<Produccion> produccionCollection;
@@ -271,6 +273,14 @@ public class Articulos implements Serializable {
 
     public void setDetalleremitosCollection(Collection<Detalleremitos> detalleremitosCollection) {
         this.detalleremitosCollection = detalleremitosCollection;
+    }
+
+    public Collection<Detajustesstock> getDetajustesstockCollection() {
+        return detajustesstockCollection;
+    }
+
+    public void setDetajustesstockCollection(Collection<Detajustesstock> detajustesstockCollection) {
+        this.detajustesstockCollection = detajustesstockCollection;
     }
 
     public Collection<Detordenesdeposito> getDetordenesdepositoCollection() {

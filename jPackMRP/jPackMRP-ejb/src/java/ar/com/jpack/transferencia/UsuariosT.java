@@ -27,10 +27,12 @@ public class UsuariosT implements Serializable {
     private Collection<ArticulosT> articulosCollection;
     private Collection<RemitosT> remitosCollection;
     private Collection<FacturasComprasT> facturascomprasCollection;
+    private Collection<AjustesStockT> ajustesstockCollection;
     private Collection<RemitosIngresoT> remitosingresoCollection;
     private Collection<StockT> stockCollection;
     private Collection<ListasPreciosT> listaspreciosCollection;
     private Collection<SetupT> setupCollection;
+    private Collection<FacturasT> facturasCollection;
     private Collection<ComponentesT> componentesCollection;
     private Collection<NotasDebitoT> notasdebitoCollection;
     private Collection<OrdenesDepositoT> ordenesdepositoCollection;
@@ -50,6 +52,22 @@ public class UsuariosT implements Serializable {
         this.mails = mails;
         this.telefonos = telefonos;
         this.idEstado = idEstado;
+    }
+
+    public Collection<AjustesStockT> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<AjustesStockT> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
+    }
+
+    public Collection<FacturasT> getFacturasCollection() {
+        return facturasCollection;
+    }
+
+    public void setFacturasCollection(Collection<FacturasT> facturasCollection) {
+        this.facturasCollection = facturasCollection;
     }
 
     public Collection<ArticulosT> getArticulosCollection() {
