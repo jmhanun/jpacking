@@ -5,8 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>jPackMRP-ejb</name>
             <minimum-ant-version>1.6</minimum-ant-version>
-            <included-library files="19">libs.JasperReports.classpath</included-library>
             <included-library files="1">file.reference.mysql-connector-java-5.1.6-bin.jar</included-library>
+            <included-library files="18">libs.JasperReport.classpath</included-library>
             <included-library files="2">libs.toplink.classpath</included-library>
             <source-roots>
                 <root id="src.dir"/>

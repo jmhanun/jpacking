@@ -102,9 +102,11 @@ is divided into following sections:
     -->
     <target depends="init" name="deps-jar" unless="no.deps"/>
     <target depends="init" name="deps-j2ee-archive" unless="no.deps">
+<!--    
         <ant antfile="${project.jPackMRP-app-client}/build.xml" inheritall="false" target="dist-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
+-->
         <ant antfile="${project.jPackMRP-ejb}/build.xml" inheritall="false" target="dist-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
@@ -119,7 +121,6 @@ is divided into following sections:
             <fileset dir="${meta.inf}"/>
         </copy>
         <copy file="${reference.jPackMRP-ejb.dist-ear}" todir="${build.dir}//"/>
-        <copy file="${reference.jPackMRP-app-client.j2ee-module-car}" todir="${build.dir}//"/>
     </target>
     <target name="post-compile">
         <!-- Empty placeholder for easier customization. -->
