@@ -27,18 +27,18 @@ public class ClientesT implements Serializable, Comparable<ClientesT> {
     private String telefonos;
     private Date fechaAlta;
     private String cuit;
-    private int idTipoIva;
     private Collection<RemitosT> remitosCollection;
     private Collection<DomiciliosT> domiciliosCollection;
     private Collection<FacturasT> facturasCollection;
     private Collection<NotasDebitoT> notasdebitoCollection;
     private EstadosT idEstado;
     private TiposDocumentoT idTipoDocumento;
+    private TiposIvaT idTipoIva;
     
     public ClientesT() {
     }
 
-    public ClientesT(Integer idCliente, int limiteCredito, String observaciones, String nombres, String apellidos, String mails, String telefonos, Date fechaAlta, String cuit, int idTipoIva, EstadosT idEstado, TiposDocumentoT idTipoDocumento) {
+    public ClientesT(Integer idCliente, int limiteCredito, String observaciones, String nombres, String apellidos, String mails, String telefonos, Date fechaAlta, String cuit, EstadosT idEstado, TiposDocumentoT idTipoDocumento) {
         this.idCliente = idCliente;
         this.limiteCredito = limiteCredito;
         this.observaciones = observaciones;
@@ -48,7 +48,6 @@ public class ClientesT implements Serializable, Comparable<ClientesT> {
         this.telefonos = telefonos;
         this.fechaAlta = fechaAlta;
         this.cuit = cuit;
-        this.idTipoIva = idTipoIva;
         this.idEstado = idEstado;
         this.idTipoDocumento = idTipoDocumento;
     }
@@ -71,15 +70,6 @@ public class ClientesT implements Serializable, Comparable<ClientesT> {
         String oldCuit = this.cuit;
         this.cuit = cuit;
         changeSupport.firePropertyChange("cuit", oldCuit, cuit);
-    }
-    public int getIdTipoIva() {
-        return idTipoIva;
-    }
-
-    public void setIdTipoIva(int idTipoIva) {
-        int oldIdTipoIva = this.idTipoIva;
-        this.idTipoIva = idTipoIva;
-        changeSupport.firePropertyChange("idTipoIva", oldIdTipoIva, idTipoIva);
     }
 
     public Collection<DomiciliosT> getDomiciliosCollection() {
@@ -136,6 +126,16 @@ public class ClientesT implements Serializable, Comparable<ClientesT> {
         TiposDocumentoT oldIdTipoDocumento = this.idTipoDocumento;
         this.idTipoDocumento = idTipoDocumento;
         changeSupport.firePropertyChange("idTipoDocumento", oldIdTipoDocumento, idTipoDocumento);
+    }
+
+    public TiposIvaT getIdTipoIva() {
+        return idTipoIva;
+    }
+
+    public void setIdTipoIva(TiposIvaT idTipoIva) {
+        TiposIvaT oldIdTipoIva = this.idTipoIva;
+        this.idTipoIva = idTipoIva;
+        changeSupport.firePropertyChange("idTipoIva", oldIdTipoIva, idTipoIva);
     }
 
     public int getLimiteCredito() {
