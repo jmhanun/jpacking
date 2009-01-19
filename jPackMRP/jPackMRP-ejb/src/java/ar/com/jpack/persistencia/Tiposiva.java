@@ -6,6 +6,8 @@
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,6 +37,8 @@ public class Tiposiva implements Serializable {
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne
     private Estados idEstado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoIva")
+    private Collection<Clientes> clientesCollection;
 
     public Tiposiva() {
     }
@@ -78,6 +83,14 @@ public class Tiposiva implements Serializable {
 
     public void setIdEstado(Estados idEstado) {
         this.idEstado = idEstado;
+    }
+
+    public Collection<Clientes> getClientesCollection() {
+        return clientesCollection;
+    }
+
+    public void setClientesCollection(Collection<Clientes> clientesCollection) {
+        this.clientesCollection = clientesCollection;
     }
 
     @Override

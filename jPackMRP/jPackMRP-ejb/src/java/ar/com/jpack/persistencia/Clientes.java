@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "clientes")
-@NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta"), @NamedQuery(name = "Clientes.findByCuit", query = "SELECT c FROM Clientes c WHERE c.cuit = :cuit"), @NamedQuery(name = "Clientes.findByIdTipoIva", query = "SELECT c FROM Clientes c WHERE c.idTipoIva = :idTipoIva")})
+@NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta"), @NamedQuery(name = "Clientes.findByCuit", query = "SELECT c FROM Clientes c WHERE c.cuit = :cuit")})
 public class Clientes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,8 +50,6 @@ public class Clientes implements Serializable {
     private Date fechaAlta;
     @Column(name = "cuit")
     private String cuit;
-    @Column(name = "idTipoIva", nullable = false)
-    private int idTipoIva;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
     private Collection<Remitos> remitosCollection;
     @OneToMany(mappedBy = "idCliente")
@@ -66,6 +64,9 @@ public class Clientes implements Serializable {
     @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
     @ManyToOne
     private Tiposdocumento idTipoDocumento;
+    @JoinColumn(name = "idTipoIva", referencedColumnName = "idTipoIVA")
+    @ManyToOne
+    private Tiposiva idTipoIva;
 
     public Clientes() {
     }
@@ -74,12 +75,11 @@ public class Clientes implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public Clientes(Integer idCliente, int limiteCredito, String nombres, Date fechaAlta, int idTipoIva) {
+    public Clientes(Integer idCliente, int limiteCredito, String nombres, Date fechaAlta) {
         this.idCliente = idCliente;
         this.limiteCredito = limiteCredito;
         this.nombres = nombres;
         this.fechaAlta = fechaAlta;
-        this.idTipoIva = idTipoIva;
     }
 
     public Integer getIdCliente() {
@@ -154,14 +154,6 @@ public class Clientes implements Serializable {
         this.cuit = cuit;
     }
 
-    public int getIdTipoIva() {
-        return idTipoIva;
-    }
-
-    public void setIdTipoIva(int idTipoIva) {
-        this.idTipoIva = idTipoIva;
-    }
-
     public Collection<Remitos> getRemitosCollection() {
         return remitosCollection;
     }
@@ -208,6 +200,14 @@ public class Clientes implements Serializable {
 
     public void setIdTipoDocumento(Tiposdocumento idTipoDocumento) {
         this.idTipoDocumento = idTipoDocumento;
+    }
+
+    public Tiposiva getIdTipoIva() {
+        return idTipoIva;
+    }
+
+    public void setIdTipoIva(Tiposiva idTipoIva) {
+        this.idTipoIva = idTipoIva;
     }
 
     @Override
