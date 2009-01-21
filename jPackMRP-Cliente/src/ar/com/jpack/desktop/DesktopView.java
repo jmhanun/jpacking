@@ -383,6 +383,10 @@ public class DesktopView extends FrameView {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos");
     }
 
+    @Action
+    public Task showTiposIvaFrame(){
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva","Tipos Iva");
+    }
     /**
      * InnerClass para mostrar los InternalFrame
      * @author jmhanun

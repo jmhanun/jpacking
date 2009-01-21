@@ -7,11 +7,13 @@ import ar.com.jpack.negocio.ArticulosFacadeRemote;
 import ar.com.jpack.negocio.ClientesFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
+import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.IOException;
@@ -23,7 +25,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -47,6 +48,7 @@ public class DesktopApp extends SingleFrameApplication {
     private ClientesFacadeRemote clientesFacade;
     private ArticulosFacadeRemote articulosFacade;
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
+    private TiposIvaFacadeRemote tiposIvaFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
@@ -303,6 +305,18 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    
+        public List<TiposIvaT> getAllTiposIva() {
+        try {
+            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
+            return tiposIvaFacade.findAllTiposIva();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public UsuariosT grabarUsuarioT(UsuariosT usuariosT) {
         try {

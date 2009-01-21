@@ -134,12 +134,12 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                         .addGroup(remitoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(remitoPanelLayout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
                                 .addGap(9, 9, 9))
                             .addGroup(remitoPanelLayout.createSequentialGroup()
                                 .addComponent(cuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                                 .addComponent(jLabel5)
                                 .addGap(12, 12, 12)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -149,7 +149,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                     .addGroup(remitoPanelLayout.createSequentialGroup()
                         .addComponent(idClienteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                        .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buscarButton)))
                 .addContainerGap())
@@ -207,7 +207,6 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
         jTableBinding.bind();
         jScrollPane1.setViewportView(articulosTable);
         articulosTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title0")); // NOI18N
-        articulosTable.getColumnModel().getColumn(0).setCellEditor(null);
         articulosTable.getColumnModel().getColumn(0).setCellRenderer(articuloCellRenderer1);
         articulosTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title1")); // NOI18N
         articulosTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("articulosTable.columnModel.title2")); // NOI18N
@@ -235,13 +234,13 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 .addGroup(articulosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, articulosPanelLayout.createSequentialGroup()
                         .addComponent(articuloCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
                         .addComponent(agregarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(editarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(borrarButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -294,7 +293,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -385,7 +384,7 @@ public class RegistroRemitos extends javax.swing.JInternalFrame {
             idClienteTextField.setText(clienteT.getIdCliente().toString());
             nombresTextField.setText(clienteT.getNombres());
             cuitTextField.setText(clienteT.getCuit());
-//            situacionIvaTextField.setText(clienteT.getSituacionIva());
+            situacionIvaTextField.setText(clienteT.getIdTipoIva().getDescripcion());
         } else {
             limpiar();
         }
