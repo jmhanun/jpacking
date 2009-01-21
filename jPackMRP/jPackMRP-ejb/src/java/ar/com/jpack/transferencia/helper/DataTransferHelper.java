@@ -60,7 +60,7 @@ public class DataTransferHelper {
 
         return lista;
     }
-
+    
     // CLIENTES 1
     public static ClientesT copiarCliente(Clientes item) {
         ClientesT t = null;
@@ -189,6 +189,19 @@ public class DataTransferHelper {
         }
         return t;
     }
+
+    // Tipos Iva muchos
+    public static List<TiposIvaT> copiarTiposIvaALista(List<Tiposiva> items) {
+        List<TiposIvaT> lista = new ArrayList<TiposIvaT>();
+        Iterator i = items.iterator();
+        while (i.hasNext()) {
+            lista.add(copiarTipoIva((Tiposiva) i.next()));
+        }
+
+        return lista;
+    }
+
+    
     // UNIDADES MEDIDA muchos
     public static List<UnidadesMedidaT> copiarUnidadesMedidaALista(List<Unidadesmedida> items) {
         List<UnidadesMedidaT> lista = new ArrayList<UnidadesMedidaT>();
