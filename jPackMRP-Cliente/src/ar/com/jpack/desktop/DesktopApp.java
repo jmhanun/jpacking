@@ -253,6 +253,11 @@ public class DesktopApp extends SingleFrameApplication {
                     JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
                     Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
                     return false;
+// Si da error de privilegios probar este codigo.......
+//                } catch (Exception ex){
+//                    JOptionPane.showMessageDialog(null, "Los privilegios no han sido asignados. Consulte al administrador.");
+//                    Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+//                    return false;
                 }
             } else {
                 return false;
