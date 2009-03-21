@@ -17,5 +17,9 @@ public interface TiposIvaFacadeRemote {
 
     public java.util.List<ar.com.jpack.transferencia.TiposIvaT> findAllTiposIva();
 
+    public java.util.List<ar.com.jpack.transferencia.listas.TiposIvaListaT> findAllTiposIvaLista();
+
+    public java.util.List<ar.com.jpack.persistencia.Tiposiva> findAll();
+
     
 }

@@ -5,9 +5,10 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Clientes;
+import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
-
+import ar.com.jpack.transferencia.helper.ListasDataTransferHelper;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -48,6 +49,11 @@ public class ClientesFacade implements ClientesFacadeRemote {
     public List<ClientesT> findAllClientesT() {
         List<Clientes> clientes = findAll();
         return DataTransferHelper.copiarClientesALista(clientes);
+    }
+    
+    public List<ClientesListaT> findAllClientesListaT() {
+        List<Clientes> clientes = findAll();
+        return ListasDataTransferHelper.copiarClientesALista(clientes);
     }
 
     public List<ClientesT> findClientesT(HashMap parametros) {

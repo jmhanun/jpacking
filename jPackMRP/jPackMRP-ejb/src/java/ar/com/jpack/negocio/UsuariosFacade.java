@@ -63,11 +63,18 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         usuariosT.setContrasena(codificado.toString());
 
         Query query = em.createQuery("SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
+        
+        /*
+        .setHint("toplink.refresh", "true")
+        .setParameter("id", id)
+        .getSingleResult();
+         */
+        query.setHint("toplink.refresh", "true");
         query.setParameter("usuario", usuariosT.getUsuario());
         query.setParameter("contrasena", usuariosT.getContrasena());
         Usuarios usuario = null;
         try {
-            query.setHint(TopLinkQueryHints.REFRESH, HintValues.TRUE);
+//            query.setHint(TopLinkQueryHints.REFRESH, HintValues.TRUE);
             usuario = (Usuarios) query.getSingleResult();
             usuariosT = DataTransferHelper.copiarUsuario(usuario);
             usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));

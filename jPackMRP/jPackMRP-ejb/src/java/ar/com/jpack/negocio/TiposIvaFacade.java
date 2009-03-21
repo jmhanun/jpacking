@@ -7,6 +7,8 @@ package ar.com.jpack.negocio;
 import ar.com.jpack.persistencia.Tiposiva;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
+import ar.com.jpack.transferencia.helper.ListasDataTransferHelper;
+import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -24,7 +26,7 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
     private EntityManager em;
 
     public List<TiposIvaT> findAllTiposIva() {
-        
+
         List<Tiposiva> tiposIva = em.createQuery("select object(o) from Tiposiva as o").getResultList();
         List<TiposIvaT> tiposIvaTs = new ArrayList<TiposIvaT>();
 
@@ -33,22 +35,17 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
         return tiposIvaTs;
     }
 
+    public List<TiposIvaListaT> findAllTiposIvaLista() {
+
+        List<Tiposiva> tiposIva = em.createQuery("select object(o) from Tiposiva as o").getResultList();
+        List<TiposIvaListaT> tiposIvaTs = new ArrayList<TiposIvaListaT>();
+
+        tiposIvaTs = ListasDataTransferHelper.copiarTiposIvaALista(tiposIva);
+
+        return tiposIvaTs;
+    }
+
     public List<Tiposiva> findAll() {
         return em.createQuery("select object(o) from Tiposiva as o").getResultList();
     }
-
-    /*
-     *     public List<UsuariosT> findAllUsuariosT() {
-    List<Usuarios> usuarios = findAll();
-    List<UsuariosT> usuariosTs = new ArrayList<UsuariosT>();
-    for (Iterator<Usuarios> it = usuarios.iterator(); it.hasNext();) {
-    Usuarios usuario = it.next();
-    UsuariosT usuariosT;
-    usuariosT = DataTransferHelper.copiarUsuario(usuario);
-    usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));
-    usuariosTs.add(usuariosT);
-    }
-    return usuariosTs;
-    }
-     */
 }

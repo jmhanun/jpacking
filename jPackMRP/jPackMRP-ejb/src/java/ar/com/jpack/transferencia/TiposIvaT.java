@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -22,7 +21,7 @@ public class TiposIvaT implements Serializable {
 
     public TiposIvaT() {
     }
-    
+
     public TiposIvaT(Integer idTipoIVA, String descripcion, String abreviatura, EstadosT idEstado) {
         this.idTipoIVA = idTipoIVA;
         this.descripcion = descripcion;
@@ -69,8 +68,4 @@ public class TiposIvaT implements Serializable {
     public void setIdTipoIVA(Integer idTipoIVA) {
         this.idTipoIVA = idTipoIVA;
     }
-    
-    
-
-    
 }
