@@ -11,11 +11,13 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.ArticulosT;
+import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
+import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -299,6 +301,16 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public List<ClientesListaT> getAllClientesLista() {
+        try {
+            clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
+            return clientesFacade.findAllClientesListaT();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public List<RolesT> getAllRoles() {
         try {
@@ -315,6 +327,16 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
             return tiposIvaFacade.findAllTiposIva();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+        public List<TiposIvaListaT> getAllTiposIvaLista() {
+        try {
+            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
+            return tiposIvaFacade.findAllTiposIvaLista();
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

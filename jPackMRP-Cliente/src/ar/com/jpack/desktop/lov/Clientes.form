@@ -42,18 +42,18 @@
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="nombresTextField" alignment="0" pref="301" max="32767" attributes="0"/>
-                          <Component id="cuitTextField" alignment="0" pref="301" max="32767" attributes="0"/>
-                          <Component id="idClienteTextField" pref="301" max="32767" attributes="0"/>
+                          <Component id="nombresTextField" alignment="0" pref="340" max="32767" attributes="0"/>
+                          <Component id="cuitTextField" alignment="0" pref="340" max="32767" attributes="0"/>
+                          <Component id="idClienteTextField" pref="340" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="332" max="32767" attributes="0"/>
+                      <EmptySpace pref="337" max="32767" attributes="0"/>
                       <Component id="buscarButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="375" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="389" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="246" max="32767" attributes="0"/>
@@ -208,7 +208,6 @@
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
           <action class="ar.com.jpack.desktop.ventas.LOVClientes" id="seleccionarCliente" methodName="seleccionarCliente"/>
         </Property>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
       </Properties>
     </Component>

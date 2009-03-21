@@ -179,7 +179,6 @@ public class Clientes extends javax.swing.JDialog {
         cancelarButton.setName("cancelarButton"); // NOI18N
 
         aceptarButton.setAction(actionMap.get("seleccionarCliente")); // NOI18N
-        aceptarButton.setEnabled(false);
         aceptarButton.setName("aceptarButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,15 +195,15 @@ public class Clientes extends javax.swing.JDialog {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                            .addComponent(cuitTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                            .addComponent(idClienteTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)))
+                            .addComponent(nombresTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(cuitTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(idClienteTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(332, Short.MAX_VALUE)
+                        .addContainerGap(337, Short.MAX_VALUE)
                         .addComponent(buscarButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(246, Short.MAX_VALUE)
                         .addComponent(aceptarButton)
@@ -262,7 +261,7 @@ public class Clientes extends javax.swing.JDialog {
         }
         @Override protected String doInBackground() {              
             view.setStatusMessage(mensaje);
-            if(clientesTs==null){
+            if(clientesTs==null){ 
                 clientesTs = new ArrayList<ClientesT>();
             }
             
