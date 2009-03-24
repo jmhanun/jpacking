@@ -26,4 +26,6 @@ public interface EstadosFacadeRemote {
 
     List<Estados> findAll();
 
+    public ar.com.jpack.transferencia.EstadosT findEstado(java.lang.Integer id);
+
 }

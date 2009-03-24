@@ -6,6 +6,10 @@
 package ar.com.jpack.negocio;
 
 
+import ar.com.jpack.transferencia.TiposIvaT;
+import ar.com.jpack.transferencia.listas.TiposIvaListaT;
+import java.util.HashMap;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -15,11 +19,11 @@ import javax.ejb.Remote;
 @Remote
 public interface TiposIvaFacadeRemote {
 
-    public java.util.List<ar.com.jpack.transferencia.TiposIvaT> findAllTiposIva();
+    public List<TiposIvaListaT> findAllTiposIvaLista(HashMap parametros);
 
-    public java.util.List<ar.com.jpack.transferencia.listas.TiposIvaListaT> findAllTiposIvaLista();
+    public void addTipoIva(TiposIvaT nuevoIva);
 
-    public java.util.List<ar.com.jpack.persistencia.Tiposiva> findAll();
+    public TiposIvaT getTipoIvaT(Integer idTipoIva);
 
     
 }

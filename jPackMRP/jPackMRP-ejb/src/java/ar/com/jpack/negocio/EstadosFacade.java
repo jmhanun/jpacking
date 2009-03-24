@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Estados;
+import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class EstadosFacade implements EstadosFacadeRemote {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -40,4 +42,9 @@ public class EstadosFacade implements EstadosFacadeRemote {
         return em.createQuery("select object(o) from Estados as o").getResultList();
     }
 
+    public EstadosT findEstado(Integer id) {
+        Estados estado = find(id);
+        EstadosT estadoT = DataTransferHelper.copiarEstado(estado);
+        return estadoT;
+    }
 }

@@ -10,6 +10,8 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,6 +31,7 @@ public class Tiposiva implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idTipoIVA", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idTipoIVA;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
