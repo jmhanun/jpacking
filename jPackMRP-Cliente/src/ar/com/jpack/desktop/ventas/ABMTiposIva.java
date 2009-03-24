@@ -8,9 +8,15 @@ package ar.com.jpack.desktop.ventas;
 import ar.com.jpack.helpers.tablemodels.TiposIvaTableModel;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
 
 /**
@@ -23,10 +29,23 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
     public ABMTiposIva() {
         initComponents();
 
-        tiposIvaList = (ArrayList<TiposIvaListaT>) DesktopApp.getApplication().getAllTiposIvaLista();
+        tiposIvaList = (ArrayList<TiposIvaListaT>) DesktopApp.getApplication().getAllTiposIvaLista(new HashMap());
         tableModel = new TiposIvaTableModel(columnNames, tiposIvaList);
         tableModel.addTableModelListener(new CustomTableModelListener());
         tiposIvaTable.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tiposIvaTable.setRowSorter(sorter);
+
     }
 
     public static ABMTiposIva getABMTiposIva() {
@@ -35,24 +54,39 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
 
     @Action
     public void agregar() {
-        TiposIvaListaT x = new TiposIvaListaT(99, "Nuevo", "N", "Estado");
-        tableModel.addRow(x);
+        // <editor-fold defaultstate="collapsed" desc="Hard Code - Nuevo TipoIVA (nuevoIva)">
+        //Inicio de carga hard-code
+        EstadosT estado = (EstadosT) DesktopApp.getApplication().getEstado(1);
+        TiposIvaT nuevoIva = new TiposIvaT(99, "Nuevo", "N", estado);
+        //Fin de carga hard-code
+        // </editor-fold>
+
+        DesktopApp.getApplication().addTipoIva(nuevoIva);
+        tableModel.addRow(nuevoIva);
         JOptionPane.showInternalMessageDialog(this, "agregar");
     }
 
     @Action
     public void editar() {
-        tiposIvaList = (ArrayList<TiposIvaListaT>) DesktopApp.getApplication().getAllTiposIvaLista();
-        tableModel = new TiposIvaTableModel(columnNames, tiposIvaList);
-        tableModel.addTableModelListener(new CustomTableModelListener());
-        tiposIvaTable.setModel(tableModel);
+        int indiceAEditar = tiposIvaTable.getSelectedRow();
+        TiposIvaListaT editado = (TiposIvaListaT) tableModel.getRow(indiceAEditar);
+
+
+
+        TiposIvaT tipoIvaT = DesktopApp.getApplication().getTipoIvaT(editado.getIdTipoIVA());
+
+        JOptionPane.showInternalMessageDialog(this, "editar: " + tipoIvaT.getDescripcion());
     }
 
     @Action
     public void borrar() {
-        int x = tiposIvaTable.getSelectedRow();
-        System.out.println("Fila a borrar:" + x);
-        tableModel.deleteRow(x);
+        int indiceAEditar = tiposIvaTable.getSelectedRow();
+        TiposIvaListaT editado = (TiposIvaListaT) tableModel.getRow(indiceAEditar);
+
+        TiposIvaT tipoIvaT = DesktopApp.getApplication().getTipoIvaT(editado.getIdTipoIVA());
+        
+//        DesktopApp.getApplication().removeTipoIva(tipoIvaT);
+        tableModel.deleteRow(indiceAEditar);
         JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
@@ -150,5 +184,6 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
     };
     protected TiposIvaTableModel tableModel;
     private ArrayList<TiposIvaListaT> tiposIvaList;
+    private TableRowSorter<TableModel> sorter;
     private static ABMTiposIva aBMTiposIva = new ABMTiposIva();
 }

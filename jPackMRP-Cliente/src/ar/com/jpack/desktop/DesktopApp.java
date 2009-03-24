@@ -5,6 +5,7 @@ package ar.com.jpack.desktop;
 
 import ar.com.jpack.negocio.ArticulosFacadeRemote;
 import ar.com.jpack.negocio.ClientesFacadeRemote;
+import ar.com.jpack.negocio.EstadosFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
 import ar.com.jpack.negocio.TiposIvaFacadeRemote;
@@ -13,6 +14,7 @@ import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
@@ -51,6 +53,7 @@ public class DesktopApp extends SingleFrameApplication {
     private ArticulosFacadeRemote articulosFacade;
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
+    private EstadosFacadeRemote estadosFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
@@ -106,6 +109,21 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
+    public TiposIvaT getTipoIvaT(Integer idTipoIVA) {
+          try {
+            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
+            
+            TiposIvaT tipoIvaT = tiposIvaFacade.getTipoIvaT(idTipoIVA);
+            if (tipoIvaT == null) {
+                tipoIvaT = new TiposIvaT();
+            }
+            return tipoIvaT;
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }    }
 
     public List<UnidadesMedidaT> getUnidadesMedida() {
         try {
@@ -301,6 +319,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public List<ClientesListaT> getAllClientesLista() {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
@@ -322,21 +341,11 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-    
-        public List<TiposIvaT> getAllTiposIva() {
+
+    public List<TiposIvaListaT> getAllTiposIvaLista(HashMap parametros) {
         try {
             tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
-            return tiposIvaFacade.findAllTiposIva();
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-        public List<TiposIvaListaT> getAllTiposIvaLista() {
-        try {
-            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
-            return tiposIvaFacade.findAllTiposIvaLista();
+            return tiposIvaFacade.findAllTiposIvaLista(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -344,6 +353,26 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public void addTipoIva(TiposIvaT nuevoIva) {
+        try {
+            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
+            tiposIvaFacade.addTipoIva(nuevoIva);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+    }
+    
+    public EstadosT getEstado(Integer idEstado) {
+         try {
+            estadosFacade = (EstadosFacadeRemote) lookUp("ar.com.jpack.negocio.EstadosFacadeRemote");
+            return estadosFacade.findEstado(idEstado);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }       
+    }
 
     public UsuariosT grabarUsuarioT(UsuariosT usuariosT) {
         try {
@@ -356,12 +385,12 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-/**
- * Devuelve el reporte solicitado
- * @param nombreReporte String con el nombre del reporte (sin extension)
- * @param parametro HashMap con los parametros. Si no tiene parametros = null
- * @return
- */
+    /**
+     * Devuelve el reporte solicitado
+     * @param nombreReporte String con el nombre del reporte (sin extension)
+     * @param parametro HashMap con los parametros. Si no tiene parametros = null
+     * @return
+     */
     public JasperPrint getReporte(String nombreReporte, HashMap parametro) {
         try {
             reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
@@ -371,7 +400,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-    
+
     /**
      * Muestra el JDialog de Login
      */

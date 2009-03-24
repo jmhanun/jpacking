@@ -5,6 +5,7 @@
 package ar.com.jpack.helpers.tablemodels;
 
 import ar.com.jpack.helpers.CustomTableModel;
+import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.util.List;
 
@@ -30,5 +31,19 @@ public class TiposIvaTableModel extends CustomTableModel {
             default:
                 return new Object();
         }
+    }
+    
+    public void addRow(TiposIvaT nuevoRegistro){
+        TiposIvaListaT nuevaFila = convertirALista(nuevoRegistro);
+        super.addRow(nuevaFila);
+    }
+
+    private TiposIvaListaT convertirALista(TiposIvaT nuevoRegistro) {
+        TiposIvaListaT nuevaFila = new TiposIvaListaT();
+        nuevaFila.setAbreviatura(nuevoRegistro.getAbreviatura());
+        nuevaFila.setDescripcion(nuevoRegistro.getDescripcion());
+        nuevaFila.setEstado(nuevoRegistro.getIdEstado().getDescripcion());
+        nuevaFila.setIdTipoIVA(nuevoRegistro.getIdTipoIVA());
+        return nuevaFila;
     }
 }

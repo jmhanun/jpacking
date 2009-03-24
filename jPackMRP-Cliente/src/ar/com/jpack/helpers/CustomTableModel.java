@@ -4,6 +4,7 @@
  */
 package ar.com.jpack.helpers;
 
+import java.util.Collection;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -26,10 +27,15 @@ public abstract class CustomTableModel<E> extends AbstractTableModel {
     public boolean isCellEditable(int row, int column) {
         return false;
     }
+//
+//    @Override
+//    public Class getColumnClass(int column) {
+//        return String.class;
+//    }
 
     @Override
-    public Class getColumnClass(int column) {
-        return String.class;
+    public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
     }
 
     public int getRowCount() {
