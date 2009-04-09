@@ -10,7 +10,6 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.TiposIvaT;
-import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -28,8 +27,11 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
     /** Creates new form ABMTiposIva */
     public ABMTiposIva() {
         initComponents();
-
-        tiposIvaList = (ArrayList<TiposIvaListaT>) DesktopApp.getApplication().getAllTiposIvaLista(new HashMap());
+        HashMap parametros = new HashMap();
+        //IdEstado == 1 es para traer los tipos de iva habilitados
+        parametros.put("pIdEstado", 1);
+        tiposIvaList = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
+        
         tableModel = new TiposIvaTableModel(columnNames, tiposIvaList);
         tableModel.addTableModelListener(new CustomTableModelListener());
         tiposIvaTable.setModel(tableModel);
@@ -69,22 +71,27 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
     @Action
     public void editar() {
         int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaListaT editado = (TiposIvaListaT) tableModel.getRow(indiceAEditar);
+        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
 
 
 
-        TiposIvaT tipoIvaT = DesktopApp.getApplication().getTipoIvaT(editado.getIdTipoIVA());
+        HashMap parametros = new HashMap();
+        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
 
-        JOptionPane.showInternalMessageDialog(this, "editar: " + tipoIvaT.getDescripcion());
+        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
+
+        JOptionPane.showInternalMessageDialog(this, "editar: " + lista.get(0).getDescripcion());
     }
 
     @Action
     public void borrar() {
         int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaListaT editado = (TiposIvaListaT) tableModel.getRow(indiceAEditar);
+        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
+        HashMap parametros = new HashMap();
+        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
 
-        TiposIvaT tipoIvaT = DesktopApp.getApplication().getTipoIvaT(editado.getIdTipoIVA());
-        
+        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
+
 //        DesktopApp.getApplication().removeTipoIva(tipoIvaT);
         tableModel.deleteRow(indiceAEditar);
         JOptionPane.showInternalMessageDialog(this, "borrar");
@@ -180,10 +187,10 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
     private javax.swing.JTable tiposIvaTable;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
-        "Abreviatura", "Descripcion", "Estado"
+        "Id", "Abreviatura", "Descripcion"
     };
     protected TiposIvaTableModel tableModel;
-    private ArrayList<TiposIvaListaT> tiposIvaList;
+    private ArrayList<TiposIvaT> tiposIvaList;
     private TableRowSorter<TableModel> sorter;
     private static ABMTiposIva aBMTiposIva = new ABMTiposIva();
 }
