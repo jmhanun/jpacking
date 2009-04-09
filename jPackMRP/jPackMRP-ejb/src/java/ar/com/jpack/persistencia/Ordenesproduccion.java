@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "ordenesproduccion")
-@NamedQueries({@NamedQuery(name = "Ordenesproduccion.findByIdOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByNroOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.nroOrdenProduccion = :nroOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByFecha", query = "SELECT o FROM Ordenesproduccion o WHERE o.fecha = :fecha"), @NamedQuery(name = "Ordenesproduccion.findByFechaModificacion", query = "SELECT o FROM Ordenesproduccion o WHERE o.fechaModificacion = :fechaModificacion")})
+@NamedQueries({@NamedQuery(name = "Ordenesproduccion.findByIdOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByNroOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.nroOrdenProduccion = :nroOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByFecha", query = "SELECT o FROM Ordenesproduccion o WHERE o.fecha = :fecha"), @NamedQuery(name = "Ordenesproduccion.findByFechaModificacion", query = "SELECT o FROM Ordenesproduccion o WHERE o.fechaModificacion = :fechaModificacion"), @NamedQuery(name = "Ordenesproduccion.findByPrioridad", query = "SELECT o FROM Ordenesproduccion o WHERE o.prioridad = :prioridad")})
 public class Ordenesproduccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,21 +42,23 @@ public class Ordenesproduccion implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
+    @Column(name = "prioridad", nullable = false)
+    private int prioridad;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idRemito", referencedColumnName = "idRemito")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Remitos idRemito;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesproduccion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesproduccion", fetch = FetchType.LAZY)
     private Collection<Detordenesproduccion> detordenesproduccionCollection;
-    @OneToMany(mappedBy = "idOrdenProduccion")
+    @OneToMany(mappedBy = "idOrdenProduccion", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
 
     public Ordenesproduccion() {
@@ -65,11 +68,12 @@ public class Ordenesproduccion implements Serializable {
         this.idOrdenProduccion = idOrdenProduccion;
     }
 
-    public Ordenesproduccion(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha, Date fechaModificacion) {
+    public Ordenesproduccion(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha, Date fechaModificacion, int prioridad) {
         this.idOrdenProduccion = idOrdenProduccion;
         this.nroOrdenProduccion = nroOrdenProduccion;
         this.fecha = fecha;
         this.fechaModificacion = fechaModificacion;
+        this.prioridad = prioridad;
     }
 
     public Integer getIdOrdenProduccion() {
@@ -102,6 +106,14 @@ public class Ordenesproduccion implements Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
     }
 
     public Estados getIdEstado() {

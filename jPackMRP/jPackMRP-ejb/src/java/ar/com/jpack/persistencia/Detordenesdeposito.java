@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -29,13 +30,13 @@ public class Detordenesdeposito implements Serializable {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
     @JoinColumn(name = "idOrdenDeposito", referencedColumnName = "idOrdenDeposito", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ordenesdeposito ordenesdeposito;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
 
     public Detordenesdeposito() {

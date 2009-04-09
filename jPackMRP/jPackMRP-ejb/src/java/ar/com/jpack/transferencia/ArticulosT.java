@@ -49,7 +49,6 @@ public class ArticulosT implements Serializable {
 
     public ArticulosT(Integer idArticulo, String codigo,
             String descripcion,
-            float stock,
             float stockMinimo,
             float leadTime,
             Date fechaAlta,
@@ -59,7 +58,6 @@ public class ArticulosT implements Serializable {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
-        this.stock = stock;
         this.stockMinimo = stockMinimo;
         this.leadTime = leadTime;
         this.fechaAlta = fechaAlta;

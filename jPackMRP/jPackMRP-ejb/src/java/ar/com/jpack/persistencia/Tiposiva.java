@@ -10,8 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,16 +30,15 @@ public class Tiposiva implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idTipoIVA", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idTipoIVA;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
     @Column(name = "abreviatura", nullable = false)
     private String abreviatura;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoIva")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoIva", fetch = FetchType.LAZY)
     private Collection<Clientes> clientesCollection;
 
     public Tiposiva() {

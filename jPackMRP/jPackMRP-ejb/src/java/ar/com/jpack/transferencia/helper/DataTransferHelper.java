@@ -38,7 +38,6 @@ public class DataTransferHelper {
             t = new ArticulosT(item.getIdArticulo(),
                     item.getCodigo(),
                     item.getDescripcion(),
-                    item.getStock(),
                     item.getStockMinimo(),
                     item.getLeadTime(),
                     item.getFechaAlta(),

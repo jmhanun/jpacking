@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "actividades")
-@NamedQueries({@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"), @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Actividades.findByLeadTime", query = "SELECT a FROM Actividades a WHERE a.leadTime = :leadTime")})
+@NamedQueries({@NamedQuery(name = "Actividades.findByIdActividad", query = "SELECT a FROM Actividades a WHERE a.idActividad = :idActividad"), @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")})
 public class Actividades implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,10 +31,10 @@ public class Actividades implements Serializable {
     private Integer idActividad;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    @Column(name = "leadTime")
-    private Float leadTime;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idActividad")
-    private Collection<Tiposmaquinas> tiposmaquinasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actividades", fetch = FetchType.LAZY)
+    private Collection<Actividadesxarticulos> actividadesxarticulosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idActividad", fetch = FetchType.LAZY)
+    private Collection<Maquinas> maquinasCollection;
 
     public Actividades() {
     }
@@ -63,20 +64,20 @@ public class Actividades implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Float getLeadTime() {
-        return leadTime;
+    public Collection<Actividadesxarticulos> getActividadesxarticulosCollection() {
+        return actividadesxarticulosCollection;
     }
 
-    public void setLeadTime(Float leadTime) {
-        this.leadTime = leadTime;
+    public void setActividadesxarticulosCollection(Collection<Actividadesxarticulos> actividadesxarticulosCollection) {
+        this.actividadesxarticulosCollection = actividadesxarticulosCollection;
     }
 
-    public Collection<Tiposmaquinas> getTiposmaquinasCollection() {
-        return tiposmaquinasCollection;
+    public Collection<Maquinas> getMaquinasCollection() {
+        return maquinasCollection;
     }
 
-    public void setTiposmaquinasCollection(Collection<Tiposmaquinas> tiposmaquinasCollection) {
-        this.tiposmaquinasCollection = tiposmaquinasCollection;
+    public void setMaquinasCollection(Collection<Maquinas> maquinasCollection) {
+        this.maquinasCollection = maquinasCollection;
     }
 
     @Override

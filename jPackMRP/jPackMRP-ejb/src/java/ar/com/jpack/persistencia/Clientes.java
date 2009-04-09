@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -11,8 +10,11 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,6 +31,7 @@ import javax.persistence.TemporalType;
 @Table(name = "clientes")
 @NamedQueries({@NamedQuery(name = "Clientes.findByIdCliente", query = "SELECT c FROM Clientes c WHERE c.idCliente = :idCliente"), @NamedQuery(name = "Clientes.findByLimiteCredito", query = "SELECT c FROM Clientes c WHERE c.limiteCredito = :limiteCredito"), @NamedQuery(name = "Clientes.findByObservaciones", query = "SELECT c FROM Clientes c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "Clientes.findByNombres", query = "SELECT c FROM Clientes c WHERE c.nombres = :nombres"), @NamedQuery(name = "Clientes.findByApellidos", query = "SELECT c FROM Clientes c WHERE c.apellidos = :apellidos"), @NamedQuery(name = "Clientes.findByMails", query = "SELECT c FROM Clientes c WHERE c.mails = :mails"), @NamedQuery(name = "Clientes.findByTelefonos", query = "SELECT c FROM Clientes c WHERE c.telefonos = :telefonos"), @NamedQuery(name = "Clientes.findByFechaAlta", query = "SELECT c FROM Clientes c WHERE c.fechaAlta = :fechaAlta"), @NamedQuery(name = "Clientes.findByCuit", query = "SELECT c FROM Clientes c WHERE c.cuit = :cuit")})
 public class Clientes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idCliente", nullable = false)
@@ -50,22 +53,25 @@ public class Clientes implements Serializable {
     private Date fechaAlta;
     @Column(name = "cuit")
     private String cuit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @JoinTable(name = "sellosxcliente", joinColumns = {@JoinColumn(name = "idCliente", referencedColumnName = "idCliente")}, inverseJoinColumns = {@JoinColumn(name = "idSello", referencedColumnName = "idSello")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Sellos> idSelloCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private Collection<Remitos> remitosCollection;
-    @OneToMany(mappedBy = "idCliente")
+    @OneToMany(mappedBy = "idCliente", fetch = FetchType.LAZY)
     private Collection<Domicilios> domiciliosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private Collection<Facturas> facturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private Collection<Notasdebito> notasdebitoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposdocumento idTipoDocumento;
     @JoinColumn(name = "idTipoIva", referencedColumnName = "idTipoIVA")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposiva idTipoIva;
 
     public Clientes() {
@@ -154,6 +160,14 @@ public class Clientes implements Serializable {
         this.cuit = cuit;
     }
 
+    public Collection<Sellos> getIdSelloCollection() {
+        return idSelloCollection;
+    }
+
+    public void setIdSelloCollection(Collection<Sellos> idSelloCollection) {
+        this.idSelloCollection = idSelloCollection;
+    }
+
     public Collection<Remitos> getRemitosCollection() {
         return remitosCollection;
     }
@@ -234,5 +248,4 @@ public class Clientes implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Clientes[idCliente=" + idCliente + "]";
     }
-
 }

@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -41,18 +42,18 @@ public class Ordenesdeposito implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @OneToMany(mappedBy = "idOrdenDeposito")
+    @OneToMany(mappedBy = "idOrdenDeposito", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesdeposito")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenesdeposito", fetch = FetchType.LAZY)
     private Collection<Detordenesdeposito> detordenesdepositoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
 
     public Ordenesdeposito() {

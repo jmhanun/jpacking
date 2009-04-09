@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -48,18 +49,18 @@ public class Facturascompras implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedor")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Proveedores idProveedor;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturascompras")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturascompras", fetch = FetchType.LAZY)
     private Collection<Detallefactcompras> detallefactcomprasCollection;
 
     public Facturascompras() {

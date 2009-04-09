@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -50,21 +51,21 @@ public class Facturas implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     @JoinTable(name = "remitosxfactura", joinColumns = {@JoinColumn(name = "idFactura", referencedColumnName = "idFactura")}, inverseJoinColumns = {@JoinColumn(name = "idRemito", referencedColumnName = "idRemito")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Remitos> idRemitoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas", fetch = FetchType.LAZY)
     private Collection<Detallefacturas> detallefacturasCollection;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Clientes idCliente;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
 
     public Facturas() {

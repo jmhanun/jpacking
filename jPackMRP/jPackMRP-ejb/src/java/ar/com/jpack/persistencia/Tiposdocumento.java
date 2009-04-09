@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,12 +33,10 @@ public class Tiposdocumento implements Serializable {
     private String descripcion;
     @Column(name = "abreviatura", nullable = false)
     private String abreviatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento", fetch = FetchType.LAZY)
     private Collection<Clientes> clientesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento", fetch = FetchType.LAZY)
     private Collection<Proveedores> proveedoresCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento")
-    private Collection<Empleados> empleadosCollection;
 
     public Tiposdocumento() {
     }
@@ -90,14 +89,6 @@ public class Tiposdocumento implements Serializable {
 
     public void setProveedoresCollection(Collection<Proveedores> proveedoresCollection) {
         this.proveedoresCollection = proveedoresCollection;
-    }
-
-    public Collection<Empleados> getEmpleadosCollection() {
-        return empleadosCollection;
-    }
-
-    public void setEmpleadosCollection(Collection<Empleados> empleadosCollection) {
-        this.empleadosCollection = empleadosCollection;
     }
 
     @Override

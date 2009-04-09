@@ -8,6 +8,7 @@ package ar.com.jpack.persistencia;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -40,16 +41,16 @@ public class Domicilios implements Serializable {
     @Column(name = "torre")
     private String torre;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Clientes idCliente;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idLocalidad", referencedColumnName = "idLocalidad")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Localidades idLocalidad;
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedor")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Proveedores idProveedor;
 
     public Domicilios() {

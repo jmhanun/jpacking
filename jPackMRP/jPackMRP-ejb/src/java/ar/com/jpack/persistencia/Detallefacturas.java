@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -35,13 +36,13 @@ public class Detallefacturas implements Serializable {
     @Column(name = "descuento", nullable = false)
     private float descuento;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
     @JoinColumn(name = "idFactura", referencedColumnName = "idFactura", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Facturas facturas;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
 
     public Detallefacturas() {

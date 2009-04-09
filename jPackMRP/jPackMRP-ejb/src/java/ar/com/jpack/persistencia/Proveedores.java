@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -46,19 +47,19 @@ public class Proveedores implements Serializable {
     private Date fechaAlta;
     @Column(name = "observaciones", nullable = false)
     private String observaciones;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Facturascompras> facturascomprasCollection;
-    @OneToMany(mappedBy = "idProveedor")
+    @OneToMany(mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Domicilios> domiciliosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Remitosingreso> remitosingresoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Notascredito> notascreditoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoDocumento", referencedColumnName = "idTipoDocumento")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposdocumento idTipoDocumento;
 
     public Proveedores() {

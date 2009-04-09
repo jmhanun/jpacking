@@ -9,12 +9,18 @@ import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import ar.com.jpack.transferencia.helper.ListasDataTransferHelper;
+import ar.com.jpack.util.DozerUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.ejb.EntityManagerImpl;
 
 /**
  *
@@ -50,47 +56,39 @@ public class ClientesFacade implements ClientesFacadeRemote {
         List<Clientes> clientes = findAll();
         return DataTransferHelper.copiarClientesALista(clientes);
     }
-    
+
     public List<ClientesListaT> findAllClientesListaT() {
         List<Clientes> clientes = findAll();
         return ListasDataTransferHelper.copiarClientesALista(clientes);
     }
 
     public List<ClientesT> findClientesT(HashMap parametros) {
-        String sql = "SELECT c FROM Clientes c";
-        boolean condicion = false;
-        if (parametros.containsKey("pIdCliente")) {
-            sql += " WHERE c.idCliente = :idCliente";
-            condicion = true;
-        }
-        if (parametros.containsKey("pNombres")) {
-            if (condicion) {
-                sql += " AND c.nombres like :nombres";
-            } else {
-                sql += " WHERE c.nombres like :nombres";
-                condicion = true;
-            }
-        }
-        if (parametros.containsKey("pCuit")) {
-            if (condicion) {
-                sql += " AND c.cuit like :cuit";
-            } else {
-                sql += " WHERE c.cuit like :cuit";
-                condicion = true;
-            }
-        }
-        Query query = em.createQuery(sql);
         
+        
+        
+        Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
+        List <Clientes> clientesList;
+        List <ClientesT> clientesTList=new ArrayList();
         if (parametros.containsKey("pIdCliente")) {
-            query.setParameter("idCliente", parametros.get("pIdCliente"));
+            clienteCritearia.add(Restrictions.eq("idCliente", parametros.get("pIdCliente")));
         }
         if (parametros.containsKey("pNombres")) {
-            query.setParameter("nombres", parametros.get("pNombres"));
+            
+            clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(),MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pCuit")) {
-            query.setParameter("cuit", parametros.get("pCuit"));            
+            clienteCritearia.add(Restrictions.eq("cuit", parametros.get("pCuit")));
         }
-
-        return DataTransferHelper.copiarClientesALista(query.getResultList());
+       clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+       /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
+       estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
+       estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
+       */
+       clientesList=clienteCritearia.list();
+        for(Clientes c:clientesList){
+            ClientesT rdo=(ClientesT)DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
+            clientesTList.add(rdo);
+        }
+        return clientesTList;
     }
 }

@@ -2,17 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,20 +26,25 @@ import javax.persistence.Table;
 @Table(name = "detordenesproduccion")
 @NamedQueries({@NamedQuery(name = "Detordenesproduccion.findByIdDetOrdProduccion", query = "SELECT d FROM Detordenesproduccion d WHERE d.detordenesproduccionPK.idDetOrdProduccion = :idDetOrdProduccion"), @NamedQuery(name = "Detordenesproduccion.findByIdOrdenProduccion", query = "SELECT d FROM Detordenesproduccion d WHERE d.detordenesproduccionPK.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Detordenesproduccion.findByCantidad", query = "SELECT d FROM Detordenesproduccion d WHERE d.cantidad = :cantidad")})
 public class Detordenesproduccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected DetordenesproduccionPK detordenesproduccionPK;
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
     @JoinColumn(name = "idOrdenProduccion", referencedColumnName = "idOrdenProduccion", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ordenesproduccion ordenesproduccion;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detordenesproduccion", fetch = FetchType.LAZY)
+    private Collection<Sellosxdetorden> sellosxdetordenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detordenesproduccion", fetch = FetchType.LAZY)
+    private Collection<Detalleproduccion> detalleproduccionCollection;
 
     public Detordenesproduccion() {
     }
@@ -94,6 +102,22 @@ public class Detordenesproduccion implements Serializable {
         this.idUnidMedida = idUnidMedida;
     }
 
+    public Collection<Sellosxdetorden> getSellosxdetordenCollection() {
+        return sellosxdetordenCollection;
+    }
+
+    public void setSellosxdetordenCollection(Collection<Sellosxdetorden> sellosxdetordenCollection) {
+        this.sellosxdetordenCollection = sellosxdetordenCollection;
+    }
+
+    public Collection<Detalleproduccion> getDetalleproduccionCollection() {
+        return detalleproduccionCollection;
+    }
+
+    public void setDetalleproduccionCollection(Collection<Detalleproduccion> detalleproduccionCollection) {
+        this.detalleproduccionCollection = detalleproduccionCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -118,5 +142,4 @@ public class Detordenesproduccion implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Detordenesproduccion[detordenesproduccionPK=" + detordenesproduccionPK + "]";
     }
-
 }

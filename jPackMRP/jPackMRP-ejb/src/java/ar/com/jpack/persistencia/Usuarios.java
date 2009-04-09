@@ -11,8 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -36,7 +35,6 @@ public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUsuario", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idUsuario;
     @Column(name = "usuario", nullable = false)
     private String usuario;
@@ -54,38 +52,38 @@ public class Usuarios implements Serializable {
     @Column(name = "telefonos")
     private String telefonos;
     @JoinTable(name = "rolesusuarios", joinColumns = {@JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")}, inverseJoinColumns = {@JoinColumn(name = "idRol", referencedColumnName = "idRol")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Roles> idRolCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Articulos> articulosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Remitos> remitosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Facturascompras> facturascomprasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-    private Collection<Ajustesstock> ajustesstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Remitosingreso> remitosingresoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
+    private Collection<Ajustesstock> ajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Stock> stockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Listasprecios> listaspreciosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Setup> setupCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Facturas> facturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Componentes> componentesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Notasdebito> notasdebitoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-    private Collection<Ordenesdeposito> ordenesdepositoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Precios> preciosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
+    private Collection<Ordenesdeposito> ordenesdepositoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
 
     public Usuarios() {
@@ -207,20 +205,20 @@ public class Usuarios implements Serializable {
         this.facturascomprasCollection = facturascomprasCollection;
     }
 
-    public Collection<Ajustesstock> getAjustesstockCollection() {
-        return ajustesstockCollection;
-    }
-
-    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
-        this.ajustesstockCollection = ajustesstockCollection;
-    }
-
     public Collection<Remitosingreso> getRemitosingresoCollection() {
         return remitosingresoCollection;
     }
 
     public void setRemitosingresoCollection(Collection<Remitosingreso> remitosingresoCollection) {
         this.remitosingresoCollection = remitosingresoCollection;
+    }
+
+    public Collection<Ajustesstock> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
     }
 
     public Collection<Stock> getStockCollection() {
@@ -271,20 +269,20 @@ public class Usuarios implements Serializable {
         this.notasdebitoCollection = notasdebitoCollection;
     }
 
-    public Collection<Ordenesdeposito> getOrdenesdepositoCollection() {
-        return ordenesdepositoCollection;
-    }
-
-    public void setOrdenesdepositoCollection(Collection<Ordenesdeposito> ordenesdepositoCollection) {
-        this.ordenesdepositoCollection = ordenesdepositoCollection;
-    }
-
     public Collection<Precios> getPreciosCollection() {
         return preciosCollection;
     }
 
     public void setPreciosCollection(Collection<Precios> preciosCollection) {
         this.preciosCollection = preciosCollection;
+    }
+
+    public Collection<Ordenesdeposito> getOrdenesdepositoCollection() {
+        return ordenesdepositoCollection;
+    }
+
+    public void setOrdenesdepositoCollection(Collection<Ordenesdeposito> ordenesdepositoCollection) {
+        this.ordenesdepositoCollection = ordenesdepositoCollection;
     }
 
     public Estados getIdEstado() {

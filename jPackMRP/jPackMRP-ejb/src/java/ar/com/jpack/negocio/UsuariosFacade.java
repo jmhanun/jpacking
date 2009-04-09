@@ -24,8 +24,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import oracle.toplink.essentials.config.HintValues;
-import oracle.toplink.essentials.config.TopLinkQueryHints;
+//import oracle.toplink.essentials.config.HintValues;
+import org.hibernate.ejb.EntityManagerImpl;
+//import oracle.toplink.essentials.config.TopLinkQueryHints;
 
 /**
  *
@@ -55,7 +56,9 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     public List<Usuarios> findAll() {
-        return em.createQuery("select object(o) from Usuarios as o").getResultList();
+        
+        return ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Usuarios.class).list();
+        
     }
 
     public UsuariosT validarUsuario(UsuariosT usuariosT) {
@@ -63,13 +66,13 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         usuariosT.setContrasena(codificado.toString());
 
         Query query = em.createQuery("SELECT u FROM Usuarios as u WHERE u.usuario = :usuario and u.contrasena = :contrasena");
-        
+
         /*
         .setHint("toplink.refresh", "true")
         .setParameter("id", id)
         .getSingleResult();
          */
-        query.setHint("toplink.refresh", "true");
+//        query.setHint("toplink.refresh", "true");
         query.setParameter("usuario", usuariosT.getUsuario());
         query.setParameter("contrasena", usuariosT.getContrasena());
         Usuarios usuario = null;

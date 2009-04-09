@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,27 +33,27 @@ public class Unidadesmedida implements Serializable {
     private String descripcion;
     @Column(name = "abreviatura", nullable = false)
     private String abreviatura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detnotascredito> detnotascreditoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Articulos> articulosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detordenesproduccion> detordenesproduccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detallefactcompras> detallefactcomprasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detnotasdebito> detnotasdebitoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detallefacturas> detallefacturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detalleremitos> detalleremitosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detajustesstock> detajustesstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detordenesdeposito> detordenesdepositoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detrtosingreso> detrtosingresoCollection;
 
     public Unidadesmedida() {

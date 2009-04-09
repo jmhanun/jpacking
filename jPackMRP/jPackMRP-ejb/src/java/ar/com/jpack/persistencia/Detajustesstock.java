@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -29,13 +30,13 @@ public class Detajustesstock implements Serializable {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
     @JoinColumn(name = "idAjusteStock", referencedColumnName = "idAjusteStock", insertable = false, updatable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ajustesstock ajustesstock;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
 
     public Detajustesstock() {

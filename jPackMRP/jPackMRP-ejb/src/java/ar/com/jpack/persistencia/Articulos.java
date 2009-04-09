@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "articulos")
-@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByStock", query = "SELECT a FROM Articulos a WHERE a.stock = :stock"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime"), @NamedQuery(name = "Articulos.findByFechaAlta", query = "SELECT a FROM Articulos a WHERE a.fechaAlta = :fechaAlta"), @NamedQuery(name = "Articulos.findByFechaModificacion", query = "SELECT a FROM Articulos a WHERE a.fechaModificacion = :fechaModificacion")})
+@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime"), @NamedQuery(name = "Articulos.findByFechaAlta", query = "SELECT a FROM Articulos a WHERE a.fechaAlta = :fechaAlta"), @NamedQuery(name = "Articulos.findByFechaModificacion", query = "SELECT a FROM Articulos a WHERE a.fechaModificacion = :fechaModificacion"), @NamedQuery(name = "Articulos.findByImprimible", query = "SELECT a FROM Articulos a WHERE a.imprimible = :imprimible")})
 public class Articulos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,8 +38,6 @@ public class Articulos implements Serializable {
     private String codigo;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    @Column(name = "stock", nullable = false)
-    private float stock;
     @Column(name = "stockMinimo", nullable = false)
     private float stockMinimo;
     @Column(name = "leadTime", nullable = false)
@@ -49,44 +48,48 @@ public class Articulos implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @Column(name = "imprimible", nullable = false)
+    private String imprimible;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detnotascredito> detnotascreditoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detordenesproduccion> detordenesproduccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detallefactcompras> detallefactcomprasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos", fetch = FetchType.LAZY)
+    private Collection<Actividadesxarticulos> actividadesxarticulosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detnotasdebito> detnotasdebitoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Stock> stockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detallefacturas> detallefacturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulos", fetch = FetchType.LAZY)
     private Collection<Componentes> articulosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "componentes")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "componentes", fetch = FetchType.LAZY)
     private Collection<Componentes> componentesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detalleremitos> detalleremitosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detajustesstock> detajustesstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detordenesdeposito> detordenesdepositoCollection;
-    @OneToMany(mappedBy = "idArticulo")
-    private Collection<Produccion> produccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
+    private Collection<Sellos> sellosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detrtosingreso> detrtosingresoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Precios> preciosCollection;
 
     public Articulos() {
@@ -96,15 +99,15 @@ public class Articulos implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public Articulos(Integer idArticulo, String codigo, String descripcion, float stock, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion) {
+    public Articulos(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
-        this.stock = stock;
         this.stockMinimo = stockMinimo;
         this.leadTime = leadTime;
         this.fechaAlta = fechaAlta;
         this.fechaModificacion = fechaModificacion;
+        this.imprimible = imprimible;
     }
 
     public Integer getIdArticulo() {
@@ -129,14 +132,6 @@ public class Articulos implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public float getStock() {
-        return stock;
-    }
-
-    public void setStock(float stock) {
-        this.stock = stock;
     }
 
     public float getStockMinimo() {
@@ -169,6 +164,14 @@ public class Articulos implements Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getImprimible() {
+        return imprimible;
+    }
+
+    public void setImprimible(String imprimible) {
+        this.imprimible = imprimible;
     }
 
     public Collection<Detnotascredito> getDetnotascreditoCollection() {
@@ -225,6 +228,14 @@ public class Articulos implements Serializable {
 
     public void setDetallefactcomprasCollection(Collection<Detallefactcompras> detallefactcomprasCollection) {
         this.detallefactcomprasCollection = detallefactcomprasCollection;
+    }
+
+    public Collection<Actividadesxarticulos> getActividadesxarticulosCollection() {
+        return actividadesxarticulosCollection;
+    }
+
+    public void setActividadesxarticulosCollection(Collection<Actividadesxarticulos> actividadesxarticulosCollection) {
+        this.actividadesxarticulosCollection = actividadesxarticulosCollection;
     }
 
     public Collection<Detnotasdebito> getDetnotasdebitoCollection() {
@@ -291,12 +302,12 @@ public class Articulos implements Serializable {
         this.detordenesdepositoCollection = detordenesdepositoCollection;
     }
 
-    public Collection<Produccion> getProduccionCollection() {
-        return produccionCollection;
+    public Collection<Sellos> getSellosCollection() {
+        return sellosCollection;
     }
 
-    public void setProduccionCollection(Collection<Produccion> produccionCollection) {
-        this.produccionCollection = produccionCollection;
+    public void setSellosCollection(Collection<Sellos> sellosCollection) {
+        this.sellosCollection = sellosCollection;
     }
 
     public Collection<Detrtosingreso> getDetrtosingresoCollection() {

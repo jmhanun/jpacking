@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -47,21 +48,21 @@ public class Notasdebito implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @OneToMany(mappedBy = "idNotaDebito")
+    @OneToMany(mappedBy = "idNotaDebito", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notasdebito")
     private Collection<Detnotasdebito> detnotasdebitoCollection;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Clientes idCliente;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
 
     public Notasdebito() {

@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,7 +33,7 @@ public class Paises implements Serializable {
     private String pais;
     @Column(name = "siglas")
     private String siglas;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPais")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPais", fetch = FetchType.LAZY)
     private Collection<Provincias> provinciasCollection;
 
     public Paises() {

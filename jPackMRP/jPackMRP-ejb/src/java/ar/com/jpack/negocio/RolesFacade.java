@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.hibernate.ejb.EntityManagerImpl;
 
 /**
  *
@@ -39,7 +40,8 @@ public class RolesFacade implements RolesFacadeRemote {
     }
 
     public List<Roles> findAll() {
-        return em.createQuery("select object(o) from Roles as o").getResultList();
+        return 
+        ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Roles.class).list();
     }
 
     public List<RolesT> findAllUsuariosT() {

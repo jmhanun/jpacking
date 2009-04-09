@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,31 +39,31 @@ public class Detmovimientosstock implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovimiento;
     @JoinColumn(name = "idAjusteStock", referencedColumnName = "idAjusteStock")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ajustesstock idAjusteStock;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
     @JoinColumn(name = "idNotaCredito", referencedColumnName = "idNotaCredito")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Notascredito idNotaCredito;
     @JoinColumn(name = "idNotaDebito", referencedColumnName = "idNotaDebito")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Notasdebito idNotaDebito;
     @JoinColumn(name = "idOrdenDeposito", referencedColumnName = "idOrdenDeposito")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ordenesdeposito idOrdenDeposito;
     @JoinColumn(name = "idOrdenProduccion", referencedColumnName = "idOrdenProduccion")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ordenesproduccion idOrdenProduccion;
     @JoinColumn(name = "idRemito", referencedColumnName = "idRemito")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Remitos idRemito;
     @JoinColumn(name = "idRtoIngreso", referencedColumnName = "idRtoIngreso")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Remitosingreso idRtoIngreso;
     @JoinColumn(name = "idUnidMedida", referencedColumnName = "idUnidMedida")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Unidadesmedida idUnidMedida;
 
     public Detmovimientosstock() {

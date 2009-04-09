@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,18 +44,18 @@ public class Ajustesstock implements Serializable {
     private Date fechaModificacion;
     @Column(name = "signo", nullable = false)
     private String signo;
-    @OneToMany(mappedBy = "idAjusteStock")
+    @OneToMany(mappedBy = "idAjusteStock", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ajustesstock")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ajustesstock", fetch = FetchType.LAZY)
     private Collection<Detajustesstock> detajustesstockCollection;
 
     public Ajustesstock() {

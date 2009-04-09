@@ -7,8 +7,10 @@ package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,14 +33,14 @@ public class Maquinas implements Serializable {
     private Integer idMaquina;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    @OneToMany(mappedBy = "idMaquina")
-    private Collection<Produccion> produccionCollection;
+    @JoinColumn(name = "idActividad", referencedColumnName = "idActividad")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Actividades idActividad;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
-    @JoinColumn(name = "idTipoMaquina", referencedColumnName = "idTipoMaquina")
-    @ManyToOne
-    private Tiposmaquinas idTipoMaquina;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
+    private Collection<Detalleproduccion> detalleproduccionCollection;
 
     public Maquinas() {
     }
@@ -68,12 +70,12 @@ public class Maquinas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Collection<Produccion> getProduccionCollection() {
-        return produccionCollection;
+    public Actividades getIdActividad() {
+        return idActividad;
     }
 
-    public void setProduccionCollection(Collection<Produccion> produccionCollection) {
-        this.produccionCollection = produccionCollection;
+    public void setIdActividad(Actividades idActividad) {
+        this.idActividad = idActividad;
     }
 
     public Estados getIdEstado() {
@@ -84,12 +86,12 @@ public class Maquinas implements Serializable {
         this.idEstado = idEstado;
     }
 
-    public Tiposmaquinas getIdTipoMaquina() {
-        return idTipoMaquina;
+    public Collection<Detalleproduccion> getDetalleproduccionCollection() {
+        return detalleproduccionCollection;
     }
 
-    public void setIdTipoMaquina(Tiposmaquinas idTipoMaquina) {
-        this.idTipoMaquina = idTipoMaquina;
+    public void setDetalleproduccionCollection(Collection<Detalleproduccion> detalleproduccionCollection) {
+        this.detalleproduccionCollection = detalleproduccionCollection;
     }
 
     @Override

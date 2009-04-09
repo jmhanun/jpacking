@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,10 +34,10 @@ public class Localidades implements Serializable {
     private String localidad;
     @Column(name = "codigoPostal")
     private String codigoPostal;
-    @OneToMany(mappedBy = "idLocalidad")
+    @OneToMany(mappedBy = "idLocalidad", fetch = FetchType.LAZY)
     private Collection<Domicilios> domiciliosCollection;
     @JoinColumn(name = "idProvincia", referencedColumnName = "idProvincia")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Provincias idProvincia;
 
     public Localidades() {

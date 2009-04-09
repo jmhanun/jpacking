@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -50,23 +51,23 @@ public class Notascredito implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notascredito")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notascredito", fetch = FetchType.LAZY)
     private Collection<Detnotascredito> detnotascreditoCollection;
-    @OneToMany(mappedBy = "idNotaCredito")
+    @OneToMany(mappedBy = "idNotaCredito", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedor")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Proveedores idProveedor;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "notascredito1")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "notascredito1", fetch = FetchType.LAZY)
     private Notascredito notascredito;
     @JoinColumn(name = "idNotaCredito", referencedColumnName = "idNotaCredito", insertable = false, updatable = false)
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Notascredito notascredito1;
 
     public Notascredito() {

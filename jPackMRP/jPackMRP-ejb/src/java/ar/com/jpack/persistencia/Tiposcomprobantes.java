@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,23 +35,23 @@ public class Tiposcomprobantes implements Serializable {
     private String abreviatura;
     @Column(name = "signoStock")
     private String signoStock;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Remitos> remitosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Facturascompras> facturascomprasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
-    private Collection<Ajustesstock> ajustesstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Remitosingreso> remitosingresoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
+    private Collection<Ajustesstock> ajustesstockCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Notascredito> notascreditoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Facturas> facturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Notasdebito> notasdebitoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoComprobante", fetch = FetchType.LAZY)
     private Collection<Ordenesdeposito> ordenesdepositoCollection;
 
     public Tiposcomprobantes() {
@@ -122,20 +123,20 @@ public class Tiposcomprobantes implements Serializable {
         this.facturascomprasCollection = facturascomprasCollection;
     }
 
-    public Collection<Ajustesstock> getAjustesstockCollection() {
-        return ajustesstockCollection;
-    }
-
-    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
-        this.ajustesstockCollection = ajustesstockCollection;
-    }
-
     public Collection<Remitosingreso> getRemitosingresoCollection() {
         return remitosingresoCollection;
     }
 
     public void setRemitosingresoCollection(Collection<Remitosingreso> remitosingresoCollection) {
         this.remitosingresoCollection = remitosingresoCollection;
+    }
+
+    public Collection<Ajustesstock> getAjustesstockCollection() {
+        return ajustesstockCollection;
+    }
+
+    public void setAjustesstockCollection(Collection<Ajustesstock> ajustesstockCollection) {
+        this.ajustesstockCollection = ajustesstockCollection;
     }
 
     public Collection<Notascredito> getNotascreditoCollection() {

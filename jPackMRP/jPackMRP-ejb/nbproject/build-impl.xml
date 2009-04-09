@@ -283,8 +283,21 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.JasperReport.classpath.libfile.3}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReport.classpath.libfile.2}" todir="${build.classes.dir}"/>
         <copy file="${libs.JasperReport.classpath.libfile.1}" todir="${build.classes.dir}"/>
-        <copy file="${libs.toplink.classpath.libfile.2}" todir="${build.classes.dir}"/>
-        <copy file="${libs.toplink.classpath.libfile.1}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.antlr-2.7.6.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.commons-collections-3.1.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.dom4j.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.ejb3-persistence.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.hibernate-annotations.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.hibernate-commons-annotations.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.hibernate-core.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.hibernate-entitymanager.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.javassist.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.jta.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.log4j-1.2.15.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.slf4j-api-1.5.3.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.slf4j-log4j12-1.5.3.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.dozer-4.4.jar}" todir="${build.classes.dir}"/>
+        <copy file="${file.reference.commons-lang-2.4.jar}" todir="${build.classes.dir}"/>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <basename file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" property="included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar"/>
@@ -325,12 +338,38 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${libs.JasperReport.classpath.libfile.3}" todir="${dist.ear.dir}"/>
         <copy file="${libs.JasperReport.classpath.libfile.2}" todir="${dist.ear.dir}"/>
         <copy file="${libs.JasperReport.classpath.libfile.1}" todir="${dist.ear.dir}"/>
-        <basename file="${libs.toplink.classpath.libfile.2}" property="included.lib.libs.toplink.classpath.2"/>
-        <basename file="${libs.toplink.classpath.libfile.1}" property="included.lib.libs.toplink.classpath.1"/>
-        <copy file="${libs.toplink.classpath.libfile.2}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.toplink.classpath.libfile.1}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.antlr-2.7.6.jar}" property="included.lib.file.reference.antlr-2.7.6.jar"/>
+        <copy file="${file.reference.antlr-2.7.6.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.commons-collections-3.1.jar}" property="included.lib.file.reference.commons-collections-3.1.jar"/>
+        <copy file="${file.reference.commons-collections-3.1.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.dom4j.jar}" property="included.lib.file.reference.dom4j.jar"/>
+        <copy file="${file.reference.dom4j.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.ejb3-persistence.jar}" property="included.lib.file.reference.ejb3-persistence.jar"/>
+        <copy file="${file.reference.ejb3-persistence.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.hibernate-annotations.jar}" property="included.lib.file.reference.hibernate-annotations.jar"/>
+        <copy file="${file.reference.hibernate-annotations.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.hibernate-commons-annotations.jar}" property="included.lib.file.reference.hibernate-commons-annotations.jar"/>
+        <copy file="${file.reference.hibernate-commons-annotations.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.hibernate-core.jar}" property="included.lib.file.reference.hibernate-core.jar"/>
+        <copy file="${file.reference.hibernate-core.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.hibernate-entitymanager.jar}" property="included.lib.file.reference.hibernate-entitymanager.jar"/>
+        <copy file="${file.reference.hibernate-entitymanager.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.javassist.jar}" property="included.lib.file.reference.javassist.jar"/>
+        <copy file="${file.reference.javassist.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.jta.jar}" property="included.lib.file.reference.jta.jar"/>
+        <copy file="${file.reference.jta.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.log4j-1.2.15.jar}" property="included.lib.file.reference.log4j-1.2.15.jar"/>
+        <copy file="${file.reference.log4j-1.2.15.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.slf4j-api-1.5.3.jar}" property="included.lib.file.reference.slf4j-api-1.5.3.jar"/>
+        <copy file="${file.reference.slf4j-api-1.5.3.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.slf4j-log4j12-1.5.3.jar}" property="included.lib.file.reference.slf4j-log4j12-1.5.3.jar"/>
+        <copy file="${file.reference.slf4j-log4j12-1.5.3.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.dozer-4.4.jar}" property="included.lib.file.reference.dozer-4.4.jar"/>
+        <copy file="${file.reference.dozer-4.4.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${file.reference.commons-lang-2.4.jar}" property="included.lib.file.reference.commons-lang-2.4.jar"/>
+        <copy file="${file.reference.commons-lang-2.4.jar}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} ${included.lib.libs.JasperReport.classpath.1} ${included.lib.libs.JasperReport.classpath.2} ${included.lib.libs.JasperReport.classpath.3} ${included.lib.libs.JasperReport.classpath.4} ${included.lib.libs.JasperReport.classpath.5} ${included.lib.libs.JasperReport.classpath.6} ${included.lib.libs.JasperReport.classpath.7} ${included.lib.libs.JasperReport.classpath.8} ${included.lib.libs.JasperReport.classpath.9} ${included.lib.libs.JasperReport.classpath.10} ${included.lib.libs.JasperReport.classpath.11} ${included.lib.libs.JasperReport.classpath.12} ${included.lib.libs.JasperReport.classpath.13} ${included.lib.libs.JasperReport.classpath.14} ${included.lib.libs.JasperReport.classpath.15} ${included.lib.libs.JasperReport.classpath.16} ${included.lib.libs.JasperReport.classpath.17} ${included.lib.libs.JasperReport.classpath.18} ${included.lib.libs.toplink.classpath.1} ${included.lib.libs.toplink.classpath.2} "/>
+            <attribute name="Class-Path" value="${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} ${included.lib.libs.JasperReport.classpath.1} ${included.lib.libs.JasperReport.classpath.2} ${included.lib.libs.JasperReport.classpath.3} ${included.lib.libs.JasperReport.classpath.4} ${included.lib.libs.JasperReport.classpath.5} ${included.lib.libs.JasperReport.classpath.6} ${included.lib.libs.JasperReport.classpath.7} ${included.lib.libs.JasperReport.classpath.8} ${included.lib.libs.JasperReport.classpath.9} ${included.lib.libs.JasperReport.classpath.10} ${included.lib.libs.JasperReport.classpath.11} ${included.lib.libs.JasperReport.classpath.12} ${included.lib.libs.JasperReport.classpath.13} ${included.lib.libs.JasperReport.classpath.14} ${included.lib.libs.JasperReport.classpath.15} ${included.lib.libs.JasperReport.classpath.16} ${included.lib.libs.JasperReport.classpath.17} ${included.lib.libs.JasperReport.classpath.18} ${included.lib.file.reference.antlr-2.7.6.jar} ${included.lib.file.reference.commons-collections-3.1.jar} ${included.lib.file.reference.dom4j.jar} ${included.lib.file.reference.ejb3-persistence.jar} ${included.lib.file.reference.hibernate-annotations.jar} ${included.lib.file.reference.hibernate-commons-annotations.jar} ${included.lib.file.reference.hibernate-core.jar} ${included.lib.file.reference.hibernate-entitymanager.jar} ${included.lib.file.reference.javassist.jar} ${included.lib.file.reference.jta.jar} ${included.lib.file.reference.log4j-1.2.15.jar} ${included.lib.file.reference.slf4j-api-1.5.3.jar} ${included.lib.file.reference.slf4j-log4j12-1.5.3.jar} ${included.lib.file.reference.dozer-4.4.jar} ${included.lib.file.reference.commons-lang-2.4.jar} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">

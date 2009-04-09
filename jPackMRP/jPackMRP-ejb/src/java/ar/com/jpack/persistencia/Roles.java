@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -43,12 +44,12 @@ public class Roles implements Serializable {
     @Column(name = "ordenHermano", nullable = false)
     private int ordenHermano;
 
-    @ManyToMany(mappedBy="idRolCollection")
+    @ManyToMany(mappedBy="idRolCollection", fetch = FetchType.LAZY)
     private Collection<Usuarios> idUsuarioCollection;
-    @OneToMany(mappedBy = "idRolPadre")
+    @OneToMany(mappedBy = "idRolPadre", fetch = FetchType.LAZY)
     private Collection<Roles> rolesCollection;
     @JoinColumn(name = "idRolPadre", referencedColumnName = "idRol")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Roles idRolPadre;
 
     public Roles() {

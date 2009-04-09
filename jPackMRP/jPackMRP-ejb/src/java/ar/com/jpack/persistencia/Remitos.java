@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -50,25 +51,25 @@ public class Remitos implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @ManyToMany(mappedBy = "idRemitoCollection")
+    @ManyToMany(mappedBy = "idRemitoCollection", fetch = FetchType.LAZY)
     private Collection<Facturas> idFacturaCollection;
-    @OneToMany(mappedBy = "idRemito")
+    @OneToMany(mappedBy = "idRemito", fetch = FetchType.LAZY)
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Clientes idCliente;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idTipoComprobante", referencedColumnName = "idTipoComprobante")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tiposcomprobantes idTipoComprobante;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuarios idUsuario;
-    @OneToMany(mappedBy = "idRemito")
+    @OneToMany(mappedBy = "idRemito", fetch = FetchType.LAZY)
     private Collection<Detmovimientosstock> detmovimientosstockCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitos", fetch = FetchType.LAZY)
     private Collection<Detalleremitos> detalleremitosCollection;
 
     public Remitos() {
