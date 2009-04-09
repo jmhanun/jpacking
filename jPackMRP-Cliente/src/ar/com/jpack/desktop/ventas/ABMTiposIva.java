@@ -7,6 +7,7 @@ package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.helpers.tablemodels.TiposIvaTableModel;
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.TiposIvaT;
@@ -22,17 +23,18 @@ import org.jdesktop.application.Action;
  *
  * @author  jmhanun
  */
-public class ABMTiposIva extends javax.swing.JInternalFrame {
+public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
 
     /** Creates new form ABMTiposIva */
-    public ABMTiposIva() {
+    public ABMTiposIva(TiposIvaT tiposIvaT) {
+        super(tiposIvaT);
         initComponents();
         HashMap parametros = new HashMap();
         //IdEstado == 1 es para traer los tipos de iva habilitados
         parametros.put("pIdEstado", 1);
-        tiposIvaList = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
-        
-        tableModel = new TiposIvaTableModel(columnNames, tiposIvaList);
+        this.setListDto((ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros));
+
+        tableModel = new TiposIvaTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
         tiposIvaTable.setModel(tableModel);
 
@@ -64,6 +66,7 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
         // </editor-fold>
 
         DesktopApp.getApplication().addTipoIva(nuevoIva);
+        
         tableModel.addRow(nuevoIva);
         JOptionPane.showInternalMessageDialog(this, "agregar");
     }
@@ -144,6 +147,10 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
         tiposIvaTable.setName("tiposIvaTable"); // NOI18N
         tiposIvaTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tiposIvaTable);
+        tiposIvaTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title0")); // NOI18N
+        tiposIvaTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title1")); // NOI18N
+        tiposIvaTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title2")); // NOI18N
+        tiposIvaTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title3")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,7 +181,7 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
                         .addComponent(editarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(borrarButton)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,7 +197,6 @@ public class ABMTiposIva extends javax.swing.JInternalFrame {
         "Id", "Abreviatura", "Descripcion"
     };
     protected TiposIvaTableModel tableModel;
-    private ArrayList<TiposIvaT> tiposIvaList;
     private TableRowSorter<TableModel> sorter;
-    private static ABMTiposIva aBMTiposIva = new ABMTiposIva();
+    private static ABMTiposIva aBMTiposIva = new ABMTiposIva(new TiposIvaT());
 }
