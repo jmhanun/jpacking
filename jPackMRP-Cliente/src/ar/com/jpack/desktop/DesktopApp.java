@@ -8,6 +8,7 @@ import ar.com.jpack.negocio.ClientesFacadeRemote;
 import ar.com.jpack.negocio.EstadosFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
+import ar.com.jpack.negocio.TiposDocumentoFacadeRemote;
 import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
@@ -16,6 +17,7 @@ import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
@@ -52,11 +54,12 @@ public class DesktopApp extends SingleFrameApplication {
     private ArticulosFacadeRemote articulosFacade;
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
+    private TiposDocumentoFacadeRemote tiposDocumentoFacade;
     private EstadosFacadeRemote estadosFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
-
+    
     /**
      * A convenient static getter for the application instance.
      * @return the instance of DesktopTestApp
@@ -354,6 +357,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
             return tiposIvaFacade.getTiposIvaT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public List<TiposDocumentoT> getTiposDocumentoT(HashMap parametros) {
+        try {
+            tiposDocumentoFacade = (TiposDocumentoFacadeRemote) lookUp("ar.com.jpack.negocio.TiposDocumentoFacadeRemote");
+            return tiposDocumentoFacade.getTiposDocumentoT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

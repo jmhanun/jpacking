@@ -17,8 +17,8 @@ import org.jdesktop.application.Action;
 public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
     /** Creates new form ABMClientes */
-    public ABMClientes(ClientesT clientesT) {
-        super(clientesT);
+    public ABMClientes() {
+        super(new ClientesT());
         initComponents();
     }
 
@@ -77,6 +77,10 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
         btnBorrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMClientes.class);
