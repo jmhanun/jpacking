@@ -3,9 +3,9 @@
  */
 package ar.com.jpack.desktop;
 
+import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import ar.com.jpack.helpers.StringHelper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -16,7 +16,7 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -365,7 +365,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showReporteStock() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock");
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", null);
     }
 
     /**
@@ -375,27 +375,30 @@ public class DesktopView extends FrameView {
      */
     @Action
     public Task showGestionUsuariosFrame() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.GestionUsuarios", "Gestion de usuarios");
+//        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.GestionUsuarios", "Gestion de usuarios", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMUsuarios", "Gestion de usuarios", null);
     }
 
     @Action
     public Task showRegistroRemitosFrame() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos");
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos", null);
     }
 
     @Action
-    public Task showTiposIva(){
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva");
+    public Task showTiposIva() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva", null);
 //        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.abm", "Tipos Iva");
     }
+
     /**
-     * InnerClass para mostrar los InternalFrame
+     * InnerClass Task para mostrar los InternalFrame
      * @author jmhanun
      */
     class ShowFrame extends Task<String, Void> {
 
         String jInternalFrame;
         String mensaje;
+        CustomInternalFrame padreFrame;
 
         /**
          * 
@@ -403,27 +406,51 @@ public class DesktopView extends FrameView {
          * @param jInternalFrame String del internalFrame al que deseo invocar (canonicalname de la clase)
          * @param mensaje String del mensaje que deseo aparezca en el status bar una vez finalizada la tarea
          */
-        public ShowFrame(Application application, String jInternalFrame, String mensaje) {
+        public ShowFrame(Application application, String jInternalFrame, String mensaje, CustomInternalFrame padreFrame) {
             super(application);
             this.jInternalFrame = jInternalFrame;
             this.mensaje = mensaje;
+            this.padreFrame = padreFrame;
+
         }
 
         @Override
         protected String doInBackground() throws Exception {
             statusMessageLabel.setText("Abriendo " + mensaje + "...");
-            String[] partes = StringHelper.split(jInternalFrame, ".");
-            int indice = partes.length - 1;
             Class c = Class.forName(jInternalFrame);
-            Method m = c.getMethod("get" + partes[indice]);
-            JInternalFrame f = (JInternalFrame) m.invoke(null);
-            if (!isOpen(f)) {
-                desktopPanel.add(f);
+            Constructor ctor = c.getConstructor();
+            CustomInternalFrame f = (CustomInternalFrame) ctor.newInstance();
+            CustomInternalFrame open = isOpen(f);
+            if (open == null) {
+                open = f;
+                desktopPanel.add(open);
             }
-            SwingUtilities.updateComponentTreeUI(f);
-            f.setVisible(true);
-            desktopPanel.getDesktopManager().activateFrame(f);
+            open.setPadre(padreFrame);
+            SwingUtilities.updateComponentTreeUI(open);
+            open.setVisible(true);
+            desktopPanel.getDesktopManager().activateFrame(open);
+            if (open.isIcon()) {
+                open.setIcon(false);
+            }
+            if (!open.isSelected()) {
+                open.setSelected(true);
+            }
+
+
             return mensaje;
+//            statusMessageLabel.setText("Abriendo " + mensaje + "...");
+//            String[] partes = StringHelper.split(jInternalFrame, ".");
+//            int indice = partes.length - 1;
+//            Class c = Class.forName(jInternalFrame);
+//            Method m = c.getMethod("get" + partes[indice]);
+//            JInternalFrame f = (JInternalFrame) m.invoke(null);
+//            if (!isOpen(f)) {
+//                desktopPanel.add(f);
+//            }
+//            SwingUtilities.updateComponentTreeUI(f);
+//            f.setVisible(true);
+//            desktopPanel.getDesktopManager().activateFrame(f);
+//            return mensaje;
         }
 
         @Override
@@ -435,7 +462,7 @@ public class DesktopView extends FrameView {
         @Override
         protected void failed(Throwable cause) {
             super.failed(cause);
-            JOptionPane.showMessageDialog(desktopPanel, "Parece que no es posible ejecutar la tarea. Consulte con el administrador.");
+            JOptionPane.showInternalMessageDialog(desktopPanel, "Parece que no es posible ejecutar la tarea. Consulte con el administrador.");
         }
     }
 
@@ -478,17 +505,19 @@ public class DesktopView extends FrameView {
      * @param f - InternalFrame que se desea abrir.
      * @return si el InternalFrame que se desea abrir ya se encuentra abierto.
      */
-    private boolean isOpen(JInternalFrame f) {
+    private CustomInternalFrame isOpen(CustomInternalFrame f) {
         JInternalFrame[] list = desktopPanel.getAllFrames();
         int i = 0;
+        CustomInternalFrame openFrame = null;
         boolean open = false;
         while ((i < list.length) && (!open)) {
             if (f.getClass().getCanonicalName().equals(list[i].getClass().getCanonicalName())) {
                 open = true;
+                openFrame = (CustomInternalFrame) list[i];
             }
             i++;
         }
-        return open;
+        return openFrame;
     }
 }
 

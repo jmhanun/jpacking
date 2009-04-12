@@ -26,10 +26,12 @@ import org.jdesktop.application.Action;
 public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
 
     /** Creates new form ABMTiposIva */
-    public ABMTiposIva(TiposIvaT tiposIvaT) {
-        super(tiposIvaT);
+    public ABMTiposIva() {
+        super(new TiposIvaT());
         initComponents();
         HashMap parametros = new HashMap();
+        //Obliga a que joinee con Estado.
+        parametros.put("pJoinEstados", true);
         //IdEstado == 1 es para traer los tipos de iva habilitados
         parametros.put("pIdEstado", 1);
         this.setListDto((ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros));
@@ -49,11 +51,6 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
             }
         };
         tiposIvaTable.setRowSorter(sorter);
-
-    }
-
-    public static ABMTiposIva getABMTiposIva() {
-        return aBMTiposIva;
     }
 
     @Action
@@ -66,24 +63,9 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
         // </editor-fold>
 
         DesktopApp.getApplication().addTipoIva(nuevoIva);
-        
+
         tableModel.addRow(nuevoIva);
         JOptionPane.showInternalMessageDialog(this, "agregar");
-    }
-
-    @Action
-    public void editar() {
-        int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
-
-
-
-        HashMap parametros = new HashMap();
-        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
-
-        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
-
-        JOptionPane.showInternalMessageDialog(this, "editar: " + lista.get(0).getDescripcion());
     }
 
     @Action
@@ -100,6 +82,32 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
         JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
+    @Action
+    public void seleccionar() {
+        JOptionPane.showInternalMessageDialog(this, "seleccionar");
+    }
+
+    @Action
+    public void cancelar() {
+
+        JOptionPane.showInternalMessageDialog(this, "cancelar");
+    }
+
+    @Action
+    public void modificar() {
+        int indiceAEditar = tiposIvaTable.getSelectedRow();
+        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
+
+
+
+        HashMap parametros = new HashMap();
+        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
+
+        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
+
+        JOptionPane.showInternalMessageDialog(this, "editar: " + lista.get(0).getDescripcion());
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -109,27 +117,31 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        agregarButton = new javax.swing.JButton();
-        editarButton = new javax.swing.JButton();
-        borrarButton = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tiposIvaTable = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMTiposIva.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMTiposIva.class, this);
-        agregarButton.setAction(actionMap.get("agregar")); // NOI18N
-        agregarButton.setName("agregarButton"); // NOI18N
+        btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
+        btnAgregar.setName("btnAgregar"); // NOI18N
 
-        editarButton.setAction(actionMap.get("editar")); // NOI18N
-        editarButton.setName("editarButton"); // NOI18N
+        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
+        btnModificar.setName("btnModificar"); // NOI18N
 
-        borrarButton.setAction(actionMap.get("borrar")); // NOI18N
-        borrarButton.setName("borrarButton"); // NOI18N
+        btnBorrar.setAction(actionMap.get("borrar")); // NOI18N
+        btnBorrar.setName("btnBorrar"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -152,44 +164,55 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
         tiposIvaTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title2")); // NOI18N
         tiposIvaTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("tiposIvaTable.columnModel.title3")); // NOI18N
 
+        btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
+        btnCancelar.setName("btnCancelar"); // NOI18N
+
+        btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
+        btnSeleccionar.setName("btnSeleccionar"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editarButton)
-                    .addComponent(borrarButton)
-                    .addComponent(agregarButton))
-                .addGap(20, 20, 20))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {agregarButton, borrarButton, editarButton});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(agregarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editarButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(borrarButton)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSeleccionar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnBorrar)
+                    .addComponent(btnCancelar))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton agregarButton;
-    private javax.swing.JButton borrarButton;
-    private javax.swing.JButton editarButton;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tiposIvaTable;
     // End of variables declaration//GEN-END:variables
@@ -198,5 +221,4 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     };
     protected TiposIvaTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
-    private static ABMTiposIva aBMTiposIva = new ABMTiposIva(new TiposIvaT());
 }
