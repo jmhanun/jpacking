@@ -45,18 +45,15 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
             tiposIvaCritearia.add(Restrictions.like("abreviatura", parametros.get("pAbreviatura").toString(), MatchMode.ANYWHERE));
         }
 
-        if (parametros.containsKey("pIdEstado")) {
+        if (parametros.containsKey("pJoinEstados")) {
             //Con el setFetchMode obliga a que el lazy se ponga las pilas
             tiposIvaCritearia.setFetchMode("idEstado", FetchMode.JOIN);
-
-            //Con esto filtro por el objeto que estaba lazy
-            Criteria estadoCriteria = tiposIvaCritearia.createCriteria("idEstado");
-            
-            estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+                if (parametros.containsKey("pIdEstado")) {
+                    //Con esto filtro por el objeto que estaba lazy
+                    Criteria estadoCriteria = tiposIvaCritearia.createCriteria("idEstado");
+                    estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+                }
         }
-
-
-
         /*
         Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
         estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
@@ -70,17 +67,7 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
         }
         return tiposIvaTList;
     }
-//    public TiposIvaT getTipoIvaT(Integer idTipoIva) {
-//        HashMap parametros = new HashMap();
-//        parametros.put("pIdTipoIva", idTipoIva);
-//        List<Tiposiva> tiposIva = findTiposIvaT(parametros);
-////        SELECT a FROM Tiposiva a WHERE a.idTipoIva = :idTipoIva
-////        SELECT t FROM Tiposiva t WHERE t.idTipoIVA = :idTipoIVA
-////        Query q = em.createQuery("SELECT t FROM Tiposiva t WHERE t.idTipoIVA = :idTipoIVA");
-////        q.setParameter("idTipoIva", idTipoIva);
-////        List<Tiposiva> tiposIva = q.getResultList();
-//        return DataTransferHelper.copiarTipoIva(tiposIva.get(0));
-//    }
+
     public void addTipoIva(TiposIvaT nuevoIva) {
         Tiposiva tipoIva = new Tiposiva();
         Estados estado = em.find(ar.com.jpack.persistencia.Estados.class,

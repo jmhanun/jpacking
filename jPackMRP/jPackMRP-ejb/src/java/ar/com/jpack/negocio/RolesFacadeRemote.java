@@ -7,6 +7,7 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.transferencia.RolesT;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -16,6 +17,8 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface RolesFacadeRemote {
+
+    public List<RolesT> getRolesT(HashMap parametros);
 
     void create(Roles roles);
 
