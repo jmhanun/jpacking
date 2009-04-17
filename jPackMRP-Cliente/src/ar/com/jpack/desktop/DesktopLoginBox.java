@@ -5,8 +5,6 @@
  */
 package ar.com.jpack.desktop;
 
-import com.mysql.jdbc.util.TimezoneDump;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.swing.JOptionPane;
