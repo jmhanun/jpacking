@@ -17,22 +17,13 @@ import javax.ejb.Remote;
 @Remote
 public interface UsuariosFacadeRemote {
 
-    public UsuariosT editUsuariosT(UsuariosT usuariosT);
+    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT);
 
     public List<UsuariosT> findAllUsuariosT();
 
     public List<UsuariosT> getUsuariosT(HashMap parametros);
 
-    Usuarios create(Usuarios usuarios);
-
-    void edit(Usuarios usuarios);
-
-    void remove(Usuarios usuarios);
-
-    Usuarios find(Object id);
-
-    List<Usuarios> findAll();
-
     public UsuariosT validarUsuario(UsuariosT usuariosT);
 
+    public List<Usuarios> getUsuarios(HashMap parametros);
 }
