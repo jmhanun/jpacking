@@ -59,7 +59,7 @@ public class DesktopApp extends SingleFrameApplication {
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
-    
+
     /**
      * A convenient static getter for the application instance.
      * @return the instance of DesktopTestApp
@@ -181,6 +181,7 @@ public class DesktopApp extends SingleFrameApplication {
      * @param args 
      */
     public static void main(String[] args) {
+        System.setProperty("user.timezone", "America/Argentina/Cordoba");
         DesktopApp myApp = new DesktopApp();
         myApp.levantar(args);
     }
@@ -287,6 +288,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public List<UsuariosT> getAllUsuarios() {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
@@ -320,6 +322,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public List<ClientesT> getAllClientes() {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
@@ -331,6 +334,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public List<ClientesListaT> getAllClientesLista() {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
@@ -342,6 +346,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public List<RolesT> getAllRoles() {
         try {
             rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
@@ -363,7 +368,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-    
+
     public List<TiposDocumentoT> getTiposDocumentoT(HashMap parametros) {
         try {
             tiposDocumentoFacade = (TiposDocumentoFacadeRemote) lookUp("ar.com.jpack.negocio.TiposDocumentoFacadeRemote");
@@ -385,6 +390,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public EstadosT getEstado(Integer idEstado) {
         try {
             estadosFacade = (EstadosFacadeRemote) lookUp("ar.com.jpack.negocio.EstadosFacadeRemote");
@@ -396,10 +402,10 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public UsuariosT grabarUsuarioT(UsuariosT usuariosT) {
+    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT) {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.editUsuariosT(usuariosT);
+            return usuariosFacade.actualizarUsuariosT(usuariosT);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

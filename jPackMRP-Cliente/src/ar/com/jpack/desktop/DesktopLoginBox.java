@@ -5,7 +5,10 @@
  */
 package ar.com.jpack.desktop;
 
+import com.mysql.jdbc.util.TimezoneDump;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 
@@ -136,16 +139,15 @@ public class DesktopLoginBox extends javax.swing.JDialog {
      */
     @Action
     public void validarLogin() {
-
         if (DesktopApp.getApplication().isUsuario(usuariosT)) {
             if (DesktopApp.getApplication().getUsuarioLogueado().getIdEstado().getIdEstado() == 1) {
-                DesktopApp.getApplication().getUsuarioLogueado().setUltimoAcceso(new Date());
-                DesktopApp.getApplication().grabarUsuarioT(DesktopApp.getApplication().getUsuarioLogueado());
+                DesktopApp.getApplication().getUsuarioLogueado().setUltimoAcceso(new GregorianCalendar(TimeZone.getTimeZone("America/Argentina/Cordoba")).getTime());
+                DesktopApp.getApplication().actualizarUsuariosT(DesktopApp.getApplication().getUsuarioLogueado());
                 this.setVisible(false);
                 DesktopApp.getApplication().getDesktopView().cargaInicial();
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "El usuario ingresado no esta habilitado");
+                JOptionPane.showMessageDialog(this, "El usuario ingresado no esta habilitado para iniciar sesion");
                 usuarioTextField.requestFocus();
             }
         } else {
@@ -153,7 +155,7 @@ public class DesktopLoginBox extends javax.swing.JDialog {
             usuariosT.setContrasena(null);
             usuarioTextField.setText("");
             contrasenaPasswordField.setText("");
-            JOptionPane.showMessageDialog(this, "No existe usuario con ese nombre y contraseña");
+            JOptionPane.showMessageDialog(this, "Usuario desconocido o contraseña incorrecta");
             usuarioTextField.requestFocus();
         }
     }
