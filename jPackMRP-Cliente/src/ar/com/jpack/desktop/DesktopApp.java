@@ -1,5 +1,5 @@
 /*
- * DesktopTestApp.java
+ * DesktopApp.java
  */
 package ar.com.jpack.desktop;
 
@@ -277,6 +277,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    @Deprecated
     public Boolean isArticulo(Integer idArticulo) {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
@@ -285,40 +286,6 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
-    }
-
-    @Deprecated
-    public List<UsuariosT> getAllUsuarios() {
-        try {
-            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.findAllUsuariosT();
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    public List<UsuariosT> getUsuariosT(HashMap parametros) {
-        try {
-            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.getUsuariosT(parametros);
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    public List<RolesT> getRolesT(HashMap parametros) {
-        try {
-            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
-            return rolesFacade.getRolesT(parametros);
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
     }
 
@@ -358,10 +325,11 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public List<TiposIvaT> getTiposIvaT(HashMap parametros) {
+    @Deprecated
+    public List<UsuariosT> getAllUsuarios() {
         try {
-            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
-            return tiposIvaFacade.getTiposIvaT(parametros);
+            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            return usuariosFacade.findAllUsuariosT();
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -369,10 +337,11 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public List<TiposDocumentoT> getTiposDocumentoT(HashMap parametros) {
+    @Deprecated
+    public EstadosT getEstado(Integer idEstado) {
         try {
-            tiposDocumentoFacade = (TiposDocumentoFacadeRemote) lookUp("ar.com.jpack.negocio.TiposDocumentoFacadeRemote");
-            return tiposDocumentoFacade.getTiposDocumentoT(parametros);
+            estadosFacade = (EstadosFacadeRemote) lookUp("ar.com.jpack.negocio.EstadosFacadeRemote");
+            return estadosFacade.findEstado(idEstado);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -390,11 +359,97 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    @Deprecated
-    public EstadosT getEstado(Integer idEstado) {
+    /**
+     * Obtiene la lista de Usuarios filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdUsuario</b>  filtra por 'eq' idUsuario (Integer) <br>
+     * <b>pUsuario</b>    filtra por 'like AnyWhere' usuario (String) <br>
+     * <b>pContrasena</b> filtra por 'like AnyWhere' contrasena (String) <br>
+     * <b>pNombres</b>    filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pApellidos</b>  filtra por 'like AnyWhere' apellidos (String) <br>
+     * <b>pMails</b>      filtra por 'like AnyWhere' mails (String) <br>
+     * <b>pTelefonos</b>  filtra por 'like AnyWhere' telefonos (String) <br>
+     * <b>pJoinEstado</b> obliga a Joinear con Estados <br>
+     * <b>pIdEstado</b>   filtra por 'eq' idEstado (Integer) (debe haber sido joineado con Estado) <br>
+     * <b>pJoinRoles</b>  obliga a Joinear con Roles <br>
+     * @return devuelve la lista de los Usuarios que cumplan con el filtro
+     */
+    public List<UsuariosT> getUsuariosT(HashMap parametros) {
+        try {
+            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
+            return usuariosFacade.getUsuariosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Estados filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdEstados</b>           filtra por 'eq' idUsuario (Integer) <br>
+     * <b>pDescripcionEstado</b>   filtra por 'like AnyWhere' descripcion del Estado (String) <br>
+     * <b>pNotas</b>               filtra por 'like AnyWhere' notas (String) <br>
+     * <b>pJoinDominios</b>        obliga a Joinear con Dominios <br>
+     * <b>pIdDominio</b>           filtra por 'eq' idDominio (Integer) <br>
+     * <b>pDescripcionDominio</b>  filtra por 'like AnyWhere' descripcion del Dominio (String) <br>
+     * @return devuelve la lista de los Estados que cumplan con el filtro <br>
+     */
+    public List<EstadosT> getEstadosT(HashMap parametros) {
         try {
             estadosFacade = (EstadosFacadeRemote) lookUp("ar.com.jpack.negocio.EstadosFacadeRemote");
-            return estadosFacade.findEstado(idEstado);
+            return estadosFacade.getEstadosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Usuarios filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdRol</b>        filtra por 'eq' idRol (Integer) <br>
+     * <b>pRol</b>          filtra por 'like AnyWhere' rol (String) <br>
+     * <b>pDescripcion</b>  filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pComponente</b>   filtra por 'like AnyWhere' componente (String) <br>
+     * <b>pFuncion</b>      filtra por 'like AnyWhere' funcion (String) <br>
+     * <b>pOrden</b>        filtra por 'eq' orden (int) <br>
+     * <b>pOrdenHermano</b> filtra por 'eq' ordenHermano (int) <br>
+     * <b>pJoinUsuarios</b> obliga a Joinear con Usuarios <br>
+     * <b>pIdUsuario</b>    filtra por 'eq' idUsuario (Integer) (debe haber sido joineado con Estado) <br>
+     * @return devuelve la lista de los Usuarios que cumplan con el filtro
+     */
+    public List<RolesT> getRolesT(HashMap parametros) {
+        try {
+            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
+            return rolesFacade.getRolesT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<TiposIvaT> getTiposIvaT(HashMap parametros) {
+        try {
+            tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");
+            return tiposIvaFacade.getTiposIvaT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<TiposDocumentoT> getTiposDocumentoT(HashMap parametros) {
+        try {
+            tiposDocumentoFacade = (TiposDocumentoFacadeRemote) lookUp("ar.com.jpack.negocio.TiposDocumentoFacadeRemote");
+            return tiposDocumentoFacade.getTiposDocumentoT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

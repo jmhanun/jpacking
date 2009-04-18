@@ -26,12 +26,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="401" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="408" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="285" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="289" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -62,7 +62,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="283" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="287" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -100,19 +100,19 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace pref="58" max="32767" attributes="0"/>
                       <Component id="btnNuevo" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDeshabilitar" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="tabPanel" alignment="0" pref="245" max="32767" attributes="0"/>
+                  <Component id="tabPanel" alignment="0" pref="252" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="tabPanel" pref="243" max="32767" attributes="0"/>
+                      <Component id="tabPanel" pref="247" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnDeshabilitar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -165,12 +165,12 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtUsuario" alignment="0" pref="160" max="32767" attributes="0"/>
-                                          <Component id="txtContrasenia" alignment="0" pref="160" max="32767" attributes="0"/>
-                                          <Component id="txtNombres" alignment="0" pref="160" max="32767" attributes="0"/>
-                                          <Component id="txtApellidos" alignment="0" pref="160" max="32767" attributes="0"/>
-                                          <Component id="txtEmail" alignment="0" pref="160" max="32767" attributes="0"/>
-                                          <Component id="txtEstado" alignment="0" pref="160" max="32767" attributes="0"/>
+                                          <Component id="txtUsuario" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="txtContrasenia" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="txtNombres" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="txtApellidos" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="txtEmail" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="cboEstados" alignment="0" pref="167" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -211,12 +211,12 @@
                                   <Component id="txtEmail" alignment="3" max="32767" attributes="0"/>
                                   <Component id="jLabel5" alignment="3" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtEstado" alignment="3" max="32767" attributes="0"/>
-                                  <Component id="jLabel6" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel6" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="cboEstados" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="15" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnGrabar" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtModificar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -268,36 +268,45 @@
                         <Property name="text" type="java.lang.String" resourceKey="txtUsuario.text"/>
                         <Property name="name" type="java.lang.String" value="txtUsuario" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUsuarioKeyTyped"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JPasswordField" name="txtContrasenia">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="txtContrasenia.text"/>
                         <Property name="name" type="java.lang.String" value="txtContrasenia" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtContraseniaKeyTyped"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtNombres">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="txtNombres.text"/>
                         <Property name="name" type="java.lang.String" value="txtNombres" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNombresKeyTyped"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtApellidos">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="txtApellidos.text"/>
                         <Property name="name" type="java.lang.String" value="txtApellidos" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtApellidosKeyTyped"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtEmail">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="txtEmail.text"/>
                         <Property name="name" type="java.lang.String" value="txtEmail" noResource="true"/>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtEstado">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="txtEstado.text"/>
-                        <Property name="name" type="java.lang.String" value="txtEstado" noResource="true"/>
-                      </Properties>
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtEmailKeyTyped"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnGrabar">
                       <Properties>
@@ -313,6 +322,19 @@
                           <action class="ar.com.jpack.desktop.administracion.ABMUsuarios" id="modificar" methodName="modificar"/>
                         </Property>
                         <Property name="name" type="java.lang.String" value="txtModificar" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JComboBox" name="cboEstados">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                          <StringArray count="4">
+                            <StringItem index="0" value="Item 1"/>
+                            <StringItem index="1" value="Item 2"/>
+                            <StringItem index="2" value="Item 3"/>
+                            <StringItem index="3" value="Item 4"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="name" type="java.lang.String" value="cboEstados" noResource="true"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -335,11 +357,11 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jScrollPane2" alignment="0" pref="220" max="32767" attributes="0"/>
-                                  <Component id="jScrollPane3" alignment="0" pref="220" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="0" pref="227" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" alignment="0" pref="227" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="btnAgregarRol" linkSize="1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                                      <EmptySpace pref="49" max="32767" attributes="0"/>
                                       <Component id="btnQuitarRol" linkSize="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -351,14 +373,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="79" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="81" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnAgregarRol" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnQuitarRol" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane3" pref="73" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" pref="75" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           </Group>
                       </Group>

@@ -7,11 +7,13 @@ package ar.com.jpack.desktop.administracion;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
@@ -32,33 +34,50 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
     public ABMUsuarios() {
         super(DesktopApp.getApplication().getUsuarioLogueado());
         initComponents();
+        txtUsuario.setEnabled(false);
         iniciar();
         cambiarUsuarioT();
     }
 
     public void iniciar() {
-        HashMap parametrosUsuarios = new HashMap();
         ResourceMap resourceMap = DesktopApp.getApplication().getContext().getResourceMap(ABMUsuarios.class);
+        HashMap parametrosUsuarios = new HashMap();
         parametrosUsuarios.put("pJoinEstados", true);
         parametrosUsuarios.put("pJoinRoles", true);
         this.setListDto((ArrayList<UsuariosT>) DesktopApp.getApplication().getUsuariosT(parametrosUsuarios));
         rolesTs = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(new HashMap());
+        HashMap parametrosEstados = new HashMap();
+        parametrosEstados.put("pJoinDominios", true);
+        parametrosEstados.put("pDescripcionDominio", "USUARIOS");
+        estadosTs = (ArrayList<EstadosT>) DesktopApp.getApplication().getEstadosT(parametrosEstados);
         DefaultMutableTreeNode padre = new DefaultMutableTreeNode(resourceMap.getString("usuarios"));
-        int index = -1;
+        int indexArbol = -1;
         int iteration = 0;
         for (Iterator<UsuariosT> it = this.getListDto().iterator(); it.hasNext();) {
             UsuariosT usuario = it.next();
             //Setea la variable index para que se seleccione en el arbol el usuario logueado
             if (getDto() != null) {
                 if (getDto().getIdUsuario().equals(usuario.getIdUsuario())) {
-                    index = iteration + 1;
+                    indexArbol = iteration + 1;
                 }
             }
             DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
             padre.add(hijo);
-
             iteration++;
         }
+        DefaultComboBoxModel estadosComboBoxModel = new DefaultComboBoxModel();
+        int indexEstado = -1;
+        iteration = 0;
+        for (Iterator<EstadosT> it = estadosTs.iterator(); it.hasNext();) {
+            EstadosT estadosT = it.next();
+            estadosComboBoxModel.addElement(estadosT);
+            if (estadosT.getIdEstado().equals(getDto().getIdEstado().getIdEstado())) {
+                indexEstado = iteration;
+            }
+            iteration++;
+        }
+        cboEstados.setModel(estadosComboBoxModel);
+        cboEstados.setSelectedIndex(indexEstado);
         DefaultListModel disponiblesListModel = new DefaultListModel();
         for (Iterator<RolesT> it = rolesTs.iterator(); it.hasNext();) {
             RolesT rolesT = it.next();
@@ -69,7 +88,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         lstRoles.setModel(disponiblesListModel);
         jTree.setModel(new DefaultTreeModel(padre));
         jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        jTree.setSelectionRow(index);
+        jTree.setSelectionRow(indexArbol);
         jTree.addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
@@ -77,7 +96,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
                 if ((node != null) && (node.getUserObject() instanceof UsuariosT)) {
                     setDto((UsuariosT) node.getUserObject());
                 } else {
-                    setDto(new UsuariosT());
+                    jTree.setSelectionRow(1);
                 }
                 cambiarUsuarioT();
             }
@@ -93,6 +112,47 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             }
         }
         lstRolesAsignados.setModel(asignadosListModel);
+
+        int index = -1;
+        int iteration = 0;
+        for (Iterator<EstadosT> it = estadosTs.iterator(); it.hasNext();) {
+            EstadosT estadosT = it.next();
+            if (estadosT.getIdEstado().equals(getDto().getIdEstado().getIdEstado())) {
+                index = iteration;
+            }
+            iteration++;
+        }
+        cboEstados.setSelectedIndex(index);
+
+        txtUsuario.setText(getDto().getUsuario());
+        txtNombres.setText(getDto().getNombres());
+        txtEmail.setText(getDto().getMails());
+        txtContrasenia.setText(getDto().getContrasena());
+        txtApellidos.setText(getDto().getApellidos());
+    }
+
+    private void cargarUsuariosT() {
+        txtApellidos.setText(getDto().getApellidos());
+        txtContrasenia.setText(getDto().getContrasena());
+        txtEmail.setText(getDto().getMails());
+//        this.estadoTextField.setText(usuariosT.getIdEstado() != null ? usuariosT.getIdEstado().getDescripcion() : "");
+//        this.nombresTextField.setText(usuariosT.getNombres());
+//        this.usuarioTextField.setText(usuariosT.getUsuario());
+//        if (usuariosT.getIdEstado() != null) {
+//            this.deshabilitarToggleButton.setSelected(usuariosT.getIdEstado().getIdEstado() == 1 ? false : true);
+//        } else {
+//            this.deshabilitarToggleButton.setSelected(false);
+//        }
+//        DefaultListModel asignadosListModel = new DefaultListModel();
+//        if (usuariosT.getIdRolCollection() != null) {
+//            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
+//                RolesT rolesT = it.next();
+//                if (rolesT.getFuncion() != null) {
+//                    asignadosListModel.addElement(rolesT);
+//                }
+//            }
+//        }
+//        asignadosList.setModel(asignadosListModel);
     }
 
     @Action
@@ -152,9 +212,9 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         txtNombres = new javax.swing.JTextField();
         txtApellidos = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
-        txtEstado = new javax.swing.JTextField();
         btnGrabar = new javax.swing.JButton();
         txtModificar = new javax.swing.JButton();
+        cboEstados = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstRoles = new javax.swing.JList();
@@ -191,7 +251,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -222,21 +282,43 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
 
         txtUsuario.setText(resourceMap.getString("txtUsuario.text")); // NOI18N
         txtUsuario.setName("txtUsuario"); // NOI18N
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyTyped(evt);
+            }
+        });
 
         txtContrasenia.setText(resourceMap.getString("txtContrasenia.text")); // NOI18N
         txtContrasenia.setName("txtContrasenia"); // NOI18N
+        txtContrasenia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContraseniaKeyTyped(evt);
+            }
+        });
 
         txtNombres.setText(resourceMap.getString("txtNombres.text")); // NOI18N
         txtNombres.setName("txtNombres"); // NOI18N
+        txtNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombresKeyTyped(evt);
+            }
+        });
 
         txtApellidos.setText(resourceMap.getString("txtApellidos.text")); // NOI18N
         txtApellidos.setName("txtApellidos"); // NOI18N
+        txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidosKeyTyped(evt);
+            }
+        });
 
         txtEmail.setText(resourceMap.getString("txtEmail.text")); // NOI18N
         txtEmail.setName("txtEmail"); // NOI18N
-
-        txtEstado.setText(resourceMap.getString("txtEstado.text")); // NOI18N
-        txtEstado.setName("txtEstado"); // NOI18N
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEmailKeyTyped(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMUsuarios.class, this);
         btnGrabar.setAction(actionMap.get("grabar")); // NOI18N
@@ -244,6 +326,9 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
 
         txtModificar.setAction(actionMap.get("modificar")); // NOI18N
         txtModificar.setName("txtModificar"); // NOI18N
+
+        cboEstados.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboEstados.setName("cboEstados"); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -265,12 +350,12 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
                                 .addComponent(jLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                            .addComponent(cboEstados, 0, 167, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(txtModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -303,11 +388,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEstado)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGrabar)
                     .addComponent(txtModificar))
@@ -351,11 +436,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addComponent(btnAgregarRol)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                         .addComponent(btnQuitarRol)))
                 .addContainerGap())
         );
@@ -366,13 +451,13 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarRol)
                     .addComponent(btnQuitarRol))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -389,12 +474,12 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeshabilitar)
                 .addContainerGap())
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeshabilitar, btnNuevo});
@@ -402,7 +487,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDeshabilitar)
@@ -416,21 +501,42 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+// TODO add your handling code here:
+}//GEN-LAST:event_txtUsuarioKeyTyped
+
+private void txtContraseniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseniaKeyTyped
+// TODO add your handling code here:
+}//GEN-LAST:event_txtContraseniaKeyTyped
+
+private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
+// TODO add your handling code here:
+}//GEN-LAST:event_txtNombresKeyTyped
+
+private void txtApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidosKeyTyped
+// TODO add your handling code here:
+}//GEN-LAST:event_txtApellidosKeyTyped
+
+private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
+// TODO add your handling code here:
+}//GEN-LAST:event_txtEmailKeyTyped
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarRol;
     private javax.swing.JButton btnDeshabilitar;
     private javax.swing.JButton btnGrabar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnQuitarRol;
+    private javax.swing.JComboBox cboEstados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -452,10 +558,10 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JPasswordField txtContrasenia;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtEstado;
     private javax.swing.JButton txtModificar;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
     private ArrayList<RolesT> rolesTs;
+    private ArrayList<EstadosT> estadosTs;
 }
