@@ -1,4 +1,6 @@
-
+/*
+ * UsuariosFacade.java
+ */
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Usuarios;
@@ -34,10 +36,10 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     private EntityManager em;
 
     /**
-     *  Valida un usuario 
-     *  recibe como parametro un UsuariosT con solo el nombre y la contraseña
-     *  en caso de ser un usuario valido lo devuelve con todos los datos completados
-     *  en caso de no ser valido devuelve el usuarioT sin modificar
+     *  Valida un usuario <br>
+     *  Recibe como parametro un UsuariosT con solo el nombre y la contraseña <br>
+     *  En caso de ser un usuario valido lo devuelve con todos los datos completados <br>
+     *  En caso de no ser valido devuelve el usuarioT sin modificar <br>
      * 
      * @param usuariosT contiene los datos del usuario a validar
      * @return devuelve el usuarioT validado
@@ -99,7 +101,7 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     /**
-     * Actualiza o crea un usuarioT recibido por parametro
+     * Actualiza o crea un usuarioT recibido por parametro <br>
      * Si existe, se actualiza. Si no existe, se crea.
      * 
      * @param usuariosT contiene los datos del usuario a actualizar
@@ -118,64 +120,22 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         parametros.put("pJoinRoles", true);
         parametros.put("pJoinEstados", true);
         return getUsuariosT(parametros).get(0);
-//        //si el numero de usuario es null, significa que es un nuevo usuario.
-//        if (usuariosT.getIdUsuario() != null) {
-//            usuarios = em.find(Usuarios.class, usuariosT.getIdUsuario());
-//            usuarios.setUltimoAcceso(usuariosT.getUltimoAcceso());
-//            cargarDatos(usuariosT, usuarios);
-//            edit(usuarios);
-//            em.flush();
-//        } else {
-//            usuarios = new Usuarios();
-//            StringBuffer codificado = codificar(usuariosT.getContrasena());
-//            usuariosT.setContrasena(codificado.toString());
-//            usuarios.setContrasena(usuariosT.getContrasena());
-//            usuarios.setUsuario(usuariosT.getUsuario());
-//            usuariosT.setIdEstado(new EstadosT(1, "HABILITADO"));
-//            cargarDatos(usuariosT, usuarios);
-//            create(usuarios);
-//        }
-//        em.flush();
-//        usuariosT = DataTransferHelper.copiarUsuario(usuarios);
-//        usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuarios.getIdRolCollection()));
-//        return usuariosT;
     }
-//
-//    private void cargarDatos(UsuariosT usuariosT, Usuarios usuarios) {
-//        Estados estado = em.find(Estados.class, usuariosT.getIdEstado().getIdEstado());
-//        usuarios.setIdEstado(estado);
-//        usuarios.setApellidos(usuariosT.getApellidos());
-//        usuarios.setMails(usuariosT.getMails());
-//        usuarios.setNombres(usuariosT.getNombres());
-//        if (usuariosT.getIdRolCollection() != null) {
-//            List<Roles> roles = new ArrayList<Roles>();
-//            for (Iterator<RolesT> it = usuariosT.getIdRolCollection().iterator(); it.hasNext();) {
-//                RolesT rolesT = it.next();
-//                if (rolesT.getIdRol() != null) {
-//                    Roles rol = em.find(Roles.class, rolesT.getIdRol());
-//                    roles.add(rol);
-//                }
-//            }
-//            usuarios.setIdRolCollection(roles);
-//        }
-//    }
-
     /**
-     * Obtiene la lista de UsuariosT filtrados por el Hasmap
-     * Usa la funcion getUsuarios(Hashmap)
-     * @param parametros
-     * Lista de parametros:
-     * pIdUsuario  filtra por 'eq' idUsuario (Integer)
-     * pUsuario    filtra por 'like AnyWhere' usuario (String)
-     * pContrasena filtra por 'like AnyWhere' contrasena (String)
-     * pNombres    filtra por 'like AnyWhere' nombres (String)
-     * pApellidos  filtra por 'like AnyWhere' apellidos (String)
-     * pMails      filtra por 'like AnyWhere' mails (String)
-     * pTelefonos  filtra por 'like AnyWhere' telefonos (String)
-     * pJoinEstado obliga a Joinear con Estados
-     * pIdEstado   filtra por 'eq' idEstado (Integer) (debe haber sido joineado con Estado)
-     * pJoinRoles  obliga a Joinear con Roles
-     * @return devuelve la lista de los UsuariosT que cumplan con el filtro
+     * Obtiene la lista de Usuarios filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdUsuario</b>  filtra por 'eq' idUsuario (Integer) <br>
+     * <b>pUsuario</b>    filtra por 'like AnyWhere' usuario (String) <br>
+     * <b>pContrasena</b> filtra por 'like AnyWhere' contrasena (String) <br>
+     * <b>pNombres</b>    filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pApellidos</b>  filtra por 'like AnyWhere' apellidos (String) <br>
+     * <b>pMails</b>      filtra por 'like AnyWhere' mails (String) <br>
+     * <b>pTelefonos</b>  filtra por 'like AnyWhere' telefonos (String) <br>
+     * <b>pJoinEstado</b> obliga a Joinear con Estados <br>
+     * <b>pIdEstado</b>   filtra por 'eq' idEstado (Integer) (debe haber sido joineado con Estado) <br>
+     * <b>pJoinRoles</b>  obliga a Joinear con Roles <br>
+     * @return devuelve la lista de los Usuarios que cumplan con el filtro
      */
     public List<UsuariosT> getUsuariosT(HashMap parametros) {
         List<Usuarios> usuariosList = getUsuarios(parametros);
@@ -190,18 +150,18 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
-     * @param parametros
-     * Lista de parametros:
-     * pIdUsuario  filtra por 'eq' idUsuario (Integer)
-     * pUsuario    filtra por 'like AnyWhere' usuario (String)
-     * pContrasena filtra por 'like AnyWhere' contrasena (String)
-     * pNombres    filtra por 'like AnyWhere' nombres (String)
-     * pApellidos  filtra por 'like AnyWhere' apellidos (String)
-     * pMails      filtra por 'like AnyWhere' mails (String)
-     * pTelefonos  filtra por 'like AnyWhere' telefonos (String)
-     * pJoinEstado obliga a Joinear con Estados
-     * pIdEstado   filtra por 'eq' idEstado (Integer) (debe haber sido joineado con Estado)
-     * pJoinRoles  obliga a Joinear con Roles
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdUsuario</b>  filtra por 'eq' idUsuario (Integer) <br>
+     * <b>pUsuario</b>    filtra por 'like AnyWhere' usuario (String) <br>
+     * <b>pContrasena</b> filtra por 'like AnyWhere' contrasena (String) <br>
+     * <b>pNombres</b>    filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pApellidos</b>  filtra por 'like AnyWhere' apellidos (String) <br>
+     * <b>pMails</b>      filtra por 'like AnyWhere' mails (String) <br>
+     * <b>pTelefonos</b>  filtra por 'like AnyWhere' telefonos (String) <br>
+     * <b>pJoinEstado</b> obliga a Joinear con Estados <br>
+     * <b>pIdEstado</b>   filtra por 'eq' idEstado (Integer) (debe haber sido joineado con Estado) <br>
+     * <b>pJoinRoles</b>  obliga a Joinear con Roles <br>
      * @return devuelve la lista de los Usuarios que cumplan con el filtro
      */
     public List<Usuarios> getUsuarios(HashMap parametros) {
