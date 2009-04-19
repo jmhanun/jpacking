@@ -7,6 +7,9 @@
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" resourceKey="Form.title"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[411, 370]"/>
+    </Property>
     <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
   </Properties>
   <SyntheticProperties>
@@ -26,12 +29,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="408" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="400" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="289" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="293" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -62,7 +65,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="287" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="291" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -100,19 +103,19 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="58" max="32767" attributes="0"/>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                       <Component id="btnNuevo" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDeshabilitar" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="tabPanel" alignment="0" pref="252" max="32767" attributes="0"/>
+                  <Component id="tabPanel" alignment="0" pref="244" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="tabPanel" pref="247" max="32767" attributes="0"/>
+                      <Component id="tabPanel" pref="251" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnDeshabilitar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -165,12 +168,12 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtUsuario" alignment="0" pref="167" max="32767" attributes="0"/>
-                                          <Component id="txtContrasenia" alignment="0" pref="167" max="32767" attributes="0"/>
-                                          <Component id="txtNombres" alignment="0" pref="167" max="32767" attributes="0"/>
-                                          <Component id="txtApellidos" alignment="0" pref="167" max="32767" attributes="0"/>
-                                          <Component id="txtEmail" alignment="0" pref="167" max="32767" attributes="0"/>
-                                          <Component id="cboEstados" alignment="0" pref="167" max="32767" attributes="0"/>
+                                          <Component id="txtUsuario" alignment="0" pref="159" max="32767" attributes="0"/>
+                                          <Component id="txtContrasenia" alignment="0" pref="159" max="32767" attributes="0"/>
+                                          <Component id="txtNombres" alignment="0" pref="159" max="32767" attributes="0"/>
+                                          <Component id="txtApellidos" alignment="0" pref="159" max="32767" attributes="0"/>
+                                          <Component id="txtEmail" alignment="0" pref="159" max="32767" attributes="0"/>
+                                          <Component id="cboEstados" alignment="0" pref="159" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -216,7 +219,7 @@
                                   <Component id="jLabel6" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                                   <Component id="cboEstados" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="15" max="32767" attributes="0"/>
+                              <EmptySpace pref="19" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnGrabar" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtModificar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -357,11 +360,11 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jScrollPane2" alignment="0" pref="227" max="32767" attributes="0"/>
-                                  <Component id="jScrollPane3" alignment="0" pref="227" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="0" pref="219" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" alignment="0" pref="219" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="btnAgregarRol" linkSize="1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="49" max="32767" attributes="0"/>
+                                      <EmptySpace pref="41" max="32767" attributes="0"/>
                                       <Component id="btnQuitarRol" linkSize="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -373,14 +376,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="81" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="83" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnAgregarRol" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnQuitarRol" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane3" pref="75" max="32767" attributes="0"/>
+                              <Component id="jScrollPane3" pref="77" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           </Group>
                       </Group>

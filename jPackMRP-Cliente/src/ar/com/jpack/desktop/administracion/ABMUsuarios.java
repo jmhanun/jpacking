@@ -10,11 +10,13 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -34,9 +36,9 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
     public ABMUsuarios() {
         super(DesktopApp.getApplication().getUsuarioLogueado());
         initComponents();
+        cambio = false;
         txtUsuario.setEnabled(false);
         iniciar();
-        cambiarUsuarioT();
     }
 
     public void iniciar() {
@@ -50,6 +52,28 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         parametrosEstados.put("pJoinDominios", true);
         parametrosEstados.put("pDescripcionDominio", "USUARIOS");
         estadosTs = (ArrayList<EstadosT>) DesktopApp.getApplication().getEstadosT(parametrosEstados);
+        jTree.addTreeSelectionListener(new TreeSelectionListener() {
+
+            public void valueChanged(TreeSelectionEvent e) {
+                JInternalFrame temp = (JInternalFrame) ((Component) e.getSource()).getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+
+                if (cambio) {
+                    if (JOptionPane.showInternalConfirmDialog(temp, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        JOptionPane.showInternalMessageDialog(temp, "Graba!!");
+                    } else {
+                        JOptionPane.showInternalMessageDialog(temp, "NO Graba!!");
+                    }
+                }
+                cambio = false;
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+                if ((node != null) && (node.getUserObject() instanceof UsuariosT)) {
+                    setDto((UsuariosT) node.getUserObject());
+                } else {
+                    jTree.setSelectionRow(1);
+                }
+                cambiarUsuarioT();
+            }
+        });
         DefaultMutableTreeNode padre = new DefaultMutableTreeNode(resourceMap.getString("usuarios"));
         int indexArbol = -1;
         int iteration = 0;
@@ -89,18 +113,6 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jTree.setModel(new DefaultTreeModel(padre));
         jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         jTree.setSelectionRow(indexArbol);
-        jTree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                if ((node != null) && (node.getUserObject() instanceof UsuariosT)) {
-                    setDto((UsuariosT) node.getUserObject());
-                } else {
-                    jTree.setSelectionRow(1);
-                }
-                cambiarUsuarioT();
-            }
-        });
     }
 
     private void cambiarUsuarioT() {
@@ -231,6 +243,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         setResizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMUsuarios.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
+        setMinimumSize(new java.awt.Dimension(411, 370));
         setName("Form"); // NOI18N
 
         jSplitPane1.setDividerLocation(150);
@@ -251,7 +264,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -350,12 +363,12 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
                                 .addComponent(jLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(cboEstados, 0, 167, Short.MAX_VALUE)))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                            .addComponent(cboEstados, 0, 159, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(txtModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -392,7 +405,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGrabar)
                     .addComponent(txtModificar))
@@ -436,11 +449,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addComponent(btnAgregarRol)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                         .addComponent(btnQuitarRol)))
                 .addContainerGap())
         );
@@ -451,13 +464,13 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarRol)
                     .addComponent(btnQuitarRol))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                 .addGap(17, 17, 17))
         );
 
@@ -474,12 +487,12 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeshabilitar)
                 .addContainerGap())
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeshabilitar, btnNuevo});
@@ -487,7 +500,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDeshabilitar)
@@ -501,11 +514,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
         );
 
         pack();
@@ -521,6 +534,7 @@ private void txtContraseniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
 private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
 // TODO add your handling code here:
+    cambio = true;
 }//GEN-LAST:event_txtNombresKeyTyped
 
 private void txtApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidosKeyTyped
@@ -564,4 +578,5 @@ private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tx
     // End of variables declaration//GEN-END:variables
     private ArrayList<RolesT> rolesTs;
     private ArrayList<EstadosT> estadosTs;
+    private boolean cambio;
 }
