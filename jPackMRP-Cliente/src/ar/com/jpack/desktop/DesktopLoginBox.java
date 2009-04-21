@@ -140,7 +140,7 @@ public class DesktopLoginBox extends javax.swing.JDialog {
         if (DesktopApp.getApplication().isUsuario(usuariosT)) {
             if (DesktopApp.getApplication().getUsuarioLogueado().getIdEstado().getIdEstado() == 1) {
                 DesktopApp.getApplication().getUsuarioLogueado().setUltimoAcceso(new GregorianCalendar(TimeZone.getTimeZone("America/Argentina/Cordoba")).getTime());
-                DesktopApp.getApplication().actualizarUsuariosT(DesktopApp.getApplication().getUsuarioLogueado());
+                DesktopApp.getApplication().actualizarUsuariosT(DesktopApp.getApplication().getUsuarioLogueado(), false);
                 this.setVisible(false);
                 DesktopApp.getApplication().getDesktopView().cargaInicial();
                 this.dispose();

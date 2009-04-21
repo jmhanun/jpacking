@@ -457,10 +457,18 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT) {
+    /**
+     * Actualiza o crea un usuarioT recibido por parametro
+     * Si existe, se actualiza. Si no existe, se crea.
+     * 
+     * @param usuariosT contiene los datos del usuario a actualizar
+     * @param contrasenia si es true la contraseña ha sido modificada
+     * @return devuelve el usuarioT actualizado
+     */
+    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia) {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.actualizarUsuariosT(usuariosT);
+            return usuariosFacade.actualizarUsuariosT(usuariosT, contrasenia);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

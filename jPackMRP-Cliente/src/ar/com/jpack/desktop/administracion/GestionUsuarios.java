@@ -495,7 +495,7 @@ private void emailTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
     @Action
     public void grabarUsuario() {
-        usuariosT = DesktopApp.getApplication().actualizarUsuariosT(usuariosT);
+        usuariosT = DesktopApp.getApplication().actualizarUsuariosT(usuariosT, false);
         cargar();
         iniciar(usuariosT);
         DesktopApp.getApplication().getDesktopView().setStatusMessage("Cambios del usuario aplicados");

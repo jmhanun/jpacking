@@ -4,9 +4,11 @@
  */
 package ar.com.jpack.helpers;
 
+import ar.com.jpack.transferencia.UsuariosT;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
+import org.jdesktop.application.ResourceMap;
 
 /**
  *
@@ -17,6 +19,10 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
     private E dto;
     private ArrayList<E> listDto;
     private CustomInternalFrame padre;
+    private boolean modificado;
+    private boolean nuevo;
+    private ResourceMap resourceMap;
+    private E oldDto;
 
     public CustomInternalFrame() {
         super();
@@ -32,6 +38,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
     }
 
     public void setDto(E dto) {
+        setOldDto(getDto());
         this.dto = dto;
     }
 
@@ -50,4 +57,39 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
     public void setPadre(CustomInternalFrame padre) {
         this.padre = padre;
     }
+
+    public boolean isModificado() {
+        return modificado;
+    }
+
+    public boolean isNuevo() {
+        return nuevo;
+    }
+
+    public void setModificado(boolean modificado) {
+        boolean old = isModificado();
+        this.modificado = modificado;
+        firePropertyChange("modificado", old, isModificado());
+    }
+
+    public void setNuevo(boolean nuevo) {
+        this.nuevo = nuevo;
+    }
+
+    public E getOldDto() {
+        return oldDto;
+    }
+
+    public void setOldDto(E oldDto) {
+        this.oldDto = oldDto;
+    }
+
+    public ResourceMap getResourceMap() {
+        return resourceMap;
+    }
+
+    public void setResourceMap(ResourceMap resourceMap) {
+        this.resourceMap = resourceMap;
+    }
+    
 }
