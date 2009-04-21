@@ -17,15 +17,6 @@ import javax.ejb.Remote;
 public interface UsuariosFacadeRemote {
 
     /**
-     * Actualiza o crea un usuarioT recibido por parametro
-     * Si existe, se actualiza. Si no existe, se crea.
-     * 
-     * @param usuariosT contiene los datos del usuario a actualizar
-     * @return devuelve el usuarioT actualizado
-     */
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT);
-
-    /**
      * 
      * @return
      * @deprecated desde la llegada del dozer se debe usar getUsuariosT(Hashmap)
@@ -79,4 +70,14 @@ public interface UsuariosFacadeRemote {
      * @return devuelve la lista de los Usuarios que cumplan con el filtro
      */
     public List<Usuarios> getUsuarios(HashMap parametros);
+
+    /**
+     * Actualiza o crea un usuarioT recibido por parametro
+     * Si existe, se actualiza. Si no existe, se crea.
+     * 
+     * @param usuariosT contiene los datos del usuario a actualizar
+     * @param contrasenia si es true la contraseña ha sido modificada
+     * @return devuelve el usuarioT actualizado
+     */
+    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia);
 }

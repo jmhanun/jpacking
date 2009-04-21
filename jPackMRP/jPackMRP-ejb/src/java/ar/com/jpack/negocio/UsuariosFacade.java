@@ -101,13 +101,18 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     /**
-     * Actualiza o crea un usuarioT recibido por parametro <br>
+     * Actualiza o crea un usuarioT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
      * 
      * @param usuariosT contiene los datos del usuario a actualizar
+     * @param contrasenia si es true la contraseña ha sido modificada
      * @return devuelve el usuarioT actualizado
      */
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT) {
+    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia) {
+        if (contrasenia) {
+            StringBuffer codificado = codificar(usuariosT.getContrasena());
+            usuariosT.setContrasena(codificado.toString());
+        }
         Usuarios usuarios = (Usuarios) DozerUtil.getDozerMapper(false).map(usuariosT, Usuarios.class);
         //si el numero de usuario es null significa que es un nuevo usuario
         if (usuarios.getIdUsuario() != null) {
@@ -121,6 +126,7 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
         parametros.put("pJoinEstados", true);
         return getUsuariosT(parametros).get(0);
     }
+
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
      * @param parametros <br>
