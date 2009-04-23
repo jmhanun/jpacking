@@ -16,6 +16,8 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
@@ -218,38 +220,131 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
 
     @Action
     public void agregarRol() {
-        JOptionPane.showInternalMessageDialog(this, "agregarRol");
+        //Cargo la lista de roles para agregar
+        //Son los roles seleccionados en el JList disponiblesList
+        List<RolesT> asignarRolesFromJList = cargarListaRoles(lstRoles.getSelectedValues());
+
+        //Elimino de la lista anterior los roles seleccionados 
+        //que ya esten asignado al usuario.       
+        asignarRolesFromJList.removeAll(getDto().getIdRolCollection());
+
+        //Luego valido que haya quedado algo seleccionado.
+        if (asignarRolesFromJList.size() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un rol no asignado");
+        } else {
+            //De los roles que si se van a agregar, agregar los padres.
+            //Creo el Set de roles a asignar con los roles seleccionados
+            //ademas de los padres de esos roles
+            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
+            for (RolesT rolesT : asignarRolesFromJList) {
+                nuevosRoles.add(rolesT);
+                nuevosRoles = getPadres(nuevosRoles, rolesT);
+            }
+            //Agrego a los nuevos roles los que ya estaban asignados al usuario
+            for (RolesT rolesT : getDto().getIdRolCollection()) {
+                nuevosRoles.add(rolesT);
+            }
+            asignarRolesFromJList = new ArrayList<RolesT>();
+            for (RolesT rolesT : nuevosRoles) {
+                asignarRolesFromJList.add(rolesT);
+            }
+            getDto().setIdRolCollection(asignarRolesFromJList);
+            grabar();
+        }
+        lstRoles.clearSelection();
+        lstRolesAsignados.clearSelection();
+        cambiarUsuarioT();
     }
 
     @Action
     public void quitarRol() {
-        JOptionPane.showInternalMessageDialog(this, "quitarRol");
+        //Cargo la lista de roles para quitar
+        //Son los roles seleccionados en el JList asignadosList
+        List<RolesT> quitarRolesFromJList = cargarListaRoles(lstRolesAsignados.getSelectedValues());
+
+        //Luego valido que haya algo seleccionado.
+        if (quitarRolesFromJList.size() == 0) {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un rol");
+        } else {
+            //Elimino de la lista de roles asignados al usuario
+            //los roles seleccionados en la lista anterior
+            getDto().getIdRolCollection().removeAll(quitarRolesFromJList);
+            //Hago una lista con los los roles que me quedaron que sean funcion
+            List<RolesT> nuevos = new ArrayList<RolesT>();
+            for (RolesT rolesT : getDto().getIdRolCollection()) {
+                if (rolesT.getFuncion() != null) {
+                    nuevos.add(rolesT);
+                }
+            }
+            //Agrego los padres que hagan falta
+            //En el hashset me van a quedar todos los roles que quedaron
+            //con los padres que sean necesarios para verlos
+            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
+            for (RolesT rolesT : nuevos) {
+                nuevosRoles.add(rolesT);
+                nuevosRoles = getPadres(nuevosRoles, rolesT);
+            }
+            nuevos = new ArrayList<RolesT>();
+            for (RolesT rolesT : nuevosRoles) {
+                nuevos.add(rolesT);
+            }
+            getDto().setIdRolCollection(nuevos);
+            grabar();
+        }
+        lstRoles.clearSelection();
+        lstRolesAsignados.clearSelection();
+        cambiarUsuarioT();
+    }
+
+    private List<RolesT> cargarListaRoles(Object[] o) {
+        List<RolesT> roles = new ArrayList<RolesT>();
+        for (int i = 0; i < o.length; i++) {
+            RolesT rol = (RolesT) o[i];
+            roles.add(rol);
+        }
+        return roles;
+    }
+
+    private HashSet<RolesT> getPadres(HashSet<RolesT> nuevosRoles, RolesT rolHijo) {
+        if (rolHijo.getIdRolPadre() != null) {
+            for (int i = 0; i < rolesTs.size(); i++) {
+                RolesT rolPadre = rolesTs.get(i);
+                if (rolHijo.getIdRolPadre().getIdRol() == rolPadre.getIdRol()) {
+                    nuevosRoles.add(rolPadre);
+                    nuevosRoles = getPadres(nuevosRoles, rolPadre);
+                }
+            }
+        }
+        return nuevosRoles;
     }
 
     @Action(enabledProperty = "modificado")
     public void grabar() {
         if (isNuevo()) {
             DesktopApp.getApplication().actualizarUsuariosT(getDto(), true);
+            DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
+            int indexArbol = -1;
+            int iteration = 0;
+            for (UsuariosT usuario : getListDto()) {
+                if (getDto() != null) {
+                    if (usuario.getIdUsuario() == null) {
+                        indexArbol = iteration + 1;
+                    }
+                }
+                DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
+                padre.add(hijo);
+                iteration++;
+            }
+            setModificado(false);
+            setNuevo(false);
+            jTree.setModel(new DefaultTreeModel(padre));
+            jTree.setSelectionRow(indexArbol);
+
         } else {
             DesktopApp.getApplication().actualizarUsuariosT(getDto(), false);
         }
-        DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
-        int indexArbol = -1;
-        int iteration = 0;
-        for (UsuariosT usuario : getListDto()) {
-            if (getDto() != null) {
-                if (usuario.getIdUsuario() == null) {
-                    indexArbol = iteration + 1;
-                }
-            }
-            DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
-            padre.add(hijo);
-            iteration++;
-        }
         setModificado(false);
         setNuevo(false);
-        jTree.setModel(new DefaultTreeModel(padre));
-        jTree.setSelectionRow(indexArbol);
         txtUsuario.setEnabled(false);
         btnNuevo.setEnabled(true);
     }

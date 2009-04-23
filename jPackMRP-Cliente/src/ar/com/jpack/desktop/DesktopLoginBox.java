@@ -145,7 +145,7 @@ public class DesktopLoginBox extends javax.swing.JDialog {
                 DesktopApp.getApplication().getDesktopView().cargaInicial();
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "El usuario ingresado no esta habilitado para iniciar sesion");
+                JOptionPane.showMessageDialog(this, "No esta habilitado para iniciar sesion\nConsulte al administrador");
                 usuarioTextField.requestFocus();
             }
         } else {
