@@ -249,7 +249,10 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public Boolean isUsuario(UsuariosT usuariosT) {
         if (usuariosT != null) {
-            if (usuariosT.getUsuario() != null && usuariosT.getContrasena() != null) {
+            if (usuariosT.getUsuario() != null) {
+                if(usuariosT.getContrasena() == null){
+                    usuariosT.setContrasena("");
+                }
                 try {
                     usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
                     //valida los datos en la base y los asigna a usuarioLogueado

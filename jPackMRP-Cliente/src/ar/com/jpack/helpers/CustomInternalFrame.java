@@ -4,7 +4,6 @@
  */
 package ar.com.jpack.helpers;
 
-import ar.com.jpack.transferencia.UsuariosT;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
@@ -71,7 +70,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
         this.modificado = modificado;
         firePropertyChange("modificado", old, isModificado());
     }
-
+    
     public void setNuevo(boolean nuevo) {
         this.nuevo = nuevo;
     }
@@ -90,6 +89,5 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
 
     public void setResourceMap(ResourceMap resourceMap) {
         this.resourceMap = resourceMap;
-    }
-    
+    }    
 }
