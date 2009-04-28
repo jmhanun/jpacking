@@ -386,10 +386,15 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showTiposIva() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.lov.ABMClientes", "Clientes", null);
-//        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva", null);
+     //   return new ShowFrame(getApplication(), "ar.com.jpack.desktop.lov.ABMClientes", "Clientes", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva", null);
     }
 
+    @Action
+    public Task showEstados() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", null);
+    }
+    
     /**
      * InnerClass Task para mostrar los InternalFrame
      * @author jmhanun

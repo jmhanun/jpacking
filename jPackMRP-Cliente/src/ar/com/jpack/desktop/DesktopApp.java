@@ -250,13 +250,13 @@ public class DesktopApp extends SingleFrameApplication {
     public Boolean isUsuario(UsuariosT usuariosT) {
         if (usuariosT != null) {
             if (usuariosT.getUsuario() != null) {
-                if(usuariosT.getContrasena() == null){
+                if (usuariosT.getContrasena() == null) {
                     usuariosT.setContrasena("");
                 }
                 try {
                     usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
                     //valida los datos en la base y los asigna a usuarioLogueado
-                    setUsuarioLogueado(usuariosFacade.validarUsuario(usuariosT));
+                    setUsuarioLogueado(usuariosFacade.validateUsuarioT(usuariosT));
                     if (getUsuarioLogueado().getIdUsuario() != null) {
                         return true;
                     } else {
@@ -309,30 +309,6 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
             return clientesFacade.findAllClientesListaT();
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    @Deprecated
-    public List<RolesT> getAllRoles() {
-        try {
-            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
-            return rolesFacade.findAllUsuariosT();
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    @Deprecated
-    public List<UsuariosT> getAllUsuarios() {
-        try {
-            usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.findAllUsuariosT();
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -468,10 +444,10 @@ public class DesktopApp extends SingleFrameApplication {
      * @param contrasenia si es true la contraseña ha sido modificada
      * @return devuelve el usuarioT actualizado
      */
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia) {
+    public UsuariosT updateUsuariosT(UsuariosT usuariosT, boolean contrasenia) throws javax.ejb.EJBException {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
-            return usuariosFacade.actualizarUsuariosT(usuariosT, contrasenia);
+            return usuariosFacade.updateUsuariosT(usuariosT, contrasenia);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -490,6 +466,7 @@ public class DesktopApp extends SingleFrameApplication {
             reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
             return reportesFacade.getReporte(nombreReporte, parametro);
         } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }

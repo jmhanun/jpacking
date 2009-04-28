@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +22,9 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,45 +53,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         treeSelectionListener = new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
-                int indexArbol = -1;
-                int iteration = 0;
-                DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
-                JInternalFrame temp = (JInternalFrame) ((Component) e.getSource()).getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-                if (isModificado()) {
-                    if (JOptionPane.showInternalConfirmDialog(temp, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        grabar();
-                    } else {// el usuario fue modificado y no quiere grabar los cambios
-                        if (isNuevo()) {
-                            getListDto().remove(getDto());
-                            for (UsuariosT usuario : getListDto()) {
-                                if (getDto() != null) {
-                                    if (usuario.getIdUsuario() == null) {
-                                        indexArbol = iteration + 1;
-                                    }
-                                }
-                                DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
-                                padre.add(hijo);
-                                iteration++;
-                            }
-                        }
-                        setDto(getOldDto());
-                        txtUsuario.setEnabled(false);
-                        setModificado(false);
-                        setNuevo(false);
-                        btnNuevo.setEnabled(true);
-                        if (isNuevo()) {
-                            jTree.setModel(new DefaultTreeModel(padre));
-                            jTree.setSelectionRow(indexArbol);
-                        }
-                    }
-                }
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                if ((node != null) && (node.getUserObject() instanceof UsuariosT)) {
-                    setDto((UsuariosT) node.getUserObject());
-                } else {
-                    jTree.setSelectionRow(1);
-                }
-                cambiarUsuarioT();
+                cambioSeleccion(e);
             }
         };
 
@@ -98,7 +63,60 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         iniciar();
     }
 
+    private void cambioSeleccion(TreeSelectionEvent e) {
+        jTree.removeTreeSelectionListener(treeSelectionListener);
+        int indexArbol = -1;
+        int iteration = 0;
+        DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
+        JInternalFrame temp = (JInternalFrame) ((Component) e.getSource()).getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+        if (isModificado()) {
+            if (JOptionPane.showInternalConfirmDialog(temp, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                grabar();
+            } else {
+                // el usuario fue modificado y no quiere grabar los cambios
+                if (isNuevo()) {
+                    getListDto().remove(getDto());
+
+                    for (UsuariosT usuario : getListDto()) {
+                        if (getDto() != null) {
+                            if (usuario.getIdUsuario() == null) {
+                                indexArbol = iteration + 1;
+                            }
+                        }
+                        DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
+                        padre.add(hijo);
+                        iteration++;
+                    }
+                }
+                setDto(getOldDto());
+                if (isNuevo()) {
+                    jTree.setModel(new DefaultTreeModel(padre));
+                    jTree.setSelectionRow(indexArbol);
+                }
+                txtUsuario.setEnabled(false);
+                setModificado(false);
+                setNuevo(false);
+                btnNuevo.setEnabled(true);
+            }
+        }
+        jTree.addTreeSelectionListener(treeSelectionListener);
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+        if ((node != null) && (node.getUserObject() instanceof UsuariosT)) {
+            setDto((UsuariosT) node.getUserObject());
+        } else {
+            jTree.setSelectionRow(1);
+        }
+        cambiarUsuarioT();
+    }
+
     public void iniciar() {
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMUsuarios.class, this);
+        JMenuItem menuFileNew = new JMenuItem("New");
+        popupMenu = new JPopupMenu("Menu");
+        popupMenu.add(menuFileNew);
+        jTree.add(popupMenu);
+        menuFileNew.setAction(actionMap.get("nuevo"));
+
         setResourceMap(DesktopApp.getApplication().getContext().getResourceMap(ABMUsuarios.class));
         HashMap parametrosUsuarios = new HashMap();
         parametrosUsuarios.put("pJoinEstados", true);
@@ -135,6 +153,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         }
         cboEstados.setModel(estadosComboBoxModel);
         cboEstados.setSelectedIndex(indexEstado);
+        Collections.sort(rolesTs);
         DefaultListModel disponiblesListModel = new DefaultListModel();
         for (RolesT rol : rolesTs) {
             if (rol.getFuncion() != null) {
@@ -152,7 +171,9 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         cboEstados.setEnabled(!DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario().equals(getDto().getIdUsuario()));
         cboEstados.removeItemListener(itemListener);
         DefaultListModel asignadosListModel = new DefaultListModel();
-        for (RolesT rol : getDto().getIdRolCollection()) {
+        List<RolesT> roles = (List<RolesT>) getDto().getIdRolCollection();
+        Collections.sort(roles);
+        for (RolesT rol : roles) {
             if (rol.getFuncion() != null) {
                 asignadosListModel.addElement(rol);
             }
@@ -189,7 +210,8 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         }
         UsuariosT nuevoUsuario = new UsuariosT();
         HashMap parametrosEstados = new HashMap();
-        parametrosEstados.put("pIdEstado", 1);//HARDCODEADO
+        parametrosEstados.put("pJoinDominios", true);
+        parametrosEstados.put("pDescripcionDominio", "USUARIOS");
         nuevoUsuario.setIdEstado(((ArrayList<EstadosT>) DesktopApp.getApplication().getEstadosT(parametrosEstados)).get(0));
         nuevoUsuario.setIdRolCollection(new ArrayList<RolesT>());
         nuevoUsuario.setContrasena("");
@@ -211,6 +233,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             iteration++;
         }
         cambiarUsuarioT();
+        tabPanel.setSelectedIndex(0);
         jTree.setModel(new DefaultTreeModel(padre));
         jTree.setSelectionRow(indexArbol);
         setNuevo(true);
@@ -320,33 +343,41 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
 
     @Action(enabledProperty = "modificado")
     public void grabar() {
-        if (isNuevo()) {
-            DesktopApp.getApplication().actualizarUsuariosT(getDto(), true);
-            DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
-            int indexArbol = -1;
-            int iteration = 0;
-            for (UsuariosT usuario : getListDto()) {
-                if (getDto() != null) {
-                    if (usuario.getIdUsuario() == null) {
-                        indexArbol = iteration + 1;
+        try {
+            if (isNuevo()) {
+                setDto(DesktopApp.getApplication().updateUsuariosT(getDto(), true));
+                HashMap parametrosUsuarios = new HashMap();
+                parametrosUsuarios.put("pJoinEstados", true);
+                parametrosUsuarios.put("pJoinRoles", true);
+                setListDto((ArrayList<UsuariosT>) DesktopApp.getApplication().getUsuariosT(parametrosUsuarios));
+                DefaultMutableTreeNode padre = new DefaultMutableTreeNode(getResourceMap().getString("usuarios"));
+                int indexArbol = -1;
+                int iteration = 0;
+                for (UsuariosT usuario : getListDto()) {
+                    if (getDto() != null) {
+                        if (usuario.getIdUsuario().equals(getDto().getIdUsuario())) {
+                            indexArbol = iteration + 1;
+                        }
                     }
+                    DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
+                    padre.add(hijo);
+                    iteration++;
                 }
-                DefaultMutableTreeNode hijo = new DefaultMutableTreeNode(usuario);
-                padre.add(hijo);
-                iteration++;
+                setModificado(false);
+                setNuevo(false);
+                jTree.setModel(new DefaultTreeModel(padre));
+                jTree.setSelectionRow(indexArbol);
+
+            } else {
+                DesktopApp.getApplication().updateUsuariosT(getDto(), false);
             }
             setModificado(false);
             setNuevo(false);
-            jTree.setModel(new DefaultTreeModel(padre));
-            jTree.setSelectionRow(indexArbol);
-
-        } else {
-            DesktopApp.getApplication().actualizarUsuariosT(getDto(), false);
+            txtUsuario.setEnabled(false);
+            btnNuevo.setEnabled(true);
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo usuario.\nVerifique que el usuario no exista");
         }
-        setModificado(false);
-        setNuevo(false);
-        txtUsuario.setEnabled(false);
-        btnNuevo.setEnabled(true);
     }
 
     /** This method is called from within the constructor to
@@ -386,6 +417,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         btnNuevo = new javax.swing.JButton();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -393,6 +425,23 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setMinimumSize(new java.awt.Dimension(411, 331));
         setName("Form"); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jSplitPane1.setDividerLocation(150);
         jSplitPane1.setName("jSplitPane1"); // NOI18N
@@ -402,6 +451,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         jTree.setName("jTree"); // NOI18N
+        jTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTreeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTree);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -412,7 +466,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -551,6 +605,11 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             public Object getElementAt(int i) { return strings[i]; }
         });
         lstRoles.setName("lstRoles"); // NOI18N
+        lstRoles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstRolesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(lstRoles);
 
         jScrollPane3.setName("jScrollPane3"); // NOI18N
@@ -591,14 +650,14 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarRol)
                     .addComponent(btnQuitarRol))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                .addGap(31, 31, 31))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                .addGap(47, 47, 47))
         );
 
         tabPanel.addTab(resourceMap.getString("jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
@@ -619,7 +678,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNuevo)
                 .addContainerGap())
@@ -635,31 +694,61 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
+
     getDto().setNombres(((txtNombres.getText() + String.valueOf(evt.getKeyChar())).trim()).toUpperCase());
     setModificado(true);
 }//GEN-LAST:event_txtNombresKeyTyped
 
 private void txtApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidosKeyTyped
+
     getDto().setApellidos(((txtApellidos.getText() + String.valueOf(evt.getKeyChar())).trim()).toUpperCase());
     setModificado(true);
 }//GEN-LAST:event_txtApellidosKeyTyped
 
 private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
+
     getDto().setMails((txtEmail.getText() + String.valueOf(evt.getKeyChar())).trim());
     setModificado(true);
 }//GEN-LAST:event_txtEmailKeyTyped
 
 private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+
     getDto().setUsuario(((txtUsuario.getText() + String.valueOf(evt.getKeyChar())).trim()).toUpperCase());
     setModificado(true);
 }//GEN-LAST:event_txtUsuarioKeyTyped
+
+private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+
+    if (isModificado() || isNuevo()) {
+        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+    } else {
+        dispose();
+    }
+
+}//GEN-LAST:event_formInternalFrameClosing
+
+private void jTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTreeMouseClicked
+
+    if ((evt.getButton() == 3) && !isNuevo()) {
+        popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+    }
+}//GEN-LAST:event_jTreeMouseClicked
+
+private void lstRolesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstRolesMouseClicked
+
+    if (evt.getClickCount() > 1) {
+        agregarRol();
+    }
+}//GEN-LAST:event_lstRolesMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarRol;
     private javax.swing.JButton btnGrabar;
@@ -692,4 +781,5 @@ private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private ArrayList<EstadosT> estadosTs;
     private ItemListener itemListener;
     private TreeSelectionListener treeSelectionListener;
+    private JPopupMenu popupMenu;
 }

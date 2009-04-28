@@ -7,6 +7,8 @@ package ar.com.jpack.desktop.reportes;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
+import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.StockT;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -17,15 +19,13 @@ import org.jdesktop.application.Task;
  *
  * @author  jmhanun
  */
-public class ReporteStock extends javax.swing.JInternalFrame {
+public class ReporteStock extends CustomInternalFrame<StockT> {
 
     /** Creates new form Reportes */
-    private ReporteStock() {
+    public ReporteStock() {
+        super(new StockT());
         initComponents();
-    }
-
-    public static ReporteStock getReporteStock() {
-        return reporteStock;
+        getRootPane().setDefaultButton(aceptarButton);
     }
 
     @Action
@@ -56,7 +56,9 @@ public class ReporteStock extends javax.swing.JInternalFrame {
             if (!codigoTextField.getText().isEmpty()) {
                 parametro.put("pCodigo", codigoTextField.getText());
             }
-            JasperPrint jp = DesktopApp.getApplication().getReporte("stock", parametro);
+            parametro.put("pduke", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\Duke.gif");
+            parametro.put("pimagen", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\logoreporte.jpg");
+            JasperPrint jp = DesktopApp.getApplication().getReporte("clientes", parametro);
             JasperViewer jv = new JasperViewer(jp, false);
             jv.setTitle("Reporte de Stock");
             jv.setVisible(true);
@@ -143,6 +145,5 @@ public class ReporteStock extends javax.swing.JInternalFrame {
     private javax.swing.JTextField codigoTextField;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    private static ReporteStock reporteStock = new ReporteStock();
 }
 
