@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ClientesFacade.java
  */
 package ar.com.jpack.negocio;
 
@@ -63,9 +62,6 @@ public class ClientesFacade implements ClientesFacadeRemote {
     }
 
     public List<ClientesT> findClientesT(HashMap parametros) {
-        
-        
-        
         Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
         List <Clientes> clientesList;
         List <ClientesT> clientesTList=new ArrayList();

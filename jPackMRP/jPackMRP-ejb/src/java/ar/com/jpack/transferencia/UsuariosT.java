@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * UsuariosT.java
  */
 package ar.com.jpack.transferencia;
 
@@ -248,7 +247,7 @@ public class UsuariosT implements Serializable {
 
     @Override
     public String toString() {
-        return getUsuario();
+        return usuario;
     }
 
     @Override
@@ -272,6 +271,4 @@ public class UsuariosT implements Serializable {
         hash = 67 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
         return hash;
     }
-
-
 }

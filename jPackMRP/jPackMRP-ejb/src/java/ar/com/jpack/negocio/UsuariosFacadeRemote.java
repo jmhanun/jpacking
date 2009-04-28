@@ -7,6 +7,7 @@ import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.HashMap;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Remote;
 
 /**
@@ -15,14 +16,6 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface UsuariosFacadeRemote {
-
-    /**
-     * 
-     * @return
-     * @deprecated desde la llegada del dozer se debe usar getUsuariosT(Hashmap)
-     */
-    @Deprecated
-    public List<UsuariosT> findAllUsuariosT();
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
@@ -51,7 +44,7 @@ public interface UsuariosFacadeRemote {
      * @param usuariosT contiene los datos del usuario a validar
      * @return devuelve el usuarioT validado
      */
-    public UsuariosT validarUsuario(UsuariosT usuariosT);
+    public UsuariosT validateUsuarioT(UsuariosT usuariosT);
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
@@ -79,5 +72,5 @@ public interface UsuariosFacadeRemote {
      * @param contrasenia si es true la contraseña ha sido modificada
      * @return devuelve el usuarioT actualizado
      */
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia);
+    public UsuariosT updateUsuariosT(UsuariosT usuariosT, boolean contrasenia) throws EJBException;
 }

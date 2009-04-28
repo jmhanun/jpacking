@@ -4,8 +4,6 @@
  */
 package ar.com.jpack.transferencia;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -15,33 +13,37 @@ import java.util.Collection;
  */
 public class EstadosT implements Serializable {
 
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private Integer idEstado;
     private String descripcion;
+    private String notas;
     private Collection<OrdenesProduccionT> ordenesproduccionCollection;
     private Collection<ArticulosT> articulosCollection;
     private Collection<RemitosT> remitosCollection;
     private Collection<FacturasComprasT> facturascomprasCollection;
     private Collection<DomiciliosT> domiciliosCollection;
-    private Collection<AjustesStockT> ajustesstockCollection;
+    private DominiosT idDominio;
     private Collection<RemitosIngresoT> remitosingresoCollection;
+    private Collection<AjustesStockT> ajustesstockCollection;
     private Collection<NotasCreditoT> notascreditoCollection;
     private Collection<ListasPreciosT> listaspreciosCollection;
     private Collection<FacturasT> facturasCollection;
     private Collection<NotasDebitoT> notasdebitoCollection;
+    private Collection<TiposIvaT> tiposivaCollection;
+    private Collection<SellosT> sellosCollection;
     private Collection<MaquinasT> maquinasCollection;
     private Collection<ClientesT> clientesCollection;
     private Collection<OrdenesDepositoT> ordenesdepositoCollection;
+    private Collection<DetalleProduccionT> detalleproduccionCollection;
     private Collection<ProveedoresT> proveedoresCollection;
-    private Collection<EmpleadosT> empleadosCollection;
     private Collection<UsuariosT> usuariosCollection;
 
     public EstadosT() {
     }
 
-    public EstadosT(Integer idEstado, String descripcion) {
+    public EstadosT(Integer idEstado, String descripcion, String notas) {
         this.idEstado = idEstado;
         this.descripcion = descripcion;
+        this.notas = notas;
     }
 
     public Collection<ArticulosT> getArticulosCollection() {
@@ -50,6 +52,46 @@ public class EstadosT implements Serializable {
 
     public Collection<AjustesStockT> getAjustesstockCollection() {
         return ajustesstockCollection;
+    }
+
+    public Collection<DetalleProduccionT> getDetalleproduccionCollection() {
+        return detalleproduccionCollection;
+    }
+
+    public void setDetalleproduccionCollection(Collection<DetalleProduccionT> detalleproduccionCollection) {
+        this.detalleproduccionCollection = detalleproduccionCollection;
+    }
+
+    public DominiosT getIdDominio() {
+        return idDominio;
+    }
+
+    public void setIdDominio(DominiosT idDominio) {
+        this.idDominio = idDominio;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
+
+    public Collection<SellosT> getSellosCollection() {
+        return sellosCollection;
+    }
+
+    public void setSellosCollection(Collection<SellosT> sellosCollection) {
+        this.sellosCollection = sellosCollection;
+    }
+
+    public Collection<TiposIvaT> getTiposivaCollection() {
+        return tiposivaCollection;
+    }
+
+    public void setTiposivaCollection(Collection<TiposIvaT> tiposivaCollection) {
+        this.tiposivaCollection = tiposivaCollection;
     }
 
     public void setAjustesstockCollection(Collection<AjustesStockT> ajustesstockCollection) {
@@ -73,9 +115,7 @@ public class EstadosT implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        String oldDescripcion = this.descripcion;
         this.descripcion = descripcion;
-        changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
     }
 
     public Collection<DomiciliosT> getDomiciliosCollection() {
@@ -84,14 +124,6 @@ public class EstadosT implements Serializable {
 
     public void setDomiciliosCollection(Collection<DomiciliosT> domiciliosCollection) {
         this.domiciliosCollection = domiciliosCollection;
-    }
-
-    public Collection<EmpleadosT> getEmpleadosCollection() {
-        return empleadosCollection;
-    }
-
-    public void setEmpleadosCollection(Collection<EmpleadosT> empleadosCollection) {
-        this.empleadosCollection = empleadosCollection;
     }
 
     public Collection<FacturasT> getFacturasCollection() {
@@ -115,9 +147,7 @@ public class EstadosT implements Serializable {
     }
 
     public void setIdEstado(Integer idEstado) {
-        Integer oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
-        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public Collection<ListasPreciosT> getListaspreciosCollection() {
@@ -203,24 +233,6 @@ public class EstadosT implements Serializable {
     @Override
     public String toString() {
         //TODO: modificar para que se use el Render en lugar del toString(futuro)
-        return getDescripcion();
-    }
-
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
+        return descripcion;
     }
 }

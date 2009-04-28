@@ -19,31 +19,6 @@ import java.util.List;
  */
 public class ListasDataTransferHelper {
 
-
-    // TIPOS IVA 1
-    public static TiposIvaListaT copiarTipoIva(Tiposiva item) {
-        TiposIvaListaT t = null;
-        if (item != null) {
-            t = new TiposIvaListaT(item.getIdTipoIVA(),
-                    item.getDescripcion(), 
-                    item.getAbreviatura(), 
-                    item.getIdEstado().getDescripcion());
-        }
-        return t;
-    }
-
-    // Tipos Iva muchos
-    public static List<TiposIvaListaT> copiarTiposIvaALista(List<Tiposiva> items) {
-        List<TiposIvaListaT> lista = new ArrayList<TiposIvaListaT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarTipoIva((Tiposiva) i.next()));
-        }
-
-        return lista;
-    }
-
-    
     // CLIENTES 1
     public static ClientesListaT copiarCliente(Clientes item) {
         ClientesListaT t = null;

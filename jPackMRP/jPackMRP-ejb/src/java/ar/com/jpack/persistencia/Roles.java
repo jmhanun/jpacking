@@ -1,8 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Roles.java
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -14,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,8 +21,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "roles")
-@NamedQueries({@NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol"), @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"), @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion"), @NamedQuery(name = "Roles.findByComponente", query = "SELECT r FROM Roles r WHERE r.componente = :componente"), @NamedQuery(name = "Roles.findByFuncion", query = "SELECT r FROM Roles r WHERE r.funcion = :funcion"), @NamedQuery(name = "Roles.findByOrden", query = "SELECT r FROM Roles r WHERE r.orden = :orden"), @NamedQuery(name = "Roles.findByOrdenHermano", query = "SELECT r FROM Roles r WHERE r.ordenHermano = :ordenHermano")})
 public class Roles implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idRol", nullable = false)
@@ -171,5 +167,4 @@ public class Roles implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Roles[idRol=" + idRol + "]";
     }
-
 }

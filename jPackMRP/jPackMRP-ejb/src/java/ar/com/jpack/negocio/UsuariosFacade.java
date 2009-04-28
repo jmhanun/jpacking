@@ -5,17 +5,15 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.transferencia.UsuariosT;
-import ar.com.jpack.transferencia.RolesT;
-import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import ar.com.jpack.util.DozerUtil;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,7 +42,7 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
      * @param usuariosT contiene los datos del usuario a validar
      * @return devuelve el usuarioT validado
      */
-    public UsuariosT validarUsuario(UsuariosT usuariosT) {
+    public UsuariosT validateUsuarioT(UsuariosT usuariosT) {
         StringBuffer codificado = codificar(usuariosT.getContrasena());
         usuariosT.setContrasena(codificado.toString());
         HashMap parametros = new HashMap();
@@ -82,25 +80,6 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
     }
 
     /**
-     * 
-     * @return
-     * @deprecated desde la llegada del dozer se debe usar getUsuariosT(Hashmap)
-     */
-    @Deprecated
-    public List<UsuariosT> findAllUsuariosT() {
-        List<Usuarios> usuarios = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Usuarios.class).list();
-        List<UsuariosT> usuariosTs = new ArrayList<UsuariosT>();
-        for (Iterator<Usuarios> it = usuarios.iterator(); it.hasNext();) {
-            Usuarios usuario = it.next();
-            UsuariosT usuariosT;
-            usuariosT = DataTransferHelper.copiarUsuario(usuario);
-            usuariosT.setIdRolCollection((ArrayList<RolesT>) DataTransferHelper.copiarRolesALista(usuario.getIdRolCollection()));
-            usuariosTs.add(usuariosT);
-        }
-        return usuariosTs;
-    }
-
-    /**
      * Actualiza o crea un usuarioT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
      * 
@@ -108,7 +87,7 @@ public class UsuariosFacade implements UsuariosFacadeRemote {
      * @param contrasenia si es true la contraseña ha sido modificada
      * @return devuelve el usuarioT actualizado
      */
-    public UsuariosT actualizarUsuariosT(UsuariosT usuariosT, boolean contrasenia) {
+    public UsuariosT updateUsuariosT(UsuariosT usuariosT, boolean contrasenia) throws EJBException{
         if (contrasenia) {
             StringBuffer codificado = codificar(usuariosT.getContrasena());
             usuariosT.setContrasena(codificado.toString());

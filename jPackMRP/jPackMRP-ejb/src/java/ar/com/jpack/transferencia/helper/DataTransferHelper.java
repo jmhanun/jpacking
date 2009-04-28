@@ -7,7 +7,6 @@ package ar.com.jpack.transferencia.helper;
 import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.persistencia.Clientes;
 import ar.com.jpack.persistencia.Estados;
-import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.persistencia.Tiposdocumento;
 import ar.com.jpack.persistencia.Unidadesmedida;
 import ar.com.jpack.persistencia.Usuarios;
@@ -15,7 +14,6 @@ import ar.com.jpack.persistencia.Tiposiva;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.EstadosT;
-import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
@@ -90,44 +88,6 @@ public class DataTransferHelper {
 
         return lista;
     }
-    // ROLES muchos
-    public static List<RolesT> copiarRolesALista(Collection items) {
-        List<RolesT> lista = new ArrayList<RolesT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarRol((Roles) i.next()));
-        }
-
-        return lista;
-    }
-
-    // ROLES 1
-    public static RolesT copiarRol(Roles item) {
-        RolesT t = null;
-        if (item != null) {
-            t = new RolesT(item.getIdRol(),
-                    item.getRol(),
-                    item.getDescripcion(),
-                    item.getComponente(),
-                    item.getFuncion(),
-                    item.getOrden(),
-                    item.getOrdenHermano(),
-                    copiarRol(item.getIdRolPadre()));
-        }
-
-        return t;
-    }
-
-    // USUARIOS muchos
-    public static List<UsuariosT> copiarUsuariosALista(Collection items) {
-        List<UsuariosT> lista = new ArrayList<UsuariosT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarUsuario((Usuarios) i.next()));
-        }
-
-        return lista;
-    }
 
     // USUARIOS 1
     public static UsuariosT copiarUsuario(Usuarios item) {
@@ -146,23 +106,13 @@ public class DataTransferHelper {
         return t;
     }
 
-    // ESTADOS muchos
-    public static List<EstadosT> copiarEstadosALista(Collection items) {
-        List<EstadosT> lista = new ArrayList<EstadosT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarEstado((Estados) i.next()));
-        }
-
-        return lista;
-    }
 
     // ESTADOS 1
     public static EstadosT copiarEstado(Estados item) {
         EstadosT t = null;
         if (item != null) {
             t = new EstadosT(item.getIdEstado(),
-                    item.getDescripcion());
+                    item.getDescripcion(),item.getNotas());
         }
         return t;
     }
@@ -188,18 +138,6 @@ public class DataTransferHelper {
         }
         return t;
     }
-
-    // Tipos Iva muchos
-    public static List<TiposIvaT> copiarTiposIvaALista(List<Tiposiva> items) {
-        List<TiposIvaT> lista = new ArrayList<TiposIvaT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarTipoIva((Tiposiva) i.next()));
-        }
-
-        return lista;
-    }
-
     
     // UNIDADES MEDIDA muchos
     public static List<UnidadesMedidaT> copiarUnidadesMedidaALista(List<Unidadesmedida> items) {

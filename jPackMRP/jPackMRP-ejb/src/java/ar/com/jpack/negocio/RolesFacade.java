@@ -5,7 +5,6 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Roles;
 import ar.com.jpack.transferencia.RolesT;
-import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +27,6 @@ public class RolesFacade implements RolesFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Deprecated
-    public List<Roles> findAll() {
-        return ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Roles.class).list();
-    }
-
-    @Deprecated
-    public List<RolesT> findAllUsuariosT() {
-        List<Roles> roles = findAll();
-        return DataTransferHelper.copiarRolesALista(roles);
-    }
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap

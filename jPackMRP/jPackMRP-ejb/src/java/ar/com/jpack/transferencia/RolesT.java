@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * RolesT.java
  */
 package ar.com.jpack.transferencia;
 
@@ -120,7 +119,7 @@ public class RolesT implements Serializable, Comparable<RolesT> {
 
     @Override
     public String toString() {
-        return this.getRol();
+        return rol;
     }
 
     public int compareTo(RolesT rolesT) {

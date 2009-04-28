@@ -16,12 +16,6 @@ import javax.ejb.Remote;
 @Remote
 public interface RolesFacadeRemote {
 
-    @Deprecated
-    List<Roles> findAll();
-
-    @Deprecated
-    public List<RolesT> findAllUsuariosT();
-
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
      * @param parametros <br>
