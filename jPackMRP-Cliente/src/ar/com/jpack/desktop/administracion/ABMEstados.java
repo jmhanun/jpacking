@@ -10,6 +10,8 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.EstadosTableModel;
 import ar.com.jpack.transferencia.EstadosT;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -61,7 +63,9 @@ public class ABMEstados extends CustomInternalFrame<EstadosT> {
 
     @Action
     public void seleccionar() {
+        setDto((EstadosT) tableModel.getRow(estadosTable.getSelectedRow()));
         JOptionPane.showInternalMessageDialog(this, "seleccionar");
+        this.setVisible(false);
     }
 
     @Action

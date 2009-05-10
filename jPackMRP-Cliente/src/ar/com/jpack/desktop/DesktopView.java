@@ -8,6 +8,7 @@ import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -150,6 +151,12 @@ public class DesktopView extends FrameView {
     private int busyIconIndex = 0;
     private JDialog aboutBox;
     ArrayList<RolesT> rolesTs;
+    private CustomInternalFrame padre = null;
+
+    public JDesktopPane getDesktopPanel() {
+        return desktopPanel;
+    }
+    
 //</editor-fold>
     /**
      * Instancia el DesktopView indicandole el DesktopApp de quien depende.
@@ -392,7 +399,8 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showEstados() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", null);
+//        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", padre);
     }
     
     /**
@@ -523,6 +531,14 @@ public class DesktopView extends FrameView {
             i++;
         }
         return openFrame;
+    }
+
+    public CustomInternalFrame getPadre() {
+        return padre;
+    }
+
+    public void setPadre(CustomInternalFrame padre) {
+        this.padre = padre;
     }
 }
 

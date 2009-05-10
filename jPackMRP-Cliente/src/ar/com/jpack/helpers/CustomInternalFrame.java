@@ -39,6 +39,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
     public void setDto(E dto) {
         setOldDto(getDto());
         this.dto = dto;
+        firePropertyChange("dto", getOldDto(), getDto());
     }
 
     public ArrayList<E> getListDto() {
