@@ -156,7 +156,6 @@ public class DesktopView extends FrameView {
     public JDesktopPane getDesktopPanel() {
         return desktopPanel;
     }
-    
 //</editor-fold>
     /**
      * Instancia el DesktopView indicandole el DesktopApp de quien depende.
@@ -372,7 +371,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showReporteStock() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", padre);
     }
 
     /**
@@ -382,27 +381,29 @@ public class DesktopView extends FrameView {
      */
     @Action
     public Task showGestionUsuariosFrame() {
-//        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.GestionUsuarios", "Gestion de usuarios", null);
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMUsuarios", "Gestion de usuarios", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMUsuarios", "Gestion de usuarios", padre);
     }
 
     @Action
     public Task showRegistroRemitosFrame() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos", padre);
     }
 
     @Action
     public Task showTiposIva() {
-     //   return new ShowFrame(getApplication(), "ar.com.jpack.desktop.lov.ABMClientes", "Clientes", null);
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva", null);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMTiposIva", "Tipos Iva", padre);
     }
 
     @Action
     public Task showEstados() {
-//        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", null);
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMEstados", "Estados", padre);
     }
-    
+
+    @Action
+    public Task showCambiarPassword() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.CambiarPassword", "Cambiar contraseña", padre);
+    }
+
     /**
      * InnerClass Task para mostrar los InternalFrame
      * @author jmhanun
