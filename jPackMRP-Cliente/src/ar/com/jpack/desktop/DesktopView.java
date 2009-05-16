@@ -385,6 +385,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showRoles() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMRoles", "Roles", padre);
+    }
+
+    @Action
     public Task showRegistroRemitosFrame() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos", padre);
     }
