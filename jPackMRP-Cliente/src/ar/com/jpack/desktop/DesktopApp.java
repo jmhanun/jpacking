@@ -8,6 +8,7 @@ import ar.com.jpack.negocio.ClientesFacadeRemote;
 import ar.com.jpack.negocio.EstadosFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
+import ar.com.jpack.negocio.SetupFacadeRemote;
 import ar.com.jpack.negocio.TiposDocumentoFacadeRemote;
 import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
@@ -17,6 +18,7 @@ import ar.com.jpack.transferencia.listas.ClientesListaT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.SetupT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
@@ -59,6 +61,7 @@ public class DesktopApp extends SingleFrameApplication {
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
     private DesktopView desktopView;
+    private SetupFacadeRemote setupFacade;
 
     /**
      * A convenient static getter for the application instance.
@@ -448,6 +451,30 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
             return usuariosFacade.updateUsuariosT(usuariosT, contrasenia);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Setup filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdSetup</b>           filtra por 'eq' idRol (Integer) <br>
+     * <b>pDescripcion</b>       filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pValor</b>             filtra por 'like AnyWhere' valor (String) <br>
+     * <b>pFechaModificacion</b> filtra por 'eq' fechaModificacion (Date) <br>
+     * <b>pJoinUsuarios</b>      obliga a Joinear con Usuarios <br>
+     * <b>pIdUsuario</b>         filtra por 'eq' idUsuario (Integer) (debe haber sido joineado con Estado) <br>
+     * @return devuelve la lista de los Setup que cumplan con el filtro
+     */
+
+    public List<SetupT> getSetupT(HashMap parametros) {
+        try {
+            setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
+            return setupFacade.getSetupT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
