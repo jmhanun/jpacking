@@ -9,10 +9,11 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.RolesTableModel;
-import ar.com.jpack.helpers.tablemodels.TiposDocumentoTableModel;
 import ar.com.jpack.transferencia.RolesT;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
@@ -27,7 +28,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
     /** Creates new form ABMRoles */
     public ABMRoles() {
-        initComponents();
+        super(new RolesT());
         initComponents();
         HashMap parametros = new HashMap();
         setListDto((ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros));
@@ -47,9 +48,49 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             }
         };
         rolesTable.setRowSorter(sorter);
+
+        setModificado(false);
+        setNuevo(false);
+        txtComponente.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        txtFuncion.setEnabled(false);
+        txtRol.setEnabled(false);
+        cboRolPadre.setEnabled(false);
+        btnAplicar.setEnabled(false);
+
+        if (getPadre() == null) {
+            btnSeleccionar.setEnabled(false);
+        }
+
+        parametros = new HashMap();
+        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros);
+        Collections.sort(rolesPadreTs);
+
+        DefaultComboBoxModel rolesComboBoxModel = new DefaultComboBoxModel();
+        int indexRol = 0;
+        int iteration = 0;
+        rolesComboBoxModel.addElement("<Ninguno>");
+        for (RolesT rol : rolesPadreTs) {
+            rolesComboBoxModel.addElement(rol);
+            if (getDto().getIdRolPadre() != null) {
+                if (rol.getIdRol().equals(getDto().getIdRolPadre().getIdRol())) {
+                    indexRol = iteration;
+                }
+            }
+            iteration++;
+        }
+        cboRolPadre.setModel(rolesComboBoxModel);
+        cboRolPadre.setSelectedIndex(indexRol);
+
+
     }
 
-        @Action
+    @Action
+    public void aplicar() {
+        JOptionPane.showInternalMessageDialog(this, "aplicar");
+    }
+
+    @Action
     public void agregar() {
         JOptionPane.showInternalMessageDialog(this, "agregar");
     }
@@ -74,7 +115,6 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         JOptionPane.showInternalMessageDialog(this, "cancelar");
     }
 
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -94,11 +134,11 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtRol = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
+        cboRolPadre = new javax.swing.JComboBox();
+        txtComponente = new javax.swing.JTextField();
+        txtFuncion = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -165,8 +205,8 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                .addGap(65, 65, 65))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
@@ -188,22 +228,23 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
+        txtRol.setText(resourceMap.getString("txtRol.text")); // NOI18N
+        txtRol.setName("txtRol"); // NOI18N
 
-        jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
-        jTextField2.setName("jTextField2"); // NOI18N
+        txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
+        txtDescripcion.setName("txtDescripcion"); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setName("jComboBox1"); // NOI18N
+        cboRolPadre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboRolPadre.setName("cboRolPadre"); // NOI18N
 
-        jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
-        jTextField3.setName("jTextField3"); // NOI18N
+        txtComponente.setText(resourceMap.getString("txtComponente.text")); // NOI18N
+        txtComponente.setName("txtComponente"); // NOI18N
 
-        jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
-        jTextField4.setName("jTextField4"); // NOI18N
+        txtFuncion.setText(resourceMap.getString("txtFuncion.text")); // NOI18N
+        txtFuncion.setName("txtFuncion"); // NOI18N
 
-        btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMRoles.class, this);
+        btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -222,11 +263,11 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 384, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)))
+                            .addComponent(txtRol, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .addComponent(cboRolPadre, 0, 435, Short.MAX_VALUE)
+                            .addComponent(txtComponente, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .addComponent(txtFuncion, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)))
                     .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -236,31 +277,30 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboRolPadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtComponente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMRoles.class, this);
         btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
         btnSeleccionar.setName("btnSeleccionar"); // NOI18N
 
@@ -280,24 +320,24 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
-                .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                .addGap(14, 14, 14))
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -312,7 +352,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
     }// </editor-fold>//GEN-END:initComponents
 
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-// TODO add your handling code here:
+
     if (isModificado() || isNuevo()) {
         if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             dispose();
@@ -329,7 +369,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cboRolPadre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -339,16 +379,16 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTable rolesTable;
+    private javax.swing.JTextField txtComponente;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtFuncion;
+    private javax.swing.JTextField txtRol;
     // End of variables declaration//GEN-END:variables
-
     public static final String[] columnNames = {
         "Id", "Rol", "Descripcion", "Rol Padre", "Componente", "Funcion", "Orden", "Orden Hermano"
     };
     protected RolesTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
+    private ArrayList<RolesT> rolesPadreTs;
 }
