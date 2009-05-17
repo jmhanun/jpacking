@@ -10,11 +10,15 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.RolesTableModel;
 import ar.com.jpack.transferencia.RolesT;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -56,7 +60,6 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtFuncion.setEnabled(false);
         txtRol.setEnabled(false);
         cboRolPadre.setEnabled(false);
-        btnAplicar.setEnabled(false);
 
         if (getPadre() == null) {
             btnSeleccionar.setEnabled(false);
@@ -82,10 +85,12 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         cboRolPadre.setModel(rolesComboBoxModel);
         cboRolPadre.setSelectedIndex(indexRol);
 
+        rolesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
     }
 
-    @Action
+    @Action(enabledProperty = "modificado")
     public void aplicar() {
         JOptionPane.showInternalMessageDialog(this, "aplicar");
     }
@@ -102,7 +107,11 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
     @Action
     public void modificar() {
-        JOptionPane.showInternalMessageDialog(this, "modificar");
+        txtComponente.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtFuncion.setEnabled(true);
+        txtRol.setEnabled(true);
+        cboRolPadre.setEnabled(true);
     }
 
     @Action
@@ -112,7 +121,37 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
     @Action
     public void cancelar() {
-        JOptionPane.showInternalMessageDialog(this, "cancelar");
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMRoles.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cambiarRolT() {
+        txtRol.setText(getDto().getRol());
+        txtFuncion.setText(getDto().getFuncion());
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtComponente.setText(getDto().getComponente());
+        int index = 0;
+        int iteration = 1;
+        for (RolesT rol : rolesPadreTs) {
+            if (getDto().getIdRolPadre() != null) {
+                if (rol.getIdRol().equals(getDto().getIdRolPadre().getIdRol())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+
+        cboRolPadre.setSelectedIndex(index);
+
+        txtComponente.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        txtFuncion.setEnabled(false);
+        txtRol.setEnabled(false);
+        cboRolPadre.setEnabled(false);
+
     }
 
     /** This method is called from within the constructor to
@@ -190,6 +229,16 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             }
         ));
         rolesTable.setName("rolesTable"); // NOI18N
+        rolesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rolesTableMouseClicked(evt);
+            }
+        });
+        rolesTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                rolesTableKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(rolesTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -205,7 +254,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -230,6 +279,11 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
         txtRol.setText(resourceMap.getString("txtRol.text")); // NOI18N
         txtRol.setName("txtRol"); // NOI18N
+        txtRol.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtRolKeyReleased(evt);
+            }
+        });
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
@@ -296,7 +350,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                     .addComponent(txtFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -337,7 +391,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -362,6 +416,31 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     }
 
 }//GEN-LAST:event_formInternalFrameClosing
+
+private void rolesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rolesTableMouseClicked
+
+    setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
+    cambiarRolT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+
+}//GEN-LAST:event_rolesTableMouseClicked
+
+private void rolesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rolesTableKeyReleased
+
+    setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
+    cambiarRolT();
+
+}//GEN-LAST:event_rolesTableKeyReleased
+
+private void txtRolKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRolKeyReleased
+
+    getDto().setRol(String.valueOf(txtRol.getText()).toUpperCase());
+    setModificado(true);
+
+}//GEN-LAST:event_txtRolKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
