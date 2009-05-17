@@ -65,30 +65,30 @@ public class SetupFacade implements SetupFacadeRemote {
      * @return devuelve la lista de los Setup que cumplan con el filtro
      */
     public List<Setup> getSetup(HashMap parametros) {
-        Criteria rolesCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Setup.class);
-        List<Setup> rolesList;
+        Criteria setupCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Setup.class);
+        List<Setup> setupList;
         if (parametros.containsKey("pIdSetup")) {
-            rolesCritearia.add(Restrictions.eq("idSetup", parametros.get("pIdSetup")));
+            setupCritearia.add(Restrictions.eq("idSetup", parametros.get("pIdSetup")));
         }
         if (parametros.containsKey("pDescripcion")) {
-            rolesCritearia.add(Restrictions.like("descripcion", parametros.get("pDescripcion").toString(), MatchMode.ANYWHERE));
+            setupCritearia.add(Restrictions.like("descripcion", parametros.get("pDescripcion").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pValor")) {
-            rolesCritearia.add(Restrictions.like("valor", parametros.get("pValor").toString(), MatchMode.ANYWHERE));
+            setupCritearia.add(Restrictions.like("valor", parametros.get("pValor").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pFechaModificacion")) {
-            rolesCritearia.add(Restrictions.eq("fechaModificacion", parametros.get("pFechaModificacion").toString()));
+            setupCritearia.add(Restrictions.eq("fechaModificacion", parametros.get("pFechaModificacion").toString()));
         }
         if (parametros.containsKey("pJoinUsuarios")) {
-            rolesCritearia.setFetchMode("idUsuarioCollection", FetchMode.JOIN);
+            setupCritearia.setFetchMode("idUsuarioCollection", FetchMode.JOIN);
             if (parametros.containsKey("pIdUsuario")) {
                 //Con esto filtro por el objeto que estaba lazy
-                Criteria usuarioCriteria = rolesCritearia.createCriteria("idUsuarioCollection");
+                Criteria usuarioCriteria = setupCritearia.createCriteria("idUsuarioCollection");
                 usuarioCriteria.add(Restrictions.eq("idUsuario", parametros.get("pIdUsuario")));
             }
         }
-        rolesList = rolesCritearia.list();
-        return rolesList;
+        setupList = setupCritearia.list();
+        return setupList;
     }
  
 }
