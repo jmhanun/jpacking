@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "proveedores")
-@NamedQueries({@NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor"), @NamedQuery(name = "Proveedores.findByNombres", query = "SELECT p FROM Proveedores p WHERE p.nombres = :nombres"), @NamedQuery(name = "Proveedores.findByApellido", query = "SELECT p FROM Proveedores p WHERE p.apellido = :apellido"), @NamedQuery(name = "Proveedores.findByMails", query = "SELECT p FROM Proveedores p WHERE p.mails = :mails"), @NamedQuery(name = "Proveedores.findByTelefonos", query = "SELECT p FROM Proveedores p WHERE p.telefonos = :telefonos"), @NamedQuery(name = "Proveedores.findByFechaAlta", query = "SELECT p FROM Proveedores p WHERE p.fechaAlta = :fechaAlta"), @NamedQuery(name = "Proveedores.findByObservaciones", query = "SELECT p FROM Proveedores p WHERE p.observaciones = :observaciones")})
+@NamedQueries({@NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor"), @NamedQuery(name = "Proveedores.findByNombres", query = "SELECT p FROM Proveedores p WHERE p.nombres = :nombres"), @NamedQuery(name = "Proveedores.findByApellido", query = "SELECT p FROM Proveedores p WHERE p.apellido = :apellido"), @NamedQuery(name = "Proveedores.findByMails", query = "SELECT p FROM Proveedores p WHERE p.mails = :mails"), @NamedQuery(name = "Proveedores.findByTelefonos", query = "SELECT p FROM Proveedores p WHERE p.telefonos = :telefonos"), @NamedQuery(name = "Proveedores.findByFechaAlta", query = "SELECT p FROM Proveedores p WHERE p.fechaAlta = :fechaAlta"), @NamedQuery(name = "Proveedores.findByObservaciones", query = "SELECT p FROM Proveedores p WHERE p.observaciones = :observaciones"), @NamedQuery(name = "Proveedores.findByCuit", query = "SELECT p FROM Proveedores p WHERE p.cuit = :cuit")})
 public class Proveedores implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,18 +36,20 @@ public class Proveedores implements Serializable {
     private Integer idProveedor;
     @Column(name = "nombres", nullable = false)
     private String nombres;
-    @Column(name = "apellido", nullable = false)
+    @Column(name = "apellido")
     private String apellido;
-    @Column(name = "mails", nullable = false)
+    @Column(name = "mails")
     private String mails;
-    @Column(name = "telefonos", nullable = false)
+    @Column(name = "telefonos")
     private String telefonos;
-    @Column(name = "fechaAlta", nullable = false)
+    @Column(name = "fechaAlta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-    @Column(name = "observaciones", nullable = false)
+    @Column(name = "observaciones")
     private String observaciones;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
+    @Column(name = "cuit", nullable = false)
+    private String cuit;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch=FetchType.LAZY)
     private Collection<Facturascompras> facturascomprasCollection;
     @OneToMany(mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Domicilios> domiciliosCollection;
@@ -69,14 +71,10 @@ public class Proveedores implements Serializable {
         this.idProveedor = idProveedor;
     }
 
-    public Proveedores(Integer idProveedor, String nombres, String apellido, String mails, String telefonos, Date fechaAlta, String observaciones) {
+    public Proveedores(Integer idProveedor, String nombres, String cuit) {
         this.idProveedor = idProveedor;
         this.nombres = nombres;
-        this.apellido = apellido;
-        this.mails = mails;
-        this.telefonos = telefonos;
-        this.fechaAlta = fechaAlta;
-        this.observaciones = observaciones;
+        this.cuit = cuit;
     }
 
     public Integer getIdProveedor() {
@@ -133,6 +131,14 @@ public class Proveedores implements Serializable {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
     }
 
     public Collection<Facturascompras> getFacturascomprasCollection() {

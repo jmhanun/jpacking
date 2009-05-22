@@ -66,6 +66,8 @@ public class Usuarios implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Ajustesstock> ajustesstockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
+    private Collection<Notascredito> notascreditoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Stock> stockCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Listasprecios> listaspreciosCollection;
@@ -220,6 +222,14 @@ public class Usuarios implements Serializable {
         this.ajustesstockCollection = ajustesstockCollection;
     }
 
+    public Collection<Notascredito> getNotascreditoCollection() {
+        return notascreditoCollection;
+    }
+
+    public void setNotascreditoCollection(Collection<Notascredito> notascreditoCollection) {
+        this.notascreditoCollection = notascreditoCollection;
+    }
+
     public Collection<Stock> getStockCollection() {
         return stockCollection;
     }
@@ -301,6 +311,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Usuarios)) {
             return false;
         }
