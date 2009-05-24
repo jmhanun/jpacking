@@ -6,6 +6,7 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Unidadesmedida;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -27,4 +28,6 @@ public interface UnidadesmedidaFacadeRemote {
     List<Unidadesmedida> findAll();
 
     public List<UnidadesMedidaT> findAllUnidadesMedidaT();
+
+    public List<UnidadesMedidaT> getUnidadesMedidaT(HashMap parametros);
 }
