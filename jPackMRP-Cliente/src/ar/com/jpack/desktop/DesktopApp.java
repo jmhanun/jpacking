@@ -417,6 +417,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<UnidadesMedidaT> getUnidadesMedidaT(HashMap parametros) {
+        try {
+            unidadesMedidaFacade = (UnidadesmedidaFacadeRemote) lookUp("ar.com.jpack.negocio.UnidadesmedidaFacadeRemote");
+            return unidadesMedidaFacade.getUnidadesMedidaT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public List<TiposIvaT> getTiposIvaT(HashMap parametros) {
         try {
             tiposIvaFacade = (TiposIvaFacadeRemote) lookUp("ar.com.jpack.negocio.TiposIvaFacadeRemote");

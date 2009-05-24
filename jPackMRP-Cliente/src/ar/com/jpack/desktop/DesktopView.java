@@ -410,6 +410,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showUnidadesMedida() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.depositos.ABMUnidadesMedida", "Unidades de Medida", padre);
+    }
+
+    @Action
     public Task showCambiarPassword() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.CambiarPassword", "Cambiar contraseña", padre);
     }
