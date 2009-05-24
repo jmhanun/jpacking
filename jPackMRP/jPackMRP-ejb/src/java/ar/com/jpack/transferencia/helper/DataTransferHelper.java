@@ -33,16 +33,7 @@ public class DataTransferHelper {
     public static ArticulosT copiarArticulos(Articulos item) {
         ArticulosT t = null;
         if (item != null) {
-            t = new ArticulosT(item.getIdArticulo(),
-                    item.getCodigo(),
-                    item.getDescripcion(),
-                    item.getStockMinimo(),
-                    item.getLeadTime(),
-                    item.getFechaAlta(),
-                    item.getFechaModificacion(),
-                    copiarEstado(item.getIdEstado()),
-                    copiarUnidadMedida(item.getIdUnidMedida()),
-                    copiarUsuario(item.getIdUsuario()));
+            t = new ArticulosT();
         }
         return t;
     }

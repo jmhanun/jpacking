@@ -5,6 +5,7 @@
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  *
@@ -17,6 +18,8 @@ public class DetOrdenesProduccionT implements Serializable {
     private ArticulosT idArticulo;
     private OrdenesProduccionT ordenesproduccion;
     private UnidadesMedidaT idUnidMedida;
+    private Collection<SellosDetOrdenT> sellosxdetordenCollection;
+    private Collection<DetalleProduccionT> detalleproduccionCollection;
 
     public DetOrdenesProduccionT() {
     }
@@ -29,20 +32,20 @@ public class DetOrdenesProduccionT implements Serializable {
         this.idUnidMedida = idUnidMedida;
     }
 
-    public DetOrdenesProduccionT(int idDetOrdProduccion, int idOrdenProduccion, int cantidad, ArticulosT idArticulo, OrdenesProduccionT ordenesproduccion, UnidadesMedidaT idUnidMedida) {
-        this.detordenesproduccionPK = new DetOrdenesProduccionPKT(idDetOrdProduccion, idOrdenProduccion);
-        this.cantidad = cantidad;
-        this.idArticulo = idArticulo;
-        this.ordenesproduccion = ordenesproduccion;
-        this.idUnidMedida = idUnidMedida;
-    }
-
     public int getCantidad() {
         return cantidad;
     }
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Collection<DetalleProduccionT> getDetalleproduccionCollection() {
+        return detalleproduccionCollection;
+    }
+
+    public void setDetalleproduccionCollection(Collection<DetalleProduccionT> detalleproduccionCollection) {
+        this.detalleproduccionCollection = detalleproduccionCollection;
     }
 
     public DetOrdenesProduccionPKT getDetordenesproduccionPK() {
@@ -76,4 +79,14 @@ public class DetOrdenesProduccionT implements Serializable {
     public void setOrdenesproduccion(OrdenesProduccionT ordenesproduccion) {
         this.ordenesproduccion = ordenesproduccion;
     }
+
+    public Collection<SellosDetOrdenT> getSellosxdetordenCollection() {
+        return sellosxdetordenCollection;
+    }
+
+    public void setSellosxdetordenCollection(Collection<SellosDetOrdenT> sellosxdetordenCollection) {
+        this.sellosxdetordenCollection = sellosxdetordenCollection;
+    }
+
+
 }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -11,17 +10,29 @@ import java.io.Serializable;
  *
  * @author jmhanun
  */
-public class DetOrdenesProduccionPKT implements Serializable {
+public class SellosDetOrdenPKT implements Serializable {
 
-    private int idDetOrdProduccion;
+    private int idSello;
+    private int idCliente;
     private int idOrdenProduccion;
-    
-    public DetOrdenesProduccionPKT() {
+    private int idDetOrdProduccion;
+
+    public SellosDetOrdenPKT() {
     }
 
-    public DetOrdenesProduccionPKT(int idDetOrdProduccion, int idOrdenProduccion) {
-        this.idDetOrdProduccion = idDetOrdProduccion;
+    public SellosDetOrdenPKT(int idSello, int idCliente, int idOrdenProduccion, int idDetOrdProduccion) {
+        this.idSello = idSello;
+        this.idCliente = idCliente;
         this.idOrdenProduccion = idOrdenProduccion;
+        this.idDetOrdProduccion = idDetOrdProduccion;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public int getIdDetOrdProduccion() {
@@ -40,4 +51,13 @@ public class DetOrdenesProduccionPKT implements Serializable {
         this.idOrdenProduccion = idOrdenProduccion;
     }
 
+    public int getIdSello() {
+        return idSello;
+    }
+
+    public void setIdSello(int idSello) {
+        this.idSello = idSello;
+    }
+
+    
 }

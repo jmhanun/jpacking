@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -13,13 +12,12 @@ import java.util.Collection;
  * @author jmhanun
  */
 public class TiposDocumentoT implements Serializable {
-    
+
     private Integer idTipoDocumento;
     private String descripcion;
     private String abreviatura;
     private Collection<ClientesT> clientesCollection;
     private Collection<ProveedoresT> proveedoresCollection;
-    private Collection<EmpleadosT> empleadosCollection;
 
     public TiposDocumentoT() {
     }
@@ -54,14 +52,6 @@ public class TiposDocumentoT implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Collection<EmpleadosT> getEmpleadosCollection() {
-        return empleadosCollection;
-    }
-
-    public void setEmpleadosCollection(Collection<EmpleadosT> empleadosCollection) {
-        this.empleadosCollection = empleadosCollection;
-    }
-
     public Integer getIdTipoDocumento() {
         return idTipoDocumento;
     }
@@ -77,5 +67,4 @@ public class TiposDocumentoT implements Serializable {
     public void setProveedoresCollection(Collection<ProveedoresT> proveedoresCollection) {
         this.proveedoresCollection = proveedoresCollection;
     }
-    
 }

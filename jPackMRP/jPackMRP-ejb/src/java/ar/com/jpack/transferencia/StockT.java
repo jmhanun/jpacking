@@ -17,15 +17,17 @@ public class StockT implements Serializable {
     private Date fechaUltMod;
     private double cantidad;
     private ArticulosT idArticulo;
+    private UsuariosT idUsuario;
 
     public StockT() {
     }
 
-    public StockT(Integer idStock, Date fechaUltMod, double cantidad, ArticulosT idArticulo) {
+    public StockT(Integer idStock, Date fechaUltMod, double cantidad, ArticulosT idArticulo, UsuariosT idUsuario) {
         this.idStock = idStock;
         this.fechaUltMod = fechaUltMod;
         this.cantidad = cantidad;
         this.idArticulo = idArticulo;
+        this.idUsuario = idUsuario;
     }
 
     public double getCantidad() {
@@ -58,5 +60,13 @@ public class StockT implements Serializable {
 
     public void setIdStock(Integer idStock) {
         this.idStock = idStock;
+    }
+
+    public UsuariosT getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(UsuariosT idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

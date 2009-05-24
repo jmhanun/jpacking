@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -12,7 +11,8 @@ import java.util.Collection;
  *
  * @author jmhanun
  */
-public class UnidadesMedidaT implements Serializable{
+public class UnidadesMedidaT implements Serializable {
+
     private Integer idUnidMedida;
     private String descripcion;
     private String abreviatura;
@@ -148,6 +148,4 @@ public class UnidadesMedidaT implements Serializable{
     public void setIdUnidMedida(Integer idUnidMedida) {
         this.idUnidMedida = idUnidMedida;
     }
-    
-    
 }

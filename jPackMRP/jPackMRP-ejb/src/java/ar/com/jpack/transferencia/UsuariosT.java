@@ -28,6 +28,7 @@ public class UsuariosT implements Serializable {
     private Collection<FacturasComprasT> facturascomprasCollection;
     private Collection<AjustesStockT> ajustesstockCollection;
     private Collection<RemitosIngresoT> remitosingresoCollection;
+    private Collection<NotasCreditoT> notascreditoCollection;
     private Collection<StockT> stockCollection;
     private Collection<ListasPreciosT> listaspreciosCollection;
     private Collection<SetupT> setupCollection;
@@ -243,6 +244,14 @@ public class UsuariosT implements Serializable {
 
     public void setIdEstado(EstadosT idEstado) {
         this.idEstado = idEstado;
+    }
+
+    public Collection<NotasCreditoT> getNotascreditoCollection() {
+        return notascreditoCollection;
+    }
+
+    public void setNotascreditoCollection(Collection<NotasCreditoT> notascreditoCollection) {
+        this.notascreditoCollection = notascreditoCollection;
     }
 
     @Override

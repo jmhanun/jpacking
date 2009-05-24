@@ -13,12 +13,13 @@ import java.util.Date;
  * @author jmhanun
  */
 public class SetupT implements Serializable {
+
     private Integer idSetup;
     private String descripcion;
     private String valor;
     private Date fechaModificacion;
     private UsuariosT idUsuario;
-
+    
     public SetupT() {
     }
 

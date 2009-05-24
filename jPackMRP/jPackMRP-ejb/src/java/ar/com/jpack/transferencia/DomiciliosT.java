@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author jmhanun
  */
 public class DomiciliosT implements Serializable{
+
     private Integer idDomicilio;
     private String calle;
     private String numero;
@@ -23,7 +24,7 @@ public class DomiciliosT implements Serializable{
     private EstadosT idEstado;
     private LocalidadesT idLocalidad;
     private ProveedoresT idProveedor;
-
+    
     public DomiciliosT() {
     }
 

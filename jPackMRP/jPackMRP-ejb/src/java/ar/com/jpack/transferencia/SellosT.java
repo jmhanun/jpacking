@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -12,7 +11,8 @@ import java.util.Collection;
  *
  * @author jmhanun
  */
-public class SellosT implements Serializable{
+public class SellosT implements Serializable {
+
     private Integer idSello;
     private String descripcion;
     private float tamano;

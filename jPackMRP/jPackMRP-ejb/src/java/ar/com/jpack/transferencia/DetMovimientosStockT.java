@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -12,7 +11,8 @@ import java.util.Date;
  *
  * @author jmhanun
  */
-public class DetMovimientosStockT implements Serializable{
+public class DetMovimientosStockT implements Serializable {
+
     private Integer idDetMovStock;
     private String descripcion;
     private double cantidad;
@@ -30,7 +30,7 @@ public class DetMovimientosStockT implements Serializable{
     public DetMovimientosStockT() {
     }
 
-    public DetMovimientosStockT(Integer idDetMovStock, 
+    public DetMovimientosStockT(Integer idDetMovStock,
             String descripcion, double cantidad, Date fechaMovimiento, AjustesStockT idAjusteStock,
             ArticulosT idArticulo, NotasCreditoT idNotaCredito, NotasDebitoT idNotaDebito, OrdenesDepositoT idOrdenDeposito, OrdenesProduccionT idOrdenProduccion, RemitosT idRemito, RemitosIngresoT idRtoIngreso, UnidadesMedidaT idUnidMedida) {
         this.idDetMovStock = idDetMovStock;

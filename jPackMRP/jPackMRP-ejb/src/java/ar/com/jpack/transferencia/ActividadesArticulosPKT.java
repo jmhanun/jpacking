@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
@@ -10,17 +11,24 @@ import java.io.Serializable;
  *
  * @author jmhanun
  */
-public class ComponentesPKT implements Serializable {
-
+public class ActividadesArticulosPKT implements Serializable{
+    private int idActividad;
     private int idArticulo;
-    private int idComponente;
 
-    public ComponentesPKT() {
+    public ActividadesArticulosPKT() {
     }
 
-    public ComponentesPKT(int idArticulo, int idComponente) {
+    public ActividadesArticulosPKT(int idActividad, int idArticulo) {
+        this.idActividad = idActividad;
         this.idArticulo = idArticulo;
-        this.idComponente = idComponente;
+    }
+
+    public int getIdActividad() {
+        return idActividad;
+    }
+
+    public void setIdActividad(int idActividad) {
+        this.idActividad = idActividad;
     }
 
     public int getIdArticulo() {
@@ -31,11 +39,4 @@ public class ComponentesPKT implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public int getIdComponente() {
-        return idComponente;
-    }
-
-    public void setIdComponente(int idComponente) {
-        this.idComponente = idComponente;
-    }
 }

@@ -4,8 +4,6 @@
  */
 package ar.com.jpack.transferencia;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -16,15 +14,14 @@ import java.util.Date;
  */
 public class ArticulosT implements Serializable {
 
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private Integer idArticulo;
     private String codigo;
     private String descripcion;
-    private float stock;
     private float stockMinimo;
     private float leadTime;
     private Date fechaAlta;
     private Date fechaModificacion;
+    private String imprimible;
     private Collection<DetNotasCreditoT> detnotascreditoCollection;
     private EstadosT idEstado;
     private UnidadesMedidaT idUnidMedida;
@@ -32,6 +29,7 @@ public class ArticulosT implements Serializable {
     private Collection<DetOrdenesProduccionT> detordenesproduccionCollection;
     private Collection<DetMovimientosStockT> detmovimientosstockCollection;
     private Collection<DetalleFactComprasT> detallefactcomprasCollection;
+    private Collection<ActividadesArticulosT> actividadesxarticulosCollection;
     private Collection<DetNotasDebitoT> detnotasdebitoCollection;
     private Collection<StockT> stockCollection;
     private Collection<DetalleFacturasT> detallefacturasCollection;
@@ -40,21 +38,14 @@ public class ArticulosT implements Serializable {
     private Collection<DetalleRemitosT> detalleremitosCollection;
     private Collection<DetAjustesStockT> detajustesstockCollection;
     private Collection<DetOrdenesDepositoT> detordenesdepositoCollection;
-    private Collection<ProduccionT> produccionCollection;
+    private Collection<SellosT> sellosCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
     private Collection<PreciosT> preciosCollection;
 
     public ArticulosT() {
     }
 
-    public ArticulosT(Integer idArticulo, String codigo,
-            String descripcion,
-            float stockMinimo,
-            float leadTime,
-            Date fechaAlta,
-            Date fechaModificacion,
-            EstadosT idEstado, UnidadesMedidaT idUnidMedida,
-            UsuariosT idUsuario) {
+    public ArticulosT(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible, Collection<DetNotasCreditoT> detnotascreditoCollection, EstadosT idEstado, UnidadesMedidaT idUnidMedida, UsuariosT idUsuario) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -62,39 +53,19 @@ public class ArticulosT implements Serializable {
         this.leadTime = leadTime;
         this.fechaAlta = fechaAlta;
         this.fechaModificacion = fechaModificacion;
+        this.imprimible = imprimible;
+        this.detnotascreditoCollection = detnotascreditoCollection;
         this.idEstado = idEstado;
         this.idUnidMedida = idUnidMedida;
         this.idUsuario = idUsuario;
     }
 
-    public Date getFechaAlta() {
-        return fechaAlta;
+    public Collection<ActividadesArticulosT> getActividadesxarticulosCollection() {
+        return actividadesxarticulosCollection;
     }
 
-    public void setFechaAlta(Date fechaAlta) {
-        Date oldFechaAlta = this.fechaAlta;
-        this.fechaAlta = fechaAlta;
-        changeSupport.firePropertyChange("fechaAlta", oldFechaAlta, fechaAlta);
-    }
-
-    public Date getFechaModificacion() {
-        return fechaModificacion;
-    }
-
-    public void setFechaModificacion(Date fechaModificacion) {
-        Date oldFechaModificacion = this.fechaModificacion;
-        this.fechaModificacion = fechaModificacion;
-        changeSupport.firePropertyChange("fechaModificacion", oldFechaModificacion, fechaModificacion);
-    }
-
-    public UsuariosT getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(UsuariosT idUsuario) {
-        UsuariosT oldIdUsuario = this.idUsuario;
-        this.idUsuario = idUsuario;
-        changeSupport.firePropertyChange("idUsuario", oldIdUsuario, idUsuario);
+    public void setActividadesxarticulosCollection(Collection<ActividadesArticulosT> actividadesxarticulosCollection) {
+        this.actividadesxarticulosCollection = actividadesxarticulosCollection;
     }
 
     public Collection<ComponentesT> getArticulosCollection() {
@@ -110,9 +81,7 @@ public class ArticulosT implements Serializable {
     }
 
     public void setCodigo(String codigo) {
-        String oldCodigo = this.codigo;
         this.codigo = codigo;
-        changeSupport.firePropertyChange("codigo", oldCodigo, codigo);
     }
 
     public Collection<ComponentesT> getComponentesCollection() {
@@ -128,9 +97,15 @@ public class ArticulosT implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        String oldDescripcion = this.descripcion;
         this.descripcion = descripcion;
-        changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
+    }
+
+    public Collection<DetAjustesStockT> getDetajustesstockCollection() {
+        return detajustesstockCollection;
+    }
+
+    public void setDetajustesstockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
+        this.detajustesstockCollection = detajustesstockCollection;
     }
 
     public Collection<DetalleFactComprasT> getDetallefactcomprasCollection() {
@@ -189,14 +164,6 @@ public class ArticulosT implements Serializable {
         this.detordenesdepositoCollection = detordenesdepositoCollection;
     }
 
-    public Collection<DetAjustesStockT> getDetAjustesStockCollection() {
-        return detajustesstockCollection;
-    }
-
-    public void setDetAjustesStockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
-        this.detajustesstockCollection = detajustesstockCollection;
-    }
-
     public Collection<DetOrdenesProduccionT> getDetordenesproduccionCollection() {
         return detordenesproduccionCollection;
     }
@@ -213,14 +180,28 @@ public class ArticulosT implements Serializable {
         this.detrtosingresoCollection = detrtosingresoCollection;
     }
 
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Integer getIdArticulo() {
         return idArticulo;
     }
 
     public void setIdArticulo(Integer idArticulo) {
-        Integer oldIdArticulo = this.idArticulo;
         this.idArticulo = idArticulo;
-        changeSupport.firePropertyChange("idArticulo", oldIdArticulo, idArticulo);
     }
 
     public EstadosT getIdEstado() {
@@ -228,9 +209,7 @@ public class ArticulosT implements Serializable {
     }
 
     public void setIdEstado(EstadosT idEstado) {
-        EstadosT oldIdEstado = this.idEstado;
         this.idEstado = idEstado;
-        changeSupport.firePropertyChange("idEstado", oldIdEstado, idEstado);
     }
 
     public UnidadesMedidaT getIdUnidMedida() {
@@ -238,9 +217,23 @@ public class ArticulosT implements Serializable {
     }
 
     public void setIdUnidMedida(UnidadesMedidaT idUnidMedida) {
-        UnidadesMedidaT oldIdUnidMedida = this.idUnidMedida;
         this.idUnidMedida = idUnidMedida;
-        changeSupport.firePropertyChange("idUnidMedida", oldIdUnidMedida, idUnidMedida);
+    }
+
+    public UsuariosT getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(UsuariosT idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getImprimible() {
+        return imprimible;
+    }
+
+    public void setImprimible(String imprimible) {
+        this.imprimible = imprimible;
     }
 
     public float getLeadTime() {
@@ -248,9 +241,7 @@ public class ArticulosT implements Serializable {
     }
 
     public void setLeadTime(float leadTime) {
-        float oldLeadTime = this.leadTime;
         this.leadTime = leadTime;
-        changeSupport.firePropertyChange("leadTime", oldLeadTime, leadTime);
     }
 
     public Collection<PreciosT> getPreciosCollection() {
@@ -261,22 +252,12 @@ public class ArticulosT implements Serializable {
         this.preciosCollection = preciosCollection;
     }
 
-    public Collection<ProduccionT> getProduccionCollection() {
-        return produccionCollection;
+    public Collection<SellosT> getSellosCollection() {
+        return sellosCollection;
     }
 
-    public void setProduccionCollection(Collection<ProduccionT> produccionCollection) {
-        this.produccionCollection = produccionCollection;
-    }
-
-    public float getStock() {
-        return stock;
-    }
-
-    public void setStock(float stock) {
-        float oldStock = this.stock;
-        this.stock = stock;
-        changeSupport.firePropertyChange("stock", oldStock, stock);
+    public void setSellosCollection(Collection<SellosT> sellosCollection) {
+        this.sellosCollection = sellosCollection;
     }
 
     public Collection<StockT> getStockCollection() {
@@ -292,26 +273,8 @@ public class ArticulosT implements Serializable {
     }
 
     public void setStockMinimo(float stockMinimo) {
-        float oldStockMinimo = this.stockMinimo;
         this.stockMinimo = stockMinimo;
-        changeSupport.firePropertyChange("stockMinimo", oldStockMinimo, stockMinimo);
     }
 
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
-    }
+    
 }

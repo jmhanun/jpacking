@@ -5,9 +5,7 @@
 package ar.com.jpack.transferencia.helper;
 
 import ar.com.jpack.persistencia.Clientes;
-import ar.com.jpack.persistencia.Tiposiva;
 import ar.com.jpack.transferencia.listas.ClientesListaT;
-import ar.com.jpack.transferencia.listas.TiposIvaListaT;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

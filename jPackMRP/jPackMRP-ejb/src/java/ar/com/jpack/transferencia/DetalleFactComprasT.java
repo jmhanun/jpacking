@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author jmhanun
  */
 public class DetalleFactComprasT implements Serializable{
+
     protected DetalleFactComprasPKT detallefactcomprasPK;
     private int cantidad;
     private double precioUnitario;
@@ -20,7 +21,7 @@ public class DetalleFactComprasT implements Serializable{
     private ArticulosT idArticulo;
     private FacturasComprasT facturascompras;
     private UnidadesMedidaT idUnidMedida;
-
+    
     public DetalleFactComprasT() {
     }
 

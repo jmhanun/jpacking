@@ -4,8 +4,6 @@
  */
 package ar.com.jpack.transferencia;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 /**
@@ -14,7 +12,6 @@ import java.io.Serializable;
  */
 public class DetalleRemitosPKT implements Serializable {
 
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private int idDetalleRemito;
     private int idRemito;
 
@@ -31,9 +28,7 @@ public class DetalleRemitosPKT implements Serializable {
     }
 
     public void setIdDetalleRemito(int idDetalleRemito) {
-        int oldIdDetalleRemito = this.idDetalleRemito;
         this.idDetalleRemito = idDetalleRemito;
-        changeSupport.firePropertyChange("idDetalleRemito", oldIdDetalleRemito, idDetalleRemito);
     }
 
     public int getIdRemito() {
@@ -41,26 +36,8 @@ public class DetalleRemitosPKT implements Serializable {
     }
 
     public void setIdRemito(int idRemito) {
-        int oldIdRemito = this.idRemito;
         this.idRemito = idRemito;
-        changeSupport.firePropertyChange("idRemito", oldIdRemito, idRemito);
     }
 
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
-    }
+    
 }
