@@ -10,6 +10,8 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.RolesTableModel;
 import ar.com.jpack.transferencia.RolesT;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +36,18 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
     public ABMRoles() {
         super(new RolesT());
         initComponents();
+
+        itemListener = new ItemListener() {
+
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItem().toString().equals("<Ninguno>")) {
+                    getDto().setIdRolPadre(null);
+                } else {
+                    getDto().setIdRolPadre((RolesT) e.getItem());
+                }
+            }
+        };
+
         HashMap parametros = new HashMap();
         setListDto((ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros));
 
@@ -87,12 +101,33 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
         rolesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        cboRolPadre.addItemListener(itemListener);
 
     }
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateRolesT(getDto()));
+                if (isNuevo()) {
+                    getListDto().add(getDto());
+                    tableModel.addRow(getDto());
+
+                }
+                cambiarRolT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtComponente.setEnabled(false);
+                txtDescripcion.setEnabled(false);
+                txtFuncion.setEnabled(false);
+                txtRol.setEnabled(false);
+                cboRolPadre.setEnabled(false);
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo rol.\nVerifique que el rol no exista");
+        }
     }
 
     @Action
@@ -102,7 +137,9 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
+        if (getPadre() != null) {
+//            getPadre().getDto().setRolesT(getDto());
+        }
     }
 
     @Action
@@ -112,6 +149,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtFuncion.setEnabled(true);
         txtRol.setEnabled(true);
         cboRolPadre.setEnabled(true);
+        this.jTabbedPane1.setSelectedIndex(1);
     }
 
     @Action
@@ -129,6 +167,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
     }
 
     private void cambiarRolT() {
+        cboRolPadre.removeItemListener(itemListener);
         txtRol.setText(getDto().getRol());
         txtFuncion.setText(getDto().getFuncion());
         txtDescripcion.setText(getDto().getDescripcion());
@@ -151,6 +190,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtFuncion.setEnabled(false);
         txtRol.setEnabled(false);
         cboRolPadre.setEnabled(false);
+        cboRolPadre.addItemListener(itemListener);
 
     }
 
@@ -254,7 +294,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -287,15 +327,30 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
 
         cboRolPadre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboRolPadre.setName("cboRolPadre"); // NOI18N
 
         txtComponente.setText(resourceMap.getString("txtComponente.text")); // NOI18N
         txtComponente.setName("txtComponente"); // NOI18N
+        txtComponente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtComponenteKeyReleased(evt);
+            }
+        });
 
         txtFuncion.setText(resourceMap.getString("txtFuncion.text")); // NOI18N
         txtFuncion.setName("txtFuncion"); // NOI18N
+        txtFuncion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFuncionKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMRoles.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -350,7 +405,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                     .addComponent(txtFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -391,7 +446,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -419,6 +474,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 
 private void rolesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rolesTableMouseClicked
 
+    //para el caso en que se navegue la tabla con el mouse
     setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
     cambiarRolT();
     if (evt.getClickCount() == 2) {
@@ -430,6 +486,7 @@ private void rolesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
 private void rolesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rolesTableKeyReleased
 
+    //para el caso en que se navegue la tabla con las flechas
     setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
     cambiarRolT();
 
@@ -441,6 +498,27 @@ private void txtRolKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t
     setModificado(true);
 
 }//GEN-LAST:event_txtRolKeyReleased
+
+private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+
+    getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtDescripcionKeyReleased
+
+private void txtComponenteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtComponenteKeyReleased
+
+    getDto().setComponente(String.valueOf(txtComponente.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtComponenteKeyReleased
+
+private void txtFuncionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFuncionKeyReleased
+
+    getDto().setFuncion(String.valueOf(txtFuncion.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtFuncionKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
@@ -470,4 +548,5 @@ private void txtRolKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t
     protected RolesTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
     private ArrayList<RolesT> rolesPadreTs;
+    private ItemListener itemListener;
 }

@@ -305,6 +305,12 @@ public class DesktopView extends FrameView {
         menuBar.add(helpMenu);
 
         setMenuBar(menuBar);
+        
+        if(usuariosT.getUsuario() != null){
+            this.getFrame().setTitle("MRP para Envases Pueyrredon SRL - " + usuariosT.getUsuario());
+        }else{
+            this.getFrame().setTitle("MRP para Envases Pueyrredon SRL");
+        }
     }
 
     /**

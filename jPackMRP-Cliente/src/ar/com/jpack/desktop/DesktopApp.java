@@ -469,6 +469,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public RolesT updateRolesT(RolesT rolesT) {
+        try {
+            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
+            return rolesFacade.updateRolesT(rolesT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Obtiene la lista de Setup filtrados por el Hasmap
      * @param parametros <br>
@@ -481,7 +492,6 @@ public class DesktopApp extends SingleFrameApplication {
      * <b>pIdUsuario</b>         filtra por 'eq' idUsuario (Integer) (debe haber sido joineado con Estado) <br>
      * @return devuelve la lista de los Setup que cumplan con el filtro
      */
-
     public List<SetupT> getSetupT(HashMap parametros) {
         try {
             setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
