@@ -103,4 +103,17 @@ public class RolesFacade implements RolesFacadeRemote {
         rolesList = rolesCritearia.list();
         return rolesList;
     }
+
+    public RolesT updateRolesT(RolesT rolesT) {
+        Roles roles = (Roles)DozerUtil.getDozerMapper(false).map(rolesT, Roles.class);
+        //si el numero de id es null significa que es nuevo
+        if (roles.getIdRol() != null) {
+            em.merge(roles);
+        } else {
+            em.persist(roles);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdRoles", roles.getIdRol());
+        return getRolesT(parametros).get(0);
+    }
 }

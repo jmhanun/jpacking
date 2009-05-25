@@ -49,4 +49,6 @@ public interface RolesFacadeRemote {
      * @return devuelve la lista de los Usuarios que cumplan con el filtro
      */
     public List<Roles> getRoles(HashMap parametros);
+
+    public RolesT updateRolesT(RolesT rolesT);
 }
