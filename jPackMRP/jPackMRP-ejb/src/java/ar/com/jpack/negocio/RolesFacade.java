@@ -105,15 +105,40 @@ public class RolesFacade implements RolesFacadeRemote {
     }
 
     public RolesT updateRolesT(RolesT rolesT) {
-        Roles roles = (Roles)DozerUtil.getDozerMapper(false).map(rolesT, Roles.class);
+        Roles roles = (Roles) DozerUtil.getDozerMapper(false).map(rolesT, Roles.class);
         //si el numero de id es null significa que es nuevo
         if (roles.getIdRol() != null) {
             em.merge(roles);
         } else {
+            roles.setOrden(getNextOrden(roles));
+            roles.setOrdenHermano(getNextOrdenHermano(roles));
             em.persist(roles);
         }
         HashMap parametros = new HashMap();
         parametros.put("pIdRoles", roles.getIdRol());
         return getRolesT(parametros).get(0);
+    }
+
+    private int getNextOrden(Roles roles) {
+        if (roles.getIdRolPadre() == null) {
+            return 0;
+        } else {
+            HashMap parametros = new HashMap();
+            parametros.put("pIdRoles", roles.getIdRolPadre());
+            return getRoles(parametros).get(0).getOrden() + 1;
+        }
+    }
+
+    private int getNextOrdenHermano(Roles roles) {
+        HashMap parametros = new HashMap();
+        parametros.put("pOrden", roles.getOrden());
+        List<Roles> rolesList = getRoles(parametros);
+        int ordenHermano = -1;
+        for (Roles rol : rolesList) {
+            if (ordenHermano < rol.getOrdenHermano()) {
+                ordenHermano = rol.getOrdenHermano();
+            }
+        }
+        return ordenHermano++;
     }
 }
