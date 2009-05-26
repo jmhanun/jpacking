@@ -132,14 +132,37 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtComponente.setEnabled(false);
+                    txtDescripcion.setEnabled(false);
+                    txtFuncion.setEnabled(false);
+                    txtRol.setEnabled(false);
+                    cboRolPadre.setEnabled(false);
+                }
+            }
+            setDto(new RolesT());
+            txtComponente.setEnabled(true);
+            txtDescripcion.setEnabled(true);
+            txtFuncion.setEnabled(true);
+            txtRol.setEnabled(true);
+            cboRolPadre.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+        }
     }
 
     @Action
     public void seleccionar() {
         if (getPadre() != null) {
 //            getPadre().getDto().setRolesT(getDto());
-        }
+            }
     }
 
     @Action
