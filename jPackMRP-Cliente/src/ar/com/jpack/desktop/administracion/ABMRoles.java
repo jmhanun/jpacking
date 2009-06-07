@@ -45,6 +45,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                 } else {
                     getDto().setIdRolPadre((RolesT) e.getItem());
                 }
+                setModificado(true);
             }
         };
 
@@ -79,8 +80,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             btnSeleccionar.setEnabled(false);
         }
 
-        parametros = new HashMap();
-        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros);
+        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getMenuesT(true);
         Collections.sort(rolesPadreTs);
 
         DefaultComboBoxModel rolesComboBoxModel = new DefaultComboBoxModel();
@@ -111,10 +111,10 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             if (isNuevo() || isModificado()) {
                 setDto(DesktopApp.getApplication().updateRolesT(getDto()));
                 if (isNuevo()) {
-                    getListDto().add(getDto());
+//                    getListDto().add(getDto());
                     tableModel.addRow(getDto());
-
                 }
+                setDto(new RolesT());
                 cambiarRolT();
 
                 setModificado(false);
@@ -124,9 +124,13 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                 txtFuncion.setEnabled(false);
                 txtRol.setEnabled(false);
                 cboRolPadre.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                rolesTable.clearSelection();
             }
         } catch (javax.ejb.EJBException ex) {
-            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo rol.\nVerifique que el rol no exista");
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo rol.\nVerifique que los datos sean los correctos");
         }
     }
 
@@ -146,6 +150,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
                 }
             }
             setDto(new RolesT());
+            cambiarRolT();
             txtComponente.setEnabled(true);
             txtDescripcion.setEnabled(true);
             txtFuncion.setEnabled(true);
@@ -155,6 +160,8 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
             setNuevo(true);
             setModificado(true);
             btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtRol.requestFocus();
         }
     }
 
@@ -172,7 +179,8 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtFuncion.setEnabled(true);
         txtRol.setEnabled(true);
         cboRolPadre.setEnabled(true);
-        this.jTabbedPane1.setSelectedIndex(1);
+        jTabbedPane1.setSelectedIndex(1);
+        txtRol.requestFocus();
     }
 
     @Action
@@ -195,6 +203,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtFuncion.setText(getDto().getFuncion());
         txtDescripcion.setText(getDto().getDescripcion());
         txtComponente.setText(getDto().getComponente());
+        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getMenuesT(true);
         int index = 0;
         int iteration = 1;
         for (RolesT rol : rolesPadreTs) {

@@ -6,6 +6,7 @@ package ar.com.jpack.desktop;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.lang.annotation.Annotation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -14,6 +15,7 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
+import org.jdesktop.application.Task.BlockingScope;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -271,7 +273,9 @@ public class DesktopView extends FrameView {
                     RolesT rolesT = it.next();
                     if (rolesT.getIdRolPadre() == null) {
                         JMenu m = new JMenu();
-                        m.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+//                        m.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+                        m.setText(rolesT.getRol()); // NOI18N
+                        m.setToolTipText(rolesT.getDescripcion());
                         m.setName(rolesT.getComponente()); // NOI18N
                         m = cargarMenu(m, rolesT, resourceMap, actionMap);
                         menuBar.add(m);
@@ -305,10 +309,10 @@ public class DesktopView extends FrameView {
         menuBar.add(helpMenu);
 
         setMenuBar(menuBar);
-        
-        if(usuariosT.getUsuario() != null){
+
+        if (usuariosT.getUsuario() != null) {
             this.getFrame().setTitle("MRP para Envases Pueyrredon SRL - " + usuariosT.getUsuario());
-        }else{
+        } else {
             this.getFrame().setTitle("MRP para Envases Pueyrredon SRL");
         }
     }
@@ -425,6 +429,11 @@ public class DesktopView extends FrameView {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.CambiarPassword", "Cambiar contraseña", padre);
     }
 
+    @Action
+    public Task showOrganizarMenu() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.OrganizarMenu", "Organizar Menu", padre);
+    }
+
     /**
      * InnerClass Task para mostrar los InternalFrame
      * @author jmhanun
@@ -460,6 +469,7 @@ public class DesktopView extends FrameView {
                 open = f;
                 desktopPanel.add(open);
             }
+            open.setTitle(mensaje);
             open.setPadre(padreFrame);
             SwingUtilities.updateComponentTreeUI(open);
             open.setVisible(true);
@@ -518,7 +528,9 @@ public class DesktopView extends FrameView {
                 if (rolesT.getIdRolPadre().getIdRol() == rolPadreT.getIdRol()) {
                     if (rolesT.getFuncion() == null) {
                         JMenu menuHijo = new JMenu();
-                        menuHijo.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+//                        menuHijo.setText(resourceMap.getString(rolesT.getComponente() + ".text")); // NOI18N
+                        menuHijo.setText(rolesT.getRol()); // NOI18N
+                        menuHijo.setToolTipText(rolesT.getDescripcion()); // NOI18N
                         menuHijo.setName(rolesT.getComponente()); // NOI18N
                         menuHijo = cargarMenu(menuHijo, rolesT, resourceMap, actionMap);
                         m.add(menuHijo);
@@ -526,6 +538,8 @@ public class DesktopView extends FrameView {
 
                         JMenuItem item = new JMenuItem();
                         item.setAction(actionMap.get(rolesT.getFuncion())); // NOI18N
+                        item.setText(rolesT.getRol());
+                        item.setToolTipText(rolesT.getDescripcion());
                         item.setName(rolesT.getComponente()); // NOI18N
                         m.add(item);
                     }

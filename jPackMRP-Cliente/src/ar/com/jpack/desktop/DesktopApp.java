@@ -416,6 +416,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    
+    public List<RolesT> getMenuesT(boolean isMenu) {
+        try {
+            rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
+            return rolesFacade.getMenuesT(isMenu);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public List<UnidadesMedidaT> getUnidadesMedidaT(HashMap parametros) {
         try {
