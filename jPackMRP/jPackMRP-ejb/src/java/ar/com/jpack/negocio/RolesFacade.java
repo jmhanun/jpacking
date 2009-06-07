@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
@@ -104,10 +105,45 @@ public class RolesFacade implements RolesFacadeRemote {
         return rolesList;
     }
 
+    public List<Roles> getMenues(boolean isMenu) {
+        Criteria rolesCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Roles.class);
+        List<Roles> rolesList;
+        if (isMenu) {
+            rolesCritearia.add(Restrictions.isNull("funcion"));
+        } else {
+            rolesCritearia.add(Restrictions.isNotNull("funcion"));
+        }
+        rolesList = rolesCritearia.list();
+        return rolesList;
+    }
+
+    public List<RolesT> getMenuesT(boolean isMenu) {
+        List<Roles> rolesList = getMenues(isMenu);
+        List<RolesT> rolesTList = new ArrayList();
+        for (Roles c : rolesList) {
+            RolesT rdo = (RolesT) DozerUtil.getDozerMapper(false).map(c, RolesT.class);
+            rolesTList.add(rdo);
+        }
+        return rolesTList;
+    }
+
     public RolesT updateRolesT(RolesT rolesT) {
+
         Roles roles = (Roles) DozerUtil.getDozerMapper(false).map(rolesT, Roles.class);
+        if (roles.getFuncion() != null) {
+            String funcion = roles.getFuncion().trim();
+            if (funcion.equals("")) {
+                roles.setFuncion(null);
+            }
+        }
         //si el numero de id es null significa que es nuevo
         if (roles.getIdRol() != null) {
+            HashMap parametros = new HashMap();
+            parametros.put("pIdRol", roles.getIdRol());
+            if (!(roles.getIdRolPadre().getIdRol().equals(getRoles(parametros).get(0).getIdRolPadre().getIdRol()))) {
+                roles.setOrden(getNextOrden(roles));
+                roles.setOrdenHermano(getNextOrdenHermano(roles));
+            }
             em.merge(roles);
         } else {
             roles.setOrden(getNextOrden(roles));
@@ -115,30 +151,46 @@ public class RolesFacade implements RolesFacadeRemote {
             em.persist(roles);
         }
         HashMap parametros = new HashMap();
-        parametros.put("pIdRoles", roles.getIdRol());
+        parametros.put("pIdRol", roles.getIdRol());
         return getRolesT(parametros).get(0);
     }
 
     private int getNextOrden(Roles roles) {
+
         if (roles.getIdRolPadre() == null) {
             return 0;
         } else {
             HashMap parametros = new HashMap();
-            parametros.put("pIdRoles", roles.getIdRolPadre());
-            return getRoles(parametros).get(0).getOrden() + 1;
+            parametros.put("pIdRol", roles.getIdRolPadre().getIdRol());
+            int orden = getRoles(parametros).get(0).getOrden() + 1;
+            return orden;
         }
     }
 
     private int getNextOrdenHermano(Roles roles) {
-        HashMap parametros = new HashMap();
-        parametros.put("pOrden", roles.getOrden());
-        List<Roles> rolesList = getRoles(parametros);
-        int ordenHermano = -1;
-        for (Roles rol : rolesList) {
-            if (ordenHermano < rol.getOrdenHermano()) {
-                ordenHermano = rol.getOrdenHermano();
-            }
+
+        Query query;
+        if (roles.getIdRolPadre() != null) {
+            query = ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(
+                    "SELECT max(r.ordenHermano) " +
+                    "from Roles r " +
+                    "Where r.orden = :ordenRol " +
+                    "AND r.idRolPadre = :rolPadre");
+            query.setInteger("ordenRol", roles.getOrden());
+            query.setEntity("rolPadre", roles.getIdRolPadre());
+        } else {
+            query = ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(
+                    "SELECT max(r.ordenHermano) " +
+                    "from Roles r " +
+                    "Where r.orden = :ordenRol");
+            query.setInteger("ordenRol", roles.getOrden());
         }
-        return ordenHermano++;
+        Integer ordenHermano = (Integer) query.uniqueResult();
+        if (ordenHermano == null) {
+            ordenHermano = 0;
+        } else {
+            ordenHermano++;
+        }
+        return ordenHermano;
     }
 }

@@ -51,4 +51,8 @@ public interface RolesFacadeRemote {
     public List<Roles> getRoles(HashMap parametros);
 
     public RolesT updateRolesT(RolesT rolesT);
+
+    public List<Roles> getMenues(boolean isMenu);
+
+    public List<RolesT> getMenuesT(boolean isMenu);
 }
