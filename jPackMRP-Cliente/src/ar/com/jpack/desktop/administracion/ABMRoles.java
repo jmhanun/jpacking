@@ -10,6 +10,8 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.RolesTableModel;
 import ar.com.jpack.transferencia.RolesT;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyVetoException;
@@ -22,6 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
@@ -103,6 +106,14 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
         cboRolPadre.addItemListener(itemListener);
 
+        timer = new Timer(5000, new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("hola!");
+            }
+        });
+        timer.setRepeats(true);
+        timer.start();
     }
 
     @Action(enabledProperty = "modificado")
@@ -496,9 +507,11 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 
     if (isModificado() || isNuevo()) {
         if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            timer.stop();
             dispose();
         }
     } else {
+        timer.stop();
         dispose();
     }
 
@@ -581,4 +594,5 @@ private void txtFuncionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
     private TableRowSorter<TableModel> sorter;
     private ArrayList<RolesT> rolesPadreTs;
     private ItemListener itemListener;
+    private Timer timer;
 }

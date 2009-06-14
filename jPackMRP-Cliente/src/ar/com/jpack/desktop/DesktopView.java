@@ -6,7 +6,6 @@ package ar.com.jpack.desktop;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import java.lang.annotation.Annotation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -15,7 +14,6 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.Task.BlockingScope;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -407,6 +405,16 @@ public class DesktopView extends FrameView {
     @Action
     public Task showRegistroRemitosFrame() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistroRemitos", "Registro de Remitos", padre);
+    }
+
+    @Action
+    public Task showRegistrarRemitos() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistrarRemito", "Registro de Remitos", padre);
+    }
+
+    @Action
+    public Task showArticulos() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMArticulos", "Articulos", padre);
     }
 
     @Action
