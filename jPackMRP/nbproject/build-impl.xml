@@ -90,11 +90,16 @@ is divided into following sections:
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="pre-init,init-private,init-userdir,init-user,init-project,do-init" name="init-check">
-        <fail unless="build.dir">Must set build.dir</fail>
-        <fail unless="build.generated.dir">Must set build.generated.dir</fail>
-        <fail unless="dist.dir">Must set dist.dir</fail>
-        <fail unless="build.classes.excludes">Must set build.classes.excludes</fail>
-        <fail unless="dist.jar">Must set dist.jar</fail>
+        <fail unless="build.dir">Must set build.dir
+        </fail>
+        <fail unless="build.generated.dir">Must set build.generated.dir
+        </fail>
+        <fail unless="dist.dir">Must set dist.dir
+        </fail>
+        <fail unless="build.classes.excludes">Must set build.classes.excludes
+        </fail>
+        <fail unless="dist.jar">Must set dist.jar
+        </fail>
     </target>
     <target depends="pre-init,init-private,init-userdir,init-user,init-project,do-init,post-init,init-check" name="init"/>
     <!--
@@ -175,7 +180,9 @@ is divided into following sections:
     </target>
     <target name="-run-deploy-am" unless="no.deps">
         <!-- Task to deploy to the Access Manager runtime. -->
+<!--        
         <ant antfile="${project.jPackMRP-app-client}/build.xml" inheritall="false" target="-run-deploy-am"/>
+ -->
         <ant antfile="${project.jPackMRP-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
     </target>
     <target depends="dist,pre-run-deploy,-pre-nbmodule-run-deploy,-run-deploy-nb,-init-deploy-ant,-deploy-ant,-run-deploy-am,-post-nbmodule-run-deploy,post-run-deploy" name="run-deploy"/>
