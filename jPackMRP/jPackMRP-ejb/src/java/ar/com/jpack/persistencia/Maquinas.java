@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -25,22 +24,31 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "maquinas")
-@NamedQueries({@NamedQuery(name = "Maquinas.findByIdMaquina", query = "SELECT m FROM Maquinas m WHERE m.idMaquina = :idMaquina"), @NamedQuery(name = "Maquinas.findByDescripcion", query = "SELECT m FROM Maquinas m WHERE m.descripcion = :descripcion")})
+@NamedQueries({@NamedQuery(name = "Maquinas.findByIdMaquina", query = "SELECT m FROM Maquinas m WHERE m.idMaquina = :idMaquina"), @NamedQuery(name = "Maquinas.findByDescripcion", query = "SELECT m FROM Maquinas m WHERE m.descripcion = :descripcion"), @NamedQuery(name = "Maquinas.findByHorasMantenimiento", query = "SELECT m FROM Maquinas m WHERE m.horasMantenimiento = :horasMantenimiento"), @NamedQuery(name = "Maquinas.findByHorasUso", query = "SELECT m FROM Maquinas m WHERE m.horasUso = :horasUso")})
 public class Maquinas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idMaquina", nullable = false)
     private Integer idMaquina;
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+    @Column(name = "horasMantenimiento", nullable = false)
+    private float horasMantenimiento;
+    @Column(name = "horasUso", nullable = false)
+    private float horasUso;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMaquina", fetch = FetchType.LAZY)
+    private Collection<Mantenimiento> mantenimientoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
+    private Collection<Detalleproduccion> detalleproduccionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
+    private Collection<Detalleproduccionreal> detalleproduccionrealCollection;
     @JoinColumn(name = "idActividad", referencedColumnName = "idActividad")
     @ManyToOne(fetch = FetchType.LAZY)
     private Actividades idActividad;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
     @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
-    private Collection<Detalleproduccion> detalleproduccionCollection;
 
     public Maquinas() {
     }
@@ -49,9 +57,11 @@ public class Maquinas implements Serializable {
         this.idMaquina = idMaquina;
     }
 
-    public Maquinas(Integer idMaquina, String descripcion) {
+    public Maquinas(Integer idMaquina, String descripcion, float horasMantenimiento, float horasUso) {
         this.idMaquina = idMaquina;
         this.descripcion = descripcion;
+        this.horasMantenimiento = horasMantenimiento;
+        this.horasUso = horasUso;
     }
 
     public Integer getIdMaquina() {
@@ -70,6 +80,46 @@ public class Maquinas implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public float getHorasMantenimiento() {
+        return horasMantenimiento;
+    }
+
+    public void setHorasMantenimiento(float horasMantenimiento) {
+        this.horasMantenimiento = horasMantenimiento;
+    }
+
+    public float getHorasUso() {
+        return horasUso;
+    }
+
+    public void setHorasUso(float horasUso) {
+        this.horasUso = horasUso;
+    }
+
+    public Collection<Mantenimiento> getMantenimientoCollection() {
+        return mantenimientoCollection;
+    }
+
+    public void setMantenimientoCollection(Collection<Mantenimiento> mantenimientoCollection) {
+        this.mantenimientoCollection = mantenimientoCollection;
+    }
+
+    public Collection<Detalleproduccion> getDetalleproduccionCollection() {
+        return detalleproduccionCollection;
+    }
+
+    public void setDetalleproduccionCollection(Collection<Detalleproduccion> detalleproduccionCollection) {
+        this.detalleproduccionCollection = detalleproduccionCollection;
+    }
+
+    public Collection<Detalleproduccionreal> getDetalleproduccionrealCollection() {
+        return detalleproduccionrealCollection;
+    }
+
+    public void setDetalleproduccionrealCollection(Collection<Detalleproduccionreal> detalleproduccionrealCollection) {
+        this.detalleproduccionrealCollection = detalleproduccionrealCollection;
+    }
+
     public Actividades getIdActividad() {
         return idActividad;
     }
@@ -84,14 +134,6 @@ public class Maquinas implements Serializable {
 
     public void setIdEstado(Estados idEstado) {
         this.idEstado = idEstado;
-    }
-
-    public Collection<Detalleproduccion> getDetalleproduccionCollection() {
-        return detalleproduccionCollection;
-    }
-
-    public void setDetalleproduccionCollection(Collection<Detalleproduccion> detalleproduccionCollection) {
-        this.detalleproduccionCollection = detalleproduccionCollection;
     }
 
     @Override
@@ -118,5 +160,4 @@ public class Maquinas implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Maquinas[idMaquina=" + idMaquina + "]";
     }
-
 }

@@ -13,10 +13,10 @@ import javax.persistence.Embeddable;
  * @author jmhanun
  */
 @Embeddable
-public class DetalleproduccionPK implements Serializable {
+public class DetalleproduccionrealPK implements Serializable {
 
-    @Column(name = "idDetalleProduccion", nullable = false)
-    private int idDetalleProduccion;
+    @Column(name = "idDetalleProduccionReal", nullable = false)
+    private int idDetalleProduccionReal;
     @Column(name = "idOrdenProduccion", nullable = false)
     private int idOrdenProduccion;
     @Column(name = "idMaquina", nullable = false)
@@ -24,22 +24,22 @@ public class DetalleproduccionPK implements Serializable {
     @Column(name = "idDetOrdProduccion", nullable = false)
     private int idDetOrdProduccion;
 
-    public DetalleproduccionPK() {
+    public DetalleproduccionrealPK() {
     }
 
-    public DetalleproduccionPK(int idDetalleProduccion, int idOrdenProduccion, int idMaquina, int idDetOrdProduccion) {
-        this.idDetalleProduccion = idDetalleProduccion;
+    public DetalleproduccionrealPK(int idDetalleProduccionReal, int idOrdenProduccion, int idMaquina, int idDetOrdProduccion) {
+        this.idDetalleProduccionReal = idDetalleProduccionReal;
         this.idOrdenProduccion = idOrdenProduccion;
         this.idMaquina = idMaquina;
         this.idDetOrdProduccion = idDetOrdProduccion;
     }
 
-    public int getIdDetalleProduccion() {
-        return idDetalleProduccion;
+    public int getIdDetalleProduccionReal() {
+        return idDetalleProduccionReal;
     }
 
-    public void setIdDetalleProduccion(int idDetalleProduccion) {
-        this.idDetalleProduccion = idDetalleProduccion;
+    public void setIdDetalleProduccionReal(int idDetalleProduccionReal) {
+        this.idDetalleProduccionReal = idDetalleProduccionReal;
     }
 
     public int getIdOrdenProduccion() {
@@ -69,7 +69,7 @@ public class DetalleproduccionPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) idDetalleProduccion;
+        hash += (int) idDetalleProduccionReal;
         hash += (int) idOrdenProduccion;
         hash += (int) idMaquina;
         hash += (int) idDetOrdProduccion;
@@ -79,11 +79,11 @@ public class DetalleproduccionPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DetalleproduccionPK)) {
+        if (!(object instanceof DetalleproduccionrealPK)) {
             return false;
         }
-        DetalleproduccionPK other = (DetalleproduccionPK) object;
-        if (this.idDetalleProduccion != other.idDetalleProduccion) {
+        DetalleproduccionrealPK other = (DetalleproduccionrealPK) object;
+        if (this.idDetalleProduccionReal != other.idDetalleProduccionReal) {
             return false;
         }
         if (this.idOrdenProduccion != other.idOrdenProduccion) {
@@ -100,6 +100,6 @@ public class DetalleproduccionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.com.jpack.persistencia.DetalleproduccionPK[idDetalleProduccion=" + idDetalleProduccion + ", idOrdenProduccion=" + idOrdenProduccion + ", idMaquina=" + idMaquina + ", idDetOrdProduccion=" + idDetOrdProduccion + "]";
+        return "ar.com.jpack.persistencia.DetalleproduccionrealPK[idDetalleProduccionReal=" + idDetalleProduccionReal + ", idOrdenProduccion=" + idOrdenProduccion + ", idMaquina=" + idMaquina + ", idDetOrdProduccion=" + idDetOrdProduccion + "]";
     }
 }

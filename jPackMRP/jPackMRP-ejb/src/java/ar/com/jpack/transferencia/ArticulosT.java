@@ -22,6 +22,7 @@ public class ArticulosT implements Serializable {
     private Date fechaAlta;
     private Date fechaModificacion;
     private String imprimible;
+    private String articuloFinal;
     private Collection<DetNotasCreditoT> detnotascreditoCollection;
     private EstadosT idEstado;
     private UnidadesMedidaT idUnidMedida;
@@ -45,7 +46,7 @@ public class ArticulosT implements Serializable {
     public ArticulosT() {
     }
 
-    public ArticulosT(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible, Collection<DetNotasCreditoT> detnotascreditoCollection, EstadosT idEstado, UnidadesMedidaT idUnidMedida, UsuariosT idUsuario) {
+    public ArticulosT(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible, String articuloFinal, EstadosT idEstado, UnidadesMedidaT idUnidMedida, UsuariosT idUsuario) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -54,7 +55,7 @@ public class ArticulosT implements Serializable {
         this.fechaAlta = fechaAlta;
         this.fechaModificacion = fechaModificacion;
         this.imprimible = imprimible;
-        this.detnotascreditoCollection = detnotascreditoCollection;
+        this.articuloFinal = articuloFinal;
         this.idEstado = idEstado;
         this.idUnidMedida = idUnidMedida;
         this.idUsuario = idUsuario;
@@ -66,6 +67,14 @@ public class ArticulosT implements Serializable {
 
     public void setActividadesxarticulosCollection(Collection<ActividadesArticulosT> actividadesxarticulosCollection) {
         this.actividadesxarticulosCollection = actividadesxarticulosCollection;
+    }
+
+    public String getArticuloFinal() {
+        return articuloFinal;
+    }
+
+    public void setArticuloFinal(String articuloFinal) {
+        this.articuloFinal = articuloFinal;
     }
 
     public Collection<ComponentesT> getArticulosCollection() {
@@ -275,6 +284,4 @@ public class ArticulosT implements Serializable {
     public void setStockMinimo(float stockMinimo) {
         this.stockMinimo = stockMinimo;
     }
-
-    
 }

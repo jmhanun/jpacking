@@ -392,9 +392,11 @@ is divided into following sections:
     CLEANUP SECTION
     -->
     <target depends="init" name="deps-clean" unless="no.deps">
+    <!--
         <ant antfile="${project.jPackMRP-app-client}/build.xml" inheritall="false" target="clean-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
+    -->
         <ant antfile="${project.jPackMRP-ejb}/build.xml" inheritall="false" target="clean-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>

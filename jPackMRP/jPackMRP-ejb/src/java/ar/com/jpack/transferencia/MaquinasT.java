@@ -15,16 +15,22 @@ public class MaquinasT implements Serializable {
 
     private Integer idMaquina;
     private String descripcion;
+    private float horasMantenimiento;
+    private float horasUso;
+    private Collection<MantenimientoT> mantenimientoCollection;
+    private Collection<DetalleProduccionT> detalleproduccionCollection;
+    private Collection<DetalleProduccionRealT> detalleproduccionrealCollection;
     private ActividadesT idActividad;
     private EstadosT idEstado;
-    private Collection<DetalleProduccionT> detalleproduccionCollection;
 
     public MaquinasT() {
     }
 
-    public MaquinasT(Integer idMaquina, String descripcion, ActividadesT idActividad, EstadosT idEstado) {
+    public MaquinasT(Integer idMaquina, String descripcion, float horasMantenimiento, float horasUso, ActividadesT idActividad, EstadosT idEstado) {
         this.idMaquina = idMaquina;
         this.descripcion = descripcion;
+        this.horasMantenimiento = horasMantenimiento;
+        this.horasUso = horasUso;
         this.idActividad = idActividad;
         this.idEstado = idEstado;
     }
@@ -43,6 +49,30 @@ public class MaquinasT implements Serializable {
 
     public void setDetalleproduccionCollection(Collection<DetalleProduccionT> detalleproduccionCollection) {
         this.detalleproduccionCollection = detalleproduccionCollection;
+    }
+
+    public Collection<DetalleProduccionRealT> getDetalleproduccionrealCollection() {
+        return detalleproduccionrealCollection;
+    }
+
+    public void setDetalleproduccionrealCollection(Collection<DetalleProduccionRealT> detalleproduccionrealCollection) {
+        this.detalleproduccionrealCollection = detalleproduccionrealCollection;
+    }
+
+    public float getHorasMantenimiento() {
+        return horasMantenimiento;
+    }
+
+    public void setHorasMantenimiento(float horasMantenimiento) {
+        this.horasMantenimiento = horasMantenimiento;
+    }
+
+    public float getHorasUso() {
+        return horasUso;
+    }
+
+    public void setHorasUso(float horasUso) {
+        this.horasUso = horasUso;
     }
 
     public ActividadesT getIdActividad() {
@@ -67,5 +97,13 @@ public class MaquinasT implements Serializable {
 
     public void setIdMaquina(Integer idMaquina) {
         this.idMaquina = idMaquina;
+    }
+
+    public Collection<MantenimientoT> getMantenimientoCollection() {
+        return mantenimientoCollection;
+    }
+
+    public void setMantenimientoCollection(Collection<MantenimientoT> mantenimientoCollection) {
+        this.mantenimientoCollection = mantenimientoCollection;
     }
 }

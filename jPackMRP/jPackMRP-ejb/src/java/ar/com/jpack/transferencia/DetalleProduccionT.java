@@ -5,6 +5,7 @@
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -13,8 +14,11 @@ import java.io.Serializable;
 public class DetalleProduccionT implements Serializable {
 
     protected DetalleProduccionPKT detalleproduccionPK;
-    private float duracion;
     private int prioridad;
+    private Date fechaInicioEstimada;
+    private Date fechaFinEstimada;
+    private Date fechaInicioProceso;
+    private Date fechaFinProceso;
     private EstadosT idEstado;
     private MaquinasT maquinas;
     private DetOrdenesProduccionT detordenesproduccion;
@@ -22,10 +26,13 @@ public class DetalleProduccionT implements Serializable {
     public DetalleProduccionT() {
     }
 
-    public DetalleProduccionT(DetalleProduccionPKT detalleproduccionPK, float duracion, int prioridad, EstadosT idEstado, MaquinasT maquinas, DetOrdenesProduccionT detordenesproduccion) {
+    public DetalleProduccionT(DetalleProduccionPKT detalleproduccionPK, int prioridad, Date fechaInicioEstimada, Date fechaFinEstimada, Date fechaInicioProceso, Date fechaFinProceso, EstadosT idEstado, MaquinasT maquinas, DetOrdenesProduccionT detordenesproduccion) {
         this.detalleproduccionPK = detalleproduccionPK;
-        this.duracion = duracion;
         this.prioridad = prioridad;
+        this.fechaInicioEstimada = fechaInicioEstimada;
+        this.fechaFinEstimada = fechaFinEstimada;
+        this.fechaInicioProceso = fechaInicioProceso;
+        this.fechaFinProceso = fechaFinProceso;
         this.idEstado = idEstado;
         this.maquinas = maquinas;
         this.detordenesproduccion = detordenesproduccion;
@@ -47,12 +54,36 @@ public class DetalleProduccionT implements Serializable {
         this.detordenesproduccion = detordenesproduccion;
     }
 
-    public float getDuracion() {
-        return duracion;
+    public Date getFechaFinEstimada() {
+        return fechaFinEstimada;
     }
 
-    public void setDuracion(float duracion) {
-        this.duracion = duracion;
+    public void setFechaFinEstimada(Date fechaFinEstimada) {
+        this.fechaFinEstimada = fechaFinEstimada;
+    }
+
+    public Date getFechaFinProceso() {
+        return fechaFinProceso;
+    }
+
+    public void setFechaFinProceso(Date fechaFinProceso) {
+        this.fechaFinProceso = fechaFinProceso;
+    }
+
+    public Date getFechaInicioEstimada() {
+        return fechaInicioEstimada;
+    }
+
+    public void setFechaInicioEstimada(Date fechaInicioEstimada) {
+        this.fechaInicioEstimada = fechaInicioEstimada;
+    }
+
+    public Date getFechaInicioProceso() {
+        return fechaInicioProceso;
+    }
+
+    public void setFechaInicioProceso(Date fechaInicioProceso) {
+        this.fechaInicioProceso = fechaInicioProceso;
     }
 
     public EstadosT getIdEstado() {

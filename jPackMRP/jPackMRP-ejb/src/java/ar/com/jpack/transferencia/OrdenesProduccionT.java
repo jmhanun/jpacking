@@ -18,8 +18,9 @@ public class OrdenesProduccionT implements Serializable {
     private int nroOrdenProduccion;
     private Date fecha;
     private Date fechaModificacion;
-    private int prioridad;
+    private Date fechaInicioEstimada;
     private EstadosT idEstado;
+    private PrioridadesT idPrioridad;
     private RemitosT idRemito;
     private TiposComprobantesT idTipoComprobante;
     private UsuariosT idUsuario;
@@ -29,13 +30,14 @@ public class OrdenesProduccionT implements Serializable {
     public OrdenesProduccionT() {
     }
 
-    public OrdenesProduccionT(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha, Date fechaModificacion, int prioridad, EstadosT idEstado, RemitosT idRemito, TiposComprobantesT idTipoComprobante, UsuariosT idUsuario) {
+    public OrdenesProduccionT(Integer idOrdenProduccion, int nroOrdenProduccion, Date fecha, Date fechaModificacion, Date fechaInicioEstimada, EstadosT idEstado, PrioridadesT idPrioridad, RemitosT idRemito, TiposComprobantesT idTipoComprobante, UsuariosT idUsuario) {
         this.idOrdenProduccion = idOrdenProduccion;
         this.nroOrdenProduccion = nroOrdenProduccion;
         this.fecha = fecha;
         this.fechaModificacion = fechaModificacion;
-        this.prioridad = prioridad;
+        this.fechaInicioEstimada = fechaInicioEstimada;
         this.idEstado = idEstado;
+        this.idPrioridad = idPrioridad;
         this.idRemito = idRemito;
         this.idTipoComprobante = idTipoComprobante;
         this.idUsuario = idUsuario;
@@ -65,6 +67,14 @@ public class OrdenesProduccionT implements Serializable {
         this.fecha = fecha;
     }
 
+    public Date getFechaInicioEstimada() {
+        return fechaInicioEstimada;
+    }
+
+    public void setFechaInicioEstimada(Date fechaInicioEstimada) {
+        this.fechaInicioEstimada = fechaInicioEstimada;
+    }
+
     public Date getFechaModificacion() {
         return fechaModificacion;
     }
@@ -87,6 +97,14 @@ public class OrdenesProduccionT implements Serializable {
 
     public void setIdOrdenProduccion(Integer idOrdenProduccion) {
         this.idOrdenProduccion = idOrdenProduccion;
+    }
+
+    public PrioridadesT getIdPrioridad() {
+        return idPrioridad;
+    }
+
+    public void setIdPrioridad(PrioridadesT idPrioridad) {
+        this.idPrioridad = idPrioridad;
     }
 
     public RemitosT getIdRemito() {
@@ -119,13 +137,5 @@ public class OrdenesProduccionT implements Serializable {
 
     public void setNroOrdenProduccion(int nroOrdenProduccion) {
         this.nroOrdenProduccion = nroOrdenProduccion;
-    }
-
-    public int getPrioridad() {
-        return prioridad;
-    }
-
-    public void setPrioridad(int prioridad) {
-        this.prioridad = prioridad;
     }
 }

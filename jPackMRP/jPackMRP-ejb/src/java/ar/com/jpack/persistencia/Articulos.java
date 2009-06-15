@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -28,8 +27,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "articulos")
-@NamedQueries({@NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo"), @NamedQuery(name = "Articulos.findByCodigo", query = "SELECT a FROM Articulos a WHERE a.codigo = :codigo"), @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion"), @NamedQuery(name = "Articulos.findByStockMinimo", query = "SELECT a FROM Articulos a WHERE a.stockMinimo = :stockMinimo"), @NamedQuery(name = "Articulos.findByLeadTime", query = "SELECT a FROM Articulos a WHERE a.leadTime = :leadTime"), @NamedQuery(name = "Articulos.findByFechaAlta", query = "SELECT a FROM Articulos a WHERE a.fechaAlta = :fechaAlta"), @NamedQuery(name = "Articulos.findByFechaModificacion", query = "SELECT a FROM Articulos a WHERE a.fechaModificacion = :fechaModificacion"), @NamedQuery(name = "Articulos.findByImprimible", query = "SELECT a FROM Articulos a WHERE a.imprimible = :imprimible")})
 public class Articulos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idArticulo", nullable = false)
@@ -50,6 +49,8 @@ public class Articulos implements Serializable {
     private Date fechaModificacion;
     @Column(name = "imprimible", nullable = false)
     private String imprimible;
+    @Column(name = "final", nullable = false)
+    private String articuloFinal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Detnotascredito> detnotascreditoCollection;
     @JoinColumn(name = "idEstado", referencedColumnName = "idEstado")
@@ -99,7 +100,7 @@ public class Articulos implements Serializable {
         this.idArticulo = idArticulo;
     }
 
-    public Articulos(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible) {
+    public Articulos(Integer idArticulo, String codigo, String descripcion, float stockMinimo, float leadTime, Date fechaAlta, Date fechaModificacion, String imprimible, String articuloFinal) {
         this.idArticulo = idArticulo;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -108,6 +109,7 @@ public class Articulos implements Serializable {
         this.fechaAlta = fechaAlta;
         this.fechaModificacion = fechaModificacion;
         this.imprimible = imprimible;
+        this.articuloFinal = articuloFinal;
     }
 
     public Integer getIdArticulo() {
@@ -326,6 +328,14 @@ public class Articulos implements Serializable {
         this.preciosCollection = preciosCollection;
     }
 
+    public String getArticuloFinal() {
+        return articuloFinal;
+    }
+
+    public void setArticuloFinal(String articuloFinal) {
+        this.articuloFinal = articuloFinal;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -350,5 +360,4 @@ public class Articulos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Articulos[idArticulo=" + idArticulo + "]";
     }
-
 }
