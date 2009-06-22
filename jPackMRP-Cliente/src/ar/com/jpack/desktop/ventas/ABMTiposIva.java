@@ -57,7 +57,9 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     public void agregar() {
         // <editor-fold defaultstate="collapsed" desc="Hard Code - Nuevo TipoIVA (nuevoIva)">
         //Inicio de carga hard-code
-        EstadosT estado = (EstadosT) DesktopApp.getApplication().getEstado(1);
+        HashMap parametros = new HashMap();
+        parametros.put("pIdEstados", new Integer(1));
+        EstadosT estado = (EstadosT) DesktopApp.getApplication().getEstadosT(parametros);
         TiposIvaT nuevoIva = new TiposIvaT(99, "Nuevo", "N", estado);
         //Fin de carga hard-code
         // </editor-fold>

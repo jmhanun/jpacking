@@ -250,7 +250,7 @@ public class Articulos extends javax.swing.JDialog {
             HashMap parametros = new HashMap();
             if (!idArticuloTextField.getText().isEmpty()) {
                 try{
-                    parametros.put("pIdArticulo", Integer.parseInt(idArticuloTextField.getText()));
+                    parametros.put("pIdArticulos", Integer.parseInt(idArticuloTextField.getText()));
                 }catch(NumberFormatException ex){
                     JOptionPane.showMessageDialog(rootPane, "El campo id articulo debe ser numerico, se omitira en la busqueda");
                     idArticuloTextField.setText("");
@@ -262,7 +262,7 @@ public class Articulos extends javax.swing.JDialog {
             if (!descripcionTextField.getText().isEmpty()) {
                 parametros.put("pDescripcion", descripcionTextField.getText().toUpperCase());
             }
-            articulosTs.addAll((ArrayList<ArticulosT>)DesktopApp.getApplication().getArticulos(parametros));
+            articulosTs.addAll((ArrayList<ArticulosT>)DesktopApp.getApplication().getArticulosT(parametros));
 
             b.bind();
 

@@ -6,19 +6,18 @@
 package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.produccion.ABMArticulos;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.DetalleRemitosTableModel;
-import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.DetalleRemitosPKT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.RemitosT;
-import ar.com.jpack.transferencia.UnidadesMedidaT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -68,19 +67,33 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     public void agregar() {
         contadorDetalle++;
         DetalleRemitosPKT id = new DetalleRemitosPKT(contadorDetalle, 0);
-        DetalleRemitosT nuevoDetalle = new DetalleRemitosT();
-        nuevoDetalle.setDetalleremitosPK(id);
-        nuevoDetalle.setCantidad(10);
-        HashMap parametros = new HashMap();
-        parametros.put("pIdArticulo", 2);
-        ArrayList<ArticulosT>  arts = (ArrayList<ArticulosT>) DesktopApp.getApplication().getArticulos(parametros);
-        ArticulosT art = arts.get(0);
-        nuevoDetalle.setIdArticulo(art);
-        nuevoDetalle.setIdUnidMedida(new UnidadesMedidaT());
-        nuevoDetalle.setImporte(0.0);
-        nuevoDetalle.setPrecioUnitario(0.0);
-        nuevoDetalle.setRemitos(remito);
-        tableModel.addRow(nuevoDetalle);
+
+        setDto(new DetalleRemitosT());
+        getDto().setDetalleremitosPK(id);
+
+
+        DesktopApp.getApplication().getDesktopView().setPadre(this);
+        DesktopApp.getApplication().getDesktopView().showArticulos().run();
+
+
+        JInternalFrame[] list = DesktopApp.getApplication().getDesktopView().getDesktopPanel().getAllFrames();
+        int i = 0;
+        articulosOpenFrame = null;
+        boolean open = false;
+        while ((i < list.length) && (!open)) {
+            if (list[i].getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.ABMArticulos")) {
+                open = true;
+                articulosOpenFrame = (ABMArticulos) list[i];
+            }
+        }
+        articulosOpenFrame.setPadre(this);
+        articulosOpenFrame.habilitarBtnSeleccionar(true);
+        
+
+    }
+
+    public void agregarDetalle(DetalleRemitosT detalle) {
+        tableModel.addRow(detalle);
     }
 
     @Action
@@ -301,8 +314,9 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     public static final String[] columnNames = {
         "Id", "Codigo", "Medida", "Precio", "Importe"
     };
-    protected DetalleRemitosTableModel tableModel;
+    public DetalleRemitosTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
     private RemitosT remito;
     private int contadorDetalle;
+    private ABMArticulos articulosOpenFrame;
 }

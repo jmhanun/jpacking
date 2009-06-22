@@ -3,11 +3,25 @@
  *
  * Created on 14 de junio de 2009, 18:41
  */
-
 package ar.com.jpack.desktop.produccion;
 
+import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.ventas.RegistrarRemito;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablemodels.ArticulosTableModel;
 import ar.com.jpack.transferencia.ArticulosT;
+import ar.com.jpack.transferencia.DetalleRemitosT;
+import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -19,6 +33,86 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
     public ABMArticulos() {
         super(new ArticulosT());
         initComponents();
+
+        HashMap parametros = new HashMap();
+        setListDto((ArrayList<ArticulosT>) DesktopApp.getApplication().getArticulosT(parametros));
+
+        tableModel = new ArticulosTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        tblArticulos.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblArticulos.setRowSorter(sorter);
+
+        if (getPadre() == null) {
+            btnSeleccionar.setEnabled(false);
+        } else {
+            btnSeleccionar.setEnabled(true);
+        }
+
+
+    }
+
+    @Action
+    public void eliminar() {
+    }
+
+    @Action
+    public void modificar() {
+    }
+
+    @Action
+    public void agregar() {
+    }
+
+    @Action
+    public void seleccionar() {
+        if (tblArticulos.getSelectedRow() != - 1) {
+
+            ArticulosT art = getDto();
+            ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
+
+
+            ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+            ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
+
+            ((RegistrarRemito) getPadre()).tableModel.addRow(((DetalleRemitosT) getPadre().getDto()));
+            
+
+            cancelar();
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+        }
+    }
+
+    @Action
+    public void cancelar() {
+        try {
+            setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMArticulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Action
+    public void buscar() {
+    }
+
+    public void cambiarArticuloT() {
+        //Cambia los datos de los txts
+    }
+
+    public void habilitarBtnSeleccionar(boolean valor) {
+        btnSeleccionar.setEnabled(valor);
     }
 
     /** This method is called from within the constructor to
@@ -32,6 +126,17 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtCodigoBusqueda = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblArticulos = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setClosable(true);
@@ -45,18 +150,109 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
         jPanel1.setName("jPanel1"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMArticulos.class);
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        txtCodigoBusqueda.setText(resourceMap.getString("txtCodigoBusqueda.text")); // NOI18N
+        txtCodigoBusqueda.setName("txtCodigoBusqueda"); // NOI18N
+
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMArticulos.class, this);
+        btnBuscar.setAction(actionMap.get("buscar")); // NOI18N
+        btnBuscar.setName("btnBuscar"); // NOI18N
+
+        jSeparator1.setName("jSeparator1"); // NOI18N
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        tblArticulos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblArticulos.setName("tblArticulos"); // NOI18N
+        tblArticulos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblArticulosMouseClicked(evt);
+            }
+        });
+        tblArticulos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblArticulosKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblArticulos);
+
+        btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
+        btnCancelar.setName("btnCancelar"); // NOI18N
+
+        btnEliminar.setAction(actionMap.get("eliminar")); // NOI18N
+        btnEliminar.setName("btnEliminar"); // NOI18N
+
+        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
+        btnModificar.setName("btnModificar"); // NOI18N
+
+        btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
+        btnSeleccionar.setName("btnSeleccionar"); // NOI18N
+
+        btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
+        btnAgregar.setName("btnAgregar"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnSeleccionar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnCancelar))
+                .addGap(21, 21, 21))
         );
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMArticulos.class);
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
 
         jPanel2.setName("jPanel2"); // NOI18N
@@ -65,11 +261,11 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
+            .addGap(0, 479, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGap(0, 281, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -78,21 +274,56 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+private void tblArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblArticulosMouseClicked
 
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((ArticulosT) tableModel.getRow(tblArticulos.getSelectedRow()));
+    cambiarArticuloT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+
+}//GEN-LAST:event_tblArticulosMouseClicked
+
+private void tblArticulosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblArticulosKeyReleased
+
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((ArticulosT) tableModel.getRow(tblArticulos.getSelectedRow()));
+    cambiarArticuloT();
+
+
+}//GEN-LAST:event_tblArticulosKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tblArticulos;
+    private javax.swing.JTextField txtCodigoBusqueda;
     // End of variables declaration//GEN-END:variables
-
+    private ArticulosTableModel tableModel;
+    public static final String[] columnNames = {
+        "Id", "Codigo", "Descripcion", "Stock Minimo",
+        "Unidad de medida", "Estado", "Imprimible", "Final"
+    };
+    private TableRowSorter sorter;
 }
