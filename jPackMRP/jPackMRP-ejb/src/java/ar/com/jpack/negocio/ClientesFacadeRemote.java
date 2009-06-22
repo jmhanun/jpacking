@@ -31,5 +31,4 @@ public interface ClientesFacadeRemote {
 
     public List<ClientesT> findAllClientesT();
 
-    public java.util.List<ar.com.jpack.transferencia.listas.ClientesListaT> findAllClientesListaT();
 }

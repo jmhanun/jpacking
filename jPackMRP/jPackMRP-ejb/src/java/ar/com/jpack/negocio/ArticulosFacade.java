@@ -5,18 +5,20 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Articulos;
+import ar.com.jpack.persistencia.Precios;
 import ar.com.jpack.transferencia.ArticulosT;
-import ar.com.jpack.transferencia.helper.DataTransferHelper;
+import ar.com.jpack.util.DozerUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
-//import oracle.toplink.essentials.config.HintValues;
-//import oracle.toplink.essentials.config.TopLinkQueryHints;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.ejb.EntityManagerImpl;
 
 /**
  *
@@ -28,83 +30,75 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(Articulos articulos) {
-        em.persist(articulos);
+    /**
+     * Obtiene la lista de Articulos filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
+     * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
+     */
+    public List<ArticulosT> getArticulosT(HashMap parametros) {
+        List<Articulos> articulosList = getArticulos(parametros);
+        List<ArticulosT> articulosTList = new ArrayList<ArticulosT>();
+
+        for (Articulos c : articulosList) {
+            ArticulosT rdo = (ArticulosT) DozerUtil.getDozerMapper(false).map(c, ArticulosT.class);
+            articulosTList.add(rdo);
+        }
+        return articulosTList;
     }
 
-    public void edit(Articulos articulos) {
-        em.merge(articulos);
-    }
-
-    public void remove(Articulos articulos) {
-        em.remove(em.merge(articulos));
-    }
-
-    public Articulos find(Object id) {
-        return em.find(ar.com.jpack.persistencia.Articulos.class, id);
-    }
-
-    public List<Articulos> findAll() {
-        return em.createQuery("select object(o) from Articulos as o").getResultList();
-    }
-
-    public List<ArticulosT> findAllArticulosT() {
-        List<Articulos> articulos = findAll();
-        return DataTransferHelper.copiarArticulosALista(articulos);
-    }
-
-    public List<ArticulosT> findArticulosT(HashMap parametros) {
-        String sql = "SELECT a FROM Articulos a";
-        boolean condicion = false;
-        if (parametros.containsKey("pIdArticulo")) {
-            sql += " WHERE a.idArticulo = :idArticulo";
-            condicion = true;
+    /**
+     * Obtiene la lista de Articulos filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
+     * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
+     */
+    public List<Articulos> getArticulos(HashMap parametros) {
+        Criteria articulosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Articulos.class);
+        List<Articulos> articulosList;
+        if (parametros.containsKey("pIdArticulos")) {
+            articulosCritearia.add(Restrictions.eq("idArticulos", parametros.get("pIdArticulos")));
         }
         if (parametros.containsKey("pCodigo")) {
-            if (condicion) {
-                sql += " AND a.codigo like :codigo";
-            } else {
-                sql += " WHERE a.codigo like :codigo";
-                condicion = true;
-            }
+            articulosCritearia.add(Restrictions.like("codigo", parametros.get("pCodigo").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pDescripcion")) {
-            if (condicion) {
-                sql += " AND a.descripcion like :descripcion";
-            } else {
-                sql += " WHERE a.descripcion like :descripcion";
-                condicion = true;
-            }
-        }
-        Query query = em.createQuery(sql);
-
-        if (parametros.containsKey("pIdArticulo")) {
-            query.setParameter("idArticulo", parametros.get("pIdArticulo"));
-        }
-        if (parametros.containsKey("pCodigo")) {
-            query.setParameter("codigo", parametros.get("pCodigo"));
-        }
-        if (parametros.containsKey("pDescripcion")) {
-            query.setParameter("descripcion", parametros.get("pDescripcion"));
+            articulosCritearia.add(Restrictions.like("descripcion", parametros.get("pDescripcion").toString(), MatchMode.ANYWHERE));
         }
 
-        return DataTransferHelper.copiarArticulosALista(query.getResultList());
+        articulosCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+        articulosCritearia.setFetchMode("idUnidMedida", FetchMode.JOIN);
 
+
+        articulosList = articulosCritearia.list();
+        return articulosList;
     }
 
-    public Boolean isArticulo(Integer idArticulo) {
-        Boolean existe = true;
-        Query query = em.createQuery("SELECT a FROM Articulos as a WHERE a.idArticulo= :idArticulo");
-        query.setParameter("idArticulo", idArticulo);
-        Articulos articulo = null;
-        try {
-//            query.setHint(TopLinkQueryHints.REFRESH, HintValues.TRUE);
-            articulo = (Articulos) query.getSingleResult();
-        } catch (NoResultException e) {
-            existe = false;
-        } catch (NonUniqueResultException e) {
-            existe = false;
-        }
-        return existe;
+    /**
+     * Obtiene el precio vigente de un Articulo
+     * @param ArticuloT del que se desea conocer el precio
+     * @return devuelve el precio como double
+     */
+    public double getPrecioArticuloVigente(ArticulosT articulosT) {
+        Criteria preciosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Precios.class);
+        Precios precioVigente;
+
+        preciosCritearia.setFetchMode("idArticulo", FetchMode.JOIN);
+        preciosCritearia.setFetchMode("idLista", FetchMode.JOIN);
+
+        Criteria articulosCriteria = preciosCritearia.createCriteria("idArticulo");
+        articulosCriteria.add(Restrictions.eq("idArticulo", articulosT.getIdArticulo()));
+        Criteria listasPreciosCriteria = preciosCritearia.createCriteria("idLista");
+        listasPreciosCriteria.add(Restrictions.isNull("fechaHasta"));
+
+
+        precioVigente = (Precios) preciosCritearia.uniqueResult();
+        return precioVigente.getPrecio();
     }
 }

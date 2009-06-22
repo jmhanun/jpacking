@@ -4,14 +4,12 @@
  */
 package ar.com.jpack.transferencia.helper;
 
-import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.persistencia.Clientes;
 import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Tiposdocumento;
 import ar.com.jpack.persistencia.Unidadesmedida;
 import ar.com.jpack.persistencia.Usuarios;
 import ar.com.jpack.persistencia.Tiposiva;
-import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
@@ -28,27 +26,6 @@ import java.util.List;
  * @author Pablo
  */
 public class DataTransferHelper {
-
-    // ARTICULOS 1
-    public static ArticulosT copiarArticulos(Articulos item) {
-        ArticulosT t = null;
-        if (item != null) {
-            t = new ArticulosT();
-        }
-        return t;
-    }
-
-    // ARTICULOS muchos
-    public static List<ArticulosT> copiarArticulosALista(List<Articulos> items) {
-        List<ArticulosT> lista = new ArrayList<ArticulosT>();
-        Iterator i = items.iterator();
-        while (i.hasNext()) {
-            lista.add(copiarArticulos((Articulos) i.next()));
-        }
-
-        return lista;
-    }
-    
     // CLIENTES 1
     public static ClientesT copiarCliente(Clientes item) {
         ClientesT t = null;
@@ -96,14 +73,12 @@ public class DataTransferHelper {
         }
         return t;
     }
-
-
     // ESTADOS 1
     public static EstadosT copiarEstado(Estados item) {
         EstadosT t = null;
         if (item != null) {
             t = new EstadosT(item.getIdEstado(),
-                    item.getDescripcion(),item.getNotas());
+                    item.getDescripcion(), item.getNotas());
         }
         return t;
     }
@@ -123,13 +98,12 @@ public class DataTransferHelper {
         TiposIvaT t = null;
         if (item != null) {
             t = new TiposIvaT(item.getIdTipoIVA(),
-                    item.getDescripcion(), 
-                    item.getAbreviatura(), 
+                    item.getDescripcion(),
+                    item.getAbreviatura(),
                     copiarEstado(item.getIdEstado()));
         }
         return t;
     }
-    
     // UNIDADES MEDIDA muchos
     public static List<UnidadesMedidaT> copiarUnidadesMedidaALista(List<Unidadesmedida> items) {
         List<UnidadesMedidaT> lista = new ArrayList<UnidadesMedidaT>();

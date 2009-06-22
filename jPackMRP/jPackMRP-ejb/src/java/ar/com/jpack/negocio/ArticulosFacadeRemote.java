@@ -17,19 +17,33 @@ import javax.ejb.Remote;
 @Remote
 public interface ArticulosFacadeRemote {
 
-    void create(Articulos articulos);
+    /**
+     * Obtiene la lista de Articulos filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
+     * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
+     */
+    public List<ArticulosT> getArticulosT(HashMap parametros);
 
-    void edit(Articulos articulos);
+    /**
+     * Obtiene la lista de Articulos filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
+     * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
+     */
+    public List<Articulos> getArticulos(HashMap parametros);
 
-    void remove(Articulos articulos);
+    /**
+     * Obtiene el precio vigente de un Articulo
+     * @param ArticuloT del que se desea conocer el precio
+     * @return devuelve el precio como double
+     */
+    public double getPrecioArticuloVigente(ArticulosT articulosT);
 
-    Articulos find(Object id);
-
-    List<Articulos> findAll();
-
-    public List<ArticulosT> findAllArticulosT();
-
-    public List<ArticulosT> findArticulosT(HashMap parametros);
-    
-    public Boolean isArticulo(Integer idArticulo);
 }
