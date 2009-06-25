@@ -381,8 +381,8 @@ public class DesktopView extends FrameView {
     @Action
     public void showReporteProduccion() {
         HashMap parametros = new HashMap();
-        parametros.put("pduke", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\Duke.gif");
-        parametros.put("pimagen", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\logoreporte.jpg");
+        parametros.put("pduke", "C:\\Logos\\Duke.gif");
+        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
 
         JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
@@ -568,6 +568,20 @@ public class DesktopView extends FrameView {
             }
         }
         return m;
+    }
+
+    public CustomInternalFrame getInternalFrame(String clase) {
+        CustomInternalFrame frame = null;
+        JInternalFrame[] list = DesktopApp.getApplication().getDesktopView().getDesktopPanel().getAllFrames();
+        int i = 0;
+        boolean open = false;
+        while ((i < list.length) && (!open)) {
+            if (list[i].getClass().getCanonicalName().equals(clase)) {
+                open = true;
+                frame = (CustomInternalFrame) list[i];
+            }
+        }
+        return frame;
     }
 
     /**

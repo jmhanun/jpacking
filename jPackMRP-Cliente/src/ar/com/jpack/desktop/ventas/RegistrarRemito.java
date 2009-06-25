@@ -17,7 +17,6 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -75,20 +74,11 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         DesktopApp.getApplication().getDesktopView().setPadre(this);
         DesktopApp.getApplication().getDesktopView().showArticulos().run();
 
+        articulosOpenFrame = (ABMArticulos) DesktopApp.getApplication().getDesktopView().getInternalFrame("ar.com.jpack.desktop.produccion.ABMArticulos");
 
-        JInternalFrame[] list = DesktopApp.getApplication().getDesktopView().getDesktopPanel().getAllFrames();
-        int i = 0;
-        articulosOpenFrame = null;
-        boolean open = false;
-        while ((i < list.length) && (!open)) {
-            if (list[i].getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.ABMArticulos")) {
-                open = true;
-                articulosOpenFrame = (ABMArticulos) list[i];
-            }
-        }
         articulosOpenFrame.setPadre(this);
         articulosOpenFrame.habilitarBtnSeleccionar(true);
-        
+
 
     }
 
