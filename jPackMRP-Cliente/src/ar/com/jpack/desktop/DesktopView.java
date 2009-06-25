@@ -378,6 +378,14 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public void showReporteProduccion() {
+        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", null);
+        JasperViewer jv = new JasperViewer(jp, false);
+        jv.setTitle("Reporte de Produccion");
+        jv.setVisible(true);
+    }
+
+    @Action
     public Task showReporteStock() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", padre);
     }
