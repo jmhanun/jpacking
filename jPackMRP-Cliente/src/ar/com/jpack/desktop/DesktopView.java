@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.ActionMap;
 import javax.swing.Timer;
@@ -379,7 +380,11 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showReporteProduccion() {
-        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", null);
+        HashMap parametros = new HashMap();
+        parametros.put("pduke", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\Duke.gif");
+        parametros.put("pimagen", "C:\\Users\\jmhanun\\Documents\\NetBeansProjects\\Tesis\\imagenes\\logoreporte.jpg");
+
+        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Produccion");
         jv.setVisible(true);
