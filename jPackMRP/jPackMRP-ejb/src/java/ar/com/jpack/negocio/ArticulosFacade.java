@@ -99,6 +99,10 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
 
 
         precioVigente = (Precios) preciosCritearia.uniqueResult();
-        return precioVigente.getPrecio();
+        if (precioVigente == null) {
+            return 0.0;
+        } else {
+            return precioVigente.getPrecio();
+        }
     }
 }
