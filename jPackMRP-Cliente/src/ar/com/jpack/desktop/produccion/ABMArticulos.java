@@ -76,21 +76,26 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
     @Action
     public void seleccionar() {
-        if (tblArticulos.getSelectedRow() != - 1) {
+        if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
 
-            ArticulosT art = getDto();
-            ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
+            if (tblArticulos.getSelectedRow() != - 1) {
+
+                ArticulosT art = getDto();
+                ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
 
 
-            ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
-            ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
+                ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+                ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
 
-            ((RegistrarRemito) getPadre()).tableModel.addRow(((DetalleRemitosT) getPadre().getDto()));
-            
 
-            cancelar();
-        } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+                ((RegistrarRemito) getPadre()).agregarDetalle(((DetalleRemitosT) getPadre().getDto()));
+
+
+
+                cancelar();
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+            }
         }
     }
 
@@ -113,6 +118,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
     public void habilitarBtnSeleccionar(boolean valor) {
         btnSeleccionar.setEnabled(valor);
+        btnAgregar.setEnabled(!valor);
+        btnEliminar.setEnabled(!valor);
+        btnModificar.setEnabled(!valor);
     }
 
     /** This method is called from within the constructor to
