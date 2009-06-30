@@ -30,7 +30,7 @@ public class RolesFacade implements RolesFacadeRemote {
     private EntityManager em;
 
     /**
-     * Obtiene la lista de Usuarios filtrados por el Hasmap
+     * Obtiene la lista de Roles filtrados por el Hasmap
      * @param parametros <br>
      * Lista de parametros: <br>
      * <b>pIdRol</b>        filtra por 'eq' idRol (Integer) <br>
@@ -42,7 +42,7 @@ public class RolesFacade implements RolesFacadeRemote {
      * <b>pOrdenHermano</b> filtra por 'eq' ordenHermano (int) <br>
      * <b>pJoinUsuarios</b> obliga a Joinear con Usuarios <br>
      * <b>pIdUsuario</b>    filtra por 'eq' idUsuario (Integer) (debe haber sido joineado con Estado) <br>
-     * @return devuelve la lista de los Usuarios que cumplan con el filtro
+     * @return devuelve la lista de los Roles que cumplan con el filtro
      */
     public List<RolesT> getRolesT(HashMap parametros) {
         List<Roles> rolesList = getRoles(parametros);
@@ -55,7 +55,7 @@ public class RolesFacade implements RolesFacadeRemote {
     }
 
     /**
-     * Obtiene la lista de Usuarios filtrados por el Hasmap
+     * Obtiene la lista de Roles filtrados por el Hasmap
      * @param parametros <br>
      * Lista de parametros: <br>
      * <b>pIdRol</b>        filtra por 'eq' idRol (Integer) <br>
@@ -67,7 +67,7 @@ public class RolesFacade implements RolesFacadeRemote {
      * <b>pOrdenHermano</b> filtra por 'eq' ordenHermano (int) <br>
      * <b>pJoinUsuarios</b> obliga a Joinear con Usuarios <br>
      * <b>pIdUsuario</b>    filtra por 'eq' idUsuario (Integer) (debe haber sido joineado con Estado) <br>
-     * @return devuelve la lista de los Usuarios que cumplan con el filtro
+     * @return devuelve la lista de los Roles que cumplan con el filtro
      */
     public List<Roles> getRoles(HashMap parametros) {
         Criteria rolesCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Roles.class);

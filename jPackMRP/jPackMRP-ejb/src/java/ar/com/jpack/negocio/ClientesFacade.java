@@ -56,26 +56,57 @@ public class ClientesFacade implements ClientesFacadeRemote {
 
     public List<ClientesT> findClientesT(HashMap parametros) {
         Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
-        List <Clientes> clientesList;
-        List <ClientesT> clientesTList=new ArrayList();
+        List<Clientes> clientesList;
+        List<ClientesT> clientesTList = new ArrayList();
         if (parametros.containsKey("pIdCliente")) {
             clienteCritearia.add(Restrictions.eq("idCliente", parametros.get("pIdCliente")));
         }
         if (parametros.containsKey("pNombres")) {
-            
-            clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(),MatchMode.ANYWHERE));
+
+            clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pCuit")) {
             clienteCritearia.add(Restrictions.eq("cuit", parametros.get("pCuit")));
         }
-       clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+        clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+        /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
+        estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
+        estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
+         */
+        clientesList = clienteCritearia.list();
+        for (Clientes c : clientesList) {
+            ClientesT rdo = (ClientesT) DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
+            clientesTList.add(rdo);
+        }
+        return clientesTList;
+    }
+
+    public List<Clientes> getClientes(HashMap parametros) {
+        Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
+        List<Clientes> clientesList;
+        if (parametros.containsKey("pIdCliente")) {
+            clienteCritearia.add(Restrictions.eq("idCliente", parametros.get("pIdCliente")));
+        }
+        if (parametros.containsKey("pNombres")) {
+            clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(), MatchMode.ANYWHERE));
+        }
+        if (parametros.containsKey("pCuit")) {
+            clienteCritearia.add(Restrictions.eq("cuit", parametros.get("pCuit")));
+        }
+//       clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
        /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
-       estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
-       estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
-       */
-       clientesList=clienteCritearia.list();
-        for(Clientes c:clientesList){
-            ClientesT rdo=(ClientesT)DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
+        estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
+        estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
+         */
+        clientesList = clienteCritearia.list();
+        return clientesList;
+    }
+
+    public List<ClientesT> getClientesT(HashMap parametros) {
+        List<Clientes> clientesList = getClientes(parametros);
+        List<ClientesT> clientesTList = new ArrayList();
+        for (Clientes c : clientesList) {
+            ClientesT rdo = (ClientesT) DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
             clientesTList.add(rdo);
         }
         return clientesTList;

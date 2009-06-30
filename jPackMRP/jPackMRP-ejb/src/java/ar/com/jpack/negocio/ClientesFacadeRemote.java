@@ -17,7 +17,10 @@ import javax.ejb.Remote;
 @Remote
 public interface ClientesFacadeRemote {
 
+    @Deprecated
     public List<ClientesT> findClientesT(HashMap parametros);
+
+    public List<ClientesT> getClientesT(HashMap parametros);
 
     void create(Clientes clientes);
 
