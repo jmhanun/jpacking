@@ -10,6 +10,7 @@ import ar.com.jpack.desktop.produccion.ABMArticulos;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.DetalleRemitosTableModel;
+import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.DetalleRemitosPKT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.RemitosT;
@@ -83,6 +84,18 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
     @Action
     public void buscarCliente() {
+
+
+
+        DesktopApp.getApplication().getDesktopView().setPadre(this);
+        
+        DesktopApp.getApplication().getDesktopView().showClientes().run();
+
+        clientesOpenFrame = (ABMClientes) DesktopApp.getApplication().getDesktopView().getInternalFrame("ar.com.jpack.desktop.ventas.ABMClientes");
+
+        clientesOpenFrame.setPadre(this);
+        clientesOpenFrame.habilitarBtnSeleccionar(true);
+
     }
 
     @Action
@@ -107,6 +120,11 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
     public void agregarDetalle(DetalleRemitosT detalle) {
         tableModel.addRow(detalle);
+    }
+
+    public void agregarCliente(ClientesT cliente) {
+        txtCliente.setText(cliente.getNombres());
+        remito.setIdCliente(cliente);
     }
 
     @Action

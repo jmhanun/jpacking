@@ -411,6 +411,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showClientes() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMClientes", "Clientes", padre);
+    }
+
+    @Action
     public Task showSetup() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMSetup", "Setup", padre);
     }
