@@ -6,6 +6,8 @@ package ar.com.jpack.desktop;
 import ar.com.jpack.negocio.ArticulosFacadeRemote;
 import ar.com.jpack.negocio.ClientesFacadeRemote;
 import ar.com.jpack.negocio.EstadosFacadeRemote;
+import ar.com.jpack.negocio.RemitosFacadeRemote;
+import ar.com.jpack.negocio.TiposComprobantesFacadeRemote;
 import ar.com.jpack.negocio.ReportesFacadeRemote;
 import ar.com.jpack.negocio.RolesFacadeRemote;
 import ar.com.jpack.negocio.SetupFacadeRemote;
@@ -15,9 +17,12 @@ import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SetupT;
+import ar.com.jpack.transferencia.TiposComprobantesT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
@@ -56,6 +61,8 @@ public class DesktopApp extends SingleFrameApplication {
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
     private TiposDocumentoFacadeRemote tiposDocumentoFacade;
+    private TiposComprobantesFacadeRemote tiposComprobantesFacade;
+    private RemitosFacadeRemote remitosFacade;
     private EstadosFacadeRemote estadosFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
@@ -278,6 +285,37 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     /**
+     * Obtiene el siguiente numero de remito
+     * @return devuelve el siguiente numero de remito como int
+     */
+    public int getNextRemito() {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.getNextRemito();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    /**
+     * Obtiene el stock de un Articulo
+     * @param ArticuloT del que se desea conocer el stock
+     * @return devuelve la cantidad de stock como double
+     */
+    public double getStockArticulo(ArticulosT articulosT) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            return articulosFacade.getStockArticulo(articulosT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return 0.0;
+        }
+    }
+
+    /**
      * Obtiene el precio vigente de un Articulo
      * @param ArticuloT del que se desea conocer el precio
      * @return devuelve el precio como double
@@ -313,6 +351,24 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
             return usuariosFacade.getUsuariosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Tipos de comprobantes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdTipoComprobante</b>  filtra por 'eq' idTipoComprobante (Integer) <br>
+     * @return devuelve la lista de los Tipos de comprabantes que cumplan con el filtro
+     */
+    public List<TiposComprobantesT> getTiposComprobantesT(HashMap parametros) {
+        try {
+            tiposComprobantesFacade = (TiposComprobantesFacadeRemote) lookUp("ar.com.jpack.negocio.TiposComprobantesFacadeRemote");
+            return tiposComprobantesFacade.getTiposComprobantesT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -463,10 +519,35 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    /**
+     * Actualiza o crea un rolT recibido por parametro
+     * Si existe, se actualiza. Si no existe, se crea.
+     * 
+     * @param rolesT contiene los datos del rol a actualizar
+     * @return devuelve el rolT actualizado
+     */
     public RolesT updateRolesT(RolesT rolesT) {
         try {
             rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
             return rolesFacade.updateRolesT(rolesT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Actualiza o crea un remitoT recibido por parametro
+     * Si existe, se actualiza. Si no existe, se crea.
+     * 
+     * @param remitosT contiene los datos del remito a actualizar
+     * @return devuelve el remitoT actualizado
+     */
+    public RemitosT updateRemitosT(RemitosT remitosT, List<DetalleRemitosT> detallesRemitosT) {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.updateRemitosT(remitosT, detallesRemitosT);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

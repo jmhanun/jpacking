@@ -13,9 +13,12 @@ import ar.com.jpack.helpers.tablemodels.DetalleRemitosTableModel;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.DetalleRemitosPKT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RemitosT;
+import ar.com.jpack.transferencia.TiposComprobantesT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -66,7 +69,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     @Action
     public void modificar() {
         if (tblDetalleRemito.getSelectedRow() != - 1) {
-            
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
         }
@@ -76,7 +78,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     @Action
     public void eliminar() {
         if (tblDetalleRemito.getSelectedRow() != - 1) {
-            
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
         }
@@ -88,7 +89,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
 
         DesktopApp.getApplication().getDesktopView().setPadre(this);
-        
+
         DesktopApp.getApplication().getDesktopView().showClientes().run();
 
         clientesOpenFrame = (ABMClientes) DesktopApp.getApplication().getDesktopView().getInternalFrame("ar.com.jpack.desktop.ventas.ABMClientes");
@@ -129,6 +130,77 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
     @Action
     public void aplicar() {
+        //Verificar que haya al menos un item
+        importeTotal = 0.0;
+        if (tableModel.getRowCount() > 0) {
+
+            //Verificar que haya cliente seleccionado
+            if (!txtCliente.getText().equals("")) {
+                //Verificar que haya cantidades y precios en los items
+                //Verificar que haya stock
+                boolean cantidadOk = true;
+                double stock = 0.0;
+                ArrayList<DetalleRemitosT> items = getListDto();
+                for (DetalleRemitosT detalleRemitoSeleccionado : items) {
+                    importeTotal += detalleRemitoSeleccionado.getImporte();
+                    if (detalleRemitoSeleccionado.getCantidad() <= 0) {
+                        cantidadOk = false;
+                    }
+                    if (detalleRemitoSeleccionado.getPrecioUnitario() <= 0) {
+                        cantidadOk = false;
+                    }
+
+                    if (cantidadOk) {
+                        stock = DesktopApp.getApplication().getStockArticulo(detalleRemitoSeleccionado.getIdArticulo());
+                        if (stock < 0) {
+                            stock = 0;
+                        }
+                        // Si no hay suficiente stock crear un DetalleTemporal por la diferencia
+                        if (stock < detalleRemitoSeleccionado.getCantidad()) {
+                            int nuevaCantidad;
+                            nuevaCantidad = (int) (detalleRemitoSeleccionado.getCantidad() - stock);
+                            //TODO - Debo cambiar a DetalleRemitoTemporal.. cuando este listo                        
+                            DetalleRemitosT nuevoDetalle = new DetalleRemitosT(detalleRemitoSeleccionado.getDetalleremitosPK(),
+                                    nuevaCantidad,
+                                    detalleRemitoSeleccionado.getPrecioUnitario(),
+                                    detalleRemitoSeleccionado.getImporte(),
+                                    detalleRemitoSeleccionado.getIdArticulo(),
+                                    detalleRemitoSeleccionado.getRemitos(),
+                                    detalleRemitoSeleccionado.getIdUnidMedida());
+                            detalleTemporal.add(nuevoDetalle);
+                        }
+                    }
+                }
+                if (cantidadOk) {
+                    //Hay stock de todos los articulos solicitados.
+                    if (detalleTemporal.isEmpty()) {
+                        remito.setImporte(importeTotal);
+                        remito.setFecha(new Date());
+                        remito.setFechaAcordada(remito.getFecha());
+                        remito.setIdEstado(new EstadosT());
+                        remito.getIdEstado().setIdEstado(5);
+                        remito.setIdTipoComprobante(new TiposComprobantesT());
+                        remito.getIdTipoComprobante().setIdTipoComprobante(4);
+                        remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                        remito.setFechaModificacion(remito.getFecha());
+//                        remito.setFechaEntrega(null);
+                        remito.setFechaEntrega(remito.getFecha());
+                        remito.setIdRemito(null);
+                        DesktopApp.getApplication().updateRemitosT(remito, getListDto());
+                        
+                        cancelar();
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "Falta stock de algun articulo");
+                    }
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "Hay cantidades o precios igual o menor a cero!");
+                }
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "No hay un cliente seleccionado");
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "No hay ningun item en el remito!");
+        }
     }
 
     @Action
@@ -375,4 +447,6 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private int contadorDetalle;
     private ABMArticulos articulosOpenFrame;
     private ABMClientes clientesOpenFrame;
+    private ArrayList<DetalleRemitosT> detalleTemporal = new ArrayList<DetalleRemitosT>(); //Cuando este en la bbdd detalleRemitoTemporal.. cambiar tipo de dato
+    private double importeTotal;
 }

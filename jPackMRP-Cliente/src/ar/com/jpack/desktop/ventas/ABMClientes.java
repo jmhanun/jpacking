@@ -220,8 +220,12 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
             }
         });
         jScrollPane1.setViewportView(tblClientes);
-
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMClientes.class);
+        tblClientes.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tblClientes.columnModel.title0")); // NOI18N
+        tblClientes.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tblClientes.columnModel.title1")); // NOI18N
+        tblClientes.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tblClientes.columnModel.title2")); // NOI18N
+        tblClientes.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("tblClientes.columnModel.title3")); // NOI18N
+
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -293,7 +297,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -309,7 +313,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 345, Short.MAX_VALUE)
+            .addGap(0, 349, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -335,7 +339,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
