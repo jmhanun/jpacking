@@ -46,4 +46,11 @@ public interface ArticulosFacadeRemote {
      */
     public double getPrecioArticuloVigente(ArticulosT articulosT);
 
+    /**
+     * Obtiene el stock de un Articulo
+     * @param ArticuloT del que se desea conocer el stock
+     * @return devuelve la cantidad de stock como double
+     */
+    public double getStockArticulo(ArticulosT articulosT);
+
 }

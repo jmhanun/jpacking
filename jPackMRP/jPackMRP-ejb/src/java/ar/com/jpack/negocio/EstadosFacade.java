@@ -80,7 +80,7 @@ public class EstadosFacade implements EstadosFacadeRemote {
         Criteria estadosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Estados.class);
         List<Estados> estadosList;
         if (parametros.containsKey("pIdEstados")) {
-            estadosCritearia.add(Restrictions.eq("idEstados", parametros.get("pIdEstados")));
+            estadosCritearia.add(Restrictions.eq("idEstado", parametros.get("pIdEstados")));
         }
         if (parametros.containsKey("pDescripcionEstado")) {
             estadosCritearia.add(Restrictions.like("descripcion", parametros.get("pDescripcionEstado").toString(), MatchMode.ANYWHERE));

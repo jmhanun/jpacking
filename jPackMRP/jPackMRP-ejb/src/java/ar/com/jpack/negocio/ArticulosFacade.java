@@ -6,6 +6,7 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.persistencia.Precios;
+import ar.com.jpack.persistencia.Stock;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
@@ -103,6 +104,32 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
             return 0.0;
         } else {
             return precioVigente.getPrecio();
+        }
+    }
+
+    /**
+     * Obtiene el stock de un Articulo
+     * @param ArticuloT del que se desea conocer el stock
+     * @return devuelve la cantidad de stock como double
+     */
+    public double getStockArticulo(ArticulosT articulosT) {
+ 
+//        java.sql.Connection con = ((EntityManagerImpl) em.getDelegate()).getSession().connection();
+        
+        Criteria stockCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Stock.class);
+        Stock stock;
+
+        stockCritearia.setFetchMode("idArticulo", FetchMode.JOIN);
+
+        Criteria articulosCriteria = stockCritearia.createCriteria("idArticulo");
+        articulosCriteria.add(Restrictions.eq("idArticulo", articulosT.getIdArticulo()));
+
+        
+        stock = (Stock) stockCritearia.uniqueResult();
+        if (stock == null) {
+            return 0.0;
+        } else {
+            return stock.getCantidad();
         }
     }
 }

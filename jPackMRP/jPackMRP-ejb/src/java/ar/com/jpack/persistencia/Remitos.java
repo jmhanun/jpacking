@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -12,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -31,8 +32,10 @@ import javax.persistence.TemporalType;
 @Table(name = "remitos")
 @NamedQueries({@NamedQuery(name = "Remitos.findByIdRemito", query = "SELECT r FROM Remitos r WHERE r.idRemito = :idRemito"), @NamedQuery(name = "Remitos.findByNroRemito", query = "SELECT r FROM Remitos r WHERE r.nroRemito = :nroRemito"), @NamedQuery(name = "Remitos.findByFecha", query = "SELECT r FROM Remitos r WHERE r.fecha = :fecha"), @NamedQuery(name = "Remitos.findByImporte", query = "SELECT r FROM Remitos r WHERE r.importe = :importe"), @NamedQuery(name = "Remitos.findByFechaAcordada", query = "SELECT r FROM Remitos r WHERE r.fechaAcordada = :fechaAcordada"), @NamedQuery(name = "Remitos.findByFechaEntrega", query = "SELECT r FROM Remitos r WHERE r.fechaEntrega = :fechaEntrega"), @NamedQuery(name = "Remitos.findByFechaModificacion", query = "SELECT r FROM Remitos r WHERE r.fechaModificacion = :fechaModificacion")})
 public class Remitos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idRemito", nullable = false)
     private Integer idRemito;
     @Column(name = "nroRemito", nullable = false)
@@ -230,5 +233,4 @@ public class Remitos implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Remitos[idRemito=" + idRemito + "]";
     }
-
 }
