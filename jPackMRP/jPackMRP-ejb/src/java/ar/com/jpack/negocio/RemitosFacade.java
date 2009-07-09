@@ -79,8 +79,9 @@ public class RemitosFacade implements RemitosFacadeRemote {
      * @return devuelve el siguiente numero de remito como int
      */
     public int getNextRemito() {
-        String hql = "select max(r.idRemito) from Remitos r";
+        String hql = "select max(r.nroRemito) from Remitos r";
         Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
+        maxID++;
         if (maxID == null) {
             return 0;
         }
