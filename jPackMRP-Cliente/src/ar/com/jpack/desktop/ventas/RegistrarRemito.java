@@ -183,7 +183,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         remito.getIdTipoComprobante().setIdTipoComprobante(4);
                         remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
                         remito.setFechaModificacion(remito.getFecha());
-//                        remito.setFechaEntrega(null);
                         remito.setFechaEntrega(remito.getFecha());
                         remito.setIdRemito(null);
                         DesktopApp.getApplication().updateRemitosT(remito, getListDto());
