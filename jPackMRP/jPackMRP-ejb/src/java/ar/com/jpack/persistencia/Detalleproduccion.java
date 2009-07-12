@@ -2,14 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -25,12 +26,12 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "detalleproduccion")
-@NamedQueries({@NamedQuery(name = "Detalleproduccion.findByIdDetalleProduccion", query = "SELECT d FROM Detalleproduccion d WHERE d.detalleproduccionPK.idDetalleProduccion = :idDetalleProduccion"), @NamedQuery(name = "Detalleproduccion.findByIdOrdenProduccion", query = "SELECT d FROM Detalleproduccion d WHERE d.detalleproduccionPK.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Detalleproduccion.findByIdMaquina", query = "SELECT d FROM Detalleproduccion d WHERE d.detalleproduccionPK.idMaquina = :idMaquina"), @NamedQuery(name = "Detalleproduccion.findByIdDetOrdProduccion", query = "SELECT d FROM Detalleproduccion d WHERE d.detalleproduccionPK.idDetOrdProduccion = :idDetOrdProduccion"), @NamedQuery(name = "Detalleproduccion.findByPrioridad", query = "SELECT d FROM Detalleproduccion d WHERE d.prioridad = :prioridad"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioEstimada = :fechaInicioEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaFinEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinEstimada = :fechaFinEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioProceso = :fechaInicioProceso"), @NamedQuery(name = "Detalleproduccion.findByFechaFinProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinProceso = :fechaFinProceso")})
+@NamedQueries({@NamedQuery(name = "Detalleproduccion.findByIdDetalleProduccion", query = "SELECT d FROM Detalleproduccion d WHERE d.idDetalleProduccion = :idDetalleProduccion"), @NamedQuery(name = "Detalleproduccion.findByPrioridad", query = "SELECT d FROM Detalleproduccion d WHERE d.prioridad = :prioridad"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioEstimada = :fechaInicioEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaFinEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinEstimada = :fechaFinEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioProceso = :fechaInicioProceso"), @NamedQuery(name = "Detalleproduccion.findByFechaFinProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinProceso = :fechaFinProceso")})
 public class Detalleproduccion implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected DetalleproduccionPK detalleproduccionPK;
+    @Id
+    @Column(name = "idDetalleProduccion", nullable = false)
+    private Integer idDetalleProduccion;
     @Column(name = "prioridad", nullable = false)
     private int prioridad;
     @Column(name = "fechaInicioEstimada", nullable = false)
@@ -50,7 +51,7 @@ public class Detalleproduccion implements Serializable {
     private Estados idEstado;
     @JoinColumn(name = "idMaquina", referencedColumnName = "idMaquina", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Maquinas maquinas;
+    private Maquinas idMaquina;
     @JoinColumns({@JoinColumn(name = "idDetOrdProduccion", referencedColumnName = "idDetOrdProduccion", insertable = false, updatable = false), @JoinColumn(name = "idOrdenProduccion", referencedColumnName = "idOrdenProduccion", insertable = false, updatable = false)})
     @ManyToOne(fetch = FetchType.LAZY)
     private Detordenesproduccion detordenesproduccion;
@@ -58,27 +59,23 @@ public class Detalleproduccion implements Serializable {
     public Detalleproduccion() {
     }
 
-    public Detalleproduccion(DetalleproduccionPK detalleproduccionPK) {
-        this.detalleproduccionPK = detalleproduccionPK;
+    public Detalleproduccion(Integer idDetalleProduccion) {
+        this.idDetalleProduccion = idDetalleProduccion;
     }
 
-    public Detalleproduccion(DetalleproduccionPK detalleproduccionPK, int prioridad, Date fechaInicioEstimada, Date fechaFinEstimada) {
-        this.detalleproduccionPK = detalleproduccionPK;
+    public Detalleproduccion(Integer idDetalleProduccion, int prioridad, Date fechaInicioEstimada, Date fechaFinEstimada) {
+        this.idDetalleProduccion = idDetalleProduccion;
         this.prioridad = prioridad;
         this.fechaInicioEstimada = fechaInicioEstimada;
         this.fechaFinEstimada = fechaFinEstimada;
     }
 
-    public Detalleproduccion(int idDetalleProduccion, int idOrdenProduccion, int idMaquina, int idDetOrdProduccion) {
-        this.detalleproduccionPK = new DetalleproduccionPK(idDetalleProduccion, idOrdenProduccion, idMaquina, idDetOrdProduccion);
+    public Integer getIdDetalleProduccion() {
+        return idDetalleProduccion;
     }
 
-    public DetalleproduccionPK getDetalleproduccionPK() {
-        return detalleproduccionPK;
-    }
-
-    public void setDetalleproduccionPK(DetalleproduccionPK detalleproduccionPK) {
-        this.detalleproduccionPK = detalleproduccionPK;
+    public void setIdDetalleProduccion(Integer idDetalleProduccion) {
+        this.idDetalleProduccion = idDetalleProduccion;
     }
 
     public int getPrioridad() {
@@ -129,12 +126,12 @@ public class Detalleproduccion implements Serializable {
         this.idEstado = idEstado;
     }
 
-    public Maquinas getMaquinas() {
-        return maquinas;
+    public Maquinas getIdMaquina() {
+        return idMaquina;
     }
 
-    public void setMaquinas(Maquinas maquinas) {
-        this.maquinas = maquinas;
+    public void setIdMaquina(Maquinas idMaquina) {
+        this.idMaquina = idMaquina;
     }
 
     public Detordenesproduccion getDetordenesproduccion() {
@@ -148,7 +145,7 @@ public class Detalleproduccion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (detalleproduccionPK != null ? detalleproduccionPK.hashCode() : 0);
+        hash += (idDetalleProduccion != null ? idDetalleProduccion.hashCode() : 0);
         return hash;
     }
 
@@ -159,7 +156,7 @@ public class Detalleproduccion implements Serializable {
             return false;
         }
         Detalleproduccion other = (Detalleproduccion) object;
-        if ((this.detalleproduccionPK == null && other.detalleproduccionPK != null) || (this.detalleproduccionPK != null && !this.detalleproduccionPK.equals(other.detalleproduccionPK))) {
+        if ((this.idDetalleProduccion == null && other.idDetalleProduccion != null) || (this.idDetalleProduccion != null && !this.idDetalleProduccion.equals(other.idDetalleProduccion))) {
             return false;
         }
         return true;
@@ -167,6 +164,7 @@ public class Detalleproduccion implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.com.jpack.persistencia.Detalleproduccion[detalleproduccionPK=" + detalleproduccionPK + "]";
+        return "ar.com.jpack.persistencia.Detalleproduccion[idDetalleProduccion=" + idDetalleProduccion + "]";
     }
+
 }

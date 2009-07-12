@@ -92,6 +92,23 @@ public class RemitosFacade implements RemitosFacadeRemote {
     }
 
     /**
+     * Obtiene el siguiente numero de instancia del detalleRemtioTemp
+     * @return devuelve el siguiente numero de instancia del detalleRemtioTemp como int
+     */
+    public int getNextInstancia() {
+        String hql = "select max(d.instancia) from Detalleremitostemp d";
+        Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
+        maxID++;
+        if (maxID == null) {
+            return 0;
+        }
+        if (maxID < 0) {
+            return 0;
+        }
+        return maxID;
+    }
+
+    /**
      * Actualiza o crea un remitoT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
      * 

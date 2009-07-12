@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "detalleremitos")
-@NamedQueries({@NamedQuery(name = "Detalleremitos.findByIdDetalleRemito", query = "SELECT d FROM Detalleremitos d WHERE d.detalleremitosPK.idDetalleRemito = :idDetalleRemito"), @NamedQuery(name = "Detalleremitos.findByIdRemito", query = "SELECT d FROM Detalleremitos d WHERE d.detalleremitosPK.idRemito = :idRemito"), @NamedQuery(name = "Detalleremitos.findByCantidad", query = "SELECT d FROM Detalleremitos d WHERE d.cantidad = :cantidad"), @NamedQuery(name = "Detalleremitos.findByPrecioUnitario", query = "SELECT d FROM Detalleremitos d WHERE d.precioUnitario = :precioUnitario"), @NamedQuery(name = "Detalleremitos.findByImporte", query = "SELECT d FROM Detalleremitos d WHERE d.importe = :importe")})
+@NamedQueries({@NamedQuery(name = "Detalleremitos.findByIdDetalleRemito", query = "SELECT d FROM Detalleremitos d WHERE d.detalleremitosPK.idDetalleRemito = :idDetalleRemito"), @NamedQuery(name = "Detalleremitos.findByIdRemito", query = "SELECT d FROM Detalleremitos d WHERE d.detalleremitosPK.idRemito = :idRemito"), @NamedQuery(name = "Detalleremitos.findByCantidad", query = "SELECT d FROM Detalleremitos d WHERE d.cantidad = :cantidad"), @NamedQuery(name = "Detalleremitos.findByPrecioUnitario", query = "SELECT d FROM Detalleremitos d WHERE d.precioUnitario = :precioUnitario"), @NamedQuery(name = "Detalleremitos.findByImporte", query = "SELECT d FROM Detalleremitos d WHERE d.importe = :importe"), @NamedQuery(name = "Detalleremitos.findBySaldoOP", query = "SELECT d FROM Detalleremitos d WHERE d.saldoOP = :saldoOP")})
 public class Detalleremitos implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -33,6 +33,8 @@ public class Detalleremitos implements Serializable {
     private double precioUnitario;
     @Column(name = "importe", nullable = false)
     private double importe;
+    @Column(name = "saldoOP", nullable = false)
+    private int saldoOP;
     @JoinColumn(name = "idArticulo", referencedColumnName = "idArticulo")
     @ManyToOne(fetch = FetchType.LAZY)
     private Articulos idArticulo;
@@ -50,11 +52,12 @@ public class Detalleremitos implements Serializable {
         this.detalleremitosPK = detalleremitosPK;
     }
 
-    public Detalleremitos(DetalleremitosPK detalleremitosPK, int cantidad, double precioUnitario, double importe) {
+    public Detalleremitos(DetalleremitosPK detalleremitosPK, int cantidad, double precioUnitario, double importe, int saldoOP) {
         this.detalleremitosPK = detalleremitosPK;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.importe = importe;
+        this.saldoOP = saldoOP;
     }
 
     public Detalleremitos(int idDetalleRemito, int idRemito) {
@@ -91,6 +94,14 @@ public class Detalleremitos implements Serializable {
 
     public void setImporte(double importe) {
         this.importe = importe;
+    }
+
+    public int getSaldoOP() {
+        return saldoOP;
+    }
+
+    public void setSaldoOP(int saldoOP) {
+        this.saldoOP = saldoOP;
     }
 
     public Articulos getIdArticulo() {

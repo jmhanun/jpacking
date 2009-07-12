@@ -16,6 +16,7 @@ public class DetalleRemitosT implements Serializable {
     private int cantidad;
     private double precioUnitario;
     private double importe;
+    private int saldoOP;
     private ArticulosT idArticulo;
     private RemitosT remitos;
     private UnidadesMedidaT idUnidMedida;
@@ -23,21 +24,23 @@ public class DetalleRemitosT implements Serializable {
     public DetalleRemitosT() {
     }
 
-    public DetalleRemitosT(DetalleRemitosPKT detalleremitosPK, int cantidad, double precioUnitario, double importe, ArticulosT idArticulo, RemitosT remitos, UnidadesMedidaT idUnidMedida) {
+    public DetalleRemitosT(DetalleRemitosPKT detalleremitosPK, int cantidad, double precioUnitario, double importe, int saldoOP, ArticulosT idArticulo, RemitosT remitos, UnidadesMedidaT idUnidMedida) {
         this.detalleremitosPK = detalleremitosPK;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.importe = importe;
+        this.saldoOP = saldoOP;
         this.idArticulo = idArticulo;
         this.remitos = remitos;
         this.idUnidMedida = idUnidMedida;
     }
 
-    public DetalleRemitosT(int idDetalleRemito, int idRemito, int cantidad, double precioUnitario, double importe, ArticulosT idArticulo, RemitosT remitos, UnidadesMedidaT idUnidMedida) {
+    public DetalleRemitosT(int idDetalleRemito, int idRemito, int cantidad, double precioUnitario, double importe, int saldoOP, ArticulosT idArticulo, RemitosT remitos, UnidadesMedidaT idUnidMedida) {
         this.detalleremitosPK = new DetalleRemitosPKT(idDetalleRemito, idRemito);
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.importe = importe;
+        this.saldoOP = saldoOP;
         this.idArticulo = idArticulo;
         this.remitos = remitos;
         this.idUnidMedida = idUnidMedida;
@@ -97,5 +100,13 @@ public class DetalleRemitosT implements Serializable {
 
     public void setRemitos(RemitosT remitos) {
         this.remitos = remitos;
+    }
+
+    public int getSaldoOP() {
+        return saldoOP;
+    }
+
+    public void setSaldoOP(int saldoOP) {
+        this.saldoOP = saldoOP;
     }
 }

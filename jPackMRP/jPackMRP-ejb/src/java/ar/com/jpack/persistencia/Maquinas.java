@@ -39,10 +39,8 @@ public class Maquinas implements Serializable {
     private float horasUso;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMaquina", fetch = FetchType.LAZY)
     private Collection<Mantenimiento> mantenimientoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMaquina", fetch = FetchType.LAZY)
     private Collection<Detalleproduccion> detalleproduccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "maquinas", fetch = FetchType.LAZY)
-    private Collection<Detalleproduccionreal> detalleproduccionrealCollection;
     @JoinColumn(name = "idActividad", referencedColumnName = "idActividad")
     @ManyToOne(fetch = FetchType.LAZY)
     private Actividades idActividad;
@@ -110,14 +108,6 @@ public class Maquinas implements Serializable {
 
     public void setDetalleproduccionCollection(Collection<Detalleproduccion> detalleproduccionCollection) {
         this.detalleproduccionCollection = detalleproduccionCollection;
-    }
-
-    public Collection<Detalleproduccionreal> getDetalleproduccionrealCollection() {
-        return detalleproduccionrealCollection;
-    }
-
-    public void setDetalleproduccionrealCollection(Collection<Detalleproduccionreal> detalleproduccionrealCollection) {
-        this.detalleproduccionrealCollection = detalleproduccionrealCollection;
     }
 
     public Actividades getIdActividad() {

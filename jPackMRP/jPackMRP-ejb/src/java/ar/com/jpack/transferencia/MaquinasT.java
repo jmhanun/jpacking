@@ -19,7 +19,6 @@ public class MaquinasT implements Serializable {
     private float horasUso;
     private Collection<MantenimientoT> mantenimientoCollection;
     private Collection<DetalleProduccionT> detalleproduccionCollection;
-    private Collection<DetalleProduccionRealT> detalleproduccionrealCollection;
     private ActividadesT idActividad;
     private EstadosT idEstado;
 
@@ -49,14 +48,6 @@ public class MaquinasT implements Serializable {
 
     public void setDetalleproduccionCollection(Collection<DetalleProduccionT> detalleproduccionCollection) {
         this.detalleproduccionCollection = detalleproduccionCollection;
-    }
-
-    public Collection<DetalleProduccionRealT> getDetalleproduccionrealCollection() {
-        return detalleproduccionrealCollection;
-    }
-
-    public void setDetalleproduccionrealCollection(Collection<DetalleProduccionRealT> detalleproduccionrealCollection) {
-        this.detalleproduccionrealCollection = detalleproduccionrealCollection;
     }
 
     public float getHorasMantenimiento() {

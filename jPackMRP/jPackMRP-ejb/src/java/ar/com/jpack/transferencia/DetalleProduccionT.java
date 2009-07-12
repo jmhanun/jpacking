@@ -13,37 +13,29 @@ import java.util.Date;
  */
 public class DetalleProduccionT implements Serializable {
 
-    protected DetalleProduccionPKT detalleproduccionPK;
+    private Integer idDetalleProduccion;
     private int prioridad;
     private Date fechaInicioEstimada;
     private Date fechaFinEstimada;
     private Date fechaInicioProceso;
     private Date fechaFinProceso;
     private EstadosT idEstado;
-    private MaquinasT maquinas;
+    private MaquinasT idMaquina;
     private DetOrdenesProduccionT detordenesproduccion;
 
     public DetalleProduccionT() {
     }
 
-    public DetalleProduccionT(DetalleProduccionPKT detalleproduccionPK, int prioridad, Date fechaInicioEstimada, Date fechaFinEstimada, Date fechaInicioProceso, Date fechaFinProceso, EstadosT idEstado, MaquinasT maquinas, DetOrdenesProduccionT detordenesproduccion) {
-        this.detalleproduccionPK = detalleproduccionPK;
+    public DetalleProduccionT(Integer idDetalleProduccion, int prioridad, Date fechaInicioEstimada, Date fechaFinEstimada, Date fechaInicioProceso, Date fechaFinProceso, EstadosT idEstado, MaquinasT idMaquina, DetOrdenesProduccionT detordenesproduccion) {
+        this.idDetalleProduccion = idDetalleProduccion;
         this.prioridad = prioridad;
         this.fechaInicioEstimada = fechaInicioEstimada;
         this.fechaFinEstimada = fechaFinEstimada;
         this.fechaInicioProceso = fechaInicioProceso;
         this.fechaFinProceso = fechaFinProceso;
         this.idEstado = idEstado;
-        this.maquinas = maquinas;
+        this.idMaquina = idMaquina;
         this.detordenesproduccion = detordenesproduccion;
-    }
-
-    public DetalleProduccionPKT getDetalleproduccionPK() {
-        return detalleproduccionPK;
-    }
-
-    public void setDetalleproduccionPK(DetalleProduccionPKT detalleproduccionPK) {
-        this.detalleproduccionPK = detalleproduccionPK;
     }
 
     public DetOrdenesProduccionT getDetordenesproduccion() {
@@ -86,6 +78,14 @@ public class DetalleProduccionT implements Serializable {
         this.fechaInicioProceso = fechaInicioProceso;
     }
 
+    public Integer getIdDetalleProduccion() {
+        return idDetalleProduccion;
+    }
+
+    public void setIdDetalleProduccion(Integer idDetalleProduccion) {
+        this.idDetalleProduccion = idDetalleProduccion;
+    }
+
     public EstadosT getIdEstado() {
         return idEstado;
     }
@@ -94,12 +94,12 @@ public class DetalleProduccionT implements Serializable {
         this.idEstado = idEstado;
     }
 
-    public MaquinasT getMaquinas() {
-        return maquinas;
+    public MaquinasT getIdMaquina() {
+        return idMaquina;
     }
 
-    public void setMaquinas(MaquinasT maquinas) {
-        this.maquinas = maquinas;
+    public void setIdMaquina(MaquinasT idMaquina) {
+        this.idMaquina = idMaquina;
     }
 
     public int getPrioridad() {

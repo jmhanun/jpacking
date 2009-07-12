@@ -62,4 +62,10 @@ public interface RemitosFacadeRemote {
      * @return devuelve el remitoT actualizado
      */
     public RemitosT updateRemitosT(RemitosT remitosT, List<DetalleRemitosT> detallesRemitosT);
+
+    /**
+     * Obtiene el siguiente numero de instancia del detalleRemtioTemp
+     * @return devuelve el siguiente numero de instancia del detalleRemtioTemp como int
+     */
+    public int getNextInstancia();
 }
