@@ -3,11 +3,20 @@
  *
  * Created on 7 de junio de 2009, 16:50
  */
-
 package ar.com.jpack.desktop.produccion;
 
+import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablemodels.DetalleProduccionTableModel;
+
 import ar.com.jpack.transferencia.DetalleProduccionT;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -17,7 +26,30 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
 
     /** Creates new form ControlarProduccion */
     public ControlarProduccion() {
+        super(new DetalleProduccionT());
         initComponents();
+        HashMap parametros = new HashMap();
+        parametros.put("pJoinMaquinas", true);
+        setListDto((ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros));
+
+        tableModel = new DetalleProduccionTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        detalleProduccionTable.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        detalleProduccionTable.setRowSorter(sorter);
+
+        setModificado(false);
+        setNuevo(false);
     }
 
     /** This method is called from within the constructor to
@@ -61,24 +93,27 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable detalleProduccionTable;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    public static final String[] columnNames = {
+        "Id", "Orden", "Maquina", "Actividad", "Prioridad", "Estado", "Fecha Inicio Estimada", "Fecha Fin Estimada", "Fecha Inicio Real", "Fecha Fin Real"
+    };
+    protected DetalleProduccionTableModel tableModel;
+    private TableRowSorter<TableModel> sorter;
 
 }

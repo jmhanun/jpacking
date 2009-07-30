@@ -5,6 +5,7 @@ package ar.com.jpack.desktop;
 
 import ar.com.jpack.negocio.ArticulosFacadeRemote;
 import ar.com.jpack.negocio.ClientesFacadeRemote;
+import ar.com.jpack.negocio.DetalleproduccionFacadeRemote;
 import ar.com.jpack.negocio.EstadosFacadeRemote;
 import ar.com.jpack.negocio.RemitosFacadeRemote;
 import ar.com.jpack.negocio.TiposComprobantesFacadeRemote;
@@ -20,6 +21,7 @@ import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
@@ -70,6 +72,7 @@ public class DesktopApp extends SingleFrameApplication {
     private ActividadesFacadeRemote actividadesFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
     private TiposDocumentoFacadeRemote tiposDocumentoFacade;
+    private DetalleproduccionFacadeRemote detalleProduccionFacade;
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
     private RemitosFacadeRemote remitosFacade;
     private EstadosFacadeRemote estadosFacade;
@@ -97,7 +100,7 @@ public class DesktopApp extends SingleFrameApplication {
     public String getFechaLiteral(Date fechaAcordada) {
 
         StringBuffer fechaLiteral = new StringBuffer();
-        
+
         DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat fechaLargaFormatter = new SimpleDateFormat("'el ' EEEE dd ' de ' MMMM");
         DateFormat horaFormatter = new SimpleDateFormat("H");
@@ -180,12 +183,12 @@ public class DesktopApp extends SingleFrameApplication {
 
     /**
      * Obtiene el DesktopView definido en el DesktopApp.
-     * Se prefiere usar este metodo al DesktopApp.getApplication().getMainView() 
+     * Se prefiere usar este metodo al DesktopApp.getApplication().getMainView()
      * para poder tener acceso a los metodos propios del DesktopView como por
      * ejemplo: cargaInicial() Metodo usado para la carga de la barra del menu
      * dependiendo de los roles asignados al usuario logueado.
      * @return - Devuelve el MainFrame del DesktopApp
-     * 
+     *
      */
     public DesktopView getDesktopView() {
         return desktopView;
@@ -203,7 +206,7 @@ public class DesktopApp extends SingleFrameApplication {
      * Main method launching the application.
      * Además instancia la variable DesktopApp.contexto
      * que da 'visibilidad' a los objetos EJB
-     * @param args 
+     * @param args
      */
     public static void main(String[] args) {
         System.setProperty("user.timezone", "America/Argentina/Cordoba");
@@ -267,7 +270,7 @@ public class DesktopApp extends SingleFrameApplication {
      * De encontrar un registro en la base de datos con los valores ingresado,
      * el atributo usuarioLogueado de DesktopApp es seteado con todos los datos
      * del usuario, asi como tambien los roles activos.
-     * 
+     *
      * @param usuariosT - datos de usuariosT que habrá que validar si existe en la BD
      * @return - true si el usuariosT existe en la BD
      * - false si el usuarioT no existe en la BD
@@ -606,10 +609,21 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros) {
+       try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            return detalleProduccionFacade.getDetalleProduccionT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Actualiza o crea un usuarioT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
-     * 
+     *
      * @param usuariosT contiene los datos del usuario a actualizar
      * @param contrasenia si es true la contraseña ha sido modificada
      * @return devuelve el usuarioT actualizado
@@ -628,7 +642,7 @@ public class DesktopApp extends SingleFrameApplication {
     /**
      * Actualiza o crea un rolT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
-     * 
+     *
      * @param rolesT contiene los datos del rol a actualizar
      * @return devuelve el rolT actualizado
      */
@@ -646,7 +660,7 @@ public class DesktopApp extends SingleFrameApplication {
     /**
      * Actualiza o crea un remitoT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
-     * 
+     *
      * @param remitosT contiene los datos del remito a actualizar
      * @return devuelve el remitoT actualizado
      */

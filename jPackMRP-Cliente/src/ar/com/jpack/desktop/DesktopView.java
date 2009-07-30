@@ -372,27 +372,46 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showReporteUsuarios() {
-        JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", null);
+        HashMap parametros = new HashMap();
+        parametros.put("pduke", "C:\\Logos\\Duke.gif");
+        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+        JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Usuarios");
         jv.setVisible(true);
     }
 
     @Action
-    public void showReporteProduccion() {
-        HashMap parametros = new HashMap();
-        parametros.put("pduke", "C:\\Logos\\Duke.gif");
-        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
-
-        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametros);
-        JasperViewer jv = new JasperViewer(jp, false);
-        jv.setTitle("Reporte de Produccion");
-        jv.setVisible(true);
+    public Task showReporteProduccion() {
+//        HashMap parametros = new HashMap();
+//        parametros.put("pduke", "C:\\Logos\\Duke.gif");
+//        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+//
+//        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametros);
+//        JasperViewer jv = new JasperViewer(jp, false);
+//        jv.setTitle("Reporte de Produccion");
+//        jv.setVisible(true);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProduccion", "Carga de parametros para el reporte Produccion", padre);
     }
 
     @Action
     public Task showReporteStock() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", padre);
+    }
+
+    @Action
+    public Task showReporteRolxUsr() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteRolesXUsuarios", "Carga de parametros para el reporte Roles por Usuarios", padre);
+    }
+
+    @Action
+    public Task showReporteProveedores() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProveedores", "Carga de parametros para el reporte Proveedores", padre);
+    }
+    
+    @Action
+    public Task showControlarProduccion() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ControlarProduccion", "Gestión de la Producción", padre);
     }
 
     /**
