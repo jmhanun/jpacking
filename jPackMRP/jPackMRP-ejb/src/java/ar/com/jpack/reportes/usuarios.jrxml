@@ -2,6 +2,8 @@
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      usuarios.`idUsuario` AS usuarios_idUsuario,
@@ -52,12 +54,12 @@ order by usuarios.`usuario`]]>
 		<band/>
 	</background>
 	<title>
-		<band height="58">
+		<band height="90">
 			<line>
 				<reportElement x="0" y="8" width="802" height="1"/>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="802" height="1"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="84" width="802" height="1"/>
 			</line>
 			<staticText>
 				<reportElement x="193" y="12" width="424" height="35"/>
@@ -66,6 +68,14 @@ order by usuarios.`usuario`]]>
 				</textElement>
 				<text><![CDATA[Usuarios]]></text>
 			</staticText>
+			<image isUsingCache="true" hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="757" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -194,7 +204,7 @@ order by usuarios.`usuario`]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Verdana" size="10"/>
+					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -207,7 +217,7 @@ order by usuarios.`usuario`]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Verdana" size="10"/>
+					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
 			</textField>
@@ -220,7 +230,7 @@ order by usuarios.`usuario`]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Verdana" size="10"/>
+					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>

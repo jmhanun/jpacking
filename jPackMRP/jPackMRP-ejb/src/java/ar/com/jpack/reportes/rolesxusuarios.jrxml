@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
+	<parameter name="pusuario" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     usuarios.`idUsuario` AS usuarios_idUsuario,
+     rolesusuarios.`idUsuario` AS rolesusuarios_idUsuario,
+     rolesusuarios.`idRol` AS rolesusuarios_idRol,
+     roles.`idRol` AS roles_idRol,
+     roles.`rol` AS roles_rol,
+     roles.`descripcion` AS roles_descripcion,
+     usuarios.`usuario` AS usuarios_usuario,
+     usuarios.`ultimoAcceso` AS usuarios_ultimoAcceso
+FROM
+     `usuarios` usuarios INNER JOIN `rolesusuarios` rolesusuarios ON usuarios.`idUsuario` = rolesusuarios.`idUsuario`
+     INNER JOIN `roles` roles ON rolesusuarios.`idRol` = roles.`idRol`
+WHERE usuarios.`idUsuario` = IFNULL($P{pusuario}, usuarios.`idUsuario`)
+order by usuarios.`usuario`, roles.`rol`]]>
+	</queryString>
+	<field name="usuarios_idUsuario" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rolesusuarios_idUsuario" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rolesusuarios_idRol" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="roles_idRol" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="roles_rol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="roles_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuarios_usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuarios_ultimoAcceso" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="usuarios_usuario">
+		<groupExpression><![CDATA[$F{usuarios_usuario}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="91" height="27" forecolor="#000000" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Usuario]]></text>
+				</staticText>
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="81" y="0" width="474" height="27" forecolor="#000000" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{usuarios_usuario}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="8">
+				<line direction="BottomUp">
+					<reportElement key="line" x="1" y="4" width="554" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="88">
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="85" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="155" y="13" width="248" height="35"/>
+				<textElement>
+					<font fontName="Verdana" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Roles por usuarios]]></text>
+			</staticText>
+			<image hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="509" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="185" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rol]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="185" y="0" width="115" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{roles_rol}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="185" y="0" width="367" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{roles_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement isPrintRepeatedValues="false" x="443" y="-27" width="109" height="27" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Verdana" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{usuarios_ultimoAcceso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="516" y="6" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="342" y="6" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="1" y="6" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

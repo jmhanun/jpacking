@@ -2,54 +2,53 @@
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="pfechadesde" class="java.sql.Timestamp"/>
-	<parameter name="pfechahasta" class="java.sql.Timestamp"/>
-	<parameter name="pmaquina" class="java.lang.Integer"/>
+	<parameter name="pproveedor" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
 	<parameter name="pimagen" class="java.lang.String"/>
 	<parameter name="pduke" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-     ordenesproduccion.`nroOrdenProduccion` AS ordenesproduccion_nroOrdenProduccion,
-     maquinas.`descripcion` AS maquinas_descripcion,
-     maquinas.`idmaquina` AS maquinas_id,
      estados.`descripcion` AS estados_descripcion,
-     detalleproduccion.`prioridad` AS detalleproduccion_prioridad,
-     detalleproduccion.`fechaInicioEstimada` AS detalleproduccion_fechaInicioEstimada,
-     detalleproduccion.`fechaFinEstimada` AS detalleproduccion_fechaFinEstimada,
-     detalleproduccion.`fechaInicioProceso` AS detalleproduccion_fechaInicioProceso,
-     detalleproduccion.`fechaFinProceso` AS detalleproduccion_fechaFinProceso
+     proveedores.`idProveedor` AS proveedores_idProveedor,
+     proveedores.`observaciones` AS proveedores_observaciones,
+     proveedores.`nombres` AS proveedores_nombres,
+     proveedores.`apellido` AS proveedores_apellidos,
+     proveedores.`mails` AS proveedores_mails,
+     proveedores.`telefonos` AS proveedores_telefonos,
+     proveedores.`fechaAlta` AS proveedores_fechaAlta,
+     proveedores.`cuit` AS proveedores_cuit
 FROM
-     `estados` estados INNER JOIN `detalleproduccion` detalleproduccion ON estados.`idEstado` = detalleproduccion.`idEstado`
-     INNER JOIN `maquinas` maquinas ON detalleproduccion.`idMaquina` = maquinas.`idMaquina`
-     INNER JOIN `ordenesproduccion` ordenesproduccion ON detalleproduccion.`idOrdenProduccion` = ordenesproduccion.`idOrdenProduccion`
-WHERE
-     estados.`idDominio` = 2
- AND detalleproduccion.`fechaInicioProceso` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
- AND maquinas.`idmaquina` = IFNULL($P{pmaquina}, maquinas.`idmaquina`)
-ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad]]>
+     `estados` estados INNER JOIN `proveedores` proveedores ON estados.`idEstado` = proveedores.`idEstado`
+WHERE proveedores.`idEstado` = 10
+  AND proveedores.`idProveedor`=IFNULL($P{pproveedor}, proveedores.`idProveedor`)
+ORDER BY proveedores.`nombres`, proveedores.`idProveedor`]]>
 	</queryString>
-	<field name="ordenesproduccion_nroOrdenProduccion" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="maquinas_descripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="estados_descripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleproduccion_prioridad" class="java.lang.Long">
+	<field name="proveedores_idProveedor" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleproduccion_fechaInicioEstimada" class="java.sql.Timestamp">
+	<field name="proveedores_observaciones" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleproduccion_fechaFinEstimada" class="java.sql.Timestamp">
+	<field name="proveedores_nombres" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleproduccion_fechaInicioProceso" class="java.sql.Timestamp">
+	<field name="proveedores_apellidos" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleproduccion_fechaFinProceso" class="java.sql.Timestamp">
+	<field name="proveedores_mails" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedores_telefonos" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedores_fechaAlta" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedores_cuit" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -68,7 +67,7 @@ ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad
 				<textElement textAlignment="Center">
 					<font fontName="verdana" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Producción]]></text>
+				<text><![CDATA[Proveedores habilitados]]></text>
 			</staticText>
 			<image isUsingCache="true" hyperlinkType="None">
 				<reportElement x="3" y="16" width="135" height="50"/>
@@ -86,123 +85,95 @@ ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad
 	<columnHeader>
 		<band height="26">
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="0" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="1" y="0" width="78" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Orden Prod.]]></text>
+				<text><![CDATA[Número]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="89" y="0" width="117" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="70" y="0" width="176" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Máquina]]></text>
+				<text><![CDATA[Proveedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="509" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="371" y="0" width="95" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha Inicio]]></text>
+				<text><![CDATA[Teléfono]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="610" y="1" width="71" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="478" y="0" width="147" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha Fin]]></text>
+				<text><![CDATA[e-mail]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="687" y="1" width="113" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="701" y="0" width="99" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Estado]]></text>
+				<text><![CDATA[Fecha de Alta]]></text>
 			</staticText>
 			<line>
 				<reportElement x="1" y="19" width="801" height="1"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="242" y="0" width="66" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement>
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Prioridad]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="319" y="1" width="91" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="287" y="0" width="78" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Inicio Estim.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="416" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fin Estim.]]></text>
+				<text><![CDATA[CUIT]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="1" y="0" width="83" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{ordenesproduccion_nroOrdenProduccion}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="89" y="0" width="152" height="20"/>
-				<textElement>
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{maquinas_descripcion}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="241" y="0" width="67" height="20"/>
+				<reportElement x="1" y="0" width="60" height="20"/>
 				<textElement textAlignment="Right">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{detalleproduccion_prioridad}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{proveedores_idProveedor}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="509" y="0" width="85" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaInicioProceso}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="603" y="0" width="81" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaFinProceso}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="687" y="0" width="113" height="20"/>
+				<reportElement x="68" y="0" width="218" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{estados_descripcion}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedores_nombres}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="320" y="0" width="85" height="20"/>
+				<reportElement x="286" y="0" width="79" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedores_cuit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="371" y="0" width="95" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedores_telefonos}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="476" y="0" width="220" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedores_mails}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement x="701" y="0" width="99" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaInicioEstimada}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="414" y="0" width="85" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaFinEstimada}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{proveedores_fechaAlta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
