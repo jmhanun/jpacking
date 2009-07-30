@@ -6,7 +6,9 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Remitos;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.RemitosT;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
@@ -24,14 +26,7 @@ public interface RemitosFacadeRemote {
      */
     public int getNextRemito();
 
-    /**
-     * Actualiza o crea un remitoT recibido por parametro
-     * Si existe, se actualiza. Si no existe, se crea.
-     * 
-     * @param remitosT contiene los datos del remito a actualizar
-     * @return devuelve el remitoT actualizado
-     */
-    public RemitosT updateRemitosT(RemitosT remitosT);
+    public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT);
 
     /**
      * Obtiene la lista de Remitos filtrados por el Hasmap
@@ -68,4 +63,13 @@ public interface RemitosFacadeRemote {
      * @return devuelve el siguiente numero de instancia del detalleRemtioTemp como int
      */
     public int getNextInstancia();
+
+    /**
+     * Actualiza o crea un remitoT recibido por parametro
+     * Si existe, se actualiza. Si no existe, se crea.
+     * 
+     * @param remitosT contiene los datos del remito a actualizar
+     * @return devuelve el remitoT actualizado
+     */
+    public RemitosT updateRemitosT(RemitosT remitosT);
 }

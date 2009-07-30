@@ -5,15 +5,25 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Detalleremitos;
+import ar.com.jpack.persistencia.Detalleremitostemp;
 import ar.com.jpack.persistencia.Remitos;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.util.DozerUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.sql.DataSource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
@@ -28,6 +38,8 @@ import org.hibernate.ejb.EntityManagerImpl;
 @Stateless
 public class RemitosFacade implements RemitosFacadeRemote {
 
+    @Resource(name = "jdbc/remoto.dbjpack")
+    private DataSource jdbcRemotedbjPack;
     @EJB
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
     @EJB
@@ -81,12 +93,13 @@ public class RemitosFacade implements RemitosFacadeRemote {
     public int getNextRemito() {
         String hql = "select max(r.nroRemito) from Remitos r";
         Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
-        maxID++;
-        if (maxID == null) {
-            return 0;
+        if (maxID != null) {
+            maxID++;
+        } else {
+            return 1;
         }
         if (maxID < 0) {
-            return 0;
+            return 1;
         }
         return maxID;
     }
@@ -96,14 +109,17 @@ public class RemitosFacade implements RemitosFacadeRemote {
      * @return devuelve el siguiente numero de instancia del detalleRemtioTemp como int
      */
     public int getNextInstancia() {
-        String hql = "select max(d.instancia) from Detalleremitostemp d";
+        String hql = "select max(d.detalleremitostempPK.instancia) from Detalleremitostemp d";
+
         Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
-        maxID++;
-        if (maxID == null) {
-            return 0;
+
+        if (maxID != null) {
+            maxID++;
+        } else {
+            return 1;
         }
         if (maxID < 0) {
-            return 0;
+            return 1;
         }
         return maxID;
     }
@@ -184,5 +200,34 @@ public class RemitosFacade implements RemitosFacadeRemote {
 
         return getRemitosT(parametros).get(0);
 
+    }
+
+    public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
+        Date fechaAcordada = null;
+        for (DetalleRemitosTempT itemT : detalleRemitosTempT) {
+            Detalleremitostemp item = (Detalleremitostemp) DozerUtil.getDozerMapper(false).map(itemT, Detalleremitostemp.class);
+            em.persist(item);
+        }
+        em.flush();
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spfechaacordada(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, detalleRemitosTempT.get(0).getDetalleremitostempPK().getInstancia());
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.TIMESTAMP);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            fechaAcordada = new Date(cs.getTimestamp(2).getTime());
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(RemitosFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return fechaAcordada;
     }
 }
