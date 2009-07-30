@@ -15,9 +15,13 @@ import ar.com.jpack.negocio.TiposDocumentoFacadeRemote;
 import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
+import ar.com.jpack.negocio.ActividadesFacadeRemote;
+import ar.com.jpack.transferencia.ActividadesArticulosT;
+import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
@@ -29,7 +33,11 @@ import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -59,6 +67,7 @@ public class DesktopApp extends SingleFrameApplication {
     private ClientesFacadeRemote clientesFacade;
     private ArticulosFacadeRemote articulosFacade;
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
+    private ActividadesFacadeRemote actividadesFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
     private TiposDocumentoFacadeRemote tiposDocumentoFacade;
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
@@ -83,6 +92,66 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public static InitialContext getContexto() {
         return contexto;
+    }
+
+    public String getFechaLiteral(Date fechaAcordada) {
+
+        StringBuffer fechaLiteral = new StringBuffer();
+        
+        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat fechaLargaFormatter = new SimpleDateFormat("'el ' EEEE dd ' de ' MMMM");
+        DateFormat horaFormatter = new SimpleDateFormat("H");
+
+        GregorianCalendar hoy = new GregorianCalendar();
+
+        if (fechaFormatter.format(hoy.getTime()).equals(fechaFormatter.format(fechaAcordada))) {
+            fechaLiteral.append("Hoy");
+        } else {
+            hoy.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            if (fechaFormatter.format(hoy.getTime()).equals(fechaFormatter.format(fechaAcordada))) {
+                fechaLiteral.append("Mañana");
+            } else {
+                fechaLiteral.append(fechaLargaFormatter.format(fechaAcordada));
+            }
+        }
+
+        int hora = Integer.parseInt(horaFormatter.format(fechaAcordada));
+        switch (hora) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                fechaLiteral.append(" a la mañana");
+                break;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                fechaLiteral.append(" al mediodia");
+                break;
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+                fechaLiteral.append(" a la tarde");
+                break;
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+                fechaLiteral.append(" a la noche");
+                break;
+        }
+        return fechaLiteral.toString();
     }
 
     /**
@@ -300,6 +369,21 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     /**
+     * Obtiene el siguiente numero de instancia del detalleRemtioTemp
+     * @return devuelve el siguiente numero de instancia del detalleRemtioTemp como int
+     */
+    public int getNextInstancia() {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.getNextInstancia();
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    /**
      * Obtiene el stock de un Articulo
      * @param ArticuloT del que se desea conocer el stock
      * @return devuelve la cantidad de stock como double
@@ -328,6 +412,28 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return 0.0;
+        }
+    }
+
+    public List<ActividadesT> getActividadesT(HashMap parametros) {
+        try {
+            actividadesFacade = (ActividadesFacadeRemote) lookUp("ar.com.jpack.negocio.ActividadesFacadeRemote");
+            return actividadesFacade.getActividadesT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<ActividadesArticulosT> getActividadesArticulosT(HashMap parametros) {
+        try {
+            actividadesFacade = (ActividadesFacadeRemote) lookUp("ar.com.jpack.negocio.ActividadesFacadeRemote");
+            return actividadesFacade.getActividadesArticulosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
@@ -548,6 +654,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
             return remitosFacade.updateRemitosT(remitosT, detallesRemitosT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.updateRemitosTempT(detalleRemitosTempT);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

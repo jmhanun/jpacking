@@ -10,15 +10,20 @@ import ar.com.jpack.desktop.produccion.ABMArticulos;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.DetalleRemitosTableModel;
+import ar.com.jpack.transferencia.ActividadesArticulosT;
+import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.DetalleRemitosPKT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
+import ar.com.jpack.transferencia.DetalleRemitosTempPKT;
+import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -38,7 +43,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     public RegistrarRemito() {
         super(new DetalleRemitosT());
         initComponents();
-
         setListDto(new ArrayList<DetalleRemitosT>());
 
         tableModel = new DetalleRemitosTableModel(columnNames, this.getListDto());
@@ -155,41 +159,81 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         if (stock < 0) {
                             stock = 0;
                         }
+                        int nuevaCantidad = (int) (detalleRemitoSeleccionado.getCantidad() - stock);
+                        if (nuevaCantidad < 0) {
+                            nuevaCantidad = 0;
+                        }
+                        detalleRemitoSeleccionado.setSaldoOP(nuevaCantidad);
+
                         // Si no hay suficiente stock crear un DetalleTemporal por la diferencia
-                        if (stock < detalleRemitoSeleccionado.getCantidad()) {
-                            int nuevaCantidad;
-                            nuevaCantidad = (int) (detalleRemitoSeleccionado.getCantidad() - stock);
-                            //TODO - Debo cambiar a DetalleRemitoTemporal.. cuando este listo                        
-                            DetalleRemitosT nuevoDetalle = new DetalleRemitosT(detalleRemitoSeleccionado.getDetalleremitosPK(),
-                                    nuevaCantidad,
-                                    detalleRemitoSeleccionado.getPrecioUnitario(),
-                                    detalleRemitoSeleccionado.getImporte(),
-                                    detalleRemitoSeleccionado.getIdArticulo(),
-                                    detalleRemitoSeleccionado.getRemitos(),
-                                    detalleRemitoSeleccionado.getIdUnidMedida());
-                            detalleTemporal.add(nuevoDetalle);
+                        if (nuevaCantidad > 0) {
+
+                            int instancia = DesktopApp.getApplication().getNextInstancia();
+                            int idArticulo = detalleRemitoSeleccionado.getIdArticulo().getIdArticulo();
+
+                            parametros = new HashMap();
+                            parametros.put("pIdArticulo", idArticulo);
+                            parametros.put("pJoinActividadesxArticulos", true);
+
+                            //obtiene lista de actividades joineada con actividadesxarticulos
+                            //donde el idArticulo = articulo faltante en stock
+                            ArrayList<ActividadesT> actividadesTList = (ArrayList<ActividadesT>) DesktopApp.getApplication().getActividadesT(parametros);
+
+                            //recorro la lista de actividades joineada con actividadesxarticulos
+                            //donde el idArticulo = articulo faltante en stock
+                            for (ActividadesT actividadesT : actividadesTList) {
+                                int idActividad = actividadesT.getIdActividad();
+                                DetalleRemitosTempPKT nuevoDetallePK = new DetalleRemitosTempPKT(instancia, idArticulo, idActividad);
+
+                                parametros = new HashMap();
+                                parametros.put("pIdArticulo", idArticulo);
+                                parametros.put("pIdActividad", idActividad);
+
+                                ArrayList<ActividadesArticulosT> actividadesArticulosT = (ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros);
+
+                                int orden = actividadesArticulosT.get(0).getOrden();
+                                DetalleRemitosTempT nuevoDetalle = new DetalleRemitosTempT(nuevoDetallePK, nuevaCantidad, null, orden);
+                                detalleTemporal.add(nuevoDetalle);
+                            }
                         }
                     }
                 }
                 if (cantidadOk) {
+                    remito.setImporte(importeTotal);
+                    remito.setFecha(new Date());
+                    remito.setIdEstado(new EstadosT());
+                    remito.getIdEstado().setIdEstado(5);
+                    remito.setIdTipoComprobante(new TiposComprobantesT());
+                    remito.getIdTipoComprobante().setIdTipoComprobante(4);
+                    remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                    remito.setFechaModificacion(remito.getFecha());
+                    remito.setIdRemito(null);
                     //Hay stock de todos los articulos solicitados.
                     if (detalleTemporal.isEmpty()) {
-                        remito.setImporte(importeTotal);
-                        remito.setFecha(new Date());
                         remito.setFechaAcordada(remito.getFecha());
-                        remito.setIdEstado(new EstadosT());
-                        remito.getIdEstado().setIdEstado(5);
-                        remito.setIdTipoComprobante(new TiposComprobantesT());
-                        remito.getIdTipoComprobante().setIdTipoComprobante(4);
-                        remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
-                        remito.setFechaModificacion(remito.getFecha());
                         remito.setFechaEntrega(remito.getFecha());
-                        remito.setIdRemito(null);
                         DesktopApp.getApplication().updateRemitosT(remito, getListDto());
-                        
+
                         cancelar();
                     } else {
-                        JOptionPane.showInternalMessageDialog(this, "Falta stock de algun articulo");
+                        //insertar detalleremitostemp
+                        //llamar funcion calculo de fecha estimada
+                        Date fechaAcordada = DesktopApp.getApplication().updateRemitosTempT(detalleTemporal);
+                        StringBuffer mensaje = new StringBuffer("Para completar el remito se necesita:\n\n");
+                        for (DetalleRemitosT item : getListDto()) {
+                            if (item.getSaldoOP() > 0) {
+                                mensaje.append(item.getSaldoOP() + " de " + item.getIdArticulo().getDescripcion() + "\n");
+                            }
+                        }
+                        String fechaAcordadaLiteral = DesktopApp.getApplication().getFechaLiteral(fechaAcordada);
+                        mensaje.append("\nEl pedido estara completo aproximadamente " + fechaAcordadaLiteral + ".\n\n");
+                        mensaje.append("¿Desea crear una orden de producción?");
+                        if (JOptionPane.showInternalConfirmDialog(this, mensaje, "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            //si esta de acuerdo con la fecha crear remito y crear orden de produccion por lo que falta
+                            JOptionPane.showInternalMessageDialog(this, "Crea la orden de produccion por el faltante");
+                        }
+
+                        cancelar();
                     }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Hay cantidades o precios igual o menor a cero!");
@@ -446,6 +490,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private int contadorDetalle;
     private ABMArticulos articulosOpenFrame;
     private ABMClientes clientesOpenFrame;
-    private ArrayList<DetalleRemitosT> detalleTemporal = new ArrayList<DetalleRemitosT>(); //Cuando este en la bbdd detalleRemitoTemporal.. cambiar tipo de dato
+    private ArrayList<DetalleRemitosTempT> detalleTemporal = new ArrayList<DetalleRemitosTempT>();
     private double importeTotal;
+    private HashMap parametros;
 }
