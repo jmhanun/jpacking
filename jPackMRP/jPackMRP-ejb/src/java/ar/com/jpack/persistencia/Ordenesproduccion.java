@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -12,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,8 +31,10 @@ import javax.persistence.TemporalType;
 @Table(name = "ordenesproduccion")
 @NamedQueries({@NamedQuery(name = "Ordenesproduccion.findByIdOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.idOrdenProduccion = :idOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByNroOrdenProduccion", query = "SELECT o FROM Ordenesproduccion o WHERE o.nroOrdenProduccion = :nroOrdenProduccion"), @NamedQuery(name = "Ordenesproduccion.findByFecha", query = "SELECT o FROM Ordenesproduccion o WHERE o.fecha = :fecha"), @NamedQuery(name = "Ordenesproduccion.findByFechaModificacion", query = "SELECT o FROM Ordenesproduccion o WHERE o.fechaModificacion = :fechaModificacion"), @NamedQuery(name = "Ordenesproduccion.findByFechaInicioEstimada", query = "SELECT o FROM Ordenesproduccion o WHERE o.fechaInicioEstimada = :fechaInicioEstimada")})
 public class Ordenesproduccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idOrdenProduccion", nullable = false)
     private Integer idOrdenProduccion;
     @Column(name = "nroOrdenProduccion", nullable = false)
@@ -49,7 +52,7 @@ public class Ordenesproduccion implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Estados idEstado;
     @JoinColumn(name = "idPrioridad", referencedColumnName = "idPrioridad")
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Prioridades idPrioridad;
     @JoinColumn(name = "idRemito", referencedColumnName = "idRemito")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -199,5 +202,4 @@ public class Ordenesproduccion implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Ordenesproduccion[idOrdenProduccion=" + idOrdenProduccion + "]";
     }
-
 }
