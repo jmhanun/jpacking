@@ -400,6 +400,16 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteMovStockCli() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMovStockClientes", "Carga de parametros para el reporte de Movimientos de Stock por Clientes", padre);
+    }
+
+    @Action
+    public Task showReporteMovStock() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMovimientosStock", "Carga de parametros para el reporte de Movimientos de Stock", padre);
+    }
+
+    @Action
     public Task showReporteRolxUsr() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteRolesXUsuarios", "Carga de parametros para el reporte Roles por Usuarios", padre);
     }
