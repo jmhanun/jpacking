@@ -4,18 +4,20 @@
  */
 
 /*
- * ReporteProveedores.java
+ * ReporteMovimientosStock.java
  *
- * Created on 30-jul-2009, 16:44:50
+ * Created on 01-ago-2009, 17:39:44
  */
-
 package ar.com.jpack.desktop.reportes;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
-import ar.com.jpack.transferencia.ProveedoresT;
+import java.beans.PropertyVetoException;
+import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -25,23 +27,35 @@ import org.jdesktop.application.Task;
  *
  * @author Pablo
  */
-public class ReporteProveedores extends CustomInternalFrame {
+public class ReporteMovimientosStock extends CustomInternalFrame {
 
-    /** Creates new form ReporteProveedores */
-    public ReporteProveedores() {
-        super(new ProveedoresT());
+    /** Creates new form ReporteMovimientosStock */
+    public ReporteMovimientosStock() {
         initComponents();
-        getRootPane().setDefaultButton(aceptarButton);
     }
 
     @Action
-    public void cancel() {
-        this.dispose();
-    }
-
-    @Action
-    public Task showReporte() {
+    public Task aceptar() {
         return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
+    }
+
+    private class AceptarTask extends org.jdesktop.application.Task<Object, Void> {
+        AceptarTask(org.jdesktop.application.Application app) {
+            // Runs on the EDT.  Copy GUI state that
+            // doInBackground() depends on from parameters
+            // to AceptarTask fields, here.
+            super(app);
+        }
+        @Override protected Object doInBackground() {
+            // Your Task's code here.  This method runs
+            // on a background thread, so don't reference
+            // the Swing GUI from here.
+            return null;  // return your result
+        }
+        @Override protected void succeeded(Object result) {
+            // Runs on the EDT.  Update the GUI based on
+            // the result computed by doInBackground().
+        }
     }
 
     class Reporte extends Task<String, Void> {
@@ -59,14 +73,20 @@ public class ReporteProveedores extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtProveedor.getText().isEmpty()) {
-                parametro.put("pproveedor", Long.parseLong(txtProveedor.getText()));
-            }
+
+            System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate());
+
+            java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
+            java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
+
+            parametro.put("pfechadesde", d);
+            parametro.put("pfechahasta", h);
+
             parametro.put("pduke", "C:\\Logos\\Duke.gif");
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
-            JasperPrint jp = DesktopApp.getApplication().getReporte("proveedores", parametro);
+            JasperPrint jp = DesktopApp.getApplication().getReporte("movimientosstock", parametro);
             JasperViewer jv = new JasperViewer(jp, false);
-            jv.setTitle("Reporte de Proveedores");
+            jv.setTitle("Reporte de Movimientos de Stock");
             jv.setVisible(true);
             mensaje = "Reporte finalizado";
             return mensaje;
@@ -79,6 +99,16 @@ public class ReporteProveedores extends CustomInternalFrame {
         }
     }
 
+    @Action
+    public void cancelar() {
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ReporteMovimientosStock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -89,7 +119,9 @@ public class ReporteProveedores extends CustomInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtProveedor = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
 
@@ -100,19 +132,23 @@ public class ReporteProveedores extends CustomInternalFrame {
         setResizable(true);
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteProveedores.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteMovimientosStock.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtProveedor.setText(resourceMap.getString("txtProveedor.text")); // NOI18N
-        txtProveedor.setName("txtProveedor"); // NOI18N
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteProveedores.class, this);
-        cancelarButton.setAction(actionMap.get("cancel")); // NOI18N
+        jDateChooser1.setName("jDateChooser1"); // NOI18N
+
+        jDateChooser2.setName("jDateChooser2"); // NOI18N
+
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteMovimientosStock.class, this);
+        cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
         cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
         cancelarButton.setName("cancelarButton"); // NOI18N
 
-        aceptarButton.setAction(actionMap.get("showReporte")); // NOI18N
+        aceptarButton.setAction(actionMap.get("aceptar")); // NOI18N
         aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
 
@@ -124,9 +160,13 @@ public class ReporteProveedores extends CustomInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(aceptarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,9 +177,13 @@ public class ReporteProveedores extends CustomInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
@@ -149,13 +193,12 @@ public class ReporteProveedores extends CustomInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton cancelarButton;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField txtProveedor;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
-
 }

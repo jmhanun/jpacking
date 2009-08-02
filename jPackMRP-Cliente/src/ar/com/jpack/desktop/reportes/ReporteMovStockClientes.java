@@ -4,9 +4,9 @@
  */
 
 /*
- * ReporteProduccion.java
+ * ReporteMovStockClientes.java
  *
- * Created on 24-jul-2009, 19:34:39
+ * Created on 01-ago-2009, 16:57:58
  */
 package ar.com.jpack.desktop.reportes;
 
@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -28,10 +27,10 @@ import org.jdesktop.application.Task;
  *
  * @author Pablo
  */
-public class ReporteProduccion extends CustomInternalFrame {
+public class ReporteMovStockClientes extends CustomInternalFrame {
 
-    /** Creates new form ReporteProduccion */
-    public ReporteProduccion() {
+    /** Creates new form ReporteMovStockClientes */
+    public ReporteMovStockClientes() {
         initComponents();
     }
 
@@ -55,25 +54,23 @@ public class ReporteProduccion extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!jTextField1.getText().isEmpty()) {
-                parametro.put("pmaquina", new Integer(jTextField1.getText()));
+            if (!txtCliente.getText().isEmpty()) {
+                parametro.put("pcliente", new Integer(txtCliente.getText()));
             }
 
-            System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate() + "\nmaquina: " + jTextField1.getText());
+            System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate() + "\ncliente: " + txtCliente.getText());
 
             java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
             java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
-            
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);
-            //parametro.put("pmaquina", m);
 
             parametro.put("pduke", "C:\\Logos\\Duke.gif");
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
-            JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametro);
+            JasperPrint jp = DesktopApp.getApplication().getReporte("movimientosxcli", parametro);
             JasperViewer jv = new JasperViewer(jp, false);
-            jv.setTitle("Reporte de Produccion");
+            jv.setTitle("Reporte de Movimientos de Stock por Clientes");
             jv.setVisible(true);
             mensaje = "Reporte finalizado";
             return mensaje;
@@ -91,8 +88,9 @@ public class ReporteProduccion extends CustomInternalFrame {
         try {
             this.setClosed(true);
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(ReporteProduccion.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReporteMovStockClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /** This method is called from within the constructor to
@@ -109,18 +107,19 @@ public class ReporteProduccion extends CustomInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtCliente = new javax.swing.JTextField();
+        cancelarButton = new javax.swing.JButton();
+        aceptarButton = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteMovStockClientes.class);
+        setForeground(resourceMap.getColor("Form.foreground")); // NOI18N
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteProduccion.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -134,15 +133,17 @@ public class ReporteProduccion extends CustomInternalFrame {
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
 
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
+        txtCliente.setText(resourceMap.getString("txtCliente.text")); // NOI18N
+        txtCliente.setName("txtCliente"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteProduccion.class, this);
-        jButton1.setAction(actionMap.get("cancelar")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteMovStockClientes.class, this);
+        cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
+        cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
+        cancelarButton.setName("cancelarButton"); // NOI18N
 
-        jButton2.setAction(actionMap.get("aceptar")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
+        aceptarButton.setAction(actionMap.get("aceptar")); // NOI18N
+        aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
+        aceptarButton.setName("aceptarButton"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,52 +154,53 @@ public class ReporteProduccion extends CustomInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)))
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(aceptarButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                        .addComponent(cancelarButton)
+                        .addGap(10, 10, 10))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
                     .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(cancelarButton)
+                    .addComponent(aceptarButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton aceptarButton;
+    private javax.swing.JButton cancelarButton;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtCliente;
     // End of variables declaration//GEN-END:variables
 }
