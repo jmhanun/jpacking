@@ -13,11 +13,15 @@ import ar.com.jpack.helpers.tablemodels.DetalleRemitosTableModel;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.DetOrdenesProduccionPKT;
+import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosPKT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempPKT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.OrdenesProduccionT;
+import ar.com.jpack.transferencia.PrioridadesT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
 import java.beans.PropertyVetoException;
@@ -230,9 +234,44 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         mensaje.append("¿Desea crear una orden de producción?");
                         if (JOptionPane.showInternalConfirmDialog(this, mensaje, "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                             //si esta de acuerdo con la fecha crear remito y crear orden de produccion por lo que falta
-                            JOptionPane.showInternalMessageDialog(this, "Crea la orden de produccion por el faltante");
-                        }
+                            OrdenesProduccionT opT = new OrdenesProduccionT();
+                            opT.setFecha(remito.getFecha());
+                            opT.setIdEstado(new EstadosT());
+                            opT.getIdEstado().setIdEstado(1);
+                            opT.setIdTipoComprobante(new TiposComprobantesT());
+                            opT.getIdTipoComprobante().setIdTipoComprobante(6);
+                            opT.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                            opT.setFechaModificacion(remito.getFecha());
+                            opT.setFechaInicioEstimada(null);
+                            opT.setIdPrioridad(new PrioridadesT());
+                            
+                            //Cambiar prioridad??????????????????????????????'
+                            opT.getIdPrioridad().setIdPrioridad(3);
 
+                            ArrayList<DetOrdenesProduccionT> listaDetalleOPT = new ArrayList<DetOrdenesProduccionT>();
+                            int idDetalleOP = 1;
+                            for (DetalleRemitosT detalleRemitosT : getListDto()) {
+                                if (detalleRemitosT.getSaldoOP() > 0) {
+                                    DetOrdenesProduccionPKT idDetalleOPPKT = new DetOrdenesProduccionPKT(idDetalleOP, 0);
+                                    DetOrdenesProduccionT detalleOP = new DetOrdenesProduccionT();
+                                    detalleOP.setDetordenesproduccionPK(idDetalleOPPKT);
+                                    detalleOP.setIdArticulo(detalleRemitosT.getIdArticulo());
+                                    detalleOP.setIdUnidMedida(detalleRemitosT.getIdUnidMedida());
+                                    detalleOP.setCantidad(detalleRemitosT.getSaldoOP());
+
+                                    listaDetalleOPT.add(detalleOP);
+
+                                    idDetalleOP++;
+                                }
+                            }
+
+                            remito.setFechaAcordada(fechaAcordada);
+                            remito.setFechaEntrega(null);
+
+                            remito = DesktopApp.getApplication().updateRemitosT(remito, getListDto());
+                            opT.setIdRemito(remito);
+                            opT = DesktopApp.getApplication().updateOrdenesProduccionT(opT, listaDetalleOPT);
+                        }
                         cancelar();
                     }
                 } else {

@@ -17,14 +17,17 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
+import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SetupT;
@@ -37,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -75,6 +79,7 @@ public class DesktopApp extends SingleFrameApplication {
     private DetalleproduccionFacadeRemote detalleProduccionFacade;
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
     private RemitosFacadeRemote remitosFacade;
+    private OrdenesproduccionFacadeRemote ordenesproduccionFacade;
     private EstadosFacadeRemote estadosFacade;
     private JDialog loginBox;
     private UsuariosT usuarioLogueado;
@@ -668,6 +673,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
             return remitosFacade.updateRemitosT(remitosT, detallesRemitosT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public OrdenesProduccionT updateOrdenesProduccionT(OrdenesProduccionT opT, ArrayList<DetOrdenesProduccionT> listaDetalleOPT) {
+        try {
+            ordenesproduccionFacade = (OrdenesproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenesproduccionFacadeRemote");
+            return ordenesproduccionFacade.updateOrdenesProduccionT(opT, listaDetalleOPT);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
