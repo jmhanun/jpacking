@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="pfechadesde" class="java.sql.Timestamp"/>
+	<parameter name="pfechahasta" class="java.sql.Timestamp"/>
+	<parameter name="pcliente" class="java.lang.Integer">
+            <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     detmovimientosstock.`descripcion` AS detmovimientosstock_descripcion,
+     detmovimientosstock.`cantidad` AS detmovimientosstock_cantidad,
+     detmovimientosstock.`fechaMovimiento` AS detmovimientosstock_fechaMovimiento,
+     articulos.`codigo` AS articulos_codigo,
+     unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura,
+     clientes.`nombres` AS clientes_nombres,
+     clientes.`apellidos` AS clientes_apellido,
+     clientes.idcliente,
+     case when remitos.idRemito IS NOT null = 1 THEN 'Remito' when notasdebito.idNotaDebito IS NOT null=1 THEN 'Remito Devolucion de Venta' end tipocomprobante,
+     case when remitos.idRemito IS NOT null = 1 THEN remitos.nroRemito when notasdebito.idNotaDebito IS NOT null=1 THEN notasdebito.nroNotaDebito end nrocomprobante
+FROM
+     `articulos` articulos INNER JOIN `detmovimientosstock` detmovimientosstock ON articulos.`idArticulo` = detmovimientosstock.`idArticulo`
+     INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
+     AND unidadesmedida.`idUnidMedida` = detmovimientosstock.`idUnidMedida`
+     LEFT OUTER JOIN `notasdebito` notasdebito ON detmovimientosstock.`idNotaDebito` = notasdebito.`idNotaDebito`
+     LEFT OUTER JOIN `remitos` remitos ON detmovimientosstock.`idRemito` = remitos.`idRemito`
+     LEFT OUTER JOIN `clientes` clientes ON remitos.`idCliente` = clientes.`idCliente`
+       or clientes.`idCliente` = notasdebito.`idCliente`
+WHERE
+detmovimientosstock.`fechaMovimiento`BETWEEN $P{pfechadesde} AND $P{pfechahasta}
+ AND clientes.`idCliente` = IFNULL($P{pcliente}, clientes.`idCliente`)
+ORDER BY
+     detmovimientosstock.`fechaMovimiento` ASC,
+     detmovimientosstock.`descripcion` ASC]]>
+	</queryString>
+	<field name="detmovimientosstock_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detmovimientosstock_cantidad" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detmovimientosstock_fechaMovimiento" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidadesmedida_abreviatura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="clientes_nombres" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="clientes_apellido" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idcliente" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipocomprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nrocomprobante" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="countmovimientos" class="java.lang.Number" resetType="Group" resetGroup="Group2" calculation="Count">
+		<variableExpression><![CDATA[$F{articulos_codigo}]]></variableExpression>
+	</variable>
+	<variable name="counttotal" class="java.lang.Number" calculation="Count">
+		<variableExpression><![CDATA[$F{articulos_codigo}]]></variableExpression>
+	</variable>
+	<group name="detmovimientosstock_descripcion">
+		<groupExpression><![CDATA[$F{clientes_nombres}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="78" height="27" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="68" y="0" width="487" height="27" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{clientes_nombres}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="11">
+				<line direction="BottomUp">
+					<reportElement key="line" x="1" y="4" width="554" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{detmovimientosstock_descripcion}]]></groupExpression>
+		<groupHeader>
+			<band height="34">
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="267" y="0" width="221" height="27" backcolor="#FFCC33"/>
+					<textElement>
+						<font fontName="verdana"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipocomprobante}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0" hyperlinkType="None">
+					<reportElement mode="Opaque" x="478" y="0" width="77" height="27" backcolor="#FFCC33"/>
+					<textElement textAlignment="Right">
+						<font fontName="verdana"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Long"><![CDATA[$F{nrocomprobante}]]></textFieldExpression>
+				</textField>
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="0" y="0" width="267" height="27" forecolor="#000000" backcolor="#FFCC33"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{detmovimientosstock_descripcion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="87">
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="82" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="156" y="13" width="290" height="35"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Movimientos de Stock]]></text>
+			</staticText>
+			<image hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="509" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18">
+			<staticText>
+				<reportElement mode="Opaque" x="338" y="0" width="90" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="0" width="92" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="94" y="0" width="92" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField hyperlinkType="None">
+				<reportElement x="338" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{detmovimientosstock_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="2" y="0" width="92" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detmovimientosstock_fechaMovimiento}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="94" y="0" width="242" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="435" y="0" width="92" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadesmedida_abreviatura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="46">
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="516" y="22" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="343" y="22" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="5" y="22" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

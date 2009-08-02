@@ -2,10 +2,10 @@
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="pproveedor" class="java.lang.String">
+	<parameter name="pproveedor" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
-	<parameter name="pimagen" class="java.lang.String"/>
+        <parameter name="pimagen" class="java.lang.String"/>
 	<parameter name="pduke" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
