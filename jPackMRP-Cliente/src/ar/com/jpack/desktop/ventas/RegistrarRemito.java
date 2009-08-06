@@ -23,8 +23,12 @@ import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.PrioridadesT;
 import ar.com.jpack.transferencia.RemitosT;
+import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
+import ar.com.jpack.transferencia.UsuariosT;
 import java.beans.PropertyVetoException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -139,6 +143,8 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     @Action
     public void aplicar() {
         //Verificar que haya al menos un item
+        cuerpoMail = new StringBuffer();
+        cuerpoMail2 = new StringBuffer();
         importeTotal = 0.0;
         if (tableModel.getRowCount() > 0) {
 
@@ -234,7 +240,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         mensaje.append("¿Desea crear una orden de producción?");
                         if (JOptionPane.showInternalConfirmDialog(this, mensaje, "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                             //si esta de acuerdo con la fecha crear remito y crear orden de produccion por lo que falta
-                            OrdenesProduccionT opT = new OrdenesProduccionT();
+                            opT = new OrdenesProduccionT();
                             opT.setFecha(remito.getFecha());
                             opT.setIdEstado(new EstadosT());
                             opT.getIdEstado().setIdEstado(1);
@@ -244,7 +250,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                             opT.setFechaModificacion(remito.getFecha());
                             opT.setFechaInicioEstimada(null);
                             opT.setIdPrioridad(new PrioridadesT());
-                            
+
                             //Cambiar prioridad??????????????????????????????'
                             opT.getIdPrioridad().setIdPrioridad(3);
 
@@ -260,6 +266,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                                     detalleOP.setCantidad(detalleRemitosT.getSaldoOP());
 
                                     listaDetalleOPT.add(detalleOP);
+                                    cuerpoMail2.append(detalleRemitosT.getSaldoOP() + " " + detalleRemitosT.getIdUnidMedida().getAbreviatura() + " de " + detalleRemitosT.getIdArticulo().getCodigo() + "(" + detalleRemitosT.getIdArticulo().getDescripcion() + ")\n");
 
                                     idDetalleOP++;
                                 }
@@ -272,6 +279,26 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                             opT.setIdRemito(remito);
                             opT = DesktopApp.getApplication().updateOrdenesProduccionT(opT, listaDetalleOPT);
                         }
+                        parametros = new HashMap();
+                        parametros.put("pRol", "PRODUCCION");
+                        parametros.put("pJoinUsuarios", true);
+                        ArrayList<RolesT> listaRoles = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros);
+                        RolesT rolProduccion = listaRoles.get(0);
+                        ArrayList<String> destinatarios = new ArrayList<String>();
+                        for (UsuariosT usuariosT : rolProduccion.getIdUsuarioCollection()) {
+                            destinatarios.add(usuariosT.getMails());
+                        }
+                        tituloMail = "Nueva Orden de produccion #" + opT.getNroOrdenProduccion();
+                        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy H:mm");
+
+                        cuerpoMail.append(fechaFormatter.format(opT.getFecha()) + "\n");
+                        cuerpoMail.append("Se ha generado exitosamente la orden de produccion #" + opT.getNroOrdenProduccion() + "\n");
+                        cuerpoMail.append("Esta relacionada con el remito #" + opT.getIdRemito().getNroRemito() + "\n");
+                        cuerpoMail.append("Fue generada por " + opT.getIdUsuario().getUsuario() + "\n");
+                        cuerpoMail.append("Con el siguiente detalle:\n\n");
+                        cuerpoMail.append(cuerpoMail2);
+                        cuerpoMail.append("\n\nPor favor, no responda este mail.");
+                        DesktopApp.getApplication().sendSSLMessage(destinatarios, tituloMail, cuerpoMail.toString());
                         cancelar();
                     }
                 } else {
@@ -532,4 +559,8 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private ArrayList<DetalleRemitosTempT> detalleTemporal = new ArrayList<DetalleRemitosTempT>();
     private double importeTotal;
     private HashMap parametros;
+    private OrdenesProduccionT opT;
+    private String tituloMail;
+    private StringBuffer cuerpoMail;
+    private StringBuffer cuerpoMail2;
 }

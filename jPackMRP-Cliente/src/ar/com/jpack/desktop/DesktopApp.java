@@ -46,7 +46,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -58,6 +57,15 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.security.Security;
 
 /**
  * The main class of the application.
@@ -100,6 +108,73 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public static InitialContext getContexto() {
         return contexto;
+    }
+
+    public void sendSSLMessage(ArrayList<String> recipients, String subject,
+            String message) {
+
+        HashMap parametros = new HashMap();
+        parametros.put("pDescripcion", "MAIL.SMTP.HOST");
+        String smtpHostName = getSetupT(parametros).get(0).getValor();
+
+        parametros = new HashMap();
+        parametros.put("pDescripcion", "MAIL.SMTP.PORT");
+        String smtpPort = getSetupT(parametros).get(0).getValor();
+
+        parametros = new HashMap();
+        parametros.put("pDescripcion", "MAIL.SMTP.SOCKETFACTORY.CLASS");
+        String sslFactory = getSetupT(parametros).get(0).getValor();
+
+        parametros = new HashMap();
+        parametros.put("pDescripcion", "MAIL.SMTP.USUARIO");
+        String usuario = getSetupT(parametros).get(0).getValor();
+
+        parametros = new HashMap();
+        parametros.put("pDescripcion", "MAIL.SMTP.PASSWORD");
+        String pass = getSetupT(parametros).get(0).getValor();
+
+        final Properties props = new Properties();
+        props.put("mail.smtp.host", smtpHostName);
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.socketFactory.port", smtpPort);
+        props.put("mail.smtp.socketFactory.class", sslFactory);
+
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.debug", "false");
+        props.put("mail.smtp.socketFactory.fallback", "false");
+
+        props.put("usuario", usuario);
+        props.put("pass", pass);
+
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(props.getProperty("usuario"), props.getProperty("pass"));
+                    }
+                });
+
+        session.setDebug(false);
+        try {
+            Message msg = new MimeMessage(session);
+            InternetAddress addressFrom = new InternetAddress(usuario);
+            msg.setFrom(addressFrom);
+
+            InternetAddress[] addressTo = new InternetAddress[recipients.size()];
+            for (int i = 0; i < recipients.size(); i++) {
+                addressTo[i] = new InternetAddress(recipients.get(i));
+            }
+            msg.setRecipients(Message.RecipientType.TO, addressTo);
+
+// Setting the Subject and Content Type
+            msg.setSubject(subject);
+            msg.setContent(message, "text/plain");
+            Transport.send(msg);
+        } catch (MessagingException ex) {
+            JOptionPane.showMessageDialog(null, "Apartentemente no tiene conexion a Internet. No es posible enviar el mail. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getFechaLiteral(Date fechaAcordada) {
@@ -215,6 +290,8 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public static void main(String[] args) {
         System.setProperty("user.timezone", "America/Argentina/Cordoba");
+        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+
         DesktopApp myApp = new DesktopApp();
         myApp.levantar(args);
     }
@@ -615,7 +692,7 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros) {
-       try {
+        try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
             return detalleProduccionFacade.getDetalleProduccionT(parametros);
         } catch (NamingException ex) {
