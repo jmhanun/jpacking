@@ -400,8 +400,28 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteDesviosInicio() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioIni", "Carga de parametros para el reporte de Desvios", padre);
+    }
+
+    @Action
+    public Task showReporteDesviosFin() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioFin", "Carga de parametros para el reporte de Desvios", padre);
+    }
+
+    @Action
     public Task showReporteMovStockCli() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMovStockClientes", "Carga de parametros para el reporte de Movimientos de Stock por Clientes", padre);
+    }
+
+    @Action
+    public Task showReporteMovStockProv() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMovStockProveedores", "Carga de parametros para el reporte de Movimientos de Stock por Proveedores", padre);
+    }
+
+    @Action
+    public Task showReporteClientes() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteClientes", "Carga de parametros para el reporte de Clientes", padre);
     }
 
     @Action
@@ -417,6 +437,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showReporteProveedores() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProveedores", "Carga de parametros para el reporte Proveedores", padre);
+    }
+
+    @Action
+    public Task showReporteRemito() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteRemito", "Carga de parametros para el reporte Remito", padre);
     }
     
     @Action

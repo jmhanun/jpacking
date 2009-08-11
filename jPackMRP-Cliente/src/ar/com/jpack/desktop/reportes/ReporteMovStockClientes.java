@@ -112,7 +112,6 @@ public class ReporteMovStockClientes extends CustomInternalFrame {
         aceptarButton = new javax.swing.JButton();
 
         setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteMovStockClientes.class);
         setForeground(resourceMap.getColor("Form.foreground")); // NOI18N
         setIconifiable(true);
@@ -188,7 +187,7 @@ public class ReporteMovStockClientes extends CustomInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();

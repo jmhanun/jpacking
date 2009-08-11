@@ -3,7 +3,6 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
-    <Property name="foreground" type="java.awt.Color" resourceKey="Form.foreground"/>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
@@ -32,25 +31,24 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jDateChooser1" alignment="0" pref="337" max="32767" attributes="0"/>
-                          <Component id="jDateChooser2" alignment="0" pref="337" max="32767" attributes="0"/>
-                          <Component id="txtCliente" alignment="0" pref="337" max="32767" attributes="0"/>
+                          <Component id="jDateChooser1" alignment="0" pref="320" max="32767" attributes="0"/>
+                          <Component id="jDateChooser2" alignment="0" pref="320" max="32767" attributes="0"/>
+                          <Component id="txtProveedor" alignment="0" pref="320" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="aceptarButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelarButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -68,9 +66,9 @@
                   <Component id="jDateChooser2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCliente" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -111,16 +109,16 @@
         <Property name="name" type="java.lang.String" value="jDateChooser2" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtCliente">
+    <Component class="javax.swing.JTextField" name="txtProveedor">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtCliente.text"/>
-        <Property name="name" type="java.lang.String" value="txtCliente" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="txtProveedor.text"/>
+        <Property name="name" type="java.lang.String" value="txtProveedor" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="cancelarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteMovStockClientes" id="cancelar" methodName="cancelar"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteMovStockProveedores" id="cancelar" methodName="cancelar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cancelarButton.text"/>
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
@@ -129,7 +127,7 @@
     <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteMovStockClientes" id="aceptar" methodName="aceptar"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteMovStockProveedores" id="aceptar" methodName="aceptar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="aceptarButton.text"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
