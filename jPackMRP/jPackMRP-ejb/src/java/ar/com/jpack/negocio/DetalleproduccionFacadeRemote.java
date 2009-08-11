@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Detalleproduccion;
@@ -21,6 +20,8 @@ public interface DetalleproduccionFacadeRemote {
     public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros);
 
     public List<Detalleproduccion> getDetalleProduccion(HashMap parametros);
-   
 
+    public Double getAvanceProduccion(DetalleProduccionT detalleProduccionT);
+
+    public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT);
 }
