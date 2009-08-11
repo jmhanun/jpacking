@@ -25,6 +25,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -134,6 +135,12 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
         }
+
+//        final Gantt demo = new Gantt("Gantt Chart Demo desde jPack");
+//        demo.pack();
+//        RefineryUtilities.centerFrameOnScreen(demo);
+//        demo.setVisible(true);
+
     }
 
     @Action
