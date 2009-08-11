@@ -17,6 +17,7 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
+import ar.com.jpack.negocio.DetalleproduccionFacade;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
@@ -438,6 +439,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public Double getAvanceProduccion(DetalleProduccionT detalleProduccionT) {
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            return detalleProduccionFacade.getAvanceProduccion(detalleProduccionT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return 0.0;
+        }
+    }
+
     /**
      * Obtiene el siguiente numero de remito
      * @return devuelve el siguiente numero de remito como int
@@ -754,6 +766,16 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+
+    public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT) {
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            detalleProduccionFacade.updateDetalleProduccion(detalleProduccionT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
