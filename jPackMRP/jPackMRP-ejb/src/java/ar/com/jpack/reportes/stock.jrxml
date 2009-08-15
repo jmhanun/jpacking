@@ -5,6 +5,8 @@
 	<parameter name="pCodigo" class="java.lang.String">
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      stock.`idStock` AS stock_idStock,
@@ -68,20 +70,28 @@ ORDER BY
 		<band/>
 	</background>
 	<title>
-		<band height="58">
+		<band height="98">
 			<line>
 				<reportElement x="0" y="8" width="555" height="1"/>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="86" width="555" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35"/>
+				<reportElement x="186" y="13" width="191" height="35"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Stock]]></text>
+				<text><![CDATA[Stock de Artículos]]></text>
 			</staticText>
+			<image hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="509" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -90,25 +100,11 @@ ORDER BY
 	<columnHeader>
 		<band height="25">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="138" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="120" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Código]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="138" y="0" width="138" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement>
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Descripción]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="342" y="0" width="66" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Right">
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cantidad]]></text>
+				<text><![CDATA[Artículo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -118,8 +114,15 @@ ORDER BY
 				<text><![CDATA[Unidad de medida]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="17" width="555" height="1"/>
+				<reportElement x="0" y="18" width="555" height="1"/>
 			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="343" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -168,7 +171,7 @@ ORDER BY
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="verdana" size="10"/>
+					<font fontName="verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -181,7 +184,7 @@ ORDER BY
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="verdana" size="10"/>
+					<font fontName="verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
 			</textField>
@@ -194,7 +197,7 @@ ORDER BY
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="verdana" size="10"/>
+					<font fontName="verdana" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>

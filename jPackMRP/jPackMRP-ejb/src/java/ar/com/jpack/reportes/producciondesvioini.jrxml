@@ -93,7 +93,7 @@ ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad
 				<textElement textAlignment="Center">
 					<font fontName="verdana" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Desvíos en la fecha de inicio]]></text>
+				<text><![CDATA[Desfasajes en la fecha de inicio]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -103,35 +103,28 @@ ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad
 	<columnHeader>
 		<band height="26">
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="0" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="18" y="0" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Orden Prod.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="89" y="0" width="117" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="116" y="0" width="117" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Máquina]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="433" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="469" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha Inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="534" y="1" width="71" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement>
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha Fin]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="611" y="1" width="71" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="572" y="1" width="71" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
@@ -141,88 +134,67 @@ ORDER BY detalleproduccion_fechaInicioEstimada desc, detalleproduccion_prioridad
 				<reportElement x="1" y="19" width="801" height="1"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="243" y="1" width="91" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="351" y="1" width="111" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Inicio Estim.]]></text>
+				<text><![CDATA[Inicio Estimado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="340" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fin Estim.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="689" y="1" width="47" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="664" y="1" width="83" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Desvío]]></text>
+				<text><![CDATA[Desfasaje]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="1" y="0" width="83" height="20"/>
+				<reportElement x="18" y="0" width="83" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{ordenesproduccion_nroOrdenProduccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="89" y="0" width="152" height="20"/>
+				<reportElement x="116" y="0" width="226" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{maquinas_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="433" y="0" width="85" height="20"/>
+				<reportElement x="469" y="0" width="85" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaInicioProceso}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="527" y="0" width="81" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaFinProceso}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="611" y="0" width="71" height="20"/>
+				<reportElement x="572" y="0" width="81" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{estados_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="244" y="0" width="85" height="20"/>
+				<reportElement x="361" y="0" width="85" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaInicioEstimada}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="338" y="0" width="85" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="10"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{detalleproduccion_fechaFinEstimada}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="688" y="0" width="48" height="20"/>
+				<reportElement x="664" y="0" width="58" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{desvio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement x="740" y="0" width="60" height="20"/>
+				<reportElement x="732" y="0" width="68" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
