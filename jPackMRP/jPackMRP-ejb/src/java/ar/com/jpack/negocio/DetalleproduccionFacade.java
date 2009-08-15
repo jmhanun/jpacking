@@ -33,9 +33,9 @@ import org.hibernate.ejb.EntityManagerImpl;
  */
 @Stateless
 public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
+
     @EJB
     private EstadosFacadeRemote estadosFacade;
-
     @Resource(name = "jdbc/remoto.dbjpack")
     private DataSource jdbcRemotedbjPack;
     @PersistenceContext
@@ -66,7 +66,9 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
             detalleProduccionCriteria.add(Restrictions.eq("idDetalleProduccion", parametros.get("pIdDetalleProduccion")));
         }
 
-
+        if (parametros.containsKey("pFechaInicioEstimada")) {
+            detalleProduccionCriteria.add(Restrictions.between("fechaInicioEstimada", parametros.get("pFechaDesdeEstimada"), parametros.get("pFechaHastaEstimada")));
+        }
         if (parametros.containsKey("pJoinMaquinas")) {
             detalleProduccionCriteria.setFetchMode("idMaquina", FetchMode.JOIN);
         }
@@ -106,17 +108,16 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
 
     public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT) {
 
-        
+
         Detalleproduccion detalleProduccion = (Detalleproduccion) DozerUtil.getDozerMapper(false).map(detalleProduccionT, Detalleproduccion.class);
 
         HashMap parametros = new HashMap();
         parametros.put("pIdEstados", detalleProduccionT.getIdEstado().getIdEstado());
         Estados estado = (Estados) estadosFacade.getEstados(parametros).get(0);
-        
-        detalleProduccion.setIdEstado(estado);
-        
-        em.merge(detalleProduccion);
 
+        detalleProduccion.setIdEstado(estado);
+
+        em.merge(detalleProduccion);
 
     }
 }
