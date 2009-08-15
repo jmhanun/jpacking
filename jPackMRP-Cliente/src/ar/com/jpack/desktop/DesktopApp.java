@@ -703,6 +703,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<OrdenesProduccionT> getOrdenesProduccionT(HashMap parametros) {
+        try {
+            ordenesproduccionFacade = (OrdenesproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenesproduccionFacadeRemote");
+            return ordenesproduccionFacade.getOrdenesProduccionT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
@@ -789,7 +800,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
+    
     public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");

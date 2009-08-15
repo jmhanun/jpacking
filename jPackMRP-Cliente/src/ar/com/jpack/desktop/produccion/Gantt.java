@@ -4,9 +4,14 @@
  */
 package ar.com.jpack.desktop.produccion;
 
+import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -24,20 +29,21 @@ import org.jfree.ui.ApplicationFrame;
  */
 public class Gantt extends ApplicationFrame {
 
-    public Gantt(final String title) {
+    public Gantt(String title, List<DetalleProduccionT> listaProduccion, Date d, Date h) {
         super(title);
+        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
-        final IntervalCategoryDataset dataset = createSampleDataset();
+        final IntervalCategoryDataset dataset = createSampleDataset(listaProduccion);
 
         // create the chart...
         final JFreeChart chart = ChartFactory.createGanttChart(
-                "Gantt Chart Demo", // chart title
-                "Task", // domain axis label
-                "Date", // range axis label
+                "Gantt desde " + fechaFormatter.format(d) + " hasta " + fechaFormatter.format(h), // chart title
+                "Tarea", // domain axis label
+                "Fecha", // range axis label
                 dataset, // data
                 true, // include legend
                 true, // tooltips
-                true // urls
+                false // urls
                 );
         final CategoryPlot plot = (CategoryPlot) chart.getPlot();
         //      plot.getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
@@ -48,13 +54,11 @@ public class Gantt extends ApplicationFrame {
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
         setContentPane(chartPanel);
-
-
-
-
+        System.out.println("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡");
+        System.err.println(this.getDefaultCloseOperation());
     }
 
-    private IntervalCategoryDataset createSampleDataset() {
+    private IntervalCategoryDataset createSampleDataset(List<DetalleProduccionT> listaProduccion) {
 
         final TaskSeries s1 = new TaskSeries("Scheduled");
 

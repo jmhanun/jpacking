@@ -78,10 +78,10 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         if (detalleProduccionTable.getSelectedRow() != -1) {
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(detalleProduccionTable.getSelectedRow());
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
+                detalleSeleccionado.setFechaFinProceso(new Date());
                 EstadosT estadoIniciado = new EstadosT();
                 estadoIniciado.setIdEstado(15);
                 detalleSeleccionado.setIdEstado(estadoIniciado);
-                detalleSeleccionado.setFechaInicioProceso(new Date());
                 DesktopApp.getApplication().updateDetalleProduccion(detalleSeleccionado);
                 refresh();
             } else {
@@ -286,7 +286,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

@@ -223,7 +223,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         remito.setFechaAcordada(remito.getFecha());
                         remito.setFechaEntrega(remito.getFecha());
                         DesktopApp.getApplication().updateRemitosT(remito, getListDto());
-
+                        JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito exitosamente");
                         cancelar();
                     } else {
                         //insertar detalleremitostemp
@@ -238,7 +238,9 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                         String fechaAcordadaLiteral = DesktopApp.getApplication().getFechaLiteral(fechaAcordada);
                         mensaje.append("\nEl pedido estara completo aproximadamente " + fechaAcordadaLiteral + ".\n\n");
                         mensaje.append("¿Desea crear una orden de producción?");
-                        if (JOptionPane.showInternalConfirmDialog(this, mensaje, "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+                        if (JOptionPane.showInternalConfirmDialog(this, mensaje,
+                                "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                             //si esta de acuerdo con la fecha crear remito y crear orden de produccion por lo que falta
                             opT = new OrdenesProduccionT();
                             opT.setFecha(remito.getFecha());
@@ -278,28 +280,33 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                             remito = DesktopApp.getApplication().updateRemitosT(remito, getListDto());
                             opT.setIdRemito(remito);
                             opT = DesktopApp.getApplication().updateOrdenesProduccionT(opT, listaDetalleOPT);
-                        }
-                        parametros = new HashMap();
-                        parametros.put("pRol", "PRODUCCION");
-                        parametros.put("pJoinUsuarios", true);
-                        ArrayList<RolesT> listaRoles = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros);
-                        RolesT rolProduccion = listaRoles.get(0);
-                        ArrayList<String> destinatarios = new ArrayList<String>();
-                        for (UsuariosT usuariosT : rolProduccion.getIdUsuarioCollection()) {
-                            destinatarios.add(usuariosT.getMails());
-                        }
-                        tituloMail = "Nueva Orden de produccion #" + opT.getNroOrdenProduccion();
-                        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy H:mm");
 
-                        cuerpoMail.append(fechaFormatter.format(opT.getFecha()) + "\n");
-                        cuerpoMail.append("Se ha generado exitosamente la orden de produccion #" + opT.getNroOrdenProduccion() + "\n");
-                        cuerpoMail.append("Esta relacionada con el remito #" + opT.getIdRemito().getNroRemito() + "\n");
-                        cuerpoMail.append("Fue generada por " + opT.getIdUsuario().getUsuario() + "\n");
-                        cuerpoMail.append("Con el siguiente detalle:\n\n");
-                        cuerpoMail.append(cuerpoMail2);
-                        cuerpoMail.append("\n\nPor favor, no responda este mail.");
-                        DesktopApp.getApplication().sendSSLMessage(destinatarios, tituloMail, cuerpoMail.toString());
-                        cancelar();
+                            if (JOptionPane.showInternalConfirmDialog(this, "¿Desea enviar mail de confirmacion?",
+                                    "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                                parametros = new HashMap();
+                                parametros.put("pRol", "PRODUCCION");
+                                parametros.put("pJoinUsuarios", true);
+                                ArrayList<RolesT> listaRoles = (ArrayList<RolesT>) DesktopApp.getApplication().getRolesT(parametros);
+                                RolesT rolProduccion = listaRoles.get(0);
+                                ArrayList<String> destinatarios = new ArrayList<String>();
+                                for (UsuariosT usuariosT : rolProduccion.getIdUsuarioCollection()) {
+                                    destinatarios.add(usuariosT.getMails());
+                                }
+                                tituloMail = "Nueva Orden de produccion #" + opT.getNroOrdenProduccion();
+                                DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy H:mm");
+
+                                cuerpoMail.append(fechaFormatter.format(opT.getFecha()) + "\n");
+                                cuerpoMail.append("Se ha generado exitosamente la orden de produccion #" + opT.getNroOrdenProduccion() + "\n");
+                                cuerpoMail.append("Esta relacionada con el remito #" + opT.getIdRemito().getNroRemito() + "\n");
+                                cuerpoMail.append("Fue generada por " + opT.getIdUsuario().getUsuario() + "\n");
+                                cuerpoMail.append("Con el siguiente detalle:\n\n");
+                                cuerpoMail.append(cuerpoMail2);
+                                cuerpoMail.append("\n\nPor favor, no responda este mail.");
+                                DesktopApp.getApplication().sendSSLMessage(destinatarios, tituloMail, cuerpoMail.toString());
+                            }
+                            JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito y la orden de produccion exitosamente");
+                            cancelar();
+                        }
                     }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Hay cantidades o precios igual o menor a cero!");

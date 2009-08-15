@@ -6,6 +6,7 @@ package ar.com.jpack.helpers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import org.jdesktop.application.ResourceMap;
 
@@ -30,6 +31,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
     public CustomInternalFrame(E dto) {
         super();
         this.dto = dto;
+        this.setFrameIcon(new ImageIcon("C:\\Logos\\Duke.gif"));
     }
 
     public E getDto() {

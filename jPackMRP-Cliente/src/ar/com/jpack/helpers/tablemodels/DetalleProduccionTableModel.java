@@ -9,6 +9,7 @@ import ar.com.jpack.helpers.CustomTableModel;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,7 +53,13 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                 if (record.getDetordenesproduccion() == null) {
                     return "";
                 } else {
-                    return record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion();
+
+                    HashMap parametros = new HashMap();
+                    parametros.put("pIdOrdenProduccion", record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion());
+                    return DesktopApp.getApplication().getOrdenesProduccionT(parametros).get(0).getNroOrdenProduccion();
+                    
+                    
+//                    return record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion();
                 }
             case MAQUINA_INDEX:
                 if (record.getIdMaquina() == null) {
