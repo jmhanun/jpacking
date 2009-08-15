@@ -92,7 +92,7 @@ public class ReporteDesvioFin extends CustomInternalFrame {
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
             JasperPrint jp = DesktopApp.getApplication().getReporte("producciondesviofin", parametro);
             JasperViewer jv = new JasperViewer(jp, false);
-            jv.setTitle("Reporte de Desvios de Produccion");
+            jv.setTitle("Reporte de Desfasajes de Produccion");
             jv.setVisible(true);
             mensaje = "Reporte finalizado";
             return mensaje;

@@ -401,12 +401,12 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showReporteDesviosInicio() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioIni", "Carga de parametros para el reporte de Desvios", padre);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioIni", "Carga de parametros para el reporte de Desfasajes", padre);
     }
 
     @Action
     public Task showReporteDesviosFin() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioFin", "Carga de parametros para el reporte de Desvios", padre);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioFin", "Carga de parametros para el reporte de Desfasajes", padre);
     }
 
     @Action
