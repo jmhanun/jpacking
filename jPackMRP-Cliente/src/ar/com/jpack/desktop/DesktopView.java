@@ -423,6 +423,16 @@ public class DesktopView extends FrameView {
         jv.setTitle("Reporte de Usuarios");
         jv.setVisible(true);
     }
+    @Action
+    public void showReporteNivelesTintas() {
+        HashMap parametros = new HashMap();
+        parametros.put("pduke", "C:\\Logos\\Duke.gif");
+        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+        JasperPrint jp = DesktopApp.getApplication().getReporte("nivelestintas", parametros);
+        JasperViewer jv = new JasperViewer(jp, false);
+        jv.setTitle("Reporte de Niveles de Tintas");
+        jv.setVisible(true);
+    }
 
     @Action
     public Task showReporteProduccion() {
