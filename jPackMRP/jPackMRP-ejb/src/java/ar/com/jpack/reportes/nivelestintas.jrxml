@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     stock.`idStock` AS stock_idStock,
+     stock.`idArticulo` AS stock_idArticulo,
+     stock.`fechaUltMod` AS stock_fechaUltMod,
+     stock.`cantidad` AS stock_cantidad,
+     articulos.`idArticulo` AS articulos_idArticulo,
+     articulos.`codigo` AS articulos_codigo,
+     articulos.`descripcion` AS articulos_descripcion,
+     articulos.`idUnidMedida` AS articulos_idUnidMedida,
+     articulos.`idEstado` AS articulos_idEstado,
+     unidadesmedida.`idUnidMedida` AS unidadesmedida_idUnidMedida,
+     unidadesmedida.`descripcion` AS unidadesmedida_descripcion,
+     unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura
+FROM
+     `articulos` articulos INNER JOIN `stock` stock ON articulos.`idArticulo` = stock.`idArticulo`
+     INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
+WHERE
+     articulos.`idEstado` <> 2
+ AND articulos.`idarticulo` IN (535,536,537,538,539)
+ORDER BY
+     articulos.`descripcion` ASC]]>
+	</queryString>
+	<field name="stock_idStock" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_idArticulo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_fechaUltMod" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_cantidad" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_idArticulo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_idUnidMedida" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_idEstado" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidadesmedida_idUnidMedida" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidadesmedida_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidadesmedida_abreviatura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="98">
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="86" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="186" y="19" width="191" height="35"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Niveles de Tintas]]></text>
+			</staticText>
+			<image hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="509" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25">
+			<staticText>
+				<reportElement mode="Opaque" x="120" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidad de medida]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="18" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="343" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="0" width="138" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="138" y="0" width="204" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="342" y="0" width="66" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{stock_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="414" y="0" width="138" height="20"/>
+				<textElement>
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadesmedida_abreviatura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="311">
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="516" y="280" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="342" y="280" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="1" y="280" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<bar3DChart>
+				<chart>
+					<reportElement x="56" y="13" width="453" height="256"/>
+					<chartTitle position="Left">
+						<titleExpression><![CDATA[$F{unidadesmedida_descripcion}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{articulos_descripcion}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{articulos_descripcion}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{stock_cantidad}]]></valueExpression>
+						<labelExpression><![CDATA[$F{unidadesmedida_descripcion}]]></labelExpression>
+						<itemHyperlink/>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot isShowLabels="true">
+					<plot>
+						<seriesColor seriesOrder="0" color="#FFFF00"/>
+						<seriesColor seriesOrder="1" color="#0033FF"/>
+						<seriesColor seriesOrder="2" color="#000000"/>
+						<seriesColor seriesOrder="3" color="#FF0000"/>
+						<seriesColor seriesOrder="4" color="#009900"/>
+					</plot>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
