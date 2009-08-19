@@ -26,6 +26,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
 
     public CustomInternalFrame() {
         super();
+        this.setFrameIcon(new ImageIcon("C:\\Logos\\Duke.gif"));
     }
 
     public CustomInternalFrame(E dto) {
@@ -73,7 +74,7 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
         this.modificado = modificado;
         firePropertyChange("modificado", old, isModificado());
     }
-    
+
     public void setNuevo(boolean nuevo) {
         this.nuevo = nuevo;
     }
@@ -92,5 +93,5 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
 
     public void setResourceMap(ResourceMap resourceMap) {
         this.resourceMap = resourceMap;
-    }    
+    }
 }

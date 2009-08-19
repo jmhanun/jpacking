@@ -6,6 +6,7 @@ package ar.com.jpack.desktop;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
+import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -54,7 +55,9 @@ public class DesktopView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         desktopPanel = new javax.swing.JDesktopPane();
+        jToolBar = new javax.swing.JToolBar();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -69,12 +72,26 @@ public class DesktopView extends FrameView {
         mainPanel.setName("mainPanel"); // NOI18N
         mainPanel.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+        jLabel1.setIcon(resourceMap.getIcon("jLabel1.icon")); // NOI18N
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jLabel1.setAlignmentY(0.0F);
+        jLabel1.setName("jLabel1"); // NOI18N
+        mainPanel.add(jLabel1, java.awt.BorderLayout.LINE_END);
+
+        desktopPanel.setAutoscrolls(true);
         desktopPanel.setName("desktopPanel"); // NOI18N
         mainPanel.add(desktopPanel, java.awt.BorderLayout.CENTER);
 
+        jToolBar.setFloatable(false);
+        jToolBar.setRollover(true);
+        jToolBar.setName("jToolBar"); // NOI18N
+        mainPanel.add(jToolBar, java.awt.BorderLayout.SOUTH);
+
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(DesktopView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -109,11 +126,11 @@ public class DesktopView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 275, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -138,6 +155,8 @@ public class DesktopView extends FrameView {
 //<editor-fold defaultstate="coolapsed" desc="Declaracion de variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JToolBar jToolBar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -153,6 +172,8 @@ public class DesktopView extends FrameView {
     private JDialog aboutBox;
     ArrayList<RolesT> rolesTs;
     private CustomInternalFrame padre = null;
+    private Timer timer;
+    private Image imagen;
 
     public JDesktopPane getDesktopPanel() {
         return desktopPanel;
@@ -249,6 +270,7 @@ public class DesktopView extends FrameView {
         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, this);
 
         menuBar.removeAll();
+        jToolBar.removeAll();
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
@@ -314,6 +336,27 @@ public class DesktopView extends FrameView {
         } else {
             this.getFrame().setTitle("MRP para Envases Pueyrredon SRL");
         }
+
+        timer = new Timer(50000, new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<RolesT> rolesList = (ArrayList<RolesT>) DesktopApp.getApplication().getUsuarioLogueado().getIdRolCollection();
+
+
+                if (rolesList != null) {
+//                    for (RolesT rolesT : rolesList) {
+//                        if (rolesT.getRol().equals("ALERTA COMPRAS")) {
+//                            System.out.println("Se ejecuta la alerta");
+//                        } else {
+//                            System.out.println("NO se ejecuta ninguna alerta");
+//                        }
+//                    }
+                }
+            }
+        });
+        timer.setRepeats(true);
+        timer.start();
+
     }
 
     /**
@@ -518,7 +561,7 @@ public class DesktopView extends FrameView {
     public Task showABMClientes() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMClientes", "ABM Clientes", padre);
     }
-    
+
     @Action
     public Task showReporteGantt() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteGantt", "Reporte Gantt", padre);
@@ -681,4 +724,3 @@ public class DesktopView extends FrameView {
         this.padre = padre;
     }
 }
-

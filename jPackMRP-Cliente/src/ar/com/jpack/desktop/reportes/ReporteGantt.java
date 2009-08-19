@@ -11,7 +11,7 @@ import ar.com.jpack.desktop.produccion.Gantt;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.beans.PropertyVetoException;
-import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,25 +36,6 @@ public class ReporteGantt extends CustomInternalFrame {
         return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
     }
 
-    private class AceptarTask extends org.jdesktop.application.Task<Object, Void> {
-        AceptarTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to AceptarTask fields, here.
-            super(app);
-        }
-        @Override protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
-    }
-
     class Reporte extends Task<String, Void> {
 
         String mensaje;
@@ -71,13 +52,28 @@ public class ReporteGantt extends CustomInternalFrame {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
 
+            parametro.put("pJoinMaquinas", true);
             parametro.put("pFechaInicioEstimada", true);
-            parametro.put("pFechaDesdeEstimada", jDateChooser1.getDate());
-            parametro.put("pFechaHastaEstimada", jDateChooser2.getDate());
 
+            GregorianCalendar gcd = new GregorianCalendar();
+            GregorianCalendar gch = new GregorianCalendar();
+
+            gcd.setTime(jDateChooser1.getDate());
+            gch.setTime(jDateChooser2.getDate());
+
+            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
+            gcd.set(GregorianCalendar.MINUTE, 0);
+            gcd.set(GregorianCalendar.SECOND, 0);
+            
+            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            gch.set(GregorianCalendar.MINUTE, 0);
+            gch.set(GregorianCalendar.SECOND, 0);
+            
+            parametro.put("pFechaDesdeEstimada", gcd.getTime());
+            parametro.put("pFechaHastaEstimada", gch.getTime());
             List<DetalleProduccionT> listaProduccion = DesktopApp.getApplication().getDetalleProduccionT(parametro);
 
-            Gantt demo = new Gantt("Gantt jPack", listaProduccion, jDateChooser1.getDate(), jDateChooser2.getDate());
+            Gantt demo = new Gantt("Gantt jPack", listaProduccion, gcd.getTime(), gch.getTime());
             demo.pack();
 
             RefineryUtilities.centerFrameOnScreen(demo);
@@ -121,6 +117,11 @@ public class ReporteGantt extends CustomInternalFrame {
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteGantt.class);

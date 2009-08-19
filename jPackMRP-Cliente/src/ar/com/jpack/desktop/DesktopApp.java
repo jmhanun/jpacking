@@ -17,7 +17,7 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
-import ar.com.jpack.negocio.DetalleproduccionFacade;
+import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
@@ -28,6 +28,7 @@ import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
@@ -84,6 +85,7 @@ public class DesktopApp extends SingleFrameApplication {
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private ActividadesFacadeRemote actividadesFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
+    private MaquinasFacadeRemote maquinasFacade;
     private TiposDocumentoFacadeRemote tiposDocumentoFacade;
     private DetalleproduccionFacadeRemote detalleProduccionFacade;
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
@@ -449,6 +451,17 @@ public class DesktopApp extends SingleFrameApplication {
             return 0.0;
         }
     }
+    
+    public Boolean getFeriado(Date fecha) {
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            return detalleProduccionFacade.getFeriado(fecha);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 
     /**
      * Obtiene el siguiente numero de remito
@@ -554,6 +567,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             usuariosFacade = (UsuariosFacadeRemote) lookUp("ar.com.jpack.negocio.UsuariosFacadeRemote");
             return usuariosFacade.getUsuariosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<MaquinasT> getMaquinasT(HashMap parametros) {
+        try {
+            maquinasFacade = (MaquinasFacadeRemote) lookUp("ar.com.jpack.negocio.MaquinasFacadeRemote");
+            return maquinasFacade.getMaquinasT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -800,7 +824,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-    
+
     public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
