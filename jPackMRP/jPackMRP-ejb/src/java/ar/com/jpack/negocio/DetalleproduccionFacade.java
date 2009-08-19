@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -119,5 +120,29 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
 
         em.merge(detalleProduccion);
 
+    }
+
+    public Boolean getFeriado(Date fecha) {
+        Boolean feriado = null;
+        
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spferiado(?, ?)}");
+
+            //set inputs
+            java.sql.Date f = new java.sql.Date(fecha.getTime());
+            cs.setDate(1, f);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.BOOLEAN);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            feriado = new Boolean(cs.getBoolean(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return feriado;
     }
 }
