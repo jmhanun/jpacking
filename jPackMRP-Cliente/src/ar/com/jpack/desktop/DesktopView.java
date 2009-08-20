@@ -4,9 +4,10 @@
 package ar.com.jpack.desktop;
 
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.MailsT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.UsuariosT;
-import java.awt.Image;
+import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -26,6 +27,7 @@ import java.util.Iterator;
 import javax.swing.ActionMap;
 import javax.swing.Timer;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -172,8 +174,9 @@ public class DesktopView extends FrameView {
     private JDialog aboutBox;
     ArrayList<RolesT> rolesTs;
     private CustomInternalFrame padre = null;
-    private Timer timer;
-    private Image imagen;
+    private Timer timer1;
+    private Timer timer2;
+    private Timer timer3;
 
     public JDesktopPane getDesktopPanel() {
         return desktopPanel;
@@ -271,7 +274,16 @@ public class DesktopView extends FrameView {
 
         menuBar.removeAll();
         jToolBar.removeAll();
-
+        jToolBar.repaint();
+        if (timer1 != null) {
+            timer1.stop();
+        }
+        if (timer2 != null) {
+            timer2.stop();
+        }
+        if (timer3 != null) {
+            timer3.stop();
+        }
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -337,26 +349,168 @@ public class DesktopView extends FrameView {
             this.getFrame().setTitle("MRP para Envases Pueyrredon SRL");
         }
 
-        timer = new Timer(50000, new ActionListener() {
+        if (usuariosT.getUsuario() != null) {
+            HashMap parametros = null;
+            int delay = 0;
+            ArrayList<MailsT> mails = null;
+            parametros = new HashMap();
+            parametros.put("pDescripcion", "TIMER ALERTA STOCK MINIMO");
+            parametros.put("pGrupoMail", "ALERTA STOCK MINIMO");
+            parametros.put("pIdUsuario", DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario());
+            parametros.put("pJoinGruposMails", true);
+            parametros.put("pJoinUsuarios", true);
+            mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
+            if (!mails.isEmpty()) {
+                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                timer1 = new Timer(delay, new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                ArrayList<RolesT> rolesList = (ArrayList<RolesT>) DesktopApp.getApplication().getUsuarioLogueado().getIdRolCollection();
+                    public void actionPerformed(ActionEvent e) {
 
+                        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
+                        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
 
-                if (rolesList != null) {
-//                    for (RolesT rolesT : rolesList) {
-//                        if (rolesT.getRol().equals("ALERTA COMPRAS")) {
-//                            System.out.println("Se ejecuta la alerta");
-//                        } else {
-//                            System.out.println("NO se ejecuta ninguna alerta");
-//                        }
-//                    }
-                }
+                        Boolean incluido = false;
+                        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+                            Component component = jToolBar.getComponents()[i];
+                            if (component.getName().equals("ALERTASTOCKMINIMO")) {
+                                incluido = true;
+                            }
+                        }
+                        if (!incluido) {
+                            JButton btnAlarma = new JButton();
+                            btnAlarma.setAction(actionMap.get("alertaStockMinimo"));
+                            btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
+                            btnAlarma.setText("");
+                            btnAlarma.setToolTipText("ALERTA STOCK MINIMO");
+                            btnAlarma.setName("ALERTASTOCKMINIMO");
+
+                            jToolBar.add(btnAlarma);
+
+                        }
+                    }
+                });
+                timer1.setRepeats(true);
+                timer1.start();
             }
-        });
-        timer.setRepeats(true);
-        timer.start();
+            parametros = new HashMap();
+            parametros.put("pDescripcion", "TIMER ALERTA INICIO TAREA TARDIO");
+            parametros.put("pGrupoMail", "ALERTA INICIO TAREA TARDIO");
+            parametros.put("pIdUsuario", DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario());
+            parametros.put("pJoinGruposMails", true);
+            parametros.put("pJoinUsuarios", true);
+            mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
+            if (!mails.isEmpty()) {
+                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                timer2 = new Timer(delay, new ActionListener() {
 
+                    public void actionPerformed(ActionEvent e) {
+
+                        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
+                        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+
+                        Boolean incluido = false;
+                        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+                            Component component = jToolBar.getComponents()[i];
+                            if (component.getName().equals("ALERTAINICIOTAREATARDIO")) {
+                                incluido = true;
+                            }
+                        }
+                        if (!incluido) {
+                            JButton btnAlarma = new JButton();
+                            btnAlarma.setAction(actionMap.get("alertaInicioTareaTardio"));
+                            btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
+                            btnAlarma.setText("");
+                            btnAlarma.setToolTipText("ALERTA INICIO TAREA TARDIO");
+                            btnAlarma.setName("ALERTAINICIOTAREATARDIO");
+
+                            jToolBar.add(btnAlarma);
+
+                        }
+                    }
+                });
+                timer2.setRepeats(true);
+                timer2.start();
+            }
+
+            parametros = new HashMap();
+            parametros.put("pDescripcion", "TIMER ALERTA FIN TAREA TARDIO");
+            parametros.put("pGrupoMail", "ALERTA FIN TAREA TARDIO");
+            parametros.put("pIdUsuario", DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario());
+            parametros.put("pJoinGruposMails", true);
+            parametros.put("pJoinUsuarios", true);
+            mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
+            if (!mails.isEmpty()) {
+                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                timer3 = new Timer(delay, new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+
+                        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
+                        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+
+                        Boolean incluido = false;
+                        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+                            Component component = jToolBar.getComponents()[i];
+                            if (component.getName().equals("ALERTAFINTAREATARDIO")) {
+                                incluido = true;
+                            }
+                        }
+                        if (!incluido) {
+                            JButton btnAlarma = new JButton();
+                            btnAlarma.setAction(actionMap.get("alertaFinTareaTardio"));
+                            btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
+                            btnAlarma.setText("");
+                            btnAlarma.setToolTipText("ALERTA FIN TAREA TARDIO");
+                            btnAlarma.setName("ALERTAFINTAREATARDIO");
+
+                            jToolBar.add(btnAlarma);
+
+                        }
+                    }
+                });
+                timer3.setRepeats(true);
+                timer3.start();
+            }
+        }
+    }
+
+    @Action
+    public void alertaStockMinimo() {
+        JOptionPane.showInternalMessageDialog(desktopPanel, "alerta!!! (1)");
+
+        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+            Component component = jToolBar.getComponents()[i];
+            if (component.getName().equals("ALERTASTOCKMINIMO")) {
+                jToolBar.remove(component);
+                jToolBar.repaint();
+            }
+        }
+    }
+
+    @Action
+    public void alertaInicioTareaTardio() {
+        JOptionPane.showInternalMessageDialog(desktopPanel, "alerta!!! (2)");
+
+        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+            Component component = jToolBar.getComponents()[i];
+            if (component.getName().equals("ALERTAINICIOTAREATARDIO")) {
+                jToolBar.remove(component);
+                jToolBar.repaint();
+            }
+        }
+    }
+
+    @Action
+    public void alertaFinTareaTardio() {
+        JOptionPane.showInternalMessageDialog(desktopPanel, "alerta!!! (3)");
+
+        for (int i = 0; i < jToolBar.getComponents().length; i++) {
+            Component component = jToolBar.getComponents()[i];
+            if (component.getName().equals("ALERTAFINTAREATARDIO")) {
+                jToolBar.remove(component);
+                jToolBar.repaint();
+            }
+        }
     }
 
     /**
@@ -423,6 +577,7 @@ public class DesktopView extends FrameView {
         jv.setTitle("Reporte de Usuarios");
         jv.setVisible(true);
     }
+
     @Action
     public void showReporteNivelesTintas() {
         HashMap parametros = new HashMap();

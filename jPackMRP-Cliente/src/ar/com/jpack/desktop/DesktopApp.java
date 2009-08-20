@@ -17,6 +17,7 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
+import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
@@ -28,6 +29,7 @@ import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.MailsT;
 import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.RemitosT;
@@ -81,6 +83,7 @@ public class DesktopApp extends SingleFrameApplication {
     private RolesFacadeRemote rolesFacade;
     private ReportesFacadeRemote reportesFacade;
     private ClientesFacadeRemote clientesFacade;
+    private MailsFacadeRemote mailsFacade;
     private ArticulosFacadeRemote articulosFacade;
     private UnidadesmedidaFacadeRemote unidadesMedidaFacade;
     private ActividadesFacadeRemote actividadesFacade;
@@ -540,6 +543,28 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             actividadesFacade = (ActividadesFacadeRemote) lookUp("ar.com.jpack.negocio.ActividadesFacadeRemote");
             return actividadesFacade.getActividadesArticulosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Mails filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdUsuario</b>  filtra por 'eq' idUsuario (Integer) <br>
+     * <b>pIdGrupoMail</b>    filtra por 'eq' idGrupoMail (Integer) <br>
+     * <b>pGrupoMail</b> filtra por 'like AnyWhere' grupoMail (String) <br>
+     * <b>pJoinGruposMails</b>  obliga a Joinear con GruposMails<br>
+     * <b>pJoinUsuarios</b>  obliga a Joinear con Usuarios<br>
+     * @return devuelve la lista de los Mails que cumplan con el filtro
+     */
+    public List<MailsT> getMailsT(HashMap parametros) {
+        try {
+            mailsFacade = (MailsFacadeRemote) lookUp("ar.com.jpack.negocio.MailsFacadeRemote");
+            return mailsFacade.getMailsT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
