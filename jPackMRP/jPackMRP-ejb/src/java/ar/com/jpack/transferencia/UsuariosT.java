@@ -37,6 +37,7 @@ public class UsuariosT implements Serializable {
     private Collection<NotasDebitoT> notasdebitoCollection;
     private Collection<OrdenesDepositoT> ordenesdepositoCollection;
     private Collection<PreciosT> preciosCollection;
+    private Collection<MailsT> mailsCollection;
     private EstadosT idEstado;
 
     public UsuariosT() {
@@ -52,6 +53,14 @@ public class UsuariosT implements Serializable {
         this.mails = mails;
         this.telefonos = telefonos;
         this.idEstado = idEstado;
+    }
+
+    public Collection<MailsT> getMailsCollection() {
+        return mailsCollection;
+    }
+
+    public void setMailsCollection(Collection<MailsT> mailsCollection) {
+        this.mailsCollection = mailsCollection;
     }
 
     public Collection<AjustesStockT> getAjustesstockCollection() {

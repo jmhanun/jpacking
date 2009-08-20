@@ -80,10 +80,10 @@ public class SetupFacade implements SetupFacadeRemote {
             setupCritearia.add(Restrictions.eq("fechaModificacion", parametros.get("pFechaModificacion").toString()));
         }
         if (parametros.containsKey("pJoinUsuarios")) {
-            setupCritearia.setFetchMode("idUsuarioCollection", FetchMode.JOIN);
+            setupCritearia.setFetchMode("idUsuario", FetchMode.JOIN);
             if (parametros.containsKey("pIdUsuario")) {
                 //Con esto filtro por el objeto que estaba lazy
-                Criteria usuarioCriteria = setupCritearia.createCriteria("idUsuarioCollection");
+                Criteria usuarioCriteria = setupCritearia.createCriteria("idUsuario");
                 usuarioCriteria.add(Restrictions.eq("idUsuario", parametros.get("pIdUsuario")));
             }
         }

@@ -26,7 +26,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "articulos")
 public class Articulos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idArticulo", nullable = false)

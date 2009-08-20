@@ -1,7 +1,6 @@
 /*
  * Usuarios.java
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -32,7 +31,7 @@ import javax.persistence.TemporalType;
 public class Usuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue (strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idUsuario", nullable = false)
     private Integer idUsuario;
     @Column(name = "usuario", nullable = false)
@@ -55,6 +54,8 @@ public class Usuarios implements Serializable {
     private Collection<Roles> idRolCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Ordenesproduccion> ordenesproduccionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
+    private Collection<Mails> mailsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private Collection<Articulos> articulosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
@@ -172,6 +173,14 @@ public class Usuarios implements Serializable {
 
     public void setIdRolCollection(Collection<Roles> idRolCollection) {
         this.idRolCollection = idRolCollection;
+    }
+
+    public Collection<Mails> getMailsCollection() {
+        return mailsCollection;
+    }
+
+    public void setMailsCollection(Collection<Mails> mailsCollection) {
+        this.mailsCollection = mailsCollection;
     }
 
     public Collection<Ordenesproduccion> getOrdenesproduccionCollection() {
@@ -326,5 +335,4 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Usuarios[idUsuario=" + idUsuario + "]";
     }
-
 }
