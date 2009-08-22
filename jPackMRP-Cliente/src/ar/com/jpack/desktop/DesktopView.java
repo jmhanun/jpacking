@@ -663,6 +663,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteDesvios() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProduccionDesvio", "Carga de parametros para el reporte de Desvíos", padre);
+    }
+
+    @Action
     public Task showReporteDesviosFin() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioFin", "Carga de parametros para el reporte de Desfasajes", padre);
     }
