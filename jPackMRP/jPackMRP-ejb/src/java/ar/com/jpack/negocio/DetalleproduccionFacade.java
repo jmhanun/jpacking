@@ -42,6 +42,21 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * Obtiene la lista de DetalleProduccion filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdDetalleProduccion</b>  filtra por 'eq' idStock (Integer) <br>
+     * <b>pFechaInicioEstimadaLT</b>  filtra por 'lt' fechaInicioEstimada (Date) <br>
+     * <b>pFechaFinEstimadaGT</b>  filtra por 'gt' pFechaFinEstimada (Date) <br>
+     * <b>pFechaInicioEstimada</b>  filtra por 'between' fechaInicioEstimada (Date) <br>
+     * <b>pFechaDesdeEstimada</b> ; <b>pFechaHastaEstimada</b> <br>
+     * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
+     * <b>pJoinMaquinas</b> obliga a Joinear con Maquinas<br>
+     * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinOrdenes</b>  obliga a Joinear con Detalle de Ordenes de Produccion<br>
+     * @return devuelve la lista de los DetalleProduccion que cumplan con el filtro
+     */
     public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros) {
         List<Detalleproduccion> detallesList = getDetalleProduccion(parametros);
         List<DetalleProduccionT> detallesTList = new ArrayList();
@@ -52,15 +67,23 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         return detallesTList;
     }
 
+    /**
+     * Obtiene la lista de DetalleProduccion filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdDetalleProduccion</b>  filtra por 'eq' idStock (Integer) <br>
+     * <b>pFechaInicioEstimadaLT</b>  filtra por 'lt' fechaInicioEstimada (Date) <br>
+     * <b>pFechaFinEstimadaGT</b>  filtra por 'gt' pFechaFinEstimada (Date) <br>
+     * <b>pFechaInicioEstimada</b>  filtra por 'between' fechaInicioEstimada (Date) <br>
+     * <b>pFechaDesdeEstimada</b> ; <b>pFechaHastaEstimada</b> <br>
+     * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
+     * <b>pJoinMaquinas</b> obliga a Joinear con Maquinas<br>
+     * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinOrdenes</b>  obliga a Joinear con Detalle de Ordenes de Produccion<br>
+     * @return devuelve la lista de los DetalleProduccion que cumplan con el filtro
+     */
     public List<Detalleproduccion> getDetalleProduccion(HashMap parametros) {
         Criteria detalleProduccionCriteria = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Detalleproduccion.class);
-
-
-
-
-
-
-
         List<Detalleproduccion> detallesList;
 
         if (parametros.containsKey("pIdDetalleProduccion")) {
@@ -70,11 +93,22 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         if (parametros.containsKey("pFechaInicioEstimada")) {
             detalleProduccionCriteria.add(Restrictions.between("fechaInicioEstimada", parametros.get("pFechaDesdeEstimada"), parametros.get("pFechaHastaEstimada")));
         }
+        if (parametros.containsKey("pFechaInicioEstimadaLT")) {
+            detalleProduccionCriteria.add(Restrictions.lt("fechaInicioEstimada", parametros.get("pFechaInicioEstimadaLT")));
+        }
+        if (parametros.containsKey("pFechaFinEstimadaGT")) {
+            detalleProduccionCriteria.add(Restrictions.gt("fechaFinEstimada", parametros.get("pFechaFinEstimadaGT")));
+        }
         if (parametros.containsKey("pJoinMaquinas")) {
             detalleProduccionCriteria.setFetchMode("idMaquina", FetchMode.JOIN);
         }
         if (parametros.containsKey("pJoinEstados")) {
             detalleProduccionCriteria.setFetchMode("idEstado", FetchMode.JOIN);
+            if (parametros.containsKey("pIdEstado")) {
+                //Con esto filtro por el objeto que estaba lazy
+                Criteria estadoCriteria = detalleProduccionCriteria.createCriteria("idEstado");
+                estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+            }
         }
         if (parametros.containsKey("pJoinOrdenes")) {
             detalleProduccionCriteria.setFetchMode("detordenesproduccion", FetchMode.JOIN);
@@ -124,7 +158,7 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
 
     public Boolean getFeriado(Date fecha) {
         Boolean feriado = null;
-        
+
         try {
             Connection conn = jdbcRemotedbjPack.getConnection();
 
