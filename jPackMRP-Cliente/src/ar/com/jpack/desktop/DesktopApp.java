@@ -20,6 +20,7 @@ import ar.com.jpack.negocio.ActividadesFacadeRemote;
 import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
+import ar.com.jpack.negocio.StockFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
@@ -35,6 +36,7 @@ import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SetupT;
+import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
@@ -89,6 +91,7 @@ public class DesktopApp extends SingleFrameApplication {
     private ActividadesFacadeRemote actividadesFacade;
     private TiposIvaFacadeRemote tiposIvaFacade;
     private MaquinasFacadeRemote maquinasFacade;
+    private StockFacadeRemote stockFacade;
     private TiposDocumentoFacadeRemote tiposDocumentoFacade;
     private DetalleproduccionFacadeRemote detalleProduccionFacade;
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
@@ -454,7 +457,7 @@ public class DesktopApp extends SingleFrameApplication {
             return 0.0;
         }
     }
-    
+
     public Boolean getFeriado(Date fecha) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
@@ -629,6 +632,25 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     /**
+     * Obtiene la lista de Stock filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdStock</b>  filtra por 'eq' idStock (Integer) <br>
+     * <b>pJoinArticulos</b>  obliga a Joinear con Articulos<br>
+     * @return devuelve la lista de los Mails que cumplan con el filtro
+     */
+    List<StockT> getStockT(HashMap parametros) {
+        try {
+            stockFacade = (StockFacadeRemote) lookUp("ar.com.jpack.negocio.StockFacadeRemote");
+            return stockFacade.getStockT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
      * Obtiene la lista de Articulos filtrados por el Hasmap
      * @param parametros <br>
      * Lista de parametros: <br>
@@ -763,6 +785,21 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    /**
+     * Obtiene la lista de DetalleProduccion filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdDetalleProduccion</b>  filtra por 'eq' idStock (Integer) <br>
+     * <b>pFechaInicioEstimadaLT</b>  filtra por 'lt' fechaInicioEstimada (Date) <br>
+     * <b>pFechaFinEstimadaGT</b>  filtra por 'gt' pFechaFinEstimada (Date) <br>
+     * <b>pFechaInicioEstimada</b>  filtra por 'between' fechaInicioEstimada (Date) <br>
+     * <b>pFechaDesdeEstimada</b> ; <b>pFechaHastaEstimada</b> <br>
+     * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
+     * <b>pJoinMaquinas</b> obliga a Joinear con Maquinas<br>
+     * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinOrdenes</b>  obliga a Joinear con Detalle de Ordenes de Produccion<br>
+     * @return devuelve la lista de los DetalleProduccion que cumplan con el filtro
+     */
     public List<DetalleProduccionT> getDetalleProduccionT(HashMap parametros) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
