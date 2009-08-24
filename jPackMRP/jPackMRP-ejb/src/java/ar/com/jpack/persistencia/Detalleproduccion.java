@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +30,7 @@ import javax.persistence.TemporalType;
 @Table(name = "detalleproduccion")
 @NamedQueries({@NamedQuery(name = "Detalleproduccion.findByIdDetalleProduccion", query = "SELECT d FROM Detalleproduccion d WHERE d.idDetalleProduccion = :idDetalleProduccion"), @NamedQuery(name = "Detalleproduccion.findByPrioridad", query = "SELECT d FROM Detalleproduccion d WHERE d.prioridad = :prioridad"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioEstimada = :fechaInicioEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaFinEstimada", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinEstimada = :fechaFinEstimada"), @NamedQuery(name = "Detalleproduccion.findByFechaInicioProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaInicioProceso = :fechaInicioProceso"), @NamedQuery(name = "Detalleproduccion.findByFechaFinProceso", query = "SELECT d FROM Detalleproduccion d WHERE d.fechaFinProceso = :fechaFinProceso")})
 public class Detalleproduccion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idDetalleProduccion", nullable = false)
@@ -55,6 +58,8 @@ public class Detalleproduccion implements Serializable {
     @JoinColumns({@JoinColumn(name = "idDetOrdProduccion", referencedColumnName = "idDetOrdProduccion", insertable = false, updatable = false), @JoinColumn(name = "idOrdenProduccion", referencedColumnName = "idOrdenProduccion", insertable = false, updatable = false)})
     @ManyToOne(fetch = FetchType.LAZY)
     private Detordenesproduccion detordenesproduccion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddetalleproduccion", fetch = FetchType.LAZY)
+    private Collection<Desvios> desviosCollection;
 
     public Detalleproduccion() {
     }
@@ -142,6 +147,14 @@ public class Detalleproduccion implements Serializable {
         this.detordenesproduccion = detordenesproduccion;
     }
 
+    public Collection<Desvios> getDesviosCollection() {
+        return desviosCollection;
+    }
+
+    public void setDesviosCollection(Collection<Desvios> desviosCollection) {
+        this.desviosCollection = desviosCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -166,5 +179,4 @@ public class Detalleproduccion implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Detalleproduccion[idDetalleProduccion=" + idDetalleProduccion + "]";
     }
-
 }

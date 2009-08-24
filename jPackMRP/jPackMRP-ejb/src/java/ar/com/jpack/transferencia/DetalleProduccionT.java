@@ -5,6 +5,7 @@
 package ar.com.jpack.transferencia;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -22,6 +23,7 @@ public class DetalleProduccionT implements Serializable {
     private EstadosT idEstado;
     private MaquinasT idMaquina;
     private DetOrdenesProduccionT detordenesproduccion;
+    private Collection<DesviosT> desviosCollection;
 
     public DetalleProduccionT() {
     }
@@ -109,4 +111,13 @@ public class DetalleProduccionT implements Serializable {
     public void setPrioridad(int prioridad) {
         this.prioridad = prioridad;
     }
+
+    public Collection<DesviosT> getDesviosCollection() {
+        return desviosCollection;
+    }
+
+    public void setDesviosCollection(Collection<DesviosT> desviosCollection) {
+        this.desviosCollection = desviosCollection;
+    }
+    
 }

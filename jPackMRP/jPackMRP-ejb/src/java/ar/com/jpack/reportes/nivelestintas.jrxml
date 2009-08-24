@@ -199,7 +199,7 @@ ORDER BY
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<bar3DChart>
-				<chart>
+				<chart hyperlinkType="None" renderType="image">
 					<reportElement x="56" y="13" width="453" height="256"/>
 					<chartTitle position="Left">
 						<titleExpression><![CDATA[$F{unidadesmedida_descripcion}]]></titleExpression>
@@ -213,7 +213,7 @@ ORDER BY
 						<categoryExpression><![CDATA[$F{articulos_descripcion}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{stock_cantidad}]]></valueExpression>
 						<labelExpression><![CDATA[$F{unidadesmedida_descripcion}]]></labelExpression>
-						<itemHyperlink/>
+						<itemHyperlink hyperlinkType="None"/>
 					</categorySeries>
 				</categoryDataset>
 				<bar3DPlot isShowLabels="true">

@@ -265,26 +265,56 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     </target>
     <target depends="compile" name="library-inclusion-in-archive">
         <copy file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.18}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.17}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.16}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.15}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.14}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.13}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.12}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.11}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.10}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.9}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.8}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.7}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.6}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.5}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.4}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.3}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.2}" todir="${build.classes.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.1}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.antlr-2.7.6.jar}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.commons-collections-3.1.jar}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.48}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.47}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.46}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.45}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.44}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.43}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.42}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.41}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.40}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.39}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.38}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.37}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.36}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.35}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.34}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.33}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.32}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.31}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.30}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.29}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.28}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.27}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.26}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.25}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.24}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.23}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.22}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.21}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.20}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.19}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.18}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.17}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.16}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.15}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.14}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.13}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.12}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.11}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.10}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.9}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.8}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.7}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.6}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.5}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.4}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.3}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.2}" todir="${build.classes.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.1}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.dom4j.jar}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.ejb3-persistence.jar}" todir="${build.classes.dir}"/>
         <copy file="${file.reference.hibernate-annotations.jar}" todir="${build.classes.dir}"/>
@@ -302,46 +332,106 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
     <target depends="compile" name="library-inclusion-in-manifest">
         <basename file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" property="included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar"/>
         <copy file="${file.reference.mysql-connector-java-5.1.6-bin.jar}" todir="${dist.ear.dir}"/>
-        <basename file="${libs.JasperReport.classpath.libfile.18}" property="included.lib.libs.JasperReport.classpath.18"/>
-        <basename file="${libs.JasperReport.classpath.libfile.17}" property="included.lib.libs.JasperReport.classpath.17"/>
-        <basename file="${libs.JasperReport.classpath.libfile.16}" property="included.lib.libs.JasperReport.classpath.16"/>
-        <basename file="${libs.JasperReport.classpath.libfile.15}" property="included.lib.libs.JasperReport.classpath.15"/>
-        <basename file="${libs.JasperReport.classpath.libfile.14}" property="included.lib.libs.JasperReport.classpath.14"/>
-        <basename file="${libs.JasperReport.classpath.libfile.13}" property="included.lib.libs.JasperReport.classpath.13"/>
-        <basename file="${libs.JasperReport.classpath.libfile.12}" property="included.lib.libs.JasperReport.classpath.12"/>
-        <basename file="${libs.JasperReport.classpath.libfile.11}" property="included.lib.libs.JasperReport.classpath.11"/>
-        <basename file="${libs.JasperReport.classpath.libfile.10}" property="included.lib.libs.JasperReport.classpath.10"/>
-        <basename file="${libs.JasperReport.classpath.libfile.9}" property="included.lib.libs.JasperReport.classpath.9"/>
-        <basename file="${libs.JasperReport.classpath.libfile.8}" property="included.lib.libs.JasperReport.classpath.8"/>
-        <basename file="${libs.JasperReport.classpath.libfile.7}" property="included.lib.libs.JasperReport.classpath.7"/>
-        <basename file="${libs.JasperReport.classpath.libfile.6}" property="included.lib.libs.JasperReport.classpath.6"/>
-        <basename file="${libs.JasperReport.classpath.libfile.5}" property="included.lib.libs.JasperReport.classpath.5"/>
-        <basename file="${libs.JasperReport.classpath.libfile.4}" property="included.lib.libs.JasperReport.classpath.4"/>
-        <basename file="${libs.JasperReport.classpath.libfile.3}" property="included.lib.libs.JasperReport.classpath.3"/>
-        <basename file="${libs.JasperReport.classpath.libfile.2}" property="included.lib.libs.JasperReport.classpath.2"/>
-        <basename file="${libs.JasperReport.classpath.libfile.1}" property="included.lib.libs.JasperReport.classpath.1"/>
-        <copy file="${libs.JasperReport.classpath.libfile.18}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.17}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.16}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.15}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.14}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.13}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.12}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.11}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.10}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.9}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.8}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.7}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.6}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.5}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.4}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.3}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.2}" todir="${dist.ear.dir}"/>
-        <copy file="${libs.JasperReport.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <basename file="${file.reference.antlr-2.7.6.jar}" property="included.lib.file.reference.antlr-2.7.6.jar"/>
         <copy file="${file.reference.antlr-2.7.6.jar}" todir="${dist.ear.dir}"/>
         <basename file="${file.reference.commons-collections-3.1.jar}" property="included.lib.file.reference.commons-collections-3.1.jar"/>
         <copy file="${file.reference.commons-collections-3.1.jar}" todir="${dist.ear.dir}"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.48}" property="included.lib.libs.JasperJulian.classpath.48"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.47}" property="included.lib.libs.JasperJulian.classpath.47"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.46}" property="included.lib.libs.JasperJulian.classpath.46"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.45}" property="included.lib.libs.JasperJulian.classpath.45"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.44}" property="included.lib.libs.JasperJulian.classpath.44"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.43}" property="included.lib.libs.JasperJulian.classpath.43"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.42}" property="included.lib.libs.JasperJulian.classpath.42"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.41}" property="included.lib.libs.JasperJulian.classpath.41"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.40}" property="included.lib.libs.JasperJulian.classpath.40"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.39}" property="included.lib.libs.JasperJulian.classpath.39"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.38}" property="included.lib.libs.JasperJulian.classpath.38"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.37}" property="included.lib.libs.JasperJulian.classpath.37"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.36}" property="included.lib.libs.JasperJulian.classpath.36"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.35}" property="included.lib.libs.JasperJulian.classpath.35"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.34}" property="included.lib.libs.JasperJulian.classpath.34"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.33}" property="included.lib.libs.JasperJulian.classpath.33"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.32}" property="included.lib.libs.JasperJulian.classpath.32"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.31}" property="included.lib.libs.JasperJulian.classpath.31"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.30}" property="included.lib.libs.JasperJulian.classpath.30"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.29}" property="included.lib.libs.JasperJulian.classpath.29"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.28}" property="included.lib.libs.JasperJulian.classpath.28"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.27}" property="included.lib.libs.JasperJulian.classpath.27"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.26}" property="included.lib.libs.JasperJulian.classpath.26"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.25}" property="included.lib.libs.JasperJulian.classpath.25"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.24}" property="included.lib.libs.JasperJulian.classpath.24"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.23}" property="included.lib.libs.JasperJulian.classpath.23"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.22}" property="included.lib.libs.JasperJulian.classpath.22"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.21}" property="included.lib.libs.JasperJulian.classpath.21"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.20}" property="included.lib.libs.JasperJulian.classpath.20"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.19}" property="included.lib.libs.JasperJulian.classpath.19"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.18}" property="included.lib.libs.JasperJulian.classpath.18"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.17}" property="included.lib.libs.JasperJulian.classpath.17"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.16}" property="included.lib.libs.JasperJulian.classpath.16"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.15}" property="included.lib.libs.JasperJulian.classpath.15"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.14}" property="included.lib.libs.JasperJulian.classpath.14"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.13}" property="included.lib.libs.JasperJulian.classpath.13"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.12}" property="included.lib.libs.JasperJulian.classpath.12"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.11}" property="included.lib.libs.JasperJulian.classpath.11"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.10}" property="included.lib.libs.JasperJulian.classpath.10"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.9}" property="included.lib.libs.JasperJulian.classpath.9"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.8}" property="included.lib.libs.JasperJulian.classpath.8"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.7}" property="included.lib.libs.JasperJulian.classpath.7"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.6}" property="included.lib.libs.JasperJulian.classpath.6"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.5}" property="included.lib.libs.JasperJulian.classpath.5"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.4}" property="included.lib.libs.JasperJulian.classpath.4"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.3}" property="included.lib.libs.JasperJulian.classpath.3"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.2}" property="included.lib.libs.JasperJulian.classpath.2"/>
+        <basename file="${libs.JasperJulian.classpath.libfile.1}" property="included.lib.libs.JasperJulian.classpath.1"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.48}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.47}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.46}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.45}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.44}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.43}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.42}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.41}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.40}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.39}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.38}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.37}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.36}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.35}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.34}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.33}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.32}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.31}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.30}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.29}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.28}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.27}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.26}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.25}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.24}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.23}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.22}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.21}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.20}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.19}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.18}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.17}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.16}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.15}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.14}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.13}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.12}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.11}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.10}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.9}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.8}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.7}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.6}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.5}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.4}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.3}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.2}" todir="${dist.ear.dir}"/>
+        <copy file="${libs.JasperJulian.classpath.libfile.1}" todir="${dist.ear.dir}"/>
         <basename file="${file.reference.dom4j.jar}" property="included.lib.file.reference.dom4j.jar"/>
         <copy file="${file.reference.dom4j.jar}" todir="${dist.ear.dir}"/>
         <basename file="${file.reference.ejb3-persistence.jar}" property="included.lib.file.reference.ejb3-persistence.jar"/>
@@ -369,7 +459,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <basename file="${file.reference.commons-lang-2.4.jar}" property="included.lib.file.reference.commons-lang-2.4.jar"/>
         <copy file="${file.reference.commons-lang-2.4.jar}" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} ${included.lib.libs.JasperReport.classpath.1} ${included.lib.libs.JasperReport.classpath.2} ${included.lib.libs.JasperReport.classpath.3} ${included.lib.libs.JasperReport.classpath.4} ${included.lib.libs.JasperReport.classpath.5} ${included.lib.libs.JasperReport.classpath.6} ${included.lib.libs.JasperReport.classpath.7} ${included.lib.libs.JasperReport.classpath.8} ${included.lib.libs.JasperReport.classpath.9} ${included.lib.libs.JasperReport.classpath.10} ${included.lib.libs.JasperReport.classpath.11} ${included.lib.libs.JasperReport.classpath.12} ${included.lib.libs.JasperReport.classpath.13} ${included.lib.libs.JasperReport.classpath.14} ${included.lib.libs.JasperReport.classpath.15} ${included.lib.libs.JasperReport.classpath.16} ${included.lib.libs.JasperReport.classpath.17} ${included.lib.libs.JasperReport.classpath.18} ${included.lib.file.reference.antlr-2.7.6.jar} ${included.lib.file.reference.commons-collections-3.1.jar} ${included.lib.file.reference.dom4j.jar} ${included.lib.file.reference.ejb3-persistence.jar} ${included.lib.file.reference.hibernate-annotations.jar} ${included.lib.file.reference.hibernate-commons-annotations.jar} ${included.lib.file.reference.hibernate-core.jar} ${included.lib.file.reference.hibernate-entitymanager.jar} ${included.lib.file.reference.javassist.jar} ${included.lib.file.reference.jta.jar} ${included.lib.file.reference.log4j-1.2.15.jar} ${included.lib.file.reference.slf4j-api-1.5.3.jar} ${included.lib.file.reference.slf4j-log4j12-1.5.3.jar} ${included.lib.file.reference.dozer-4.4.jar} ${included.lib.file.reference.commons-lang-2.4.jar} "/>
+            <attribute name="Class-Path" value="${included.lib.file.reference.mysql-connector-java-5.1.6-bin.jar} ${included.lib.file.reference.antlr-2.7.6.jar} ${included.lib.file.reference.commons-collections-3.1.jar} ${included.lib.libs.JasperJulian.classpath.1} ${included.lib.libs.JasperJulian.classpath.2} ${included.lib.libs.JasperJulian.classpath.3} ${included.lib.libs.JasperJulian.classpath.4} ${included.lib.libs.JasperJulian.classpath.5} ${included.lib.libs.JasperJulian.classpath.6} ${included.lib.libs.JasperJulian.classpath.7} ${included.lib.libs.JasperJulian.classpath.8} ${included.lib.libs.JasperJulian.classpath.9} ${included.lib.libs.JasperJulian.classpath.10} ${included.lib.libs.JasperJulian.classpath.11} ${included.lib.libs.JasperJulian.classpath.12} ${included.lib.libs.JasperJulian.classpath.13} ${included.lib.libs.JasperJulian.classpath.14} ${included.lib.libs.JasperJulian.classpath.15} ${included.lib.libs.JasperJulian.classpath.16} ${included.lib.libs.JasperJulian.classpath.17} ${included.lib.libs.JasperJulian.classpath.18} ${included.lib.libs.JasperJulian.classpath.19} ${included.lib.libs.JasperJulian.classpath.20} ${included.lib.libs.JasperJulian.classpath.21} ${included.lib.libs.JasperJulian.classpath.22} ${included.lib.libs.JasperJulian.classpath.23} ${included.lib.libs.JasperJulian.classpath.24} ${included.lib.libs.JasperJulian.classpath.25} ${included.lib.libs.JasperJulian.classpath.26} ${included.lib.libs.JasperJulian.classpath.27} ${included.lib.libs.JasperJulian.classpath.28} ${included.lib.libs.JasperJulian.classpath.29} ${included.lib.libs.JasperJulian.classpath.30} ${included.lib.libs.JasperJulian.classpath.31} ${included.lib.libs.JasperJulian.classpath.32} ${included.lib.libs.JasperJulian.classpath.33} ${included.lib.libs.JasperJulian.classpath.34} ${included.lib.libs.JasperJulian.classpath.35} ${included.lib.libs.JasperJulian.classpath.36} ${included.lib.libs.JasperJulian.classpath.37} ${included.lib.libs.JasperJulian.classpath.38} ${included.lib.libs.JasperJulian.classpath.39} ${included.lib.libs.JasperJulian.classpath.40} ${included.lib.libs.JasperJulian.classpath.41} ${included.lib.libs.JasperJulian.classpath.42} ${included.lib.libs.JasperJulian.classpath.43} ${included.lib.libs.JasperJulian.classpath.44} ${included.lib.libs.JasperJulian.classpath.45} ${included.lib.libs.JasperJulian.classpath.46} ${included.lib.libs.JasperJulian.classpath.47} ${included.lib.libs.JasperJulian.classpath.48} ${included.lib.file.reference.dom4j.jar} ${included.lib.file.reference.ejb3-persistence.jar} ${included.lib.file.reference.hibernate-annotations.jar} ${included.lib.file.reference.hibernate-commons-annotations.jar} ${included.lib.file.reference.hibernate-core.jar} ${included.lib.file.reference.hibernate-entitymanager.jar} ${included.lib.file.reference.javassist.jar} ${included.lib.file.reference.jta.jar} ${included.lib.file.reference.log4j-1.2.15.jar} ${included.lib.file.reference.slf4j-api-1.5.3.jar} ${included.lib.file.reference.slf4j-log4j12-1.5.3.jar} ${included.lib.file.reference.dozer-4.4.jar} ${included.lib.file.reference.commons-lang-2.4.jar} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
