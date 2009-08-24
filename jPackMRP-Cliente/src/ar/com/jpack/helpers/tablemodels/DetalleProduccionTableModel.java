@@ -23,11 +23,14 @@ public class DetalleProduccionTableModel extends CustomTableModel {
     public static final int MAQUINA_INDEX = 2;
     public static final int PRIORIDAD_INDEX = 3;
     public static final int ESTADO_INDEX = 4;
-    public static final int FECHAINICIOEST_INDEX = 5;
-    public static final int FECHAFINEST_INDEX = 6;
-    public static final int FECHAINICIO_INDEX = 7;
-    public static final int FECHAFIN_INDEX = 8;
-    public static final int PROGRESO_INDEX = 9;
+    public static final int ARTICULO_INDEX = 5;
+    public static final int CANTIDAD_INDEX = 6;
+    public static final int MEDIDA_INDEX = 7;
+    public static final int FECHAINICIOEST_INDEX = 8;
+    public static final int FECHAFINEST_INDEX = 9;
+    public static final int FECHAINICIO_INDEX = 10;
+    public static final int FECHAFIN_INDEX = 11;
+    public static final int PROGRESO_INDEX = 12;
 
     public DetalleProduccionTableModel(String[] columnNames, List<DetalleProduccionT> datos) {
         super(columnNames, datos);
@@ -41,15 +44,6 @@ public class DetalleProduccionTableModel extends CustomTableModel {
             case ID_INDEX:
                 return record.getIdDetalleProduccion();
             case NUMEROORDEN_INDEX:
-//                if (record.getDetordenesproduccion() == null) {
-//                    return "";
-//                } else {
-//                    if (record.getDetordenesproduccion().getOrdenesproduccion() == null) {
-//                        return "";
-//                    } else {
-//                        return record.getDetordenesproduccion().getOrdenesproduccion().getNroOrdenProduccion();
-//                    }
-//                }
                 if (record.getDetordenesproduccion() == null) {
                     return "";
                 } else {
@@ -57,8 +51,8 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                     HashMap parametros = new HashMap();
                     parametros.put("pIdOrdenProduccion", record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion());
                     return DesktopApp.getApplication().getOrdenesProduccionT(parametros).get(0).getNroOrdenProduccion();
-                    
-                    
+
+
 //                    return record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion();
                 }
             case MAQUINA_INDEX:
@@ -74,6 +68,32 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                     return "";
                 } else {
                     return record.getIdEstado().getDescripcion();
+                }
+            case ARTICULO_INDEX:
+                if (record.getDetordenesproduccion() == null) {
+                    return "";
+                } else {
+                    if (record.getDetordenesproduccion().getIdArticulo() == null) {
+                        return "";
+                    } else {
+                        return record.getDetordenesproduccion().getIdArticulo().getDescripcion();
+                    }
+                }
+            case CANTIDAD_INDEX:
+                if (record.getDetordenesproduccion() == null) {
+                    return 0;
+                } else {
+                    return record.getDetordenesproduccion().getCantidad();
+                }
+            case MEDIDA_INDEX:
+                if (record.getDetordenesproduccion() == null) {
+                    return "";
+                } else {
+                    if (record.getDetordenesproduccion().getIdUnidMedida() == null) {
+                        return "";
+                    } else {
+                        return record.getDetordenesproduccion().getIdUnidMedida().getAbreviatura();
+                    }
                 }
             case FECHAINICIOEST_INDEX:
                 if (record.getFechaInicioEstimada() == null) {

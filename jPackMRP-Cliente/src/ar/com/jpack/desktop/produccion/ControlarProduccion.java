@@ -25,7 +25,6 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
-import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -41,7 +40,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
 
         setModificado(false);
         setNuevo(false);
-
 
         timer = new Timer(60000, new ActionListener() {
 
@@ -135,12 +133,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
         }
-
-//        final Gantt demo = new Gantt("Gantt Chart Demo desde jPack");
-//        demo.pack();
-//        RefineryUtilities.centerFrameOnScreen(demo);
-//        demo.setVisible(true);
-
     }
 
     @Action
@@ -156,6 +148,8 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
     public void refresh() {
         HashMap parametros = new HashMap();
         parametros.put("pJoinMaquinas", true);
+        parametros.put("pJoinArticulos", true);
+        parametros.put("pJoinUnidadesMedidas", true);
         parametros.put("pJoinEstados", true);
         parametros.put("pJoinOrdenes", true);
         setListDto((ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros));
@@ -195,7 +189,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         btnIniciar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -256,8 +250,8 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
         btnCancelar.setName("btnCancelar"); // NOI18N
 
-        jButton1.setAction(actionMap.get("refresh")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        btnActualizar.setAction(actionMap.get("refresh")); // NOI18N
+        btnActualizar.setName("btnActualizar"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -279,16 +273,16 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                         .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIniciar)
@@ -317,6 +311,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 
 }//GEN-LAST:event_formInternalFrameClosing
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDeshabilitar;
     private javax.swing.JButton btnFinalizar;
@@ -324,11 +319,11 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSuspender;
     private javax.swing.JTable detalleProduccionTable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
         "Id", "Orden", "Maquina", "Prioridad", "Estado",
+        "Articulo", "Cantidad",
         "Fecha Inicio Estimada", "Fecha Fin Estimada",
         "Fecha Inicio Real", "Fecha Fin Real",
         "Progreso"

@@ -929,8 +929,10 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public JasperPrint getReporte(String nombreReporte, HashMap parametro) {
         try {
+            JasperPrint retorno=null;
             reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
-            return reportesFacade.getReporte(nombreReporte, parametro);
+            retorno=reportesFacade.getReporte(nombreReporte, parametro);
+            return retorno;
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
