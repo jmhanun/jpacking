@@ -54,6 +54,7 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
      * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
      * <b>pJoinMaquinas</b> obliga a Joinear con Maquinas<br>
      * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinArticulos</b>  obliga a Joinear con pJoinArticulos<br>
      * <b>pJoinOrdenes</b>  obliga a Joinear con Detalle de Ordenes de Produccion<br>
      * @return devuelve la lista de los DetalleProduccion que cumplan con el filtro
      */
@@ -80,7 +81,6 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
      * <b>pJoinMaquinas</b> obliga a Joinear con Maquinas<br>
      * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
      * <b>pJoinArticulos</b>  obliga a Joinear con pJoinArticulos<br>
-     * <b>pJoinUnidadesMedidas</b>  obliga a Joinear con UnidadesMedidas<br>
      * <b>pJoinOrdenes</b>  obliga a Joinear con Detalle de Ordenes de Produccion<br>
      * @return devuelve la lista de los DetalleProduccion que cumplan con el filtro
      */
@@ -117,11 +117,6 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
             if (parametros.containsKey("pJoinArticulos")) {
                 Criteria articuloCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
                 articuloCriteria.setFetchMode("idArticulo", FetchMode.JOIN);
-
-            }
-            if (parametros.containsKey("pJoinUnidadesMedidas")) {
-                Criteria medidaCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
-                medidaCriteria.setFetchMode("idUnidMedida", FetchMode.JOIN);
 
             }
         }
