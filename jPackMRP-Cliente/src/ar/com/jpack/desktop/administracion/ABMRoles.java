@@ -520,7 +520,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 private void rolesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rolesTableMouseClicked
 
     //para el caso en que se navegue la tabla con el mouse
-    setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
+    setDto((RolesT) tableModel.getRow(sorter.convertRowIndexToModel(rolesTable.getSelectedRow())));
     cambiarRolT();
     if (evt.getClickCount() == 2) {
         this.jTabbedPane1.setSelectedIndex(1);
@@ -532,7 +532,7 @@ private void rolesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 private void rolesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rolesTableKeyReleased
 
     //para el caso en que se navegue la tabla con las flechas
-    setDto((RolesT) tableModel.getRow(rolesTable.getSelectedRow()));
+    setDto((RolesT) tableModel.getRow(sorter.convertRowIndexToModel(rolesTable.getSelectedRow())));
     cambiarRolT();
 
 }//GEN-LAST:event_rolesTableKeyReleased

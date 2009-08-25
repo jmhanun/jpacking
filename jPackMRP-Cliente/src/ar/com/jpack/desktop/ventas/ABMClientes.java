@@ -360,7 +360,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
 
     //para el caso en que se navegue la tabla con el mouse
-    setDto((ClientesT) tableModel.getRow(tblClientes.getSelectedRow()));
+    setDto((ClientesT) tableModel.getRow(sorter.convertRowIndexToModel(tblClientes.getSelectedRow())));
     cambiarClienteT();
     if (evt.getClickCount() == 2) {
         this.jTabbedPane1.setSelectedIndex(1);
@@ -371,7 +371,7 @@ private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 private void tblClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblClientesKeyReleased
 
     //para el caso en que se navegue la tabla con las flechas
-    setDto((ClientesT) tableModel.getRow(tblClientes.getSelectedRow()));
+    setDto((ClientesT) tableModel.getRow(sorter.convertRowIndexToModel(tblClientes.getSelectedRow())));
     cambiarClienteT();
 
 

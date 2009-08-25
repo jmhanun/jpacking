@@ -295,7 +295,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 private void tblArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblArticulosMouseClicked
 
     //para el caso en que se navegue la tabla con el mouse
-    setDto((ArticulosT) tableModel.getRow(tblArticulos.getSelectedRow()));
+    setDto((ArticulosT) tableModel.getRow(sorter.convertRowIndexToModel(tblArticulos.getSelectedRow())));
     cambiarArticuloT();
     if (evt.getClickCount() == 2) {
         this.jTabbedPane1.setSelectedIndex(1);
@@ -307,7 +307,7 @@ private void tblArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRS
 private void tblArticulosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblArticulosKeyReleased
 
     //para el caso en que se navegue la tabla con las flechas
-    setDto((ArticulosT) tableModel.getRow(tblArticulos.getSelectedRow()));
+    setDto((ArticulosT) tableModel.getRow(sorter.convertRowIndexToModel(tblArticulos.getSelectedRow())));
     cambiarArticuloT();
 
 

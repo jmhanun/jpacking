@@ -73,7 +73,7 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     @Action
     public void borrar() {
         int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
+        TiposIvaT editado = (TiposIvaT) tableModel.getRow(sorter.convertRowIndexToModel(indiceAEditar));
         HashMap parametros = new HashMap();
         parametros.put("pIdTipoIva", editado.getIdTipoIVA());
 
@@ -98,7 +98,7 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     @Action
     public void modificar() {
         int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaT editado = (TiposIvaT) tableModel.getRow(indiceAEditar);
+        TiposIvaT editado = (TiposIvaT) tableModel.getRow(sorter.convertRowIndexToModel(indiceAEditar));
 
 
 

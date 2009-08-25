@@ -64,7 +64,7 @@ public class ABMEstados extends CustomInternalFrame<EstadosT> {
 
     @Action
     public void seleccionar() {
-        setDto((EstadosT) tableModel.getRow(estadosTable.getSelectedRow()));
+        setDto((EstadosT) tableModel.getRow(sorter.convertRowIndexToModel(estadosTable.getSelectedRow())));
         JOptionPane.showInternalMessageDialog(this, "seleccionar");
         this.setVisible(false);
     }

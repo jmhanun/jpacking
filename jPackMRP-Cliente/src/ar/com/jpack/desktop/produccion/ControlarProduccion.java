@@ -55,7 +55,8 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
     @Action
     public void iniciar() {
         if (detalleProduccionTable.getSelectedRow() != -1) {
-            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(detalleProduccionTable.getSelectedRow());
+            
+            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if ((detalleSeleccionado.getIdEstado().getIdEstado() == 22) || (detalleSeleccionado.getIdEstado().getIdEstado() == 21)) {
                 EstadosT estadoIniciado = new EstadosT();
                 estadoIniciado.setIdEstado(14);
@@ -74,7 +75,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
     @Action
     public void finalizar() {
         if (detalleProduccionTable.getSelectedRow() != -1) {
-            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(detalleProduccionTable.getSelectedRow());
+            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
                 detalleSeleccionado.setFechaFinProceso(new Date());
                 EstadosT estadoIniciado = new EstadosT();
@@ -93,7 +94,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
     @Action
     public void suspender() {
         if (detalleProduccionTable.getSelectedRow() != -1) {
-            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(detalleProduccionTable.getSelectedRow());
+            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
                 EstadosT estadoIniciado = new EstadosT();
                 estadoIniciado.setIdEstado(21);
@@ -111,7 +112,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
     @Action
     public void deshabilitar() {
         if (detalleProduccionTable.getSelectedRow() != -1) {
-            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(detalleProduccionTable.getSelectedRow());
+            DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if ((detalleSeleccionado.getIdEstado().getIdEstado() == 22) || (detalleSeleccionado.getIdEstado().getIdEstado() == 21) || (detalleSeleccionado.getIdEstado().getIdEstado() == 14)) {
                 EstadosT estadoIniciado = new EstadosT();
                 estadoIniciado.setIdEstado(17);
@@ -323,7 +324,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
         "Id", "Orden", "Maquina", "Prioridad", "Estado",
-        "Articulo", "Cantidad",
+        "Cantidad", "Articulo",
         "Fecha Inicio Estimada", "Fecha Fin Estimada",
         "Fecha Inicio Real", "Fecha Fin Real",
         "Progreso"
