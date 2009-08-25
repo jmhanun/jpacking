@@ -32,13 +32,13 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtUsuario" pref="334" max="32767" attributes="0"/>
+                      <Component id="txtCodigo" pref="337" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
-                      <Component id="aceptarButton" pref="71" max="32767" attributes="0"/>
+                      <Component id="aceptarButton" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="cancelarButton" max="32767" attributes="0"/>
+                      <Component id="cancelarButton" pref="75" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -51,14 +51,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="23" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -70,16 +70,16 @@
         <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtUsuario">
+    <Component class="javax.swing.JTextField" name="txtCodigo">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtUsuario.text"/>
-        <Property name="name" type="java.lang.String" value="txtUsuario" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="txtCodigo.text"/>
+        <Property name="name" type="java.lang.String" value="txtCodigo" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="cancelarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteRolesXUsuarios" id="cancel" methodName="cancel"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteStockMinimo" id="cancelar" methodName="cancelar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cancelarButton.text"/>
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
@@ -88,7 +88,7 @@
     <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteRolesXUsuarios" id="showReporte" methodName="showReporte"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteStockMinimo" id="aceptar" methodName="aceptar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="aceptarButton.text"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>

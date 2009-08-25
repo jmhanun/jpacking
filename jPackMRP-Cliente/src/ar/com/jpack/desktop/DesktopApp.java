@@ -21,6 +21,7 @@ import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.negocio.StockFacadeRemote;
+import ar.com.jpack.negocio.TiposdesviosFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
@@ -38,6 +39,7 @@ import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SetupT;
 import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
+import ar.com.jpack.transferencia.TiposDesviosT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
@@ -118,6 +120,7 @@ public class DesktopApp extends SingleFrameApplication {
     public static InitialContext getContexto() {
         return contexto;
     }
+    private TiposdesviosFacadeRemote tiposDesviosFacade;
 
     public void sendSSLMessage(ArrayList<String> recipients, String subject,
             String message) {
@@ -574,6 +577,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public List<TiposDesviosT> getTiposDesviosT(HashMap parametros) {
+        try {
+            tiposDesviosFacade = (TiposdesviosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposdesviosFacadeRemote");
+            return tiposDesviosFacade.getTiposDesviosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap

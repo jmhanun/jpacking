@@ -658,6 +658,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteStockMinimo() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStockMinimo", "Carga de parametros para el reporte Stock Minimo", padre);
+    }
+
+    @Action
     public Task showReporteDesviosInicio() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioIni", "Carga de parametros para el reporte de Desfasajes", padre);
     }
@@ -665,6 +670,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showReporteDesvios() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProduccionDesvio", "Carga de parametros para el reporte de Desvíos", padre);
+    }
+
+    @Action
+    public Task showReporteMotivosDesvios() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMotivosDesvios", "Carga de parametros para el reporte de Motivos de Desvíos", padre);
     }
 
     @Action
@@ -765,6 +775,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showUnidadesMedida() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.depositos.ABMUnidadesMedida", "Unidades de Medida", padre);
+    }
+
+    @Action
+    public Task showTiposDesvios() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMTiposDesvios", "Tipos de Desvios", padre);
     }
 
     @Action

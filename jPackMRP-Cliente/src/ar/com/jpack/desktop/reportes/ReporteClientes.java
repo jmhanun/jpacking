@@ -153,9 +153,10 @@ public class ReporteClientes extends CustomInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(aceptarButton)
+                        .addGap(222, 222, 222)
+                        .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonCancelar)))
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,7 +170,7 @@ public class ReporteClientes extends CustomInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCancelar)
                     .addComponent(aceptarButton))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();

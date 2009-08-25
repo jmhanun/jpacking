@@ -41,25 +41,6 @@ public class ReporteDesvioIni extends CustomInternalFrame {
         return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
     }
 
-    private class AceptarTask extends org.jdesktop.application.Task<Object, Void> {
-        AceptarTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to AceptarTask fields, here.
-            super(app);
-        }
-        @Override protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
-    }
-
     class Reporte extends Task<String, Void> {
 
         String mensaje;
@@ -204,11 +185,11 @@ public class ReporteDesvioIni extends CustomInternalFrame {
                             .addComponent(txtMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addComponent(ayudaButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
-                        .addComponent(aceptarButton)
+                        .addComponent(ayudaButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addGap(141, 141, 141)
+                        .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelarButton)))
+                        .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -235,7 +216,7 @@ public class ReporteDesvioIni extends CustomInternalFrame {
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton)
                     .addComponent(ayudaButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();

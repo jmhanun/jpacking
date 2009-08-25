@@ -89,6 +89,8 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteStock.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
@@ -101,6 +103,7 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteStock.class, this);
         canelarButton.setAction(actionMap.get("cancel")); // NOI18N
+        canelarButton.setText(resourceMap.getString("canelarButton.text")); // NOI18N
         canelarButton.setName("canelarButton"); // NOI18N
 
         aceptarButton.setAction(actionMap.get("showReporte")); // NOI18N
@@ -118,9 +121,10 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(codigoTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(aceptarButton)
+                        .addGap(199, 199, 199)
+                        .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(canelarButton)))
+                        .addComponent(canelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -133,8 +137,8 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(canelarButton)
-                    .addComponent(aceptarButton))
-                .addContainerGap(29, Short.MAX_VALUE))
+                    .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

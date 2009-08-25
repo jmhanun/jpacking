@@ -29,24 +29,25 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jDateChooser1" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="jDateChooser2" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="txtTipoDesvio" alignment="0" pref="315" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="ayudaButton" pref="37" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                       <Component id="aceptarButton" pref="71" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="cancelarButton" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jDateChooser1" alignment="0" pref="330" max="32767" attributes="0"/>
-                  <Component id="jDateChooser2" alignment="0" pref="330" max="32767" attributes="0"/>
-                  <Component id="txtMaquina" alignment="0" pref="330" max="32767" attributes="0"/>
-                  <Component id="cmbDesvio" alignment="0" pref="330" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -68,20 +69,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtMaquina" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbDesvio" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTipoDesvio" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ayudaButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -105,12 +100,6 @@
         <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
-        <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
-      </Properties>
-    </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
       <Properties>
         <Property name="name" type="java.lang.String" value="jDateChooser1" noResource="true"/>
@@ -121,29 +110,16 @@
         <Property name="name" type="java.lang.String" value="jDateChooser2" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtMaquina">
+    <Component class="javax.swing.JTextField" name="txtTipoDesvio">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtMaquina.text"/>
-        <Property name="name" type="java.lang.String" value="txtMaquina" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="cmbDesvio">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="SEGUNDOS"/>
-            <StringItem index="1" value="MINUTOS"/>
-            <StringItem index="2" value="HORAS"/>
-            <StringItem index="3" value="DIAS"/>
-          </StringArray>
-        </Property>
-        <Property name="name" type="java.lang.String" value="cmbDesvio" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="txtTipoDesvio.text"/>
+        <Property name="name" type="java.lang.String" value="txtTipoDesvio" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="cancelarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteProduccionDesvio" id="cancelar" methodName="cancelar"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteMotivosDesvios" id="cancelar" methodName="cancelar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cancelarButton.text"/>
         <Property name="name" type="java.lang.String" value="cancelarButton" noResource="true"/>
@@ -152,19 +128,10 @@
     <Component class="javax.swing.JButton" name="aceptarButton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteProduccionDesvio" id="aceptar" methodName="aceptar"/>
+          <action class="ar.com.jpack.desktop.reportes.ReporteMotivosDesvios" id="aceptar" methodName="aceptar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="aceptarButton.text"/>
         <Property name="name" type="java.lang.String" value="aceptarButton" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="ayudaButton">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.reportes.ReporteProduccionDesvio" id="ayuda" methodName="ayuda"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="ayudaButton.text"/>
-        <Property name="name" type="java.lang.String" value="ayudaButton" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
