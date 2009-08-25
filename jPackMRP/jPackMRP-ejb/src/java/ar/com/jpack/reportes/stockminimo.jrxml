@@ -18,6 +18,7 @@
      articulos.`descripcion` AS articulos_descripcion,
      articulos.`idUnidMedida` AS articulos_idUnidMedida,
      articulos.`idEstado` AS articulos_idEstado,
+     articulos.`stockMinimo` AS articulos_stockMinimo,
      unidadesmedida.`idUnidMedida` AS unidadesmedida_idUnidMedida,
      unidadesmedida.`descripcion` AS unidadesmedida_descripcion,
      unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura
@@ -26,7 +27,10 @@ FROM
      INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
 WHERE
      articulos.`idEstado` <> 2
- AND articulos.`codigo`=IFNULL($P{pCodigo}, articulos.`codigo`)
+  AND stock.`cantidad` < (select a.stockminimo
+                            from articulos a
+                           where a.idarticulo=stock.`idArticulo`)
+  AND articulos.`codigo`=IFNULL($P{pCodigo}, articulos.`codigo`)
 ORDER BY
      articulos.`descripcion` ASC]]>
 	</queryString>
@@ -39,7 +43,7 @@ ORDER BY
 	<field name="stock_fechaUltMod" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="stock_cantidad" class="java.lang.Double">
+	<field name="stock_cantidad" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="articulos_idArticulo" class="java.lang.Long">
@@ -55,6 +59,9 @@ ORDER BY
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="articulos_idEstado" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_stockMinimo" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="unidadesmedida_idUnidMedida" class="java.lang.Long">
@@ -78,11 +85,11 @@ ORDER BY
 				<reportElement positionType="FixRelativeToBottom" x="0" y="86" width="555" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="186" y="13" width="191" height="35"/>
+				<reportElement x="164" y="13" width="304" height="35"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Stock de Artículos]]></text>
+				<text><![CDATA[Artículos con Stock Mínimo]]></text>
 			</staticText>
 			<image hyperlinkType="None">
 				<reportElement x="3" y="16" width="135" height="50"/>
@@ -100,7 +107,7 @@ ORDER BY
 	<columnHeader>
 		<band height="25">
 			<staticText>
-				<reportElement mode="Opaque" x="90" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="62" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
@@ -110,43 +117,57 @@ ORDER BY
 				<reportElement x="0" y="18" width="555" height="1"/>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="343" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center">
+				<reportElement mode="Opaque" x="379" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
 					<font fontName="Verdana" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="303" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mínimo]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField hyperlinkType="None">
-				<reportElement x="0" y="0" width="138" height="20"/>
+				<reportElement x="0" y="0" width="77" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
-				<reportElement x="138" y="0" width="204" height="20"/>
+				<reportElement x="80" y="0" width="211" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_descripcion}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
-				<reportElement x="342" y="0" width="66" height="20"/>
+				<reportElement x="378" y="0" width="66" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{stock_cantidad}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{stock_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
-				<reportElement x="414" y="0" width="138" height="20"/>
+				<reportElement x="448" y="0" width="104" height="20"/>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadesmedida_abreviatura}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="302" y="0" width="66" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{articulos_stockMinimo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
