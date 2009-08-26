@@ -20,7 +20,7 @@ public interface TiposdesviosFacadeRemote {
 
     public List<TiposDesviosT> getTiposDesviosT(HashMap parametros);
 
-    public java.util.List<ar.com.jpack.persistencia.Tiposdesvios> getTiposDesvios(java.util.HashMap parametros);
+    public List<Tiposdesvios> getTiposDesvios(HashMap parametros);
 
 
 }
