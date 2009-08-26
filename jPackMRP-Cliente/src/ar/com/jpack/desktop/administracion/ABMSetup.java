@@ -15,8 +15,11 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.SetupTableModel;
 import ar.com.jpack.transferencia.SetupT;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
@@ -75,7 +78,11 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
 
     @Action
     public void cancelar() {
-        JOptionPane.showInternalMessageDialog(this, "cancelar");
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMSetup.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Action

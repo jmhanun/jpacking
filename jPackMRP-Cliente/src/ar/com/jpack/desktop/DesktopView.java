@@ -796,6 +796,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showFeriados() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMFeriados", "Feriados", padre);
+    }
+
+    @Action
     public Task showCambiarPassword() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.CambiarPassword", "Cambiar contraseña", padre);
     }
