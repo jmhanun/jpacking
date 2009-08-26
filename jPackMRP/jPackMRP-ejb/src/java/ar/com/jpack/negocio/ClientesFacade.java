@@ -5,7 +5,6 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Clientes;
 import ar.com.jpack.transferencia.ClientesT;
-import ar.com.jpack.transferencia.helper.DataTransferHelper;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,51 +28,18 @@ public class ClientesFacade implements ClientesFacadeRemote {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(Clientes clientes) {
-        em.persist(clientes);
-    }
-
-    public void edit(Clientes clientes) {
-        em.merge(clientes);
-    }
-
-    public void remove(Clientes clientes) {
-        em.remove(em.merge(clientes));
-    }
-
-    public Clientes find(Object id) {
-        return em.find(ar.com.jpack.persistencia.Clientes.class, id);
-    }
-
-    public List<Clientes> findAll() {
-        return em.createQuery("select object(o) from Clientes as o").getResultList();
-    }
-
-    public List<ClientesT> findAllClientesT() {
-        List<Clientes> clientes = findAll();
-        return DataTransferHelper.copiarClientesALista(clientes);
-    }
-
-    public List<ClientesT> findClientesT(HashMap parametros) {
-        Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
-        List<Clientes> clientesList;
+    /**
+     * Obtiene la lista de Clientes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdCliente</b>    filtra por 'eq' idCliente (Integer) <br>
+     * <b>pNombres</b>      filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pCuit</b>         filtra por 'like AnyWhere' cuit (String) <br>
+     * @return devuelve la lista de los Clientes que cumplan con el filtro
+     */
+    public List<ClientesT> getClientesT(HashMap parametros) {
+        List<Clientes> clientesList = getClientes(parametros);
         List<ClientesT> clientesTList = new ArrayList();
-        if (parametros.containsKey("pIdCliente")) {
-            clienteCritearia.add(Restrictions.eq("idCliente", parametros.get("pIdCliente")));
-        }
-        if (parametros.containsKey("pNombres")) {
-
-            clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(), MatchMode.ANYWHERE));
-        }
-        if (parametros.containsKey("pCuit")) {
-            clienteCritearia.add(Restrictions.eq("cuit", parametros.get("pCuit")));
-        }
-        clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
-        /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
-        estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
-        estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
-         */
-        clientesList = clienteCritearia.list();
         for (Clientes c : clientesList) {
             ClientesT rdo = (ClientesT) DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
             clientesTList.add(rdo);
@@ -81,6 +47,15 @@ public class ClientesFacade implements ClientesFacadeRemote {
         return clientesTList;
     }
 
+    /**
+     * Obtiene la lista de Clientes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdCliente</b>    filtra por 'eq' idCliente (Integer) <br>
+     * <b>pNombres</b>      filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pCuit</b>         filtra por 'like AnyWhere' cuit (String) <br>
+     * @return devuelve la lista de los Clientes que cumplan con el filtro
+     */
     public List<Clientes> getClientes(HashMap parametros) {
         Criteria clienteCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Clientes.class);
         List<Clientes> clientesList;
@@ -91,7 +66,7 @@ public class ClientesFacade implements ClientesFacadeRemote {
             clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pCuit")) {
-            clienteCritearia.add(Restrictions.eq("cuit", parametros.get("pCuit")));
+            clienteCritearia.add(Restrictions.like("cuit", parametros.get("pCuit").toString(),MatchMode.ANYWHERE));
         }
 //       clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
        /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
@@ -100,15 +75,5 @@ public class ClientesFacade implements ClientesFacadeRemote {
          */
         clientesList = clienteCritearia.list();
         return clientesList;
-    }
-
-    public List<ClientesT> getClientesT(HashMap parametros) {
-        List<Clientes> clientesList = getClientes(parametros);
-        List<ClientesT> clientesTList = new ArrayList();
-        for (Clientes c : clientesList) {
-            ClientesT rdo = (ClientesT) DozerUtil.getDozerMapper(false).map(c, ClientesT.class);
-            clientesTList.add(rdo);
-        }
-        return clientesTList;
     }
 }

@@ -17,21 +17,25 @@ import javax.ejb.Remote;
 @Remote
 public interface ClientesFacadeRemote {
 
-    @Deprecated
-    public List<ClientesT> findClientesT(HashMap parametros);
-
+    /**
+     * Obtiene la lista de Clientes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdCliente</b>    filtra por 'eq' idCliente (Integer) <br>
+     * <b>pNombres</b>      filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pCuit</b>         filtra por 'like AnyWhere' cuit (String) <br>
+     * @return devuelve la lista de los Clientes que cumplan con el filtro
+     */
     public List<ClientesT> getClientesT(HashMap parametros);
 
-    void create(Clientes clientes);
-
-    void edit(Clientes clientes);
-
-    void remove(Clientes clientes);
-
-    Clientes find(Object id);
-
-    List<Clientes> findAll();
-
-    public List<ClientesT> findAllClientesT();
-
+    /**
+     * Obtiene la lista de Clientes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdCliente</b>    filtra por 'eq' idCliente (Integer) <br>
+     * <b>pNombres</b>      filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pCuit</b>         filtra por 'like AnyWhere' cuit (String) <br>
+     * @return devuelve la lista de los Clientes que cumplan con el filtro
+     */
+    public List<Clientes> getClientes(HashMap parametros);
 }
