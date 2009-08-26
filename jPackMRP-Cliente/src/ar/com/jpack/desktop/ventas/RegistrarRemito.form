@@ -29,9 +29,9 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" alignment="0" min="0" pref="0" max="32767" attributes="2"/>
                   <Component id="txtImporte" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
@@ -40,15 +40,14 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="txtNumeroCliente" pref="79" max="32767" attributes="0"/>
+                              <Component id="txtNumeroCliente" pref="67" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCuit" pref="236" max="32767" attributes="0"/>
+                              <Component id="txtCuit" pref="223" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="txtCliente" alignment="0" pref="321" max="32767" attributes="0"/>
-                          <Component id="txtFecha" alignment="1" min="-2" pref="77" max="-2" attributes="0"/>
+                          <Component id="txtCliente" alignment="0" pref="296" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnBuscarCliente" min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="btnBuscarCliente" pref="47" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnAgregar" pref="75" max="32767" attributes="0"/>
@@ -61,8 +60,9 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="txtFecha" alignment="1" min="-2" pref="77" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -72,19 +72,21 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="txtFecha" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCuit" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNumeroCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCuit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtNumeroCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCliente" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnBuscarCliente" pref="46" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnBuscarCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCliente" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="193" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="200" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="txtImporte" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">

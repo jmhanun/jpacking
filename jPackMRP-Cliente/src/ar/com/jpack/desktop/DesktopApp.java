@@ -17,7 +17,6 @@ import ar.com.jpack.negocio.TiposIvaFacadeRemote;
 import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
-import ar.com.jpack.negocio.FeriadosFacade;
 import ar.com.jpack.negocio.FeriadosFacadeRemote;
 import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
