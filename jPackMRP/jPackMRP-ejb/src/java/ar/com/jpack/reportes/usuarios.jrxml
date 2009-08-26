@@ -2,7 +2,7 @@
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pimagen" class="java.awt.Image"/>
 	<parameter name="pduke" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -70,7 +70,7 @@ order by usuarios.`usuario`]]>
 			</staticText>
 			<image isUsingCache="true" hyperlinkType="None">
 				<reportElement x="3" y="16" width="135" height="50"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{pimagen}]]></imageExpression>
 			</image>
 			<image hyperlinkType="None">
 				<reportElement x="757" y="16" width="43" height="49"/>
