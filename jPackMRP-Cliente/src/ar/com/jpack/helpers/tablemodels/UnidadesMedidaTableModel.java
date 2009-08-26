@@ -23,6 +23,9 @@ public class UnidadesMedidaTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         UnidadesMedidaT record = (UnidadesMedidaT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

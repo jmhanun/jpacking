@@ -4,10 +4,11 @@
  */
 package ar.com.jpack.helpers;
 
+import ar.com.jpack.desktop.DesktopApp;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import org.jdesktop.application.Application;
 import org.jdesktop.application.ResourceMap;
 
 /**
@@ -26,13 +27,15 @@ public class CustomInternalFrame<E> extends JInternalFrame implements Serializab
 
     public CustomInternalFrame() {
         super();
-        this.setFrameIcon(new ImageIcon("C:\\Logos\\Duke.gif"));
+        resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(CustomInternalFrame.class);
+        this.setFrameIcon(resourceMap.getImageIcon("icono"));
     }
 
     public CustomInternalFrame(E dto) {
         super();
         this.dto = dto;
-        this.setFrameIcon(new ImageIcon("C:\\Logos\\Duke.gif"));
+        resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(CustomInternalFrame.class);
+        this.setFrameIcon(resourceMap.getImageIcon("icono"));
     }
 
     public E getDto() {

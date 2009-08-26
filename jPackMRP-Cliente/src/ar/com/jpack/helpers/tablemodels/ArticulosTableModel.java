@@ -28,6 +28,9 @@ public class ArticulosTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         ArticulosT record = (ArticulosT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

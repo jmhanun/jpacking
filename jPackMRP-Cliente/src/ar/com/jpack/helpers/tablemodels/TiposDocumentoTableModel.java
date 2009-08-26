@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.helpers.tablemodels;
 
 import ar.com.jpack.helpers.CustomTableModel;
@@ -13,7 +12,7 @@ import java.util.List;
  *
  * @author jmhanun
  */
-public class TiposDocumentoTableModel extends CustomTableModel{
+public class TiposDocumentoTableModel extends CustomTableModel {
 
     public static final int ID_INDEX = 0;
     public static final int DESCRIPCION_INDEX = 1;
@@ -24,6 +23,9 @@ public class TiposDocumentoTableModel extends CustomTableModel{
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         TiposDocumentoT record = (TiposDocumentoT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

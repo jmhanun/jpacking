@@ -57,6 +57,9 @@ public class DetalleRemitosTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         DetalleRemitosT record = (DetalleRemitosT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

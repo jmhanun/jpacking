@@ -36,6 +36,9 @@ public class DetalleProduccionTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         DetalleProduccionT record = (DetalleProduccionT) dataVector.get(row);
@@ -110,7 +113,7 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                     return fechaFormatter.format(record.getFechaFinProceso());
                 }
             case PROGRESO_INDEX:
-                
+
                 return DesktopApp.getApplication().getAvanceProduccion(record).toString() + " %";
             default:
                 return new Object();

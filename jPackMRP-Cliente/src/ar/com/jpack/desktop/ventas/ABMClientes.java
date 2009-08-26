@@ -70,7 +70,46 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
     @Action
     public void buscar() {
-        JOptionPane.showInternalMessageDialog(this, "buscar");
+        HashMap parametros = new HashMap();
+        if (!txtCuit.getText().isEmpty()) {
+            parametros.put("pCuit", txtCuit.getText());
+        }
+        if (!txtNombre.getText().isEmpty()) {
+            parametros.put("pNombres", txtNombre.getText());
+        }
+        if (!txtIdCliente.getText().isEmpty()) {
+            try {
+                parametros.put("pIdCliente", Integer.parseInt(txtIdCliente.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showInternalMessageDialog(this, "El valor de id del cliente debe ser numerico");
+                return;
+            }
+        }
+        setListDto((ArrayList<ClientesT>) DesktopApp.getApplication().getClientesT(parametros));
+
+        tableModel = new ClientesTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        
+        tblClientes.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblClientes.setRowSorter(sorter);
+
+        if ((getPadre() != null) && (getListDto().size() == 1)) {
+            tblClientes.setRowSelectionInterval(0, 0);
+            setDto((ClientesT) tableModel.getRow(sorter.convertRowIndexToModel(tblClientes.getSelectedRow())));
+            cambiarClienteT();
+            seleccionar();
+        }
     }
 
     @Action
@@ -93,7 +132,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
                 cancelar();
             } else {
-                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
             }
         }
     }
@@ -121,6 +160,33 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
     public void cambiarClienteT() {
         //Cambia los datos de los txts
+    }
+
+    public String getCuitCliente() {
+        return cuitCliente;
+    }
+
+    public void setCuitCliente(String cuitCliente) {
+        this.cuitCliente = cuitCliente;
+        txtCuit.setText(cuitCliente);
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+        txtNombre.setText(nombreCliente);
+    }
+
+    public String getNumeroCliente() {
+        return numeroCliente;
+    }
+
+    public void setNumeroCliente(String numeroCliente) {
+        this.numeroCliente = numeroCliente;
+        txtIdCliente.setText(numeroCliente);
     }
 
     /** This method is called from within the constructor to
@@ -401,4 +467,7 @@ private void tblClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     };
     protected ClientesTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
+    private String numeroCliente;
+    private String cuitCliente;
+    private String nombreCliente;
 }

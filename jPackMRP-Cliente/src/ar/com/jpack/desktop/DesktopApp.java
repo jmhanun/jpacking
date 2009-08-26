@@ -403,27 +403,6 @@ public class DesktopApp extends SingleFrameApplication {
     }
 
     @Deprecated
-    public List<ClientesT> getClientes(HashMap parametros) {
-
-        try {
-            clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
-            if (parametros.isEmpty()) {
-                parametros.put("pIdCliente", new Integer(-1));
-            }
-            List<ClientesT> clientes = clientesFacade.findClientesT(parametros);
-            if (clientes == null) {
-                clientes = Collections.emptyList();
-            }
-
-            return clientes;
-        } catch (NamingException ex) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    @Deprecated
     public List<UnidadesMedidaT> getUnidadesMedida() {
         try {
             unidadesMedidaFacade = (UnidadesmedidaFacadeRemote) lookUp("ar.com.jpack.negocio.UnidadesmedidaFacadeRemote");
@@ -577,6 +556,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public List<TiposDesviosT> getTiposDesviosT(HashMap parametros) {
         try {
             tiposDesviosFacade = (TiposdesviosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposdesviosFacadeRemote");
@@ -587,7 +567,6 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
 
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
@@ -733,6 +712,15 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    /**
+     * Obtiene la lista de Clientes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdCliente</b>    filtra por 'eq' idCliente (Integer) <br>
+     * <b>pNombres</b>      filtra por 'like AnyWhere' nombres (String) <br>
+     * <b>pCuit</b>         filtra por 'like AnyWhere' cuit (String) <br>
+     * @return devuelve la lista de los Clientes que cumplan con el filtro
+     */
     public List<ClientesT> getClientesT(HashMap parametros) {
         try {
             clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
@@ -943,9 +931,9 @@ public class DesktopApp extends SingleFrameApplication {
      */
     public JasperPrint getReporte(String nombreReporte, HashMap parametro) {
         try {
-            JasperPrint retorno=null;
+            JasperPrint retorno = null;
             reportesFacade = (ReportesFacadeRemote) lookUp("ar.com.jpack.negocio.ReportesFacadeRemote");
-            retorno=reportesFacade.getReporte(nombreReporte, parametro);
+            retorno = reportesFacade.getReporte(nombreReporte, parametro);
             return retorno;
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");

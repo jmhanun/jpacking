@@ -28,6 +28,9 @@ public class RolesTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         RolesT record = (RolesT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

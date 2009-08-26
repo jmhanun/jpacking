@@ -51,10 +51,15 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     public RegistrarRemito() {
         super(new DetalleRemitosT());
         initComponents();
+        setTotal(0.0);
+        DateFormat fechaFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date hoy = new Date();
+        txtFecha.setText(fechaFormat.format(hoy));
+
         setListDto(new ArrayList<DetalleRemitosT>());
 
         tableModel = new DetalleRemitosTableModel(columnNames, this.getListDto());
-        tableModel.addTableModelListener(new CustomTableModelListener());
+        tableModel.addTableModelListener(new CustomTableModelListener(this));
         tblDetalleRemito.setModel(tableModel);
 
         sorter = new TableRowSorter<TableModel>(tableModel) {
@@ -103,11 +108,16 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         DesktopApp.getApplication().getDesktopView().setPadre(this);
 
         DesktopApp.getApplication().getDesktopView().showClientes().run();
+        DesktopApp.getApplication().getDesktopView().showClientes().run();
 
         clientesOpenFrame = (ABMClientes) DesktopApp.getApplication().getDesktopView().getInternalFrame("ar.com.jpack.desktop.ventas.ABMClientes");
 
         clientesOpenFrame.setPadre(this);
         clientesOpenFrame.habilitarBtnSeleccionar(true);
+        clientesOpenFrame.setNumeroCliente(txtNumeroCliente.getText());
+        clientesOpenFrame.setCuitCliente(txtCuit.getText());
+        clientesOpenFrame.setNombreCliente(txtCliente.getText());
+        clientesOpenFrame.buscar();
 
     }
 
@@ -137,6 +147,8 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
     public void agregarCliente(ClientesT cliente) {
         txtCliente.setText(cliente.getNombres());
+        txtCuit.setText(cliente.getCuit());
+        txtNumeroCliente.setText(cliente.getIdCliente().toString());
         remito.setIdCliente(cliente);
     }
 
@@ -149,7 +161,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         if (tableModel.getRowCount() > 0) {
 
             //Verificar que haya cliente seleccionado
-            if (!txtCliente.getText().equals("")) {
+            if (remito.getIdCliente() != null) {
                 //Verificar que haya cantidades y precios en los items
                 //Verificar que haya stock
                 boolean cantidadOk = true;
@@ -328,6 +340,15 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         }
     }
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+        this.txtImporte.setText(total.toString());
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -337,24 +358,20 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtNumero = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
         txtCliente = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txtImporte = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDetalleRemito = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
         btnAplicar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        dchFecha = new com.toedter.calendar.JDateChooser();
-        dchAcordada = new com.toedter.calendar.JDateChooser();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscarCliente = new javax.swing.JButton();
+        txtNumeroCliente = new javax.swing.JTextField();
+        txtCuit = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -381,27 +398,19 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         });
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(RegistrarRemito.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        txtNumero.setText(resourceMap.getString("txtNumero.text")); // NOI18N
-        txtNumero.setName("txtNumero"); // NOI18N
+        txtFecha.setEditable(false);
+        txtFecha.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtFecha.setText(resourceMap.getString("txtFecha.text")); // NOI18N
+        txtFecha.setName("txtFecha"); // NOI18N
 
         txtCliente.setText(resourceMap.getString("txtCliente.text")); // NOI18N
         txtCliente.setName("txtCliente"); // NOI18N
 
-        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
-        jLabel4.setName("jLabel4"); // NOI18N
-
-        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
-
+        txtImporte.setEditable(false);
+        txtImporte.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtImporte.setText(resourceMap.getString("txtImporte.text")); // NOI18N
         txtImporte.setName("txtImporte"); // NOI18N
 
@@ -431,10 +440,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
         btnAgregar.setName("btnAgregar"); // NOI18N
 
-        dchFecha.setName("dchFecha"); // NOI18N
-
-        dchAcordada.setName("dchAcordada"); // NOI18N
-
         btnModificar.setAction(actionMap.get("modificar")); // NOI18N
         btnModificar.setName("btnModificar"); // NOI18N
 
@@ -444,39 +449,44 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         btnBuscarCliente.setAction(actionMap.get("buscarCliente")); // NOI18N
         btnBuscarCliente.setName("btnBuscarCliente"); // NOI18N
 
+        txtNumeroCliente.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtNumeroCliente.setText(resourceMap.getString("txtNumeroCliente.text")); // NOI18N
+        txtNumeroCliente.setName("txtNumeroCliente"); // NOI18N
+
+        txtCuit.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtCuit.setText(resourceMap.getString("txtCuit.text")); // NOI18N
+        txtCuit.setName("txtCuit"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                    .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtNumeroCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtImporte, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                            .addComponent(dchFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                            .addComponent(dchAcordada, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)))
-                    .addComponent(jScrollPane1, 0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                                .addComponent(txtCuit, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
+                            .addComponent(txtCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAplicar, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                        .addComponent(btnAplicar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -485,28 +495,20 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(dchFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
+                    .addComponent(txtCuit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNumeroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarCliente)
                     .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(dchAcordada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -517,7 +519,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dchAcordada, dchFecha, txtCliente, txtImporte, txtNumero});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCliente, txtFecha, txtImporte});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -541,18 +543,14 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private com.toedter.calendar.JDateChooser dchAcordada;
-    private com.toedter.calendar.JDateChooser dchFecha;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDetalleRemito;
     private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtCuit;
+    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtImporte;
-    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtNumeroCliente;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
         "Id", "Codigo", "Articulo", "Cantidad", "Medida", "Precio", "Importe"
@@ -570,4 +568,5 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private String tituloMail;
     private StringBuffer cuerpoMail;
     private StringBuffer cuerpoMail2;
+    private Double total;
 }

@@ -19,6 +19,9 @@ public class EstadosTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         EstadosT record = (EstadosT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

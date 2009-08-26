@@ -212,6 +212,7 @@ public class DesktopView extends FrameView {
         initComponents();
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
+        getFrame().setIconImage(resourceMap.getImageIcon("icono").getImage());
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
 
@@ -383,9 +384,13 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer1 = new Timer(delay, new ActionListener() {
+                timer1 = new Timer(delay, new  
 
-                    public void actionPerformed(ActionEvent e) {
+                      ActionListener( ) {
+
+                            
+                           
+                            public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
@@ -439,9 +444,13 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer2 = new Timer(delay, new ActionListener() {
+                timer2 = new Timer(delay, new  
 
-                    public void actionPerformed(ActionEvent e) {
+                      ActionListener( ) {
+
+                            
+                           
+                            public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
@@ -497,9 +506,13 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer3 = new Timer(delay, new ActionListener() {
+                timer3 = new Timer(delay, new  
 
-                    public void actionPerformed(ActionEvent e) {
+                      ActionListener( ) {
+
+                            
+                           
+                            public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);

@@ -23,6 +23,9 @@ public class SetupTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         SetupT record = (SetupT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:
