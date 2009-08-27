@@ -10,6 +10,10 @@ import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -32,6 +36,7 @@ import java.util.Iterator;
 import javax.swing.ActionMap;
 import javax.swing.Timer;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -632,9 +637,10 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showReporteUsuarios() {
-        HashMap parametros = new HashMap();
+            HashMap parametros = new HashMap();
         parametros.put("pduke", "C:\\Logos\\Duke.gif");
-        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+        ResourceMap resourceMap = getResourceMap();
+        parametros.put("pimagen",new ImageIcon(resourceMap.getImageIcon("pimagen").getImage()));
         JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Usuarios");
