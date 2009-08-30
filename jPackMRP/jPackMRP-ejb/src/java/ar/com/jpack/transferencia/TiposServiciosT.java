@@ -48,4 +48,9 @@ public class TiposServiciosT implements Serializable {
     public void setMantenimientoCollection(Collection<MantenimientoT> mantenimientoCollection) {
         this.mantenimientoCollection = mantenimientoCollection;
     }
+
+    @Override
+    public String toString() {
+        return this.getDescripcion();
+    }
 }

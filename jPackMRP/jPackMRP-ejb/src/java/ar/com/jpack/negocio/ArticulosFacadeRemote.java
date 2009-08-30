@@ -24,6 +24,8 @@ public interface ArticulosFacadeRemote {
      * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
      * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
      * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pFinal</b>   filtra por 'eq' articuloFinal (String) <br>
+     * <b>pImprimible</b>   filtra por 'eq' imprimible (String) <br>
      * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
      */
     public List<ArticulosT> getArticulosT(HashMap parametros);
@@ -35,6 +37,8 @@ public interface ArticulosFacadeRemote {
      * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
      * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
      * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pFinal</b>   filtra por 'eq' articuloFinal (String) <br>
+     * <b>pImprimible</b>   filtra por 'eq' imprimible (String) <br>
      * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
      */
     public List<Articulos> getArticulos(HashMap parametros);

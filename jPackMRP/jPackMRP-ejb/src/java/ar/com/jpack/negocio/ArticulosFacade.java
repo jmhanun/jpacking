@@ -38,6 +38,8 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
      * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
      * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
      * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pFinal</b>   filtra por 'eq' articuloFinal (String) <br>
+     * <b>pImprimible</b>   filtra por 'eq' imprimible (String) <br>
      * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
      */
     public List<ArticulosT> getArticulosT(HashMap parametros) {
@@ -58,6 +60,8 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
      * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
      * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
      * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pFinal</b>   filtra por 'eq' articuloFinal (String) <br>
+     * <b>pImprimible</b>   filtra por 'eq' imprimible (String) <br>
      * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
      */
     public List<Articulos> getArticulos(HashMap parametros) {
@@ -71,6 +75,12 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
         }
         if (parametros.containsKey("pDescripcion")) {
             articulosCritearia.add(Restrictions.like("descripcion", parametros.get("pDescripcion").toString(), MatchMode.ANYWHERE));
+        }
+        if (parametros.containsKey("pFinal")) {
+            articulosCritearia.add(Restrictions.eq("articuloFinal", parametros.get("pFinal").toString()));
+        }
+        if (parametros.containsKey("pImprimible")) {
+            articulosCritearia.add(Restrictions.eq("imprimible", parametros.get("pImprimible").toString()));
         }
 
         articulosCritearia.setFetchMode("idEstado", FetchMode.JOIN);
