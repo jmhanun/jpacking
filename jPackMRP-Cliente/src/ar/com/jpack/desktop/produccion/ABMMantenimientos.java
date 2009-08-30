@@ -14,8 +14,11 @@ import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.TiposServiciosT;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -137,7 +140,77 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtDescripcion.setEnabled(false);
+                    cboMaquina.setEnabled(false);
+                    cboTipoServicio.setEnabled(false);
+                }
+            }
+            setDto(new MantenimientoT());
+            cambiarMantenimientoT();
+            txtDescripcion.setEnabled(true);
+
+            cboMaquina.removeItemListener(itemMaquinaListener);
+            cboTipoServicio.removeItemListener(itemTipoServicioListener);
+
+
+            HashMap parametros = new HashMap();
+            parametros.put("pJoinEstados", true);
+            parametros.put("pIdEstado", 22);
+            maquinasTs = (ArrayList<MaquinasT>) DesktopApp.getApplication().getMaquinasT(parametros);
+
+
+            DefaultComboBoxModel maquinasComboBoxModel = new DefaultComboBoxModel();
+            int index = 0;
+            int it = 0;
+            maquinasComboBoxModel.addElement("<Ninguno>");
+            for (MaquinasT maquina : maquinasTs) {
+                maquinasComboBoxModel.addElement(maquina);
+                if (getDto().getIdMaquina() != null) {
+                    if (maquina.getIdMaquina().equals(getDto().getIdMaquina().getIdMaquina())) {
+                        index = it;
+                    }
+                }
+                it++;
+            }
+            cboMaquina.setModel(maquinasComboBoxModel);
+            cboMaquina.setSelectedIndex(index);
+
+            parametros = new HashMap();
+            tiposServiciosTs = (ArrayList<TiposServiciosT>) DesktopApp.getApplication().getTiposServiciosT(parametros);
+
+            DefaultComboBoxModel tiposServiciosComboBoxModel = new DefaultComboBoxModel();
+            index = 0;
+            it = 0;
+            tiposServiciosComboBoxModel.addElement("<Ninguno>");
+            for (TiposServiciosT tiposServiciosT : tiposServiciosTs) {
+                tiposServiciosComboBoxModel.addElement(tiposServiciosT);
+                if (getDto().getIdTipoServicio() != null) {
+                    if (tiposServiciosT.getIdTipoServicio().equals(getDto().getIdTipoServicio().getIdTipoServicio())) {
+                        index = it;
+                    }
+                }
+                it++;
+            }
+
+            cboTipoServicio.setModel(tiposServiciosComboBoxModel);
+            cboTipoServicio.setSelectedIndex(index);
+
+            cboMaquina.setEnabled(true);
+            cboTipoServicio.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            cboMaquina.addItemListener(itemMaquinaListener);
+            cboTipoServicio.addItemListener(itemTipoServicioListener);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+        }
     }
 
     @Action
@@ -147,7 +220,27 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
     @Action
     public void modificar() {
-        JOptionPane.showInternalMessageDialog(this, "modificar");
+
+        DefaultComboBoxModel maquinasComboBoxModel = new DefaultComboBoxModel();
+        if (getDto().getIdMaquina() == null) {
+            maquinasComboBoxModel.addElement("<Ninguno>");
+        } else {
+            maquinasComboBoxModel.addElement(getDto().getIdMaquina());
+        }
+        cboMaquina.setModel(maquinasComboBoxModel);
+
+        DefaultComboBoxModel tiposServiciosComboBoxModel = new DefaultComboBoxModel();
+        if (getDto().getIdTipoServicio() == null) {
+            tiposServiciosComboBoxModel.addElement("<Ninguno>");
+        } else {
+            tiposServiciosComboBoxModel.addElement(getDto().getIdTipoServicio());
+        }
+        cboTipoServicio.setModel(tiposServiciosComboBoxModel);
+
+        txtDescripcion.setEnabled(true);
+        cboMaquina.setEnabled(false);
+        cboTipoServicio.setEnabled(false);
+        jTabbedPane1.setSelectedIndex(1);
     }
 
     @Action
@@ -157,12 +250,66 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
     @Action
     public void cancelar() {
-        JOptionPane.showInternalMessageDialog(this, "cancelar");
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMMantenimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @Action
+    @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateMantenimientoT(getDto()));
+                if (isNuevo()) {
+//                    getListDto().add(getDto());
+                    tableModel.addRow(getDto());
+                }
+                setDto(new MantenimientoT());
+                cambiarMantenimientoT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtDescripcion.setEnabled(false);
+                cboMaquina.setEnabled(false);
+                cboTipoServicio.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblMantenimiento.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo mantenimiento.\nVerifique que los datos sean los correctos");
+        }
+    }
+
+    private void cambiarMantenimientoT() {
+        cboMaquina.removeItemListener(itemMaquinaListener);
+        cboTipoServicio.removeItemListener(itemTipoServicioListener);
+        txtDescripcion.setText(getDto().getDescripcion());
+        DefaultComboBoxModel maquinasComboBoxModel = new DefaultComboBoxModel();
+        if (getDto().getIdMaquina() == null) {
+            maquinasComboBoxModel.addElement("<Ninguno>");
+        } else {
+            maquinasComboBoxModel.addElement(getDto().getIdMaquina());
+        }
+        cboMaquina.setModel(maquinasComboBoxModel);
+
+        DefaultComboBoxModel tiposServiciosComboBoxModel = new DefaultComboBoxModel();
+        if (getDto().getIdTipoServicio() == null) {
+            tiposServiciosComboBoxModel.addElement("<Ninguno>");
+        } else {
+            tiposServiciosComboBoxModel.addElement(getDto().getIdTipoServicio());
+        }
+        cboTipoServicio.setModel(tiposServiciosComboBoxModel);
+
+        txtDescripcion.setEnabled(false);
+        cboMaquina.setEnabled(false);
+        cboTipoServicio.setEnabled(false);
+
+        cboMaquina.addItemListener(itemMaquinaListener);
+        cboTipoServicio.addItemListener(itemTipoServicioListener);
     }
 
     /** This method is called from within the constructor to
@@ -199,6 +346,23 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
         setMaximizable(true);
         setResizable(true);
         setName("Form"); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
@@ -218,13 +382,23 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
             }
         ));
         tblMantenimiento.setName("tblMantenimiento"); // NOI18N
+        tblMantenimiento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMantenimientoMouseClicked(evt);
+            }
+        });
+        tblMantenimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblMantenimientoKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMantenimiento);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,9 +430,15 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
         txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(txtDescripcion);
 
-        btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMMantenimientos.class, this);
+        btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -269,7 +449,7 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,13 +457,13 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboMaquina, 0, 340, Short.MAX_VALUE)
-                            .addComponent(cboTipoServicio, 0, 340, Short.MAX_VALUE)))
+                            .addComponent(cboMaquina, 0, 350, Short.MAX_VALUE)
+                            .addComponent(cboTipoServicio, 0, 350, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jLabel3))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(321, Short.MAX_VALUE)
+                        .addContainerGap(339, Short.MAX_VALUE)
                         .addComponent(btnAplicar)))
                 .addContainerGap())
         );
@@ -309,38 +489,38 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
 
-        btnAgregar.setText(resourceMap.getString("btnAgregar.text")); // NOI18N
+        btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
         btnAgregar.setName("btnAgregar"); // NOI18N
 
-        btnFinalizar.setText(resourceMap.getString("btnFinalizar.text")); // NOI18N
+        btnFinalizar.setAction(actionMap.get("finalizar")); // NOI18N
         btnFinalizar.setName("btnFinalizar"); // NOI18N
 
-        btnModificar.setText(resourceMap.getString("btnModificar.text")); // NOI18N
+        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
         btnModificar.setName("btnModificar"); // NOI18N
 
-        btnEliminar.setText(resourceMap.getString("btnEliminar.text")); // NOI18N
+        btnEliminar.setAction(actionMap.get("eliminar")); // NOI18N
         btnEliminar.setName("btnEliminar"); // NOI18N
 
-        btnCancelar.setText(resourceMap.getString("btnCancelar.text")); // NOI18N
+        btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
         btnCancelar.setName("btnCancelar"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAgregar)
+                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnFinalizar)
+                .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificar)
+                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,6 +538,56 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+
+    if (isModificado() || isNuevo()) {
+        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+    } else {
+        dispose();
+    }
+
+}//GEN-LAST:event_formInternalFrameClosing
+
+private void tblMantenimientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMantenimientoMouseClicked
+
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((MantenimientoT) tableModel.getRow(sorter.convertRowIndexToModel(tblMantenimiento.getSelectedRow())));
+    cambiarMantenimientoT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+}//GEN-LAST:event_tblMantenimientoMouseClicked
+
+private void tblMantenimientoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblMantenimientoKeyReleased
+
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((MantenimientoT) tableModel.getRow(sorter.convertRowIndexToModel(tblMantenimiento.getSelectedRow())));
+    cambiarMantenimientoT();
+
+
+}//GEN-LAST:event_tblMantenimientoKeyReleased
+
+private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+
+    getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtDescripcionKeyReleased
+    private boolean modificado = false;
+    public boolean isModificado() {
+        return modificado;
+    }
+
+    public void setModificado(boolean b) {
+        boolean old = isModificado();
+        this.modificado = b;
+        firePropertyChange("modificado", old, isModificado());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

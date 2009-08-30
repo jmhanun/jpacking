@@ -12,6 +12,9 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameClosing" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
@@ -26,19 +29,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" pref="409" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="0" pref="419" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnAgregar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnFinalizar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnModificar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnAgregar" pref="75" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnFinalizar" pref="75" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnModificar" pref="75" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnEliminar" pref="75" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnCancelar" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,7 +85,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="404" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="414" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -114,6 +117,10 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="tblMantenimiento" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblMantenimientoMouseClicked"/>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tblMantenimientoKeyReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -138,7 +145,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="384" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="394" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
@@ -148,8 +155,8 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cboMaquina" alignment="0" pref="340" max="32767" attributes="0"/>
-                                  <Component id="cboTipoServicio" alignment="0" pref="340" max="32767" attributes="0"/>
+                                  <Component id="cboMaquina" alignment="0" pref="350" max="32767" attributes="0"/>
+                                  <Component id="cboTipoServicio" alignment="0" pref="350" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -157,7 +164,7 @@
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="321" max="32767" attributes="0"/>
+                              <EmptySpace pref="339" max="32767" attributes="0"/>
                               <Component id="btnAplicar" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -250,12 +257,17 @@
                     <Property name="rows" type="int" value="5"/>
                     <Property name="name" type="java.lang.String" value="txtDescripcion" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDescripcionKeyReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
             <Component class="javax.swing.JButton" name="btnAplicar">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="btnAplicar.text"/>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="aplicar" methodName="aplicar"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
               </Properties>
             </Component>
@@ -265,31 +277,41 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnAgregar">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="btnAgregar.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="agregar" methodName="agregar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnFinalizar">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="btnFinalizar.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="finalizar" methodName="finalizar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="btnFinalizar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnModificar">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="btnModificar.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="modificar" methodName="modificar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnEliminar">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="btnEliminar.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="eliminar" methodName="eliminar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="btnEliminar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="btnCancelar.text"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMMantenimientos" id="cancelar" methodName="cancelar"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
       </Properties>
     </Component>

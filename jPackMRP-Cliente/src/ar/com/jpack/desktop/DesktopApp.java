@@ -933,6 +933,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public MantenimientoT updateMantenimientoT(MantenimientoT dto) {
+        try {
+            mantenimientoFacade = (MantenimientoFacadeRemote) lookUp("ar.com.jpack.negocio.MantenimientoFacadeRemote");
+            return mantenimientoFacade.updateMantenimientoT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     /**
      * Actualiza o crea un rolT recibido por parametro
