@@ -137,8 +137,8 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
 
         articulosOpenFrame.setPadre(this);
         articulosOpenFrame.habilitarBtnSeleccionar(true);
-
-
+        articulosOpenFrame.habilitarChkFinal(false, true);
+        articulosOpenFrame.buscar();
     }
 
     public void agregarDetalle(DetalleRemitosT detalle) {

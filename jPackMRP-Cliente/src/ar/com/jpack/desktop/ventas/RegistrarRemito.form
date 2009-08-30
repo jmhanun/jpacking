@@ -82,10 +82,10 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="txtCliente" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="btnBuscarCliente" pref="46" max="32767" attributes="0"/>
+                  <Component id="btnBuscarCliente" pref="48" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="200" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="202" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="txtImporte" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>

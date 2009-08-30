@@ -89,7 +89,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
         tableModel = new ClientesTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
-        
+
         tblClientes.setModel(tableModel);
 
         sorter = new TableRowSorter<TableModel>(tableModel) {
@@ -119,21 +119,23 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
     @Action
     public void seleccionar() {
-        if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
-
-            if (tblClientes.getSelectedRow() != - 1) {
-
+        if (getDto() != null) {
+            if (getDto().getIdCliente() != null) {
                 ClientesT cli = getDto();
+                if (tblClientes.getSelectedRow() != - 1) {
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
 
-
-                ((RegistrarRemito) getPadre()).agregarCliente(cli);
-
-
-
-                cancelar();
+                        ((RegistrarRemito) getPadre()).agregarCliente(cli);
+                        cancelar();
+                    }
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
+                }
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
         }
     }
 
@@ -151,7 +153,9 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
         JOptionPane.showInternalMessageDialog(this, "editar");
     }
 
-    void habilitarBtnSeleccionar(boolean valor) {
+    void habilitarBtnSeleccionar(
+            boolean valor) {
+
         btnSeleccionar.setEnabled(valor);
         btnAgregar.setEnabled(!valor);
         btnBorrar.setEnabled(!valor);

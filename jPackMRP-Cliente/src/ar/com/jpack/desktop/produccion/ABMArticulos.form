@@ -26,12 +26,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="0" pref="484" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" pref="313" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="0" pref="321" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -64,12 +64,6 @@
                           <Component id="jScrollPane1" alignment="0" pref="459" max="32767" attributes="0"/>
                           <Component id="jSeparator1" alignment="1" pref="459" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtCodigoBusqueda" pref="422" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="btnBuscar" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnAgregar" pref="87" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="btnSeleccionar" pref="87" max="32767" attributes="0"/>
@@ -79,6 +73,20 @@
                               <Component id="btnEliminar" pref="87" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="1"/>
                               <Component id="btnCancelar" pref="87" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="chkImprimible" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="chkFinal" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="211" max="32767" attributes="0"/>
+                                      <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtCodigoBusqueda" alignment="0" pref="422" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -93,12 +101,18 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtCodigoBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="chkImprimible" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkFinal" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="153" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="161" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -207,6 +221,18 @@
                 <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JCheckBox" name="chkImprimible">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="chkImprimible.text"/>
+                <Property name="name" type="java.lang.String" value="chkImprimible" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkFinal">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="chkFinal.text"/>
+                <Property name="name" type="java.lang.String" value="chkFinal" noResource="true"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel2">
@@ -229,7 +255,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="285" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="293" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

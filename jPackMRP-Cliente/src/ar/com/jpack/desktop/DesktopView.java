@@ -6,14 +6,11 @@ package ar.com.jpack.desktop;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.MailsT;
+import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -203,6 +200,7 @@ public class DesktopView extends FrameView {
     private Timer timer1;
     private Timer timer2;
     private Timer timer3;
+    private Timer timer4;
 
     public JDesktopPane getDesktopPanel() {
         return desktopPanel;
@@ -311,6 +309,9 @@ public class DesktopView extends FrameView {
         if (timer3 != null) {
             timer3.stop();
         }
+        if (timer4 != null) {
+            timer4.stop();
+        }
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -389,13 +390,9 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer1 = new Timer(delay, new  
+                timer1 = new Timer(delay, new ActionListener() {
 
-                      ActionListener( ) {
-
-                            
-                           
-                            public void actionPerformed(ActionEvent e) {
+                    public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
@@ -449,13 +446,9 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer2 = new Timer(delay, new  
+                timer2 = new Timer(delay, new ActionListener() {
 
-                      ActionListener( ) {
-
-                            
-                           
-                            public void actionPerformed(ActionEvent e) {
+                    public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
@@ -484,7 +477,7 @@ public class DesktopView extends FrameView {
                                 btnAlarma.setAction(actionMap.get("alertaInicioTareaTardio"));
                                 btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
                                 btnAlarma.setText("");
-                                btnAlarma.putClientProperty("titulo", "Alerta Stock Minimo");
+                                btnAlarma.putClientProperty("titulo", "Alerta Inicio Tarea Tardio");
                                 btnAlarma.putClientProperty("cuerpo", "[" +
                                         fechaFormatter.format(new Date()) + "]" +
                                         "\nSe detectaron inicios tardios en las siguientes maquinas:" +
@@ -511,13 +504,9 @@ public class DesktopView extends FrameView {
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
                 delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
-                timer3 = new Timer(delay, new  
+                timer3 = new Timer(delay, new ActionListener() {
 
-                      ActionListener( ) {
-
-                            
-                           
-                            public void actionPerformed(ActionEvent e) {
+                    public void actionPerformed(ActionEvent e) {
 
                         ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
                         ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
@@ -546,7 +535,7 @@ public class DesktopView extends FrameView {
                                 btnAlarma.setAction(actionMap.get("alertaFinTareaTardio"));
                                 btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
                                 btnAlarma.setText("");
-                                btnAlarma.putClientProperty("titulo", "Alerta Stock Minimo");
+                                btnAlarma.putClientProperty("titulo", "Alerta Fin Tarea Tardio");
                                 btnAlarma.putClientProperty("cuerpo", "[" +
                                         fechaFormatter.format(new Date()) + "]" +
                                         "\nSe detectaron fines tardios en las siguientes maquinas:" +
@@ -562,6 +551,60 @@ public class DesktopView extends FrameView {
                 });
                 timer3.setRepeats(true);
                 timer3.start();
+            }
+            parametros = new HashMap();
+            parametros.put("pDescripcion", "TIMER ALERTA MANTENIMIENTO");
+            parametros.put("pGrupoMail", "ALERTA MANTENIMIENTO");
+            parametros.put("pIdUsuario", DesktopApp.getApplication().getUsuarioLogueado().getIdUsuario());
+            parametros.put("pJoinGruposMails", true);
+            parametros.put("pJoinUsuarios", true);
+            mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
+            if (!mails.isEmpty()) {
+                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                timer4 = new Timer(delay, new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+
+                        ActionMap actionMap = Application.getInstance(DesktopApp.class).getContext().getActionMap(DesktopView.class, DesktopApp.getApplication().getDesktopView());
+                        ResourceMap resourceMap = Application.getInstance(DesktopApp.class).getContext().getResourceMap(DesktopView.class);
+                        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        StringBuffer detalle = new StringBuffer();
+                        HashMap parametros = new HashMap();
+                        parametros.put("pMantenimiento", true);
+                        ArrayList<MaquinasT> maquinasList = (ArrayList<MaquinasT>) DesktopApp.getApplication().getMaquinasT(parametros);
+                        if (!maquinasList.isEmpty()) {
+                            for (MaquinasT maquinaT : maquinasList) {
+                                detalle.append("\n" + maquinaT.getDescripcion());
+                            }
+
+                            Boolean incluido = false;
+                            for (int i = 0; i < jToolBar.getComponents().length; i++) {
+                                Component component = jToolBar.getComponents()[i];
+                                if (component.getName().equals("ALERTAMANTENIMIENTO")) {
+                                    incluido = true;
+                                }
+                            }
+                            if (!incluido) {
+                                JButton btnAlarma = new JButton();
+                                btnAlarma.setAction(actionMap.get("alertaMantenimiento"));
+                                btnAlarma.setIcon(resourceMap.getIcon("jButtonToolBar.icon")); // NOI18N
+                                btnAlarma.setText("");
+                                btnAlarma.putClientProperty("titulo", "Alerta Mantenimiento");
+                                btnAlarma.putClientProperty("cuerpo", "[" +
+                                        fechaFormatter.format(new Date()) + "]" +
+                                        "\nEs necesario mantenimiento en las siguientes maquinas:" +
+                                        detalle);
+                                btnAlarma.setToolTipText("ALERTA MANTENIMIENTO");
+                                btnAlarma.setName("ALERTAMANTENIMIENTO");
+
+                                jToolBar.add(btnAlarma);
+
+                            }
+                        }
+                    }
+                });
+                timer4.setRepeats(true);
+                timer4.start();
             }
         }
     }
@@ -579,6 +622,11 @@ public class DesktopView extends FrameView {
     @Action
     public void alertaFinTareaTardio() {
         alerta("ALERTAFINTAREATARDIO");
+    }
+
+    @Action
+    public void alertaMantenimiento() {
+        alerta("ALERTAMANTENIMIENTO");
     }
 
     /**
@@ -637,10 +685,10 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showReporteUsuarios() {
-            HashMap parametros = new HashMap();
+        HashMap parametros = new HashMap();
         parametros.put("pduke", "C:\\Logos\\Duke.gif");
         ResourceMap resourceMap = getResourceMap();
-        parametros.put("pimagen",new ImageIcon(resourceMap.getImageIcon("pimagen").getImage()));
+        parametros.put("pimagen", new ImageIcon(resourceMap.getImageIcon("pimagen").getImage()));
         JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Usuarios");
@@ -660,14 +708,6 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showReporteProduccion() {
-//        HashMap parametros = new HashMap();
-//        parametros.put("pduke", "C:\\Logos\\Duke.gif");
-//        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
-//
-//        JasperPrint jp = DesktopApp.getApplication().getReporte("produccion", parametros);
-//        JasperViewer jv = new JasperViewer(jp, false);
-//        jv.setTitle("Reporte de Produccion");
-//        jv.setVisible(true);
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProduccion", "Carga de parametros para el reporte Produccion", padre);
     }
 
@@ -684,6 +724,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showReporteDesviosInicio() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteDesvioIni", "Carga de parametros para el reporte de Desfasajes", padre);
+    }
+
+    @Action
+    public Task showMantenimiento() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMMantenimientos", "ABM Mantenimientos", padre);
     }
 
     @Action

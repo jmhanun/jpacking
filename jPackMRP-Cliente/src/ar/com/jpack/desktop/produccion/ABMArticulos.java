@@ -58,44 +58,48 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         } else {
             btnSeleccionar.setEnabled(true);
         }
-
-
     }
 
     @Action
     public void eliminar() {
+        JOptionPane.showInternalMessageDialog(this, "eliminar");
     }
 
     @Action
     public void modificar() {
+        JOptionPane.showInternalMessageDialog(this, "modificar");
     }
 
     @Action
     public void agregar() {
+        JOptionPane.showInternalMessageDialog(this, "agregar");
     }
 
     @Action
     public void seleccionar() {
-        if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
+        if (getDto() != null) {
+            if (getDto().getIdArticulo() != null) {
+                if (tblArticulos.getSelectedRow() != - 1) {
 
-            if (tblArticulos.getSelectedRow() != - 1) {
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
+                        ArticulosT art = getDto();
+                        ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
 
-                ArticulosT art = getDto();
-                ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
+                        ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+                        ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
 
+                        ((RegistrarRemito) getPadre()).agregarDetalle(((DetalleRemitosT) getPadre().getDto()));
 
-                ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
-                ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
-
-
-                ((RegistrarRemito) getPadre()).agregarDetalle(((DetalleRemitosT) getPadre().getDto()));
-
-
-
-                cancelar();
+                        cancelar();
+                    }
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+                }
             } else {
                 JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
             }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
         }
     }
 
@@ -110,6 +114,39 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
     @Action
     public void buscar() {
+        HashMap parametros = new HashMap();
+        if (!txtCodigoBusqueda.getText().isEmpty()) {
+            parametros.put("pCodigo", txtCodigoBusqueda.getText());
+        }
+        if (chkFinal.isSelected()) {
+            parametros.put("pFinal", booleanToString(chkFinal.isSelected()));
+        }
+        if (chkImprimible.isSelected()) {
+            parametros.put("pImprimible", booleanToString(chkImprimible.isSelected()));
+        }
+        setListDto((ArrayList<ArticulosT>) DesktopApp.getApplication().getArticulosT(parametros));
+        tableModel = new ArticulosTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        tblArticulos.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblArticulos.setRowSorter(sorter);
+
+        if ((btnSeleccionar.isEnabled()) && (getListDto().size() == 1)) {
+            tblArticulos.setRowSelectionInterval(0, 0);
+            setDto((ArticulosT) tableModel.getRow(sorter.convertRowIndexToModel(tblArticulos.getSelectedRow())));
+            cambiarArticuloT();
+            seleccionar();
+        }
     }
 
     public void cambiarArticuloT() {
@@ -121,6 +158,20 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         btnAgregar.setEnabled(!valor);
         btnEliminar.setEnabled(!valor);
         btnModificar.setEnabled(!valor);
+    }
+
+    public void habilitarChkFinal(boolean habilitado, boolean valor) {
+        chkFinal.setSelected(valor);
+        chkFinal.setEnabled(habilitado);
+
+    }
+
+    public String booleanToString(Boolean valor) {
+        if (valor) {
+            return "S";
+        } else {
+            return "N";
+        }
     }
 
     /** This method is called from within the constructor to
@@ -145,6 +196,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         btnModificar = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
+        chkImprimible = new javax.swing.JCheckBox();
+        chkFinal = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
 
         setClosable(true);
@@ -212,6 +265,12 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
         btnAgregar.setName("btnAgregar"); // NOI18N
 
+        chkImprimible.setText(resourceMap.getString("chkImprimible.text")); // NOI18N
+        chkImprimible.setName("chkImprimible"); // NOI18N
+
+        chkFinal.setText(resourceMap.getString("chkFinal.text")); // NOI18N
+        chkFinal.setName("chkFinal"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -222,11 +281,6 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
@@ -235,9 +289,23 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(chkImprimible)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkFinal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                                .addComponent(btnBuscar))
+                            .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {chkFinal, chkImprimible});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -246,11 +314,15 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                     .addComponent(jLabel1)
                     .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBuscar)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(chkImprimible)
+                        .addComponent(chkFinal)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -273,7 +345,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 281, Short.MAX_VALUE)
+            .addGap(0, 289, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -282,11 +354,11 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
         );
 
         pack();
@@ -319,6 +391,8 @@ private void tblArticulosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JCheckBox chkFinal;
+    private javax.swing.JCheckBox chkImprimible;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

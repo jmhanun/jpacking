@@ -19,10 +19,12 @@ import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
 import ar.com.jpack.negocio.FeriadosFacadeRemote;
 import ar.com.jpack.negocio.MailsFacadeRemote;
+import ar.com.jpack.negocio.MantenimientoFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.negocio.StockFacadeRemote;
 import ar.com.jpack.negocio.TiposdesviosFacadeRemote;
+import ar.com.jpack.negocio.TiposserviciosFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
@@ -34,6 +36,7 @@ import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.FeriadosT;
 import ar.com.jpack.transferencia.MailsT;
+import ar.com.jpack.transferencia.MantenimientoT;
 import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.RemitosT;
@@ -44,6 +47,7 @@ import ar.com.jpack.transferencia.TiposComprobantesT;
 import ar.com.jpack.transferencia.TiposDesviosT;
 import ar.com.jpack.transferencia.TiposDocumentoT;
 import ar.com.jpack.transferencia.TiposIvaT;
+import ar.com.jpack.transferencia.TiposServiciosT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
 import ar.com.jpack.transferencia.UsuariosT;
 import java.io.IOException;
@@ -124,6 +128,8 @@ public class DesktopApp extends SingleFrameApplication {
     }
     private TiposdesviosFacadeRemote tiposDesviosFacade;
     private FeriadosFacadeRemote feriadosFacade;
+    private MantenimientoFacadeRemote mantenimientoFacade;
+    private TiposserviciosFacadeRemote tiposServiciosFacade;
 
     public void sendSSLMessage(ArrayList<String> recipients, String subject,
             String message) {
@@ -598,6 +604,16 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    /**
+     * Obtiene la lista de Maquinas filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdMaquina</b>  filtra por 'eq' idMaquina (Integer) <br>
+     * <b>pMantenimiento</b>  filtra si horasUso >= horasMantenimiento<br>
+     * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
+     * @return devuelve la lista de los Maquinas que cumplan con el filtro
+     */
     public List<MaquinasT> getMaquinasT(HashMap parametros) {
         try {
             maquinasFacade = (MaquinasFacadeRemote) lookUp("ar.com.jpack.negocio.MaquinasFacadeRemote");
@@ -609,6 +625,16 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+//    public List<MaquinasT> getMaquinasMantenimiento() {
+//        try {
+//            maquinasFacade = (MaquinasFacadeRemote) lookUp("ar.com.jpack.negocio.MaquinasFacadeRemote");
+//            return maquinasFacade.getMaquinasMantenimiento();
+//        } catch (NamingException ex) {
+//            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+//            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        }
+//    }
     /**
      * Obtiene la lista de Tipos de comprobantes filtrados por el Hasmap
      * @param parametros <br>
@@ -653,12 +679,35 @@ public class DesktopApp extends SingleFrameApplication {
      * <b>pIdArticulos</b>   filtra por 'eq' idArticulo (Integer) <br>
      * <b>pCodigo</b>        filtra por 'like AnyWhere' codigo (String) <br>
      * <b>pDescripcion</b>   filtra por 'like AnyWhere' descripcion (String) <br>
+     * <b>pFinal</b>   filtra por 'eq' articuloFinal (String) <br>
+     * <b>pImprimible</b>   filtra por 'eq' imprimible (String) <br>
      * @return devuelve la lista de los Articulos que cumplan con el filtro <br>
      */
     public List<ArticulosT> getArticulosT(HashMap parametros) {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
             return articulosFacade.getArticulosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de Mantenimientos filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdMantenimiento</b>  filtra por 'eq' idMantenimiento (Integer) <br>
+     * <b>pFechaFinNull</b>  filtra por 'isNull' fechaFin (Integer) <br>
+     * <b>pJoinMaquinas</b>  obliga a Joinear con Maquinas<br>
+     * <b>pJoinTiposServicios</b>  obliga a Joinear con TiposServicios<br>
+     * @return devuelve la lista de los Mantenimientos que cumplan con el filtro
+     */
+    public List<MantenimientoT> getMantenimientoT(HashMap parametros) {
+        try {
+            mantenimientoFacade = (MantenimientoFacadeRemote) lookUp("ar.com.jpack.negocio.MantenimientoFacadeRemote");
+            return mantenimientoFacade.getMantenimientoT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -682,6 +731,24 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             estadosFacade = (EstadosFacadeRemote) lookUp("ar.com.jpack.negocio.EstadosFacadeRemote");
             return estadosFacade.getEstadosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene la lista de TiposServicios filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdTiposServicios</b>  filtra por 'eq' idTiposServicios(Integer) <br>
+     * @return devuelve la lista de los TiposServicios que cumplan con el filtro
+     */
+    public List<TiposServiciosT> getTiposServiciosT(HashMap parametros) {
+        try {
+            tiposServiciosFacade = (TiposserviciosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposserviciosFacadeRemote");
+            return tiposServiciosFacade.getTiposServiciosT(parametros);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
