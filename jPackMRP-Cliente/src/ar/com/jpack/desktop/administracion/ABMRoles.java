@@ -539,7 +539,7 @@ private void rolesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
 
 private void txtRolKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRolKeyReleased
 
-    getDto().setRol(String.valueOf(txtRol.getText()).toUpperCase());
+    getDto().setRol(String.valueOf(txtRol.getText()));
     setModificado(true);
 
 }//GEN-LAST:event_txtRolKeyReleased
