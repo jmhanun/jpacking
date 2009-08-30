@@ -48,4 +48,10 @@ public class GruposMailsT implements Serializable {
     public void setMailsCollection(Collection<MailsT> mailsCollection) {
         this.mailsCollection = mailsCollection;
     }
+
+    @Override
+    public String toString() {
+        return this.getGrupoMail();
+    }
+
 }
