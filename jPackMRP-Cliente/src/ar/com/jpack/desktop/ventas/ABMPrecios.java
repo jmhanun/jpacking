@@ -4,19 +4,18 @@
  */
 
 /*
- * ABMMaquinas.java
+ * ABMPrecios.java
  *
- * Created on 25-ago-2009, 20:09:26
+ * Created on 27-ago-2009, 20:18:42
  */
 
-package ar.com.jpack.desktop.produccion;
+package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
-import ar.com.jpack.helpers.tablemodels.MaquinasTableModel;
-import ar.com.jpack.transferencia.MaquinasT;
-
+import ar.com.jpack.helpers.tablemodels.PreciosTableModel;
+import ar.com.jpack.transferencia.PreciosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,21 +33,22 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMMaquinas extends CustomInternalFrame {
+public class ABMPrecios extends CustomInternalFrame {
 
-    /** Creates new form ABMMaquinas */
-    public ABMMaquinas() {
-        super(new MaquinasT());
+    /** Creates new form ABMPrecios */
+    public ABMPrecios() {
+        super(new PreciosT());
         initComponents();
         HashMap parametros = new HashMap();
-        parametros.put("pJoinEstados", true);
-        parametros.put("pJoinActividades", true);
-        List<MaquinasT> nuevo = DesktopApp.getApplication().getMaquinasT(parametros);
-        setListDto((ArrayList<MaquinasT>) nuevo);
+        parametros.put("pJoinListasPrecios", true);
+        parametros.put("pJoinArticulos", true);
+        parametros.put("pJoinUsuarios", true);
+        List<PreciosT> nuevo = DesktopApp.getApplication().getPreciosT(parametros);
+        setListDto((ArrayList<PreciosT>) nuevo);
 
-        tableModel = new MaquinasTableModel(columnNames, this.getListDto());
+        tableModel = new PreciosTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
-        tblMaquinas.setModel(tableModel);
+        tblPrecios.setModel(tableModel);
 
         sorter = new TableRowSorter<TableModel>(tableModel) {
 
@@ -60,15 +60,13 @@ public class ABMMaquinas extends CustomInternalFrame {
                 setRowFilter(f);
             }
         };
-        tblMaquinas.setRowSorter(sorter);
+        tblPrecios.setRowSorter(sorter);
 
         setModificado(false);
         setNuevo(false);
-        txtDescripcion.setEnabled(false);
-        cmbEstado.setEnabled(false);
-        cmbActividad.setEnabled(false);
-        txtHorasMantenimiento.setEnabled(false);
-        txtHorasUso.setEnabled(false);
+        cmbListaPrecios.setEnabled(false);
+        txtArticulo.setEnabled(false);
+        txtPrecio.setEnabled(false);
 
         if (getPadre() == null) {
             btnSeleccionar.setEnabled(false);
@@ -76,7 +74,7 @@ public class ABMMaquinas extends CustomInternalFrame {
 
         parametros = new HashMap();
 
-        tblMaquinas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblPrecios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Action(enabledProperty = "modificado")
@@ -96,11 +94,9 @@ public class ABMMaquinas extends CustomInternalFrame {
 
     @Action
     public void modificar() {
-        txtDescripcion.setEnabled(true);
-        cmbEstado.setEnabled(true);
-        cmbActividad.setEnabled(true);
-        txtHorasMantenimiento.setEnabled(true);
-        txtHorasUso.setEnabled(true);
+        cmbListaPrecios.setEnabled(true);
+        txtArticulo.setEnabled(true);
+        txtPrecio.setEnabled(true);
     }
 
     @Action
@@ -113,10 +109,8 @@ public class ABMMaquinas extends CustomInternalFrame {
         try {
             this.setClosed(true);
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(ABMMaquinas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ABMPrecios.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-
     }
 
     /** This method is called from within the constructor to
@@ -131,18 +125,14 @@ public class ABMMaquinas extends CustomInternalFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblMaquinas = new javax.swing.JTable();
+        tblPrecios = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
-        cmbEstado = new javax.swing.JComboBox();
-        cmbActividad = new javax.swing.JComboBox();
-        txtHorasMantenimiento = new javax.swing.JTextField();
-        txtHorasUso = new javax.swing.JTextField();
+        txtArticulo = new javax.swing.JTextField();
+        cmbListaPrecios = new javax.swing.JComboBox();
+        txtPrecio = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
@@ -163,7 +153,7 @@ public class ABMMaquinas extends CustomInternalFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        tblMaquinas.setModel(new javax.swing.table.DefaultTableModel(
+        tblPrecios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -174,8 +164,8 @@ public class ABMMaquinas extends CustomInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblMaquinas.setName("tblMaquinas"); // NOI18N
-        jScrollPane1.setViewportView(tblMaquinas);
+        tblPrecios.setName("tblPrecios"); // NOI18N
+        jScrollPane1.setViewportView(tblPrecios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -185,10 +175,10 @@ public class ABMMaquinas extends CustomInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
         );
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMMaquinas.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMPrecios.class);
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
 
         jPanel2.setName("jPanel2"); // NOI18N
@@ -202,28 +192,16 @@ public class ABMMaquinas extends CustomInternalFrame {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
-        jLabel4.setName("jLabel4"); // NOI18N
+        txtArticulo.setText(resourceMap.getString("txtArticulo.text")); // NOI18N
+        txtArticulo.setName("txtArticulo"); // NOI18N
 
-        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
+        cmbListaPrecios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbListaPrecios.setName("cmbListaPrecios"); // NOI18N
 
-        txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
-        txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtPrecio.setText(resourceMap.getString("txtPrecio.text")); // NOI18N
+        txtPrecio.setName("txtPrecio"); // NOI18N
 
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbEstado.setName("cmbEstado"); // NOI18N
-
-        cmbActividad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbActividad.setName("cmbActividad"); // NOI18N
-
-        txtHorasMantenimiento.setText(resourceMap.getString("txtHorasMantenimiento.text")); // NOI18N
-        txtHorasMantenimiento.setName("txtHorasMantenimiento"); // NOI18N
-
-        txtHorasUso.setText(resourceMap.getString("txtHorasUso.text")); // NOI18N
-        txtHorasUso.setName("txtHorasUso"); // NOI18N
-
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMMaquinas.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMPrecios.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
@@ -237,20 +215,19 @@ public class ABMMaquinas extends CustomInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                            .addComponent(cmbEstado, 0, 349, Short.MAX_VALUE)
-                            .addComponent(cmbActividad, 0, 349, Short.MAX_VALUE)
-                            .addComponent(txtHorasMantenimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                            .addComponent(txtHorasUso, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
-                    .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                            .addComponent(cmbListaPrecios, 0, 414, Short.MAX_VALUE)
+                            .addComponent(txtArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(389, 389, 389)
+                        .addComponent(btnAplicar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,26 +235,18 @@ public class ABMMaquinas extends CustomInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbListaPrecios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cmbActividad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtHorasMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtHorasUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -306,7 +275,7 @@ public class ABMMaquinas extends CustomInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
@@ -322,8 +291,8 @@ public class ABMMaquinas extends CustomInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -331,7 +300,7 @@ public class ABMMaquinas extends CustomInternalFrame {
                     .addComponent(btnModificar)
                     .addComponent(btnSeleccionar)
                     .addComponent(btnAgregar))
-                .addGap(15, 15, 15))
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -356,26 +325,21 @@ public class ABMMaquinas extends CustomInternalFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JComboBox cmbActividad;
-    private javax.swing.JComboBox cmbEstado;
+    private javax.swing.JComboBox cmbListaPrecios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable tblMaquinas;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtHorasMantenimiento;
-    private javax.swing.JTextField txtHorasUso;
+    private javax.swing.JTable tblPrecios;
+    private javax.swing.JTextField txtArticulo;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
-        "Id", "Descripcion", "Estado", "Actividad", "Horas Mantenimiento"
-      , "Horas Uso"
+        "Id", "Lista", "Articulo", "Precio", "Usuario", "Fecha Modificacion"
     };
-    protected MaquinasTableModel tableModel;
+    protected PreciosTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
 }

@@ -29,7 +29,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jTabbedPane1" alignment="0" pref="479" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="1"/>
               <Component id="btnAgregar" pref="87" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="btnSeleccionar" pref="87" max="32767" attributes="0"/>
@@ -37,17 +37,17 @@
               <Component id="btnModificar" pref="87" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="btnBorrar" pref="87" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="btnCancelar" pref="87" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnCancelar" min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="249" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" min="-2" pref="240" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
                   <Component id="btnSeleccionar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -88,7 +88,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="221" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="212" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -103,7 +103,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblMaquinas">
+                <Component class="javax.swing.JTable" name="tblGruposMails">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
@@ -113,7 +113,7 @@
                         <Column editable="true" title="Title 4" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="tblMaquinas" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="tblGruposMails" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -126,7 +126,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Detalles">
+              <JTabbedPaneConstraints tabName="Detalle">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="jPanel2.TabConstraints.tabTitle"/>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -138,22 +138,10 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtDescripcion" alignment="0" pref="349" max="32767" attributes="0"/>
-                                  <Component id="cmbEstado" alignment="0" pref="349" max="32767" attributes="0"/>
-                                  <Component id="cmbActividad" alignment="0" pref="349" max="32767" attributes="0"/>
-                                  <Component id="txtHorasMantenimiento" alignment="0" pref="349" max="32767" attributes="0"/>
-                                  <Component id="txtHorasUso" alignment="0" pref="349" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="txtGrupo" pref="421" max="32767" attributes="0"/>
                           </Group>
                           <Component id="btnAplicar" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -167,31 +155,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbEstado" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbActividad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtHorasMantenimiento" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtHorasUso" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAplicar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <EmptySpace pref="152" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -203,78 +171,16 @@
                 <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel2">
+            <Component class="javax.swing.JTextField" name="txtGrupo">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
-                <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel3">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel3.text"/>
-                <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
-                <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel5.text"/>
-                <Property name="name" type="java.lang.String" value="jLabel5" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtDescripcion">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtDescripcion.text"/>
-                <Property name="name" type="java.lang.String" value="txtDescripcion" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cmbEstado">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
-                </Property>
-                <Property name="name" type="java.lang.String" value="cmbEstado" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cmbActividad">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
-                </Property>
-                <Property name="name" type="java.lang.String" value="cmbActividad" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtHorasMantenimiento">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtHorasMantenimiento.text"/>
-                <Property name="name" type="java.lang.String" value="txtHorasMantenimiento" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtHorasUso">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtHorasUso.text"/>
-                <Property name="name" type="java.lang.String" value="txtHorasUso" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="txtGrupo.text"/>
+                <Property name="name" type="java.lang.String" value="txtGrupo" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnAplicar">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="aplicar" methodName="aplicar"/>
+                  <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="aplicar" methodName="aplicar"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="btnAplicar.text"/>
                 <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
@@ -287,7 +193,7 @@
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="cancelar" methodName="cancelar"/>
+          <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="cancelar" methodName="cancelar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnCancelar.text"/>
         <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
@@ -296,7 +202,7 @@
     <Component class="javax.swing.JButton" name="btnBorrar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="borrar" methodName="borrar"/>
+          <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="borrar" methodName="borrar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnBorrar.text"/>
         <Property name="name" type="java.lang.String" value="btnBorrar" noResource="true"/>
@@ -305,7 +211,7 @@
     <Component class="javax.swing.JButton" name="btnModificar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="modificar" methodName="modificar"/>
+          <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="modificar" methodName="modificar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnModificar.text"/>
         <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
@@ -314,7 +220,7 @@
     <Component class="javax.swing.JButton" name="btnSeleccionar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="seleccionar" methodName="seleccionar"/>
+          <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="seleccionar" methodName="seleccionar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnSeleccionar.text"/>
         <Property name="name" type="java.lang.String" value="btnSeleccionar" noResource="true"/>
@@ -323,7 +229,7 @@
     <Component class="javax.swing.JButton" name="btnAgregar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMMaquinas" id="agregar" methodName="agregar"/>
+          <action class="ar.com.jpack.desktop.administracion.ABMGruposMails" id="agregar" methodName="agregar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnAgregar.text"/>
         <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>

@@ -634,17 +634,6 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-//    public List<MaquinasT> getMaquinasMantenimiento() {
-//        try {
-//            maquinasFacade = (MaquinasFacadeRemote) lookUp("ar.com.jpack.negocio.MaquinasFacadeRemote");
-//            return maquinasFacade.getMaquinasMantenimiento();
-//        } catch (NamingException ex) {
-//            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
-//            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
-//            return null;
-//        }
-//    }
-
     public List<PreciosT> getPreciosT(HashMap parametros) {
         try {
             preciosFacade = (PreciosFacadeRemote) lookUp("ar.com.jpack.negocio.PreciosFacadeRemote");
