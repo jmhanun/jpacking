@@ -8,6 +8,7 @@ import ar.com.jpack.persistencia.Mantenimiento;
 import ar.com.jpack.transferencia.MantenimientoT;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -76,5 +77,22 @@ public class MantenimientoFacade implements MantenimientoFacadeRemote {
         }
         mantenimientoList = mantenimientoCritearia.list();
         return mantenimientoList;
+    }
+
+    public MantenimientoT updateMantenimientoT(MantenimientoT dto) {
+        Mantenimiento mantenimiento = (Mantenimiento) DozerUtil.getDozerMapper(false).map(dto, Mantenimiento.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (mantenimiento.getIdMantenimiento() != null) {
+            HashMap parametros = new HashMap();
+            parametros.put("pIdMantenimiento", mantenimiento.getIdMantenimiento());
+            em.merge(mantenimiento);
+        } else {
+            mantenimiento.setFechaInicio(new Date());
+            em.persist(mantenimiento);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdMantenimiento", mantenimiento.getIdMantenimiento());
+        return getMantenimientoT(parametros).get(0);
     }
 }

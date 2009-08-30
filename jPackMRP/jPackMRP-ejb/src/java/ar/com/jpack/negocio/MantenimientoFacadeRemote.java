@@ -40,4 +40,6 @@ public interface MantenimientoFacadeRemote {
      * @return devuelve la lista de los Mantenimientos que cumplan con el filtro
      */
     public List<Mantenimiento> getMantenimiento(HashMap parametros);
+
+    public MantenimientoT updateMantenimientoT(MantenimientoT dto);
 }
