@@ -18,10 +18,13 @@ import ar.com.jpack.negocio.UnidadesmedidaFacadeRemote;
 import ar.com.jpack.negocio.UsuariosFacadeRemote;
 import ar.com.jpack.negocio.ActividadesFacadeRemote;
 import ar.com.jpack.negocio.FeriadosFacadeRemote;
+import ar.com.jpack.negocio.GruposmailsFacadeRemote;
+import ar.com.jpack.negocio.ListaspreciosFacadeRemote;
 import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MantenimientoFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
+import ar.com.jpack.negocio.PreciosFacadeRemote;
 import ar.com.jpack.negocio.StockFacadeRemote;
 import ar.com.jpack.negocio.TiposdesviosFacadeRemote;
 import ar.com.jpack.negocio.TiposserviciosFacadeRemote;
@@ -35,10 +38,13 @@ import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
 import ar.com.jpack.transferencia.EstadosT;
 import ar.com.jpack.transferencia.FeriadosT;
+import ar.com.jpack.transferencia.GruposMailsT;
+import ar.com.jpack.transferencia.ListasPreciosT;
 import ar.com.jpack.transferencia.MailsT;
 import ar.com.jpack.transferencia.MantenimientoT;
 import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
+import ar.com.jpack.transferencia.PreciosT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SetupT;
@@ -130,6 +136,9 @@ public class DesktopApp extends SingleFrameApplication {
     private FeriadosFacadeRemote feriadosFacade;
     private MantenimientoFacadeRemote mantenimientoFacade;
     private TiposserviciosFacadeRemote tiposServiciosFacade;
+    private PreciosFacadeRemote preciosFacade;
+    private ListaspreciosFacadeRemote listaspreciosFacade;
+    private GruposmailsFacadeRemote gruposmailsFacade;
 
     public void sendSSLMessage(ArrayList<String> recipients, String subject,
             String message) {
@@ -635,6 +644,40 @@ public class DesktopApp extends SingleFrameApplication {
 //            return null;
 //        }
 //    }
+
+    public List<PreciosT> getPreciosT(HashMap parametros) {
+        try {
+            preciosFacade = (PreciosFacadeRemote) lookUp("ar.com.jpack.negocio.PreciosFacadeRemote");
+            return preciosFacade.getPreciosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<GruposMailsT> getGruposMailsT(HashMap parametros) {
+        try {
+            gruposmailsFacade = (GruposmailsFacadeRemote) lookUp("ar.com.jpack.negocio.GruposmailsFacadeRemote");
+            return gruposmailsFacade.getGruposMailsT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public List<ListasPreciosT> getListasPreciosT(HashMap parametros) {
+        try {
+            listaspreciosFacade = (ListaspreciosFacadeRemote) lookUp("ar.com.jpack.negocio.ListaspreciosFacadeRemote");
+            return listaspreciosFacade.getListasPreciosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Obtiene la lista de Tipos de comprobantes filtrados por el Hasmap
      * @param parametros <br>
