@@ -4,9 +4,9 @@
  */
 
 /*
- * ABMTiposDesvios.java
+ * ABMTiposServicios.java
  *
- * Created on 24-ago-2009, 19:37:33
+ * Created on 30-ago-2009, 17:45:28
  */
 
 package ar.com.jpack.desktop.produccion;
@@ -14,8 +14,8 @@ package ar.com.jpack.desktop.produccion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
-import ar.com.jpack.helpers.tablemodels.TiposDesviosTableModel;
-import ar.com.jpack.transferencia.TiposDesviosT;
+import ar.com.jpack.helpers.tablemodels.TiposServiciosTableModel;
+import ar.com.jpack.transferencia.TiposServiciosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,19 +33,19 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
+public class ABMTiposServicios extends CustomInternalFrame {
 
-    /** Creates new form ABMTiposDesvios */
-    public ABMTiposDesvios() {
-        super(new TiposDesviosT());
+    /** Creates new form ABMTiposServicios */
+    public ABMTiposServicios() {
+        super(new TiposServiciosT());
         initComponents();
         HashMap parametros = new HashMap();
-        List<TiposDesviosT> nuevo = DesktopApp.getApplication().getTiposDesviosT(parametros);
-        setListDto((ArrayList<TiposDesviosT>) nuevo);
+        List<TiposServiciosT> nuevo = DesktopApp.getApplication().getTiposServiciosT(parametros);
+        setListDto((ArrayList<TiposServiciosT>) nuevo);
 
-        tableModel = new TiposDesviosTableModel(columnNames, this.getListDto());
+        tableModel = new TiposServiciosTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
-        tiposDesviosTable.setModel(tableModel);
+        tblTiposServicios.setModel(tableModel);
 
         sorter = new TableRowSorter<TableModel>(tableModel) {
 
@@ -57,11 +57,11 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                 setRowFilter(f);
             }
         };
-        tiposDesviosTable.setRowSorter(sorter);
+        tblTiposServicios.setRowSorter(sorter);
 
         setModificado(false);
         setNuevo(false);
-        txtMotivo.setEnabled(false);
+        txtDescripcion.setEnabled(false);
 
         if (getPadre() == null) {
             btnSeleccionar.setEnabled(false);
@@ -69,7 +69,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
         parametros = new HashMap();
 
-        tiposDesviosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblTiposServicios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Action(enabledProperty = "modificado")
@@ -89,7 +89,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
     @Action
     public void modificar() {
-        txtMotivo.setEnabled(true);
+        txtDescripcion.setEnabled(true);
     }
 
     @Action
@@ -102,7 +102,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         try {
             this.setClosed(true);
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(ABMTiposDesvios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ABMTiposServicios.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -119,16 +119,16 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tiposDesviosTable = new javax.swing.JTable();
+        tblTiposServicios = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtMotivo = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnSeleccionar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -136,6 +136,23 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         setMaximizable(true);
         setResizable(true);
         setName("Form"); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
@@ -143,7 +160,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        tiposDesviosTable.setModel(new javax.swing.table.DefaultTableModel(
+        tblTiposServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -154,26 +171,23 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tiposDesviosTable.setName("tiposDesviosTable"); // NOI18N
-        jScrollPane1.setViewportView(tiposDesviosTable);
+        tblTiposServicios.setName("tblTiposServicios"); // NOI18N
+        jScrollPane1.setViewportView(tblTiposServicios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
-                .addGap(11, 11, 11))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addGap(7, 7, 7))
         );
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMTiposDesvios.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMTiposServicios.class);
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
 
         jPanel2.setName("jPanel2"); // NOI18N
@@ -181,10 +195,10 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtMotivo.setText(resourceMap.getString("txtMotivo.text")); // NOI18N
-        txtMotivo.setName("txtMotivo"); // NOI18N
+        txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
+        txtDescripcion.setName("txtDescripcion"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMTiposDesvios.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMTiposServicios.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
@@ -199,7 +213,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMotivo, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
                     .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -209,40 +223,40 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
 
-        btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
-        btnAgregar.setText(resourceMap.getString("btnAgregar.text")); // NOI18N
-        btnAgregar.setName("btnAgregar"); // NOI18N
-
-        btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
-        btnSeleccionar.setText(resourceMap.getString("btnSeleccionar.text")); // NOI18N
-        btnSeleccionar.setName("btnSeleccionar"); // NOI18N
-
-        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
-        btnModificar.setText(resourceMap.getString("btnModificar.text")); // NOI18N
-        btnModificar.setName("btnModificar"); // NOI18N
+        btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
+        btnCancelar.setText(resourceMap.getString("btnCancelar.text")); // NOI18N
+        btnCancelar.setName("btnCancelar"); // NOI18N
 
         btnBorrar.setAction(actionMap.get("borrar")); // NOI18N
         btnBorrar.setText(resourceMap.getString("btnBorrar.text")); // NOI18N
         btnBorrar.setName("btnBorrar"); // NOI18N
 
-        btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
-        btnCancelar.setText(resourceMap.getString("btnCancelar.text")); // NOI18N
-        btnCancelar.setName("btnCancelar"); // NOI18N
+        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
+        btnModificar.setText(resourceMap.getString("btnModificar.text")); // NOI18N
+        btnModificar.setName("btnModificar"); // NOI18N
+
+        btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
+        btnSeleccionar.setText(resourceMap.getString("btnSeleccionar.text")); // NOI18N
+        btnSeleccionar.setName("btnSeleccionar"); // NOI18N
+
+        btnAgregar.setAction(actionMap.get("agregar")); // NOI18N
+        btnAgregar.setText(resourceMap.getString("btnAgregar.text")); // NOI18N
+        btnAgregar.setName("btnAgregar"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,7 +272,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -266,11 +280,24 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                     .addComponent(btnModificar)
                     .addComponent(btnSeleccionar)
                     .addComponent(btnAgregar))
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+     if (isModificado() || isNuevo()) {
+        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+    } else {
+        dispose();
+    }
+    }//GEN-LAST:event_formInternalFrameClosing
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -285,12 +312,12 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable tiposDesviosTable;
-    private javax.swing.JTextField txtMotivo;
+    private javax.swing.JTable tblTiposServicios;
+    private javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
-        "Id", "Motivo"
+        "Id", "Descripcion"
     };
-    protected TiposDesviosTableModel tableModel;
+    protected TiposServiciosTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
 }

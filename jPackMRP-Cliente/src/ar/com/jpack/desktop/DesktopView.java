@@ -737,6 +737,16 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteMantenimientoMaquina() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMantenimientoMaquina", "Carga de parametros para el reporte de Mantenimiento por Maquina", padre);
+    }
+
+    @Action
+    public Task showReporteMantenimientoServicio() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMantenimientoServicio", "Carga de parametros para el reporte de Mantenimiento por Servicio", padre);
+    }
+
+    @Action
     public Task showReporteMotivosDesvios() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteMotivosDesvios", "Carga de parametros para el reporte de Motivos de Desvíos", padre);
     }
@@ -844,6 +854,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showTiposDesvios() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMTiposDesvios", "Tipos de Desvios", padre);
+    }
+
+    @Action
+    public Task showTiposServicios() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMTiposServicios", "Tipos de Servicios", padre);
     }
 
     @Action

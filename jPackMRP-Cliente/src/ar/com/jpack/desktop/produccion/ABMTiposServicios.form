@@ -12,6 +12,9 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameClosing" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
@@ -28,7 +31,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jTabbedPane1" alignment="0" pref="479" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="btnAgregar" pref="87" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -39,14 +42,14 @@
               <Component id="btnBorrar" pref="87" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="btnCancelar" pref="87" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="1"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="277" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" pref="235" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -55,7 +58,7 @@
                   <Component id="btnSeleccionar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -83,18 +86,14 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="454" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane1" alignment="1" pref="474" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="238" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="204" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -110,7 +109,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tiposDesviosTable">
+                <Component class="javax.swing.JTable" name="tblTiposServicios">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
@@ -120,7 +119,7 @@
                         <Column editable="true" title="Title 4" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="tiposDesviosTable" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="tblTiposServicios" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -133,7 +132,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Detalle">
+              <JTabbedPaneConstraints tabName="Detalles">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="jPanel2.TabConstraints.tabTitle"/>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -148,7 +147,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtMotivo" pref="418" max="32767" attributes="0"/>
+                              <Component id="txtDescripcion" pref="396" max="32767" attributes="0"/>
                           </Group>
                           <Component id="btnAplicar" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -162,11 +161,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtMotivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAplicar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="189" max="32767" attributes="0"/>
+                      <EmptySpace pref="147" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -178,16 +177,16 @@
                 <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtMotivo">
+            <Component class="javax.swing.JTextField" name="txtDescripcion">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtMotivo.text"/>
-                <Property name="name" type="java.lang.String" value="txtMotivo" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="txtDescripcion.text"/>
+                <Property name="name" type="java.lang.String" value="txtDescripcion" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnAplicar">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="aplicar" methodName="aplicar"/>
+                  <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="aplicar" methodName="aplicar"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="btnAplicar.text"/>
                 <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
@@ -197,49 +196,49 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnAgregar">
+    <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="agregar" methodName="agregar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="cancelar" methodName="cancelar"/>
         </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnAgregar.text"/>
-        <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnSeleccionar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="seleccionar" methodName="seleccionar"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnSeleccionar.text"/>
-        <Property name="name" type="java.lang.String" value="btnSeleccionar" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnModificar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="modificar" methodName="modificar"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnModificar.text"/>
-        <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="btnCancelar.text"/>
+        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnBorrar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="borrar" methodName="borrar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="borrar" methodName="borrar"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnBorrar.text"/>
         <Property name="name" type="java.lang.String" value="btnBorrar" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnCancelar">
+    <Component class="javax.swing.JButton" name="btnModificar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.ABMTiposDesvios" id="cancelar" methodName="cancelar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="modificar" methodName="modificar"/>
         </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnCancelar.text"/>
-        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="btnModificar.text"/>
+        <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSeleccionar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="seleccionar" methodName="seleccionar"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="btnSeleccionar.text"/>
+        <Property name="name" type="java.lang.String" value="btnSeleccionar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAgregar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMTiposServicios" id="agregar" methodName="agregar"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="btnAgregar.text"/>
+        <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
