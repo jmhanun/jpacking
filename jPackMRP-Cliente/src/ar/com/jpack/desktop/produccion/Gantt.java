@@ -51,7 +51,7 @@ public class Gantt extends ApplicationFrameJM {
         final CategoryPlot plot = (CategoryPlot) chart.getPlot();
         //      plot.getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
         final CategoryItemRenderer renderer = plot.getRenderer();
-        renderer.setSeriesPaint(0, Color.blue);
+        renderer.setSeriesPaint(0, Color.getHSBColor(0.125f, 1.0f, 0.8f));
 
         // add the chart to a panel...
         final ChartPanel chartPanel = new ChartPanel(chart);

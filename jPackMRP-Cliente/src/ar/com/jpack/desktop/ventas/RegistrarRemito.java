@@ -6,6 +6,7 @@
 package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.desktop.produccion.ABMArticulos;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
@@ -39,7 +40,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
+import org.jdesktop.application.Task;
 
 /**
  *
@@ -234,8 +238,10 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                     if (detalleTemporal.isEmpty()) {
                         remito.setFechaAcordada(remito.getFecha());
                         remito.setFechaEntrega(remito.getFecha());
-                        DesktopApp.getApplication().updateRemitosT(remito, getListDto());
+                        remito = DesktopApp.getApplication().updateRemitosT(remito, getListDto());
                         JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito exitosamente");
+                        imprimir().run();
+
                         cancelar();
                     } else {
                         //insertar detalleremitostemp
@@ -317,6 +323,10 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                                 DesktopApp.getApplication().sendSSLMessage(destinatarios, tituloMail, cuerpoMail.toString());
                             }
                             JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito y la orden de produccion exitosamente");
+
+//                            Reporte remito va aqui
+                            imprimir().run();
+
                             cancelar();
                         }
                     }
@@ -328,6 +338,48 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
             }
         } else {
             JOptionPane.showInternalMessageDialog(this, "No hay ningun item en el remito!");
+        }
+    }
+
+    @Action
+    public Task imprimir() {
+        return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
+    }
+
+    class Reporte extends Task<String, Void> {
+
+        String mensaje;
+        DesktopView view;
+
+        public Reporte(DesktopApp application, String mensaje) {
+            super(application);
+            this.mensaje = mensaje;
+            this.view = application.getDesktopView();
+        }
+
+        @Override
+        protected String doInBackground() throws Exception {
+            view.setStatusMessage(mensaje);
+            HashMap parametro = new HashMap();
+
+            parametro.put("premito", remito.getIdRemito());
+
+            System.out.println(parametro);
+
+            parametro.put("pduke", "C:\\Logos\\Duke.gif");
+            parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+            JasperPrint jp = DesktopApp.getApplication().getReporte("remito", parametro);
+            JasperViewer jv = new JasperViewer(jp, false);
+            jv.setTitle("Reporte de Remito");
+            jv.setVisible(true);
+            mensaje = "Reporte finalizado";
+            return mensaje;
+        }
+
+        @Override
+        protected void succeeded(String result) {
+            super.succeeded(result);
+            view.setStatusMessage(result);
         }
     }
 
@@ -477,7 +529,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                                 .addComponent(txtCuit, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
                             .addComponent(txtCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 47, Short.MAX_VALUE))
+                        .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -497,7 +549,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                 .addContainerGap()
                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -505,9 +557,9 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                             .addComponent(txtNumeroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+                    .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

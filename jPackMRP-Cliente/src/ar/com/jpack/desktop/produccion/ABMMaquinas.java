@@ -338,16 +338,6 @@ public class ABMMaquinas extends CustomInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private boolean modificado = false;
-    public boolean isModificado() {
-        return modificado;
-    }
-
-    public void setModificado(boolean b) {
-        boolean old = isModificado();
-        this.modificado = b;
-        firePropertyChange("modificado", old, isModificado());
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

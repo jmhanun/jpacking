@@ -8,7 +8,6 @@
  *
  * Created on 25-ago-2009, 16:06:39
  */
-
 package ar.com.jpack.desktop.administracion;
 
 import ar.com.jpack.desktop.DesktopApp;
@@ -33,7 +32,7 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMFeriados extends CustomInternalFrame {
+public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
 
     /** Creates new form ABMFeriados */
     public ABMFeriados() {
@@ -90,7 +89,12 @@ public class ABMFeriados extends CustomInternalFrame {
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
+        if (tableFeriados.getSelectedRow() != - 1) {
+            FeriadosT x = (FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow()));
+            DesktopApp.getApplication().deleteFeriadoT("B", x);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un feriado");
+        }
     }
 
     @Action
@@ -123,9 +127,9 @@ public class ABMFeriados extends CustomInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JTextField();
         txtMotivo = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
+        txtFecha = new com.toedter.calendar.JDateChooser();
         btnCancelar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -170,7 +174,7 @@ public class ABMFeriados extends CustomInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMFeriados.class);
@@ -184,9 +188,6 @@ public class ABMFeriados extends CustomInternalFrame {
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
-        txtFecha.setText(resourceMap.getString("txtFecha.text")); // NOI18N
-        txtFecha.setName("txtFecha"); // NOI18N
-
         txtMotivo.setText(resourceMap.getString("txtMotivo.text")); // NOI18N
         txtMotivo.setName("txtMotivo"); // NOI18N
 
@@ -194,6 +195,8 @@ public class ABMFeriados extends CustomInternalFrame {
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
+
+        txtFecha.setName("txtFecha"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -217,7 +220,7 @@ public class ABMFeriados extends CustomInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -226,7 +229,7 @@ public class ABMFeriados extends CustomInternalFrame {
                     .addComponent(txtMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -272,7 +275,7 @@ public class ABMFeriados extends CustomInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -285,8 +288,6 @@ public class ABMFeriados extends CustomInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
@@ -301,7 +302,7 @@ public class ABMFeriados extends CustomInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tableFeriados;
-    private javax.swing.JTextField txtFecha;
+    private com.toedter.calendar.JDateChooser txtFecha;
     private javax.swing.JTextField txtMotivo;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {

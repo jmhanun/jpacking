@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
@@ -45,10 +45,10 @@
                   </Group>
                   <Component id="jDateChooser1" alignment="0" pref="330" max="32767" attributes="0"/>
                   <Component id="jDateChooser2" alignment="0" pref="330" max="32767" attributes="0"/>
-                  <Component id="txtMaquina" alignment="0" pref="330" max="32767" attributes="0"/>
                   <Component id="cmbDesvio" alignment="0" pref="330" max="32767" attributes="0"/>
+                  <Component id="cboMaquinas" alignment="0" pref="330" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -68,7 +68,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtMaquina" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboMaquinas" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -81,7 +81,7 @@
                   <Component id="aceptarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ayudaButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <EmptySpace pref="23" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,12 +119,6 @@
     <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser2">
       <Properties>
         <Property name="name" type="java.lang.String" value="jDateChooser2" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtMaquina">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtMaquina.text"/>
-        <Property name="name" type="java.lang.String" value="txtMaquina" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="cancelarButton">
@@ -165,6 +159,19 @@
           </StringArray>
         </Property>
         <Property name="name" type="java.lang.String" value="cmbDesvio" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cboMaquinas">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+        <Property name="name" type="java.lang.String" value="cboMaquinas" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

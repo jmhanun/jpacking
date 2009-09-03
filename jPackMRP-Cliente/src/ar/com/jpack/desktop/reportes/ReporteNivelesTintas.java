@@ -39,25 +39,6 @@ public class ReporteNivelesTintas extends CustomInternalFrame {
         return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
     }
 
-    private class AceptarTask extends org.jdesktop.application.Task<Object, Void> {
-        AceptarTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to AceptarTask fields, here.
-            super(app);
-        }
-        @Override protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
-    }
-
     class Reporte extends Task<String, Void> {
 
         String mensaje;

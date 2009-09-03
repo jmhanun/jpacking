@@ -32,6 +32,7 @@ import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.ComponentesT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
@@ -620,6 +621,7 @@ public class DesktopApp extends SingleFrameApplication {
      * <b>pIdMaquina</b>  filtra por 'eq' idMaquina (Integer) <br>
      * <b>pMantenimiento</b>  filtra si horasUso >= horasMantenimiento<br>
      * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinActividades</b>  obliga a Joinear con Actividades<br>
      * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
      * @return devuelve la lista de los Maquinas que cumplan con el filtro
      */
@@ -845,6 +847,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<ComponentesT> getComponentesT(HashMap parametros) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            return articulosFacade.getComponentesT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public List<UnidadesMedidaT> getUnidadesMedidaT(HashMap parametros) {
         try {
             unidadesMedidaFacade = (UnidadesmedidaFacadeRemote) lookUp("ar.com.jpack.negocio.UnidadesmedidaFacadeRemote");
@@ -933,6 +946,18 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public ArticulosT updateArticulosT(ArticulosT dto) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            return articulosFacade.updateArticulosT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+
     public MantenimientoT updateMantenimientoT(MantenimientoT dto) {
         try {
             mantenimientoFacade = (MantenimientoFacadeRemote) lookUp("ar.com.jpack.negocio.MantenimientoFacadeRemote");
@@ -943,7 +968,6 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
 
     /**
      * Actualiza o crea un rolT recibido por parametro
@@ -1012,6 +1036,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public Integer deleteFeriadoT(String string, FeriadosT dto) {
+        try {
+            feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
+            return feriadosFacade.deleteFeriadoT(string, dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public List<FeriadosT> getFeriadosT(HashMap parametros) {
         try {

@@ -40,7 +40,7 @@ public class ArticulosTableModel extends CustomTableModel {
             case DESCRIPCION_INDEX:
                 return record.getCodigo();
             case STOCKMINIMO_INDEX:
-                return String.valueOf(record.getStockMinimo());
+                return record.getStockMinimo();
             case UNIDADMEDIDA_INDEX:
                 if (record.getIdUnidMedida() != null) {
                     if (record.getIdUnidMedida().getAbreviatura() != null) {

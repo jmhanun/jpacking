@@ -16,6 +16,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +66,11 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
         };
 
         HashMap parametros = new HashMap();
+
+        parametros.put("pFechaFinNull", true);
+        parametros.put("pJoinMaquinas", true);
+        parametros.put("pJoinTiposServicios", true);
+
         setListDto((ArrayList<MantenimientoT>) DesktopApp.getApplication().getMantenimientoT(parametros));
 
         tableModel = new MantenimientoTableModel(columnNames, this.getListDto());
@@ -215,7 +221,40 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
 
     @Action
     public void finalizar() {
-        JOptionPane.showInternalMessageDialog(this, "finalizar");
+        if (tblMantenimiento.getSelectedRow() != -1) {
+            setDto((MantenimientoT) tableModel.getRow(sorter.convertRowIndexToModel(tblMantenimiento.getSelectedRow())));
+            getDto().setFechaFin(new Date());
+            DesktopApp.getApplication().updateMantenimientoT(getDto());
+
+            setDto(new MantenimientoT());
+            cambiarMantenimientoT();
+
+            HashMap parametros = new HashMap();
+
+            parametros.put("pFechaFinNull", true);
+            parametros.put("pJoinMaquinas", true);
+            parametros.put("pJoinTiposServicios", true);
+
+            setListDto((ArrayList<MantenimientoT>) DesktopApp.getApplication().getMantenimientoT(parametros));
+
+            tableModel = new MantenimientoTableModel(columnNames, this.getListDto());
+            tableModel.addTableModelListener(new CustomTableModelListener());
+            tblMantenimiento.setModel(tableModel);
+
+            sorter = new TableRowSorter<TableModel>(tableModel) {
+
+                @Override
+                public void toggleSortOrder(int column) {
+                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                    setRowFilter(null);
+                    super.toggleSortOrder(column);
+                    setRowFilter(f);
+                }
+            };
+            tblMantenimiento.setRowSorter(sorter);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un registro");
+        }
     }
 
     @Action
@@ -568,7 +607,6 @@ private void tblMantenimientoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIR
     setDto((MantenimientoT) tableModel.getRow(sorter.convertRowIndexToModel(tblMantenimiento.getSelectedRow())));
     cambiarMantenimientoT();
 
-
 }//GEN-LAST:event_tblMantenimientoKeyReleased
 
 private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
@@ -577,16 +615,6 @@ private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     setModificado(true);
 
 }//GEN-LAST:event_txtDescripcionKeyReleased
-    private boolean modificado = false;
-    public boolean isModificado() {
-        return modificado;
-    }
-
-    public void setModificado(boolean b) {
-        boolean old = isModificado();
-        this.modificado = b;
-        firePropertyChange("modificado", old, isModificado());
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

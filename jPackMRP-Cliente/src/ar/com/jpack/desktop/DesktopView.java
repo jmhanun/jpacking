@@ -389,7 +389,8 @@ public class DesktopView extends FrameView {
             parametros.put("pDescripcion", "TIMER ALERTA STOCK MINIMO");
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
-                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                Float x = Float.parseFloat(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor()) * 60000;
+                delay = x.intValue();
                 timer1 = new Timer(delay, new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -445,7 +446,9 @@ public class DesktopView extends FrameView {
             parametros.put("pJoinUsuarios", true);
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
-                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                Float x = Float.parseFloat(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor()) * 60000;
+                delay = x.intValue();
+//                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
                 timer2 = new Timer(delay, new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -503,7 +506,9 @@ public class DesktopView extends FrameView {
             parametros.put("pJoinUsuarios", true);
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
-                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                Float x = Float.parseFloat(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor()) * 60000;
+                delay = x.intValue();
+//              delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
                 timer3 = new Timer(delay, new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
@@ -560,7 +565,9 @@ public class DesktopView extends FrameView {
             parametros.put("pJoinUsuarios", true);
             mails = (ArrayList<MailsT>) DesktopApp.getApplication().getMailsT(parametros);
             if (!mails.isEmpty()) {
-                delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
+                Float x = Float.parseFloat(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor()) * 60000;
+                delay = x.intValue();
+//              delay = Integer.parseInt(DesktopApp.getApplication().getSetupT(parametros).get(0).getValor());
                 timer4 = new Timer(delay, new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
