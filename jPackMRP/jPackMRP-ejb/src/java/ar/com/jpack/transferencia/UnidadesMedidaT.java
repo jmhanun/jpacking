@@ -148,4 +148,9 @@ public class UnidadesMedidaT implements Serializable {
     public void setIdUnidMedida(Integer idUnidMedida) {
         this.idUnidMedida = idUnidMedida;
     }
+
+    @Override
+    public String toString() {
+        return this.getAbreviatura();
+    }
 }

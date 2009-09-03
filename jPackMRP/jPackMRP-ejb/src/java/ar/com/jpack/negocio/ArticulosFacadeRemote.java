@@ -6,6 +6,7 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.transferencia.ArticulosT;
+import ar.com.jpack.transferencia.ComponentesT;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
@@ -43,6 +44,8 @@ public interface ArticulosFacadeRemote {
      */
     public List<Articulos> getArticulos(HashMap parametros);
 
+    public List<ComponentesT> getComponentesT(HashMap parametros);
+
     /**
      * Obtiene el precio vigente de un Articulo
      * @param ArticuloT del que se desea conocer el precio
@@ -56,5 +59,7 @@ public interface ArticulosFacadeRemote {
      * @return devuelve la cantidad de stock como double
      */
     public double getStockArticulo(ArticulosT articulosT);
+
+    public ArticulosT updateArticulosT(ArticulosT dto);
 
 }

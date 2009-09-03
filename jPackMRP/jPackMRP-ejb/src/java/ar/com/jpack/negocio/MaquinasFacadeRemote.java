@@ -24,6 +24,7 @@ public interface MaquinasFacadeRemote {
      * <b>pIdMaquina</b>  filtra por 'eq' idMaquina (Integer) <br>
      * <b>pMantenimiento</b>  filtra si horasUso >= horasMantenimiento<br>
      * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinActividades</b>  obliga a Joinear con Actividades<br>
      * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
      * @return devuelve la lista de los Maquinas que cumplan con el filtro
      */
@@ -36,6 +37,7 @@ public interface MaquinasFacadeRemote {
      * <b>pIdMaquina</b>  filtra por 'eq' idMaquina (Integer) <br>
      * <b>pMantenimiento</b>  filtra si horasUso >= horasMantenimiento<br>
      * <b>pJoinEstados</b>  obliga a Joinear con Estados<br>
+     * <b>pJoinActividades</b>  obliga a Joinear con Actividades<br>
      * <b>pIdEstado</b>  filtra por 'eq' idEstado (Integer) <br>
      * @return devuelve la lista de los Maquinas que cumplan con el filtro
      */

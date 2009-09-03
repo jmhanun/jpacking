@@ -22,5 +22,8 @@ public interface FeriadosFacadeRemote {
 
     public List<Feriados> getFeriados(HashMap parametros);
 
+    public Integer deleteFeriadoT(String tipo, FeriadosT feriadosT);
+
+    public FeriadosT updateFeriadosT(FeriadosT feriadosT);
 
 }

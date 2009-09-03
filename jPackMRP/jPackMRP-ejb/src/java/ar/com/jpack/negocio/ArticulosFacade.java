@@ -5,13 +5,17 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Articulos;
+import ar.com.jpack.persistencia.Componentes;
 import ar.com.jpack.persistencia.Precios;
 import ar.com.jpack.persistencia.Stock;
 import ar.com.jpack.transferencia.ArticulosT;
+import ar.com.jpack.transferencia.ComponentesT;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +31,8 @@ import org.hibernate.ejb.EntityManagerImpl;
  */
 @Stateless
 public class ArticulosFacade implements ArticulosFacadeRemote {
+    @EJB
+    private EstadosFacadeRemote estadosFacade;
 
     @PersistenceContext
     private EntityManager em;
@@ -68,7 +74,7 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
         Criteria articulosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Articulos.class);
         List<Articulos> articulosList;
         if (parametros.containsKey("pIdArticulos")) {
-            articulosCritearia.add(Restrictions.eq("idArticulos", parametros.get("pIdArticulos")));
+            articulosCritearia.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulos")));
         }
         if (parametros.containsKey("pCodigo")) {
             articulosCritearia.add(Restrictions.like("codigo", parametros.get("pCodigo").toString(), MatchMode.ANYWHERE));
@@ -123,9 +129,9 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
      * @return devuelve la cantidad de stock como double
      */
     public double getStockArticulo(ArticulosT articulosT) {
- 
+
 //        java.sql.Connection con = ((EntityManagerImpl) em.getDelegate()).getSession().connection();
-        
+
         Criteria stockCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Stock.class);
         Stock stock;
 
@@ -134,12 +140,78 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
         Criteria articulosCriteria = stockCritearia.createCriteria("idArticulo");
         articulosCriteria.add(Restrictions.eq("idArticulo", articulosT.getIdArticulo()));
 
-        
+
         stock = (Stock) stockCritearia.uniqueResult();
         if (stock == null) {
             return 0.0;
         } else {
             return stock.getCantidad();
         }
+    }
+
+    /**
+     * Obtiene la lista de Componentes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulo</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * @return devuelve la lista de los Componentes que cumplan con el filtro <br>
+     */
+    public List<ComponentesT> getComponentesT(HashMap parametros) {
+        List<Componentes> componentesList = getComponentes(parametros);
+        List<ComponentesT> componentesTList = new ArrayList<ComponentesT>();
+
+        for (Componentes c : componentesList) {
+            ComponentesT rdo = (ComponentesT) DozerUtil.getDozerMapper(false).map(c, ComponentesT.class);
+            componentesTList.add(rdo);
+        }
+        return componentesTList;
+    }
+
+    /**
+     * Obtiene la lista de Componentes filtrados por el Hasmap
+     * @param parametros <br>
+     * Lista de parametros: <br>
+     * <b>pIdArticulo</b>   filtra por 'eq' idArticulo (Integer) <br>
+     * @return devuelve la lista de los Componentes que cumplan con el filtro <br>
+     */
+    public List<Componentes> getComponentes(HashMap parametros) {
+        Criteria componentesCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Componentes.class);
+        
+        List<Componentes> componentesList;
+        
+        componentesCritearia.setFetchMode("articulos", FetchMode.JOIN);
+        componentesCritearia.setFetchMode("componentes", FetchMode.JOIN);
+        
+        if (parametros.containsKey("pIdArticulo")) {
+            Criteria articuloCriteria = componentesCritearia.createCriteria("articulos");
+            articuloCriteria.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulo")));
+        }
+        if (parametros.containsKey("pIdComponente")) {
+            Criteria compCriteria = componentesCritearia.createCriteria("componentes");
+            compCriteria.add(Restrictions.eq("componentes", parametros.get("pIdComponente")));
+        }
+
+        componentesList = componentesCritearia.list();
+        return componentesList;
+    }
+
+    public ArticulosT updateArticulosT(ArticulosT dto) {
+        Articulos articulos = (Articulos) DozerUtil.getDozerMapper(false).map(dto, Articulos.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (articulos.getIdArticulo() != null) {
+            articulos.setFechaModificacion(new Date());
+            em.merge(articulos);
+        } else {
+            articulos.setFechaAlta(new Date());
+            articulos.setFechaModificacion(new Date());
+            HashMap parametros = new HashMap();
+            parametros.put("pIdEstados", 16);
+            articulos.setIdEstado(estadosFacade.getEstados(parametros).get(0));
+            em.persist(articulos);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdArticulos", articulos.getIdArticulo());
+        return getArticulosT(parametros).get(0);
     }
 }
