@@ -81,28 +81,25 @@ public class FeriadosFacade implements FeriadosFacadeRemote {
 
     }
 
-    public Integer deleteFeriadoT(String tipo, FeriadosT feriadosT) {
-        Integer avance = null;
-//        try {
-//            Connection conn = jdbcRemotedbjPack.getConnection();
-//
-//            CallableStatement cs = conn.prepareCall("{call spabmferiados(?, ?, ?, ?, ?)}");
-//
-//            //set inputs
-//            cs.setInt(1, feriadosT.getIdFeriado());
-//            cs.setString(2, tipo);
-//            cs.setTimestamp(3, new Timestamp(feriadosT.getFecha().getTime()));
-//            cs.setString(4, feriadosT.getMotivo());
-//            //set outputs
-//            cs.registerOutParameter(5, java.sql.Types.INTEGER);
-//            // execute
-//            cs.executeQuery();
-//            // display returned values
-//            avance = new Integer(cs.getInt(5));
-//            conn.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(FeriadosFacade.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return avance;
+    public Integer deleteFeriadoT(Integer idFeriado) {
+        Integer resultado = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spabmferiados(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idFeriado);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            resultado = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FeriadosFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 }
