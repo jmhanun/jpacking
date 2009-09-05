@@ -7,6 +7,7 @@ package ar.com.jpack.negocio;
 import ar.com.jpack.persistencia.Articulos;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
@@ -61,5 +62,7 @@ public interface ArticulosFacadeRemote {
     public double getStockArticulo(ArticulosT articulosT);
 
     public ArticulosT updateArticulosT(ArticulosT dto);
+
+    public void updateComponentesT(ArrayList<ComponentesT> listDto);
 
 }

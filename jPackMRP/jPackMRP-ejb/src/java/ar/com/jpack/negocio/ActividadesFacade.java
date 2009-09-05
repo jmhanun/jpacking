@@ -93,4 +93,11 @@ public class ActividadesFacade implements ActividadesFacadeRemote {
         actividadesArticulosList = actividadesArticulosCriteria.list();
         return actividadesArticulosList;
     }
+
+    public void updateActividadesArticulosT(ArrayList<ActividadesArticulosT> listDto) {
+        for (ActividadesArticulosT actividadesArticulosT : listDto) {
+            Actividadesxarticulos actividadesArticulos = (Actividadesxarticulos) DozerUtil.getDozerMapper(false).map(actividadesArticulosT, Actividadesxarticulos.class);
+            em.persist(actividadesArticulos);
+        }
+    }
 }

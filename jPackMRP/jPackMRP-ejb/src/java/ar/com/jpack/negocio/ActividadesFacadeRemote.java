@@ -8,6 +8,7 @@ import ar.com.jpack.persistencia.Actividades;
 import ar.com.jpack.persistencia.Actividadesxarticulos;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
@@ -26,4 +27,6 @@ public interface ActividadesFacadeRemote {
     public List<Actividades> getActividades(HashMap parametros);
 
     public List<Actividadesxarticulos> getActividadesArticulos(HashMap parametros);
+
+    public void updateActividadesArticulosT(ArrayList<ActividadesArticulosT> listDto);
 }

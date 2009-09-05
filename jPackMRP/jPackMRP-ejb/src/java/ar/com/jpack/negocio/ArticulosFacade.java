@@ -31,9 +31,9 @@ import org.hibernate.ejb.EntityManagerImpl;
  */
 @Stateless
 public class ArticulosFacade implements ArticulosFacadeRemote {
+
     @EJB
     private EstadosFacadeRemote estadosFacade;
-
     @PersistenceContext
     private EntityManager em;
 
@@ -176,12 +176,12 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
      */
     public List<Componentes> getComponentes(HashMap parametros) {
         Criteria componentesCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Componentes.class);
-        
+
         List<Componentes> componentesList;
-        
+
         componentesCritearia.setFetchMode("articulos", FetchMode.JOIN);
         componentesCritearia.setFetchMode("componentes", FetchMode.JOIN);
-        
+
         if (parametros.containsKey("pIdArticulo")) {
             Criteria articuloCriteria = componentesCritearia.createCriteria("articulos");
             articuloCriteria.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulo")));
@@ -213,5 +213,12 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
         HashMap parametros = new HashMap();
         parametros.put("pIdArticulos", articulos.getIdArticulo());
         return getArticulosT(parametros).get(0);
+    }
+
+    public void updateComponentesT(ArrayList<ComponentesT> listDto) {
+        for (ComponentesT componentesT : listDto) {
+            Componentes componentes = (Componentes) DozerUtil.getDozerMapper(false).map(componentesT, Componentes.class);
+            em.persist(componentes);
+        }
     }
 }
