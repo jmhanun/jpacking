@@ -824,6 +824,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showProveedores() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.compras.ABMProveedores", "Proveedores", padre);
+    }
+
+    @Action
     public Task showSetup() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMSetup", "Setup", padre);
     }
@@ -874,8 +879,18 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showSellos() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMSellos", "Sellos", padre);
+    }
+
+    @Action
     public Task showMaquinas() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMMaquinas", "Maquinas", padre);
+    }
+
+    @Action
+    public Task showActividades() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMActividades", "Actividades", padre);
     }
 
     @Action

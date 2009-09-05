@@ -25,6 +25,8 @@ import ar.com.jpack.negocio.MantenimientoFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.negocio.PreciosFacadeRemote;
+import ar.com.jpack.negocio.ProveedoresFacadeRemote;
+import ar.com.jpack.negocio.SellosFacadeRemote;
 import ar.com.jpack.negocio.StockFacadeRemote;
 import ar.com.jpack.negocio.TiposdesviosFacadeRemote;
 import ar.com.jpack.negocio.TiposserviciosFacadeRemote;
@@ -46,8 +48,10 @@ import ar.com.jpack.transferencia.MantenimientoT;
 import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.PreciosT;
+import ar.com.jpack.transferencia.ProveedoresT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.SellosT;
 import ar.com.jpack.transferencia.SetupT;
 import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.transferencia.TiposComprobantesT;
@@ -140,6 +144,8 @@ public class DesktopApp extends SingleFrameApplication {
     private PreciosFacadeRemote preciosFacade;
     private ListaspreciosFacadeRemote listaspreciosFacade;
     private GruposmailsFacadeRemote gruposmailsFacade;
+    private SellosFacadeRemote sellosFacade;
+    private ProveedoresFacadeRemote proveedoresFacade;
 
     public void sendSSLMessage(ArrayList<String> recipients, String subject,
             String message) {
@@ -728,6 +734,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<SellosT> getSellosT(HashMap parametros) {
+        try {
+            sellosFacade = (SellosFacadeRemote) lookUp("ar.com.jpack.negocio.SellosFacadeRemote");
+            return sellosFacade.getSellosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Obtiene la lista de Mantenimientos filtrados por el Hasmap
      * @param parametros <br>
@@ -835,6 +852,18 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
+    public List<ProveedoresT> getProveedoresT(HashMap parametros) {
+        try {
+            proveedoresFacade = (ProveedoresFacadeRemote) lookUp("ar.com.jpack.negocio.ProveedoresFacadeRemote");
+            return proveedoresFacade.getProveedoresT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public List<RolesT> getMenuesT(boolean isMenu) {
         try {
@@ -946,6 +975,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public ArticulosT updateArticulosT(ArticulosT dto) {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
@@ -956,7 +986,6 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
 
     public MantenimientoT updateMantenimientoT(MantenimientoT dto) {
         try {
@@ -1036,6 +1065,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public Integer deleteFeriadoT(String string, FeriadosT dto) {
         try {
             feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
@@ -1046,7 +1076,6 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
 
     public List<FeriadosT> getFeriadosT(HashMap parametros) {
         try {
