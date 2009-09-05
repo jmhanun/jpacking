@@ -34,4 +34,7 @@ public interface GruposmailsFacadeRemote {
      * @return devuelve la lista de los GruposMails que cumplan con el filtro
      */
     public List<Gruposmails> getGruposMails(HashMap parametros);
+
+    public java.lang.Integer deleteGruposMailsT(java.lang.Integer idGruposMails);
+
 }
