@@ -32,27 +32,21 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" min="0" pref="0" max="32767" attributes="2"/>
-                  <Component id="txtImporte" alignment="1" min="-2" pref="100" max="-2" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="txtNumeroCliente" min="-2" pref="71" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtCuit" pref="195" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="txtCliente" pref="298" max="32767" attributes="0"/>
+                          <Component id="txtDescripcion" pref="294" max="32767" attributes="1"/>
+                          <Component id="txtCodigo" alignment="0" pref="294" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnBuscarCliente" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="btnBuscar" min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jScrollPane1" alignment="0" min="0" pref="0" max="32767" attributes="2"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnAgregar" pref="75" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -64,7 +58,6 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="txtFecha" alignment="1" min="-2" pref="77" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -72,31 +65,27 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="txtFecha" linkSize="1" min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtNumeroCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCuit" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCliente" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="btnBuscarCliente" min="-2" pref="47" max="-2" attributes="0"/>
+                  <Component id="btnBuscar" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="215" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="txtImporte" linkSize="1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="132" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -110,32 +99,42 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
+        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
+        <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtCodigo">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="txtCodigo.text"/>
+        <Property name="name" type="java.lang.String" value="txtCodigo" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDescripcion">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="txtDescripcion.text"/>
+        <Property name="name" type="java.lang.String" value="txtDescripcion" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="buscar" methodName="buscar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="btnBuscar" noResource="true"/>
+      </Properties>
+    </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="jLabel3.text"/>
         <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtFecha">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" resourceKey="txtFecha.text"/>
-        <Property name="name" type="java.lang.String" value="txtFecha" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCliente">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtCliente.text"/>
-        <Property name="name" type="java.lang.String" value="txtCliente" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtImporte">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" resourceKey="txtImporte.text"/>
-        <Property name="name" type="java.lang.String" value="txtImporte" noResource="true"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -148,7 +147,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tblDetalleRemito">
+        <Component class="javax.swing.JTable" name="tblActividades">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
@@ -158,31 +157,15 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="name" type="java.lang.String" value="tblDetalleRemito" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="tblActividades" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnCancelar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="cancelar" methodName="cancelar"/>
-        </Property>
-        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnAplicar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="aplicar" methodName="aplicar"/>
-        </Property>
-        <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnAgregar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="agregar" methodName="agregar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="agregar" methodName="agregar"/>
         </Property>
         <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
       </Properties>
@@ -190,7 +173,7 @@
     <Component class="javax.swing.JButton" name="btnModificar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="modificar" methodName="modificar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="modificar" methodName="modificar"/>
         </Property>
         <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
       </Properties>
@@ -198,43 +181,25 @@
     <Component class="javax.swing.JButton" name="btnEliminar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="eliminar" methodName="eliminar"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="eliminar" methodName="eliminar"/>
         </Property>
         <Property name="name" type="java.lang.String" value="btnEliminar" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnBuscarCliente">
+    <Component class="javax.swing.JButton" name="btnAplicar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.ventas.RegistrarRemito" id="buscarCliente" methodName="buscarCliente"/>
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="aplicar" methodName="aplicar"/>
         </Property>
-        <Property name="name" type="java.lang.String" value="btnBuscarCliente" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNumeroCliente">
+    <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" resourceKey="txtNumeroCliente.text"/>
-        <Property name="name" type="java.lang.String" value="txtNumeroCliente" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCuit">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" resourceKey="txtCuit.text"/>
-        <Property name="name" type="java.lang.String" value="txtCuit" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
-        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
-        <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo" id="cancelar" methodName="cancelar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

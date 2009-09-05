@@ -829,6 +829,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showActividadesArticulo() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo", "Actividades por articulo", padre);
+    }
+
+    @Action
     public Task showSetup() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.ABMSetup", "Setup", padre);
     }
@@ -916,6 +921,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showCambiarPassword() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.administracion.CambiarPassword", "Cambiar contraseña", padre);
+    }
+
+    @Action
+    public Task showComponentes() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMComponentes", "Componentes", padre);
     }
 
     @Action

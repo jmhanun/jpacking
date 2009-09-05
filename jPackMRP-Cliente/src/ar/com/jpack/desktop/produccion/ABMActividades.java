@@ -8,13 +8,13 @@
  *
  * Created on 03-sep-2009, 19:39:25
  */
-
 package ar.com.jpack.desktop.produccion;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.ActividadesTableModel;
+import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -84,7 +84,26 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
+        if (getDto() != null) {
+            if (getDto().getIdActividad() != null) {
+                ActividadesT act = getDto();
+                if (tblActividades.getSelectedRow() != - 1) {
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo")) {
+                        ((ActividadesArticulosT) getPadre().getDto()).setActividades(act);
+
+                        ((ABMActividadesPorArticulo) getPadre()).agregarDetalle(((ActividadesArticulosT) getPadre().getDto()));
+
+                        cancelar();
+                    }
+                } else {
+                    JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una actividad");
+                }
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una actividad");
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una actividad");
+        }
     }
 
     @Action
@@ -104,9 +123,18 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ABMActividades.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    public void cambiarActividadT() {
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtDescripcion.setEnabled(false);
+    }
 
-
+    void habilitarBtnSeleccionar(boolean valor) {
+        btnSeleccionar.setEnabled(valor);
+        btnAgregar.setEnabled(!valor);
+        btnBorrar.setEnabled(!valor);
+        btnModificar.setEnabled(!valor);
     }
 
     /** This method is called from within the constructor to
@@ -157,6 +185,16 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
             }
         ));
         tblActividades.setName("tblActividades"); // NOI18N
+        tblActividades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblActividadesMouseClicked(evt);
+            }
+        });
+        tblActividades.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblActividadesKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblActividades);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -168,7 +206,7 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
         );
 
@@ -258,7 +296,7 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnBorrar)
@@ -271,18 +309,25 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+private void tblActividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblActividadesMouseClicked
 
-    private boolean modificado = false;
-    public boolean isModificado() {
-        return modificado;
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((ActividadesT) tableModel.getRow(sorter.convertRowIndexToModel(tblActividades.getSelectedRow())));
+    cambiarActividadT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
     }
 
-    public void setModificado(boolean b) {
-        boolean old = isModificado();
-        this.modificado = b;
-        firePropertyChange("modificado", old, isModificado());
-    }
 
+}//GEN-LAST:event_tblActividadesMouseClicked
+
+private void tblActividadesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblActividadesKeyReleased
+
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((ActividadesT) tableModel.getRow(sorter.convertRowIndexToModel(tblActividades.getSelectedRow())));
+    cambiarActividadT();
+
+}//GEN-LAST:event_tblActividadesKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

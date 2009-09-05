@@ -864,7 +864,6 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-
     public List<RolesT> getMenuesT(boolean isMenu) {
         try {
             rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
@@ -976,6 +975,26 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public void updateComponentesT(ArrayList<ComponentesT> listDto) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            articulosFacade.updateComponentesT(listDto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateActividadesArticulosT(ArrayList<ActividadesArticulosT> listDto) {
+        try {
+            actividadesFacade = (ActividadesFacadeRemote) lookUp("ar.com.jpack.negocio.ActividadesFacadeRemote");
+            actividadesFacade.updateActividadesArticulosT(listDto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public ArticulosT updateArticulosT(ArticulosT dto) {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
@@ -1066,10 +1085,10 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-    public Integer deleteFeriadoT(String string, FeriadosT dto) {
+    public Integer deleteFeriadoT(Integer idFeriado) {
         try {
             feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
-            return feriadosFacade.deleteFeriadoT(string, dto);
+            return feriadosFacade.deleteFeriadoT(idFeriado);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

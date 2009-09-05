@@ -9,8 +9,10 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.ventas.RegistrarRemito;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablemodels.ActividadesArticulosTableModel;
 import ar.com.jpack.helpers.tablemodels.ArticulosTableModel;
-import ar.com.jpack.helpers.tablemodels.ComponentesTableModel;
+import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
+import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
@@ -40,6 +42,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
     private ArrayList<ComponentesT> componentesTs;
     private ItemListener itemFinalListener;
     private ItemListener itemImprimibleListener;
+    private ArrayList<ActividadesArticulosT> actividadesTs;
 
     /** Creates new form ABMArticulos */
     public ABMArticulos() {
@@ -103,7 +106,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
         componentesTs = new ArrayList<ComponentesT>();
 
-        tableModelComponentes = new ComponentesTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
         tableModelComponentes.addTableModelListener(new CustomTableModelListener());
         tblComponentes.setModel(tableModelComponentes);
 
@@ -118,6 +121,24 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             }
         };
         tblComponentes.setRowSorter(sorterComponentes);
+
+        actividadesTs = new ArrayList<ActividadesArticulosT>();
+
+        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades.addTableModelListener(new CustomTableModelListener());
+        tblActividades.setModel(tableModelActividades);
+
+        sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblActividades.setRowSorter(sorterActividad);
 
         setModificado(false);
         setNuevo(false);
@@ -201,10 +222,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
     public void seleccionar() {
         if (getDto() != null) {
             if (getDto().getIdArticulo() != null) {
+                ArticulosT art = getDto();
                 if (tblArticulos.getSelectedRow() != - 1) {
-
                     if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
-                        ArticulosT art = getDto();
                         ((DetalleRemitosT) getPadre().getDto()).setIdArticulo(art);
 
                         ((DetalleRemitosT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
@@ -212,6 +232,23 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
                         ((RegistrarRemito) getPadre()).agregarDetalle(((DetalleRemitosT) getPadre().getDto()));
 
+                        cancelar();
+                    }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.ABMComponentes")) {
+                        boolean encabezado = ((ABMComponentes) getPadre()).isEncabezado();
+                        if (encabezado) {
+                            ((ABMComponentes) getPadre()).agregarArticulo(art);
+                            cancelar();
+                        } else {
+                            ((ComponentesT) getPadre().getDto()).setComponentes(art);
+
+                            ((ABMComponentes) getPadre()).agregarDetalle((ComponentesT) getPadre().getDto());
+
+                            cancelar();
+                        }
+                    }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.ABMActividadesPorArticulo")) {
+                        ((ABMActividadesPorArticulo) getPadre()).agregarArticulo(art);
                         cancelar();
                     }
                 } else {
@@ -335,7 +372,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         parametros.put("pIdArticulo", getDto().getIdArticulo());
         componentesTs = (ArrayList<ComponentesT>) DesktopApp.getApplication().getComponentesT(parametros);
 
-        tableModelComponentes = new ComponentesTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
         tableModelComponentes.addTableModelListener(new CustomTableModelListener());
         tblComponentes.setModel(tableModelComponentes);
 
@@ -350,6 +387,24 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             }
         };
         tblComponentes.setRowSorter(sorterComponentes);
+
+        actividadesTs = (ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros);
+
+        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades.addTableModelListener(new CustomTableModelListener());
+        tblActividades.setModel(tableModelActividades);
+
+        sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblActividades.setRowSorter(sorterActividad);
 
         txtDescripcion.setEnabled(false);
         txtCodigo.setEnabled(false);
@@ -380,6 +435,15 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         } else {
             return "N";
         }
+    }
+
+    public String getCodigoArticulo() {
+        return codigoArticulo;
+    }
+
+    public void setCodigoArticulo(String codigoArticulo) {
+        this.codigoArticulo = codigoArticulo;
+        txtCodigoBusqueda.setText(codigoArticulo);
     }
 
     /** This method is called from within the constructor to
@@ -414,6 +478,10 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblComponentes = new javax.swing.JTable();
         btnAplicar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblActividades = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -500,8 +568,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -510,9 +578,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                                 .addComponent(chkImprimible)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(chkFinal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE)
                                 .addComponent(btnBuscar))
-                            .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))))
+                            .addComponent(txtCodigoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -534,7 +602,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -604,6 +672,28 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
 
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        tblActividades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblActividades.setName("tblActividades"); // NOI18N
+        jScrollPane3.setViewportView(tblActividades);
+
+        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+
+        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -611,6 +701,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -623,16 +716,13 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(chkFinalEdicion))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtStockMinimo, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                                .addComponent(txtStockMinimo, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cboMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
-                            .addComponent(btnAplicar))
-                        .addGap(7, 7, 7)))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                    .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -656,8 +746,14 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                     .addComponent(chkImprimibleEdicion)
                     .addComponent(chkFinalEdicion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                .addGap(9, 9, 9)
                 .addComponent(btnAplicar)
                 .addContainerGap())
         );
@@ -683,24 +779,24 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -783,12 +879,16 @@ private void txtStockMinimoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tblActividades;
     private javax.swing.JTable tblArticulos;
     private javax.swing.JTable tblComponentes;
     private javax.swing.JTextField txtCodigo;
@@ -797,7 +897,8 @@ private void txtStockMinimoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     private javax.swing.JTextField txtStockMinimo;
     // End of variables declaration//GEN-END:variables
     private ArticulosTableModel tableModel;
-    private ComponentesTableModel tableModelComponentes;
+    private ComponentesArticulosTableModel tableModelComponentes;
+    private ActividadesArticulosTableModel tableModelActividades;
     public static final String[] columnNames = {
         "Id", "Codigo", "Descripcion", "Stock Minimo",
         "Unidad de medida", "Estado", "Imprimible", "Final"
@@ -805,6 +906,11 @@ private void txtStockMinimoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
     public static final String[] columnNamesComponentes = {
         "Componente", "Orden", "Cantidad"
     };
+    public static final String[] columnNamesActividades = {
+        "Actividad", "Orden", "Tiempo"
+    };
     private TableRowSorter sorter;
     private TableRowSorter sorterComponentes;
+    private TableRowSorter sorterActividad;
+    private String codigoArticulo;
 }

@@ -91,7 +91,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     public void borrar() {
         if (tableFeriados.getSelectedRow() != - 1) {
             FeriadosT x = (FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow()));
-            DesktopApp.getApplication().deleteFeriadoT("B", x);
+            DesktopApp.getApplication().deleteFeriadoT(x.getIdFeriado());
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un feriado");
         }
