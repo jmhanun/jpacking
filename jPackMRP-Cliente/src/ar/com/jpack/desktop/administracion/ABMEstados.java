@@ -31,6 +31,10 @@ public class ABMEstados extends CustomInternalFrame<EstadosT> {
     public ABMEstados() {
         super(new EstadosT());
         initComponents();
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        btnSeleccionar.setEnabled(false);
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         parametros.put("pJoinDominios", true);
         setListDto((ArrayList<EstadosT>) DesktopApp.getApplication().getEstadosT(parametros));

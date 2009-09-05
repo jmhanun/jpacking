@@ -864,6 +864,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+
     public List<RolesT> getMenuesT(boolean isMenu) {
         try {
             rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
@@ -1089,6 +1090,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
             return feriadosFacade.deleteFeriadoT(idFeriado);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Integer deleteGrupoMailT(Integer idGrupoMail) {
+        try {
+            gruposmailsFacade = (GruposmailsFacadeRemote) lookUp("ar.com.jpack.negocio.GruposmailsFacadeRemote");
+            return gruposmailsFacade.deleteGruposMailsT(idGrupoMail);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

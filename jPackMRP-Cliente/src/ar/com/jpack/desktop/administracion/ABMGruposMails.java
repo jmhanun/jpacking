@@ -89,7 +89,36 @@ public class ABMGruposMails extends CustomInternalFrame {
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
+        if (tblGruposMails.getSelectedRow() != - 1) {
+            GruposMailsT x = (GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow()));
+            Integer z = DesktopApp.getApplication().deleteGrupoMailT(x.getIdGrupoMail());
+            if (z==0){
+                JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
+            }
+
+
+            HashMap parametros = new HashMap();
+        List<GruposMailsT> nuevo = DesktopApp.getApplication().getGruposMailsT(parametros);
+        setListDto((ArrayList<GruposMailsT>) nuevo);
+
+        tableModel = new GruposMailsTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        tblGruposMails.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblGruposMails.setRowSorter(sorter);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un grupo de mail");
+        }
     }
 
     @Action
@@ -136,6 +165,23 @@ public class ABMGruposMails extends CustomInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setName("Form"); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
@@ -254,7 +300,7 @@ public class ABMGruposMails extends CustomInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnBorrar)
@@ -266,6 +312,17 @@ public class ABMGruposMails extends CustomInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        if (isModificado() || isNuevo()) {
+            if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                dispose();
+            }
+        } else {
+            dispose();
+        }
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -91,7 +91,31 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     public void borrar() {
         if (tableFeriados.getSelectedRow() != - 1) {
             FeriadosT x = (FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow()));
-            DesktopApp.getApplication().deleteFeriadoT(x.getIdFeriado());
+            Integer z = DesktopApp.getApplication().deleteFeriadoT(x.getIdFeriado());
+            if (z==0){
+                JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
+            }
+
+
+            HashMap parametros = new HashMap();
+        List<FeriadosT> nuevo = DesktopApp.getApplication().getFeriadosT(parametros);
+        setListDto((ArrayList<FeriadosT>) nuevo);
+
+        tableModel = new FeriadosTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        tableFeriados.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tableFeriados.setRowSorter(sorter);
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un feriado");
         }
@@ -142,6 +166,23 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         setMaximizable(true);
         setResizable(true);
         setName("Form"); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
@@ -174,7 +215,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMFeriados.class);
@@ -229,7 +270,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
                     .addComponent(txtMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -275,7 +316,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -288,6 +329,18 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        if (isModificado() || isNuevo()) {
+            if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                dispose();
+            }
+        } else {
+            dispose();
+        }
+    }//GEN-LAST:event_formInternalFrameClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

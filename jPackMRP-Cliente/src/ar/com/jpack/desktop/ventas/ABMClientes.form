@@ -31,25 +31,25 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace pref="14" max="32767" attributes="0"/>
-              <Component id="btnAgregar" pref="72" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnAgregar" pref="88" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="btnSeleccionar" pref="88" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnModificar" pref="76" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnBorrar" pref="64" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnCancelar" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnModificar" pref="88" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnBorrar" pref="88" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="btnCancelar" pref="88" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
-          <Component id="jTabbedPane1" alignment="0" pref="423" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="0" pref="484" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="389" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" pref="393" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -130,7 +130,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" pref="398" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="459" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -143,16 +143,16 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtIdCliente" alignment="0" pref="357" max="32767" attributes="0"/>
-                                          <Component id="txtNombre" alignment="0" pref="357" max="32767" attributes="0"/>
-                                          <Component id="txtCuit" alignment="0" pref="357" max="32767" attributes="0"/>
+                                          <Component id="txtIdCliente" alignment="0" pref="418" max="32767" attributes="0"/>
+                                          <Component id="txtNombre" alignment="0" pref="418" max="32767" attributes="0"/>
+                                          <Component id="txtCuit" alignment="0" pref="418" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace pref="333" max="-2" attributes="0"/>
+                                      <EmptySpace pref="394" max="-2" attributes="0"/>
                                       <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jSeparator1" alignment="1" pref="398" max="32767" attributes="0"/>
+                                  <Component id="jSeparator1" alignment="1" pref="459" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -183,7 +183,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="216" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="220" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -312,12 +312,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="418" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="479" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="361" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="365" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

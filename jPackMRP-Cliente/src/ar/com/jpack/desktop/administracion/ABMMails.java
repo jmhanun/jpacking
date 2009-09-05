@@ -390,9 +390,8 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         } else {
             dispose();
         }
-
-
     }//GEN-LAST:event_formInternalFrameClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
