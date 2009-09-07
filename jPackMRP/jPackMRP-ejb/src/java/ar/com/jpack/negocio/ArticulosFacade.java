@@ -216,6 +216,13 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
     }
 
     public void updateComponentesT(ArrayList<ComponentesT> listDto) {
+        HashMap parametros = new HashMap();
+        parametros.put("pIdArticulo", listDto.get(0).getArticulos().getIdArticulo());
+        ArrayList<Componentes> comp =(ArrayList<Componentes>) getComponentes(parametros);
+        for (Componentes componente : comp) {
+            em.remove(componente);
+        }
+        em.flush();
         for (ComponentesT componentesT : listDto) {
             Componentes componentes = (Componentes) DozerUtil.getDozerMapper(false).map(componentesT, Componentes.class);
             em.persist(componentes);
