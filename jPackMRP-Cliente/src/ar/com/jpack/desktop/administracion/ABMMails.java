@@ -184,6 +184,35 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         JOptionPane.showInternalMessageDialog(this, "aplicar");
     }
 
+    private void cambiarMailsT() {
+//        cboRolPadre.removeItemListener(itemListener);
+//        txtRol.setText(getDto().getRol());
+//        txtFuncion.setText(getDto().getFuncion());
+//        txtDescripcion.setText(getDto().getDescripcion());
+//        txtComponente.setText(getDto().getComponente());
+//        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getMenuesT(true);
+//        int index = 0;
+//        int iteration = 1;
+//        for (RolesT rol : rolesPadreTs) {
+//            if (getDto().getIdRolPadre() != null) {
+//                if (rol.getIdRol().equals(getDto().getIdRolPadre().getIdRol())) {
+//                    index = iteration;
+//                }
+//            }
+//            iteration++;
+//        }
+//
+//        cboRolPadre.setSelectedIndex(index);
+//
+//        txtComponente.setEnabled(false);
+//        txtDescripcion.setEnabled(false);
+//        txtFuncion.setEnabled(false);
+//        txtRol.setEnabled(false);
+//        cboRolPadre.setEnabled(false);
+//        cboRolPadre.addItemListener(itemListener);
+
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -251,6 +280,16 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
             }
         ));
         tblMails.setName("tblMails"); // NOI18N
+        tblMails.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMailsMouseClicked(evt);
+            }
+        });
+        tblMails.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblMailsKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMails);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -262,7 +301,7 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -321,7 +360,7 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
                     .addComponent(cmbUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -367,7 +406,7 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -391,6 +430,21 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
             dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void tblMailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMailsMouseClicked
+        // TODO add your handling code here:
+        setDto((MailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblMails.getSelectedRow())));
+        cambiarMailsT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblMailsMouseClicked
+
+    private void tblMailsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblMailsKeyReleased
+        // TODO add your handling code here:
+        setDto((MailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblMails.getSelectedRow())));
+        cambiarMailsT();
+    }//GEN-LAST:event_tblMailsKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

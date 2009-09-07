@@ -32,6 +32,8 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
     public ABMTiposIva() {
         super(new TiposIvaT());
         initComponents();
+        btnBorrar.setEnabled(false);
+        btnModificar.setEnabled(false);
         HashMap parametros = new HashMap();
         //Obliga a que joinee con Estado.
         parametros.put("pJoinEstados", true);

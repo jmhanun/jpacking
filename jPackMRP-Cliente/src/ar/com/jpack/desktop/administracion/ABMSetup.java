@@ -36,6 +36,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
     public ABMSetup() {
         super(new SetupT());
         initComponents();
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         setListDto((ArrayList<SetupT>) DesktopApp.getApplication().getSetupT(parametros));
 
@@ -85,9 +86,20 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
         }
     }
 
+    private void cambiarRolT() {
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtValor.setText(getDto().getValor());
+        txtDescripcion.setEnabled(false);
+        txtValor.setEnabled(false);
+    }
+
     @Action
     public void aplicar() {
         JOptionPane.showInternalMessageDialog(this, "aplicar");
+    }
+
+    private void cambiarSetupT() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /** This method is called from within the constructor to
@@ -159,6 +171,16 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
             }
         ));
         setupTable.setName("setupTable"); // NOI18N
+        setupTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                setupTableMouseClicked(evt);
+            }
+        });
+        setupTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                setupTableKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(setupTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -174,7 +196,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -190,9 +212,19 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
 
         txtValor.setText(resourceMap.getString("txtValor.text")); // NOI18N
         txtValor.setName("txtValor"); // NOI18N
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtValorKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMSetup.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -230,7 +262,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -276,7 +308,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -301,6 +333,35 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     }
 
 }//GEN-LAST:event_formInternalFrameClosing
+
+private void setupTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setupTableMouseClicked
+    // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+    setDto((SetupT) tableModel.getRow(sorter.convertRowIndexToModel(setupTable.getSelectedRow())));
+    cambiarSetupT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+}//GEN-LAST:event_setupTableMouseClicked
+
+private void setupTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setupTableKeyReleased
+    // TODO add your handling code here:
+    setDto((SetupT) tableModel.getRow(sorter.convertRowIndexToModel(setupTable.getSelectedRow())));
+    cambiarSetupT();
+}//GEN-LAST:event_setupTableKeyReleased
+
+private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+    // TODO add your handling code here:
+    getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+    setModificado(true);
+}//GEN-LAST:event_txtDescripcionKeyReleased
+
+private void txtValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyReleased
+    // TODO add your handling code here:
+    getDto().setValor(String.valueOf(txtValor.getText()));
+    setModificado(true);
+}//GEN-LAST:event_txtValorKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

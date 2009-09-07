@@ -33,7 +33,7 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMListasPrecios extends CustomInternalFrame {
+public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
 
     /** Creates new form ABMListasPrecios */
     public ABMListasPrecios() {

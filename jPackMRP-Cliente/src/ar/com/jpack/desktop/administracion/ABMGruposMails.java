@@ -8,7 +8,6 @@
  *
  * Created on 28-ago-2009, 16:33:08
  */
-
 package ar.com.jpack.desktop.administracion;
 
 import ar.com.jpack.desktop.DesktopApp;
@@ -33,7 +32,7 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMGruposMails extends CustomInternalFrame {
+public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
 
     /** Creates new form ABMGruposMails */
     public ABMGruposMails() {
@@ -92,30 +91,30 @@ public class ABMGruposMails extends CustomInternalFrame {
         if (tblGruposMails.getSelectedRow() != - 1) {
             GruposMailsT x = (GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow()));
             Integer z = DesktopApp.getApplication().deleteGrupoMailT(x.getIdGrupoMail());
-            if (z==0){
+            if (z == 0) {
                 JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
             }
 
 
             HashMap parametros = new HashMap();
-        List<GruposMailsT> nuevo = DesktopApp.getApplication().getGruposMailsT(parametros);
-        setListDto((ArrayList<GruposMailsT>) nuevo);
+            List<GruposMailsT> nuevo = DesktopApp.getApplication().getGruposMailsT(parametros);
+            setListDto((ArrayList<GruposMailsT>) nuevo);
 
-        tableModel = new GruposMailsTableModel(columnNames, this.getListDto());
-        tableModel.addTableModelListener(new CustomTableModelListener());
-        tblGruposMails.setModel(tableModel);
+            tableModel = new GruposMailsTableModel(columnNames, this.getListDto());
+            tableModel.addTableModelListener(new CustomTableModelListener());
+            tblGruposMails.setModel(tableModel);
 
-        sorter = new TableRowSorter<TableModel>(tableModel) {
+            sorter = new TableRowSorter<TableModel>(tableModel) {
 
-            @Override
-            public void toggleSortOrder(int column) {
-                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-                setRowFilter(null);
-                super.toggleSortOrder(column);
-                setRowFilter(f);
-            }
-        };
-        tblGruposMails.setRowSorter(sorter);
+                @Override
+                public void toggleSortOrder(int column) {
+                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                    setRowFilter(null);
+                    super.toggleSortOrder(column);
+                    setRowFilter(f);
+                }
+            };
+            tblGruposMails.setRowSorter(sorter);
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un grupo de mail");
         }
@@ -134,6 +133,11 @@ public class ABMGruposMails extends CustomInternalFrame {
     @Action
     public void aplicar() {
         JOptionPane.showInternalMessageDialog(this, "aplicar");
+    }
+
+    private void cambiarGruposMailsT() {
+        txtGrupo.setText(getDto().getGrupoMail());
+        txtGrupo.setEnabled(false);
     }
 
     /** This method is called from within the constructor to
@@ -201,6 +205,16 @@ public class ABMGruposMails extends CustomInternalFrame {
             }
         ));
         tblGruposMails.setName("tblGruposMails"); // NOI18N
+        tblGruposMails.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGruposMailsMouseClicked(evt);
+            }
+        });
+        tblGruposMails.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblGruposMailsKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblGruposMails);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -224,6 +238,11 @@ public class ABMGruposMails extends CustomInternalFrame {
 
         txtGrupo.setText(resourceMap.getString("txtGrupo.text")); // NOI18N
         txtGrupo.setName("txtGrupo"); // NOI18N
+        txtGrupo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtGrupoKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMGruposMails.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -300,7 +319,7 @@ public class ABMGruposMails extends CustomInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnBorrar)
@@ -324,6 +343,27 @@ public class ABMGruposMails extends CustomInternalFrame {
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
+    private void tblGruposMailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGruposMailsMouseClicked
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+        setDto((GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow())));
+        cambiarGruposMailsT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblGruposMailsMouseClicked
+
+    private void tblGruposMailsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblGruposMailsKeyReleased
+        // TODO add your handling code here:
+        setDto((GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow())));
+        cambiarGruposMailsT();
+    }//GEN-LAST:event_tblGruposMailsKeyReleased
+
+    private void txtGrupoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGrupoKeyReleased
+        // TODO add your handling code here:
+        getDto().setGrupoMail(String.valueOf(txtGrupo.getText()));
+        setModificado(true);
+    }//GEN-LAST:event_txtGrupoKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

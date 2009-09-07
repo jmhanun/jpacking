@@ -49,7 +49,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="250" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" pref="254" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -95,7 +95,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="222" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="226" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -122,6 +122,10 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="tableFeriados" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableFeriadosMouseClicked"/>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tableFeriadosKeyReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -177,7 +181,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAplicar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="136" max="32767" attributes="0"/>
+                      <EmptySpace pref="140" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -200,6 +204,9 @@
                 <Property name="text" type="java.lang.String" resourceKey="txtMotivo.text"/>
                 <Property name="name" type="java.lang.String" value="txtMotivo" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtMotivoKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnAplicar">
               <Properties>
@@ -214,6 +221,9 @@
               <Properties>
                 <Property name="name" type="java.lang.String" value="txtFecha" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="txtFechaPropertyChange"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

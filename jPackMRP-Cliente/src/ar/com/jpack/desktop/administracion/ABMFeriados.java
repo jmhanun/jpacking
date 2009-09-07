@@ -85,6 +85,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     @Action
     public void modificar() {
         JOptionPane.showInternalMessageDialog(this, "modificar");
+        txtFecha.setEnabled(true);
     }
 
     @Action
@@ -92,30 +93,30 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         if (tableFeriados.getSelectedRow() != - 1) {
             FeriadosT x = (FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow()));
             Integer z = DesktopApp.getApplication().deleteFeriadoT(x.getIdFeriado());
-            if (z==0){
+            if (z == 0) {
                 JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
             }
 
 
             HashMap parametros = new HashMap();
-        List<FeriadosT> nuevo = DesktopApp.getApplication().getFeriadosT(parametros);
-        setListDto((ArrayList<FeriadosT>) nuevo);
+            List<FeriadosT> nuevo = DesktopApp.getApplication().getFeriadosT(parametros);
+            setListDto((ArrayList<FeriadosT>) nuevo);
 
-        tableModel = new FeriadosTableModel(columnNames, this.getListDto());
-        tableModel.addTableModelListener(new CustomTableModelListener());
-        tableFeriados.setModel(tableModel);
+            tableModel = new FeriadosTableModel(columnNames, this.getListDto());
+            tableModel.addTableModelListener(new CustomTableModelListener());
+            tableFeriados.setModel(tableModel);
 
-        sorter = new TableRowSorter<TableModel>(tableModel) {
+            sorter = new TableRowSorter<TableModel>(tableModel) {
 
-            @Override
-            public void toggleSortOrder(int column) {
-                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-                setRowFilter(null);
-                super.toggleSortOrder(column);
-                setRowFilter(f);
-            }
-        };
-        tableFeriados.setRowSorter(sorter);
+                @Override
+                public void toggleSortOrder(int column) {
+                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                    setRowFilter(null);
+                    super.toggleSortOrder(column);
+                    setRowFilter(f);
+                }
+            };
+            tableFeriados.setRowSorter(sorter);
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un feriado");
         }
@@ -133,6 +134,13 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     @Action
     public void aplicar() {
         JOptionPane.showInternalMessageDialog(this, "aplicar");
+    }
+
+    private void cambiarFeriadosT() {
+        txtFecha.setDate(getDto().getFecha());
+        txtMotivo.setText(getDto().getMotivo());
+        txtFecha.setEnabled(false);
+        txtMotivo.setEnabled(false);
     }
 
     /** This method is called from within the constructor to
@@ -202,6 +210,16 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
             }
         ));
         tableFeriados.setName("tableFeriados"); // NOI18N
+        tableFeriados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableFeriadosMouseClicked(evt);
+            }
+        });
+        tableFeriados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tableFeriadosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableFeriados);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -215,7 +233,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMFeriados.class);
@@ -231,6 +249,11 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
 
         txtMotivo.setText(resourceMap.getString("txtMotivo.text")); // NOI18N
         txtMotivo.setName("txtMotivo"); // NOI18N
+        txtMotivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMotivoKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMFeriados.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -238,6 +261,11 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         btnAplicar.setName("btnAplicar"); // NOI18N
 
         txtFecha.setName("txtFecha"); // NOI18N
+        txtFecha.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtFechaPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -270,7 +298,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
                     .addComponent(txtMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -316,7 +344,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -340,6 +368,37 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
             dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void tableFeriadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFeriadosMouseClicked
+        // TODO add your handling code here:
+        setDto((FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow())));
+        cambiarFeriadosT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tableFeriadosMouseClicked
+
+    private void tableFeriadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableFeriadosKeyReleased
+        // TODO add your handling code here:
+        setDto((FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow())));
+        cambiarFeriadosT();
+    }//GEN-LAST:event_tableFeriadosKeyReleased
+
+    private void txtMotivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMotivoKeyReleased
+        // TODO add your handling code here:
+        getDto().setMotivo(String.valueOf(txtMotivo.getText()));
+        setModificado(true);
+    }//GEN-LAST:event_txtMotivoKeyReleased
+
+    private void txtFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtFechaPropertyChange
+        // TODO add your handling code here:
+
+        if (evt.getPropertyName().equals("date")) {
+            getDto().setFecha(txtFecha.getDate());
+            setModificado(true);
+        }
+
+    }//GEN-LAST:event_txtFechaPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

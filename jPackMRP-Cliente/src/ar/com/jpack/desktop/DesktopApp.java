@@ -1097,6 +1097,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public Integer deleteClientesT(Integer idCliente) {
+        try {
+            clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
+            return clientesFacade.deleteClienteT(idCliente);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public Integer deleteGrupoMailT(Integer idGrupoMail) {
         try {
             gruposmailsFacade = (GruposmailsFacadeRemote) lookUp("ar.com.jpack.negocio.GruposmailsFacadeRemote");

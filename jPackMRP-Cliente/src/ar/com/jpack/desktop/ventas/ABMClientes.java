@@ -13,6 +13,7 @@ import ar.com.jpack.transferencia.ClientesT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -113,7 +114,37 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
+        if (tblClientes.getSelectedRow() != - 1) {
+            ClientesT x = (ClientesT) tableModel.getRow(sorter.convertRowIndexToModel(tblClientes.getSelectedRow()));
+            Integer z = DesktopApp.getApplication().deleteClientesT(x.getIdCliente());
+            //poner validacion correcta
+            if (z == 0) {
+                JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
+            }
+
+
+            HashMap parametros = new HashMap();
+            List<ClientesT> nuevo = DesktopApp.getApplication().getClientesT(parametros);
+            setListDto((ArrayList<ClientesT>) nuevo);
+
+            tableModel = new ClientesTableModel(columnNames, this.getListDto());
+            tableModel.addTableModelListener(new CustomTableModelListener());
+            tblClientes.setModel(tableModel);
+
+            sorter = new TableRowSorter<TableModel>(tableModel) {
+
+                @Override
+                public void toggleSortOrder(int column) {
+                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                    setRowFilter(null);
+                    super.toggleSortOrder(column);
+                    setRowFilter(f);
+                }
+            };
+            tblClientes.setRowSorter(sorter);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un cliente");
+        }
     }
 
     @Action

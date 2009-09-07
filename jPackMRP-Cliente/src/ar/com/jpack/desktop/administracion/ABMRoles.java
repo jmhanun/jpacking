@@ -39,7 +39,7 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
     public ABMRoles() {
         super(new RolesT());
         initComponents();
-
+        btnBorrar.setEnabled(false);
         itemListener = new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
