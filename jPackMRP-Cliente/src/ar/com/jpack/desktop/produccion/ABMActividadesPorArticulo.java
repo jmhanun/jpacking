@@ -14,6 +14,7 @@ import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.transferencia.ArticulosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -181,6 +182,58 @@ public class ABMActividadesPorArticulo extends CustomInternalFrame<ActividadesAr
         txtCodigo.setText(art.getCodigo());
         txtDescripcion.setText(art.getDescripcion());
         articuloT = art;
+
+        
+        HashMap parametros = new HashMap();
+        
+        parametros.put("pIdArticulo", art.getIdArticulo());
+        
+        setListDto((ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros));
+
+        tableModel = new ActividadesArticulosTableModel(columnNames, this.getListDto()) {
+
+            @Override
+            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+                ActividadesArticulosT record = (ActividadesArticulosT) dataVector.get(rowIndex);
+                switch (columnIndex) {
+                    case 1:
+                        record.setOrden(((Integer) aValue).intValue());
+                        break;
+                    case 2:
+                        record.setTiempo(((Float) aValue).floatValue());
+                        break;
+                }
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                switch (column) {
+                    case 1:
+                        return true;
+                    case 2:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        };
+        tableModel.addTableModelListener(new CustomTableModelListener(this));
+        tblActividades.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblActividades.setRowSorter(sorter);
+        tblActividades.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        
     }
 
     /** This method is called from within the constructor to

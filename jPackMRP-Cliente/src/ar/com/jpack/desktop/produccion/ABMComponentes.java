@@ -16,6 +16,7 @@ import ar.com.jpack.transferencia.UsuariosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -161,6 +162,29 @@ public class ABMComponentes extends CustomInternalFrame<ComponentesT> {
         txtArticulo.setText(art.getCodigo());
         txtDescripcion.setText(art.getDescripcion());
         articuloT = art;
+
+        HashMap parametros = new HashMap();
+        parametros.put("pIdArticulo", art.getIdArticulo());
+
+        setListDto((ArrayList<ComponentesT>) DesktopApp.getApplication().getComponentesT(parametros));
+
+        tableModel = new ComponentesTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener(this));
+        tblComponentes.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblComponentes.setRowSorter(sorter);
+        tblComponentes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
     }
 
     public void agregarDetalle(ComponentesT comp) {
