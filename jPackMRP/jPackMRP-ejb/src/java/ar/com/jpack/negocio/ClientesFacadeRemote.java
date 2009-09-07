@@ -17,6 +17,8 @@ import javax.ejb.Remote;
 @Remote
 public interface ClientesFacadeRemote {
 
+    public Integer deleteClienteT(Integer idCliente);
+
     /**
      * Obtiene la lista de Clientes filtrados por el Hasmap
      * @param parametros <br>

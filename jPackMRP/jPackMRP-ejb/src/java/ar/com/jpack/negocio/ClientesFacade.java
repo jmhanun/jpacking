@@ -6,17 +6,24 @@ package ar.com.jpack.negocio;
 import ar.com.jpack.persistencia.Clientes;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.util.DozerUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.SQLException;
+import org.hibernate.FetchMode;
 
 /**
  *
@@ -27,6 +34,8 @@ public class ClientesFacade implements ClientesFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
+    @Resource(name = "jdbc/remoto.dbjpack")
+    private DataSource jdbcRemotedbjPack;
 
     /**
      * Obtiene la lista de Clientes filtrados por el Hasmap
@@ -66,14 +75,35 @@ public class ClientesFacade implements ClientesFacadeRemote {
             clienteCritearia.add(Restrictions.like("nombres", parametros.get("pNombres").toString(), MatchMode.ANYWHERE));
         }
         if (parametros.containsKey("pCuit")) {
-            clienteCritearia.add(Restrictions.like("cuit", parametros.get("pCuit").toString(),MatchMode.ANYWHERE));
+            clienteCritearia.add(Restrictions.like("cuit", parametros.get("pCuit").toString(), MatchMode.ANYWHERE));
         }
-//       clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
-       /*Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
-        estadoCriteria.setFetchMode("FacturaCollecoin", FetchMode.JOIN);
-        estadoCriteria.add(Restrictions.like("nombreEstado", "ACTIVO"));
-         */
+        clienteCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+        Criteria estadoCriteria = clienteCritearia.createCriteria("idEstado");
+        estadoCriteria.add(Restrictions.eq("idEstado", 10));
+
         clientesList = clienteCritearia.list();
         return clientesList;
+    }
+
+    public Integer deleteClienteT(Integer idCliente) {
+        Integer resultado = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spabmclientes(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idCliente);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            resultado = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FeriadosFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 }
