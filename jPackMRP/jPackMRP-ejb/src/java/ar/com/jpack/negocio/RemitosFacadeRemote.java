@@ -34,6 +34,7 @@ public interface RemitosFacadeRemote {
      * Lista de parametros: <br>
      * <b>pIdRemito</b>           filtra por 'eq' idRemito (Integer) <br>
      * <b>pJoinDetalleRemitos</b> obliga a Joinear con DetalleRemitos<br>
+     * <b>pJoinClientes</b> obliga a Joinear con Clientes<br>
      * @return devuelve la lista de los Remitos que cumplan con el filtro
      */
     public List<RemitosT> getRemitosT(HashMap parametros);
@@ -44,6 +45,7 @@ public interface RemitosFacadeRemote {
      * Lista de parametros: <br>
      * <b>pIdRemito</b>           filtra por 'eq' idRemito (Integer) <br>
      * <b>pJoinDetalleRemitos</b> obliga a Joinear con DetalleRemitos<br>
+     * <b>pJoinClientes</b> obliga a Joinear con Clientes<br>
      * @return devuelve la lista de los Remitos que cumplan con el filtro
      */
     public List<Remitos> getRemitos(HashMap parametros);
