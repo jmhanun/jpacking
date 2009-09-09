@@ -884,6 +884,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showFacturador() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.Facturador", "Facturador", padre);
+    }
+
+    @Action
     public Task showSellos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMSellos", "Sellos", padre);
     }

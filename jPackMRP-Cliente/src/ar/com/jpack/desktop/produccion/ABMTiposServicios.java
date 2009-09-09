@@ -33,12 +33,14 @@ import org.jdesktop.application.Action;
  *
  * @author Pablo
  */
-public class ABMTiposServicios extends CustomInternalFrame {
+public class ABMTiposServicios extends CustomInternalFrame<TiposServiciosT> {
 
     /** Creates new form ABMTiposServicios */
     public ABMTiposServicios() {
         super(new TiposServiciosT());
         initComponents();
+        btnModificar.setEnabled(false);
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<TiposServiciosT> nuevo = DesktopApp.getApplication().getTiposServiciosT(parametros);
         setListDto((ArrayList<TiposServiciosT>) nuevo);
@@ -107,6 +109,11 @@ public class ABMTiposServicios extends CustomInternalFrame {
 
     }
 
+    private void cambiarTiposServiciosT() {
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtDescripcion.setEnabled(false);
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -172,6 +179,16 @@ public class ABMTiposServicios extends CustomInternalFrame {
             }
         ));
         tblTiposServicios.setName("tblTiposServicios"); // NOI18N
+        tblTiposServicios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTiposServiciosMouseClicked(evt);
+            }
+        });
+        tblTiposServicios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblTiposServiciosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblTiposServicios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -197,6 +214,11 @@ public class ABMTiposServicios extends CustomInternalFrame {
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMTiposServicios.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -226,7 +248,7 @@ public class ABMTiposServicios extends CustomInternalFrame {
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -272,7 +294,7 @@ public class ABMTiposServicios extends CustomInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -296,6 +318,29 @@ public class ABMTiposServicios extends CustomInternalFrame {
         dispose();
     }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void tblTiposServiciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTiposServiciosMouseClicked
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+        setDto((TiposServiciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblTiposServicios.getSelectedRow())));
+        cambiarTiposServiciosT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblTiposServiciosMouseClicked
+
+    private void tblTiposServiciosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblTiposServiciosKeyReleased
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con las flechas
+        setDto((TiposServiciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblTiposServicios.getSelectedRow())));
+        cambiarTiposServiciosT();
+    }//GEN-LAST:event_tblTiposServiciosKeyReleased
+
+    private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+        // TODO add your handling code here:
+        getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+        setModificado(true);
+    }//GEN-LAST:event_txtDescripcionKeyReleased
 
 
 

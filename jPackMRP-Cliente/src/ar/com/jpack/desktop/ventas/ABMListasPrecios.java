@@ -111,6 +111,10 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
         }
     }
 
+    private void cambiarListasPreciosT() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -128,10 +132,10 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtFechaDesde = new javax.swing.JTextField();
-        txtFechaHasta = new javax.swing.JTextField();
         cmbEstado = new javax.swing.JComboBox();
         btnAplicar = new javax.swing.JButton();
+        txtFechaDesde = new com.toedter.calendar.JDateChooser();
+        txtFechaHasta = new com.toedter.calendar.JDateChooser();
         btnCancelar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -180,6 +184,16 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
             }
         ));
         tblListasPrecios.setName("tblListasPrecios"); // NOI18N
+        tblListasPrecios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListasPreciosMouseClicked(evt);
+            }
+        });
+        tblListasPrecios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblListasPreciosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblListasPrecios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -192,7 +206,7 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMListasPrecios.class);
@@ -209,12 +223,6 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        txtFechaDesde.setText(resourceMap.getString("txtFechaDesde.text")); // NOI18N
-        txtFechaDesde.setName("txtFechaDesde"); // NOI18N
-
-        txtFechaHasta.setText(resourceMap.getString("txtFechaHasta.text")); // NOI18N
-        txtFechaHasta.setName("txtFechaHasta"); // NOI18N
-
         cmbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbEstado.setName("cmbEstado"); // NOI18N
 
@@ -222,6 +230,10 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
         btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
+
+        txtFechaDesde.setName("txtFechaDesde"); // NOI18N
+
+        txtFechaHasta.setName("txtFechaHasta"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -239,19 +251,19 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtFechaDesde, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                            .addComponent(txtFechaHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                            .addComponent(cmbEstado, 0, 388, Short.MAX_VALUE))))
+                            .addComponent(cmbEstado, 0, 388, Short.MAX_VALUE)
+                            .addComponent(txtFechaHasta, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(txtFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
                     .addComponent(txtFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -260,7 +272,7 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
                     .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -306,7 +318,7 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -330,6 +342,23 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
             dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void tblListasPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListasPreciosMouseClicked
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+        setDto((ListasPreciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblListasPrecios.getSelectedRow())));
+        cambiarListasPreciosT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblListasPreciosMouseClicked
+
+    private void tblListasPreciosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblListasPreciosKeyReleased
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con las flechas
+        setDto((ListasPreciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblListasPrecios.getSelectedRow())));
+        cambiarListasPreciosT();
+    }//GEN-LAST:event_tblListasPreciosKeyReleased
 
 
     private boolean modificado = false;
@@ -359,8 +388,8 @@ public class ABMListasPrecios extends CustomInternalFrame<ListasPreciosT> {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tblListasPrecios;
-    private javax.swing.JTextField txtFechaDesde;
-    private javax.swing.JTextField txtFechaHasta;
+    private com.toedter.calendar.JDateChooser txtFechaDesde;
+    private com.toedter.calendar.JDateChooser txtFechaHasta;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
         "Id", "Fecha Desde", "Fecha Hasta", "Estado", "Usuario", "Fecha Modificacion"

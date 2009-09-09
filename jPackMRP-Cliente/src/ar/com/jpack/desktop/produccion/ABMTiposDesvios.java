@@ -39,6 +39,8 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
     public ABMTiposDesvios() {
         super(new TiposDesviosT());
         initComponents();
+        btnModificar.setEnabled(false);
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<TiposDesviosT> nuevo = DesktopApp.getApplication().getTiposDesviosT(parametros);
         setListDto((ArrayList<TiposDesviosT>) nuevo);
@@ -107,6 +109,11 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
     }
 
+    private void cambiarTiposDesviosT() {
+        txtMotivo.setText(getDto().getMotivo());
+        txtMotivo.setEnabled(false);
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -172,6 +179,16 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
             }
         ));
         tiposDesviosTable.setName("tiposDesviosTable"); // NOI18N
+        tiposDesviosTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tiposDesviosTableMouseClicked(evt);
+            }
+        });
+        tiposDesviosTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tiposDesviosTableKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tiposDesviosTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -186,7 +203,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addGap(11, 11, 11))
         );
 
@@ -200,6 +217,11 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
         txtMotivo.setText(resourceMap.getString("txtMotivo.text")); // NOI18N
         txtMotivo.setName("txtMotivo"); // NOI18N
+        txtMotivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMotivoKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMTiposDesvios.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -229,7 +251,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
                     .addComponent(txtMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addContainerGap(197, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -275,7 +297,7 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -299,6 +321,29 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
             dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void tiposDesviosTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tiposDesviosTableMouseClicked
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+        setDto((TiposDesviosT) tableModel.getRow(sorter.convertRowIndexToModel(tiposDesviosTable.getSelectedRow())));
+        cambiarTiposDesviosT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tiposDesviosTableMouseClicked
+
+    private void tiposDesviosTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tiposDesviosTableKeyReleased
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con las flechas
+        setDto((TiposDesviosT) tableModel.getRow(sorter.convertRowIndexToModel(tiposDesviosTable.getSelectedRow())));
+        cambiarTiposDesviosT();
+    }//GEN-LAST:event_tiposDesviosTableKeyReleased
+
+    private void txtMotivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMotivoKeyReleased
+        // TODO add your handling code here:
+        getDto().setMotivo(String.valueOf(txtMotivo.getText()));
+        setModificado(true);
+    }//GEN-LAST:event_txtMotivoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

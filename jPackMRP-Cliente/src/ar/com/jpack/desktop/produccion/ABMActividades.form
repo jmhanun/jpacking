@@ -50,7 +50,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jTabbedPane1" min="-2" pref="239" max="-2" attributes="0"/>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace pref="18" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -186,6 +186,9 @@
                 <Property name="text" type="java.lang.String" resourceKey="txtDescripcion.text"/>
                 <Property name="name" type="java.lang.String" value="txtDescripcion" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDescripcionKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnAplicar">
               <Properties>

@@ -84,7 +84,6 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
 
     @Action
     public void modificar() {
-        JOptionPane.showInternalMessageDialog(this, "modificar");
         txtFecha.setEnabled(true);
     }
 

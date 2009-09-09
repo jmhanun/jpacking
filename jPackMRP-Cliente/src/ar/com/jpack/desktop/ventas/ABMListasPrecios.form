@@ -49,7 +49,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jTabbedPane1" pref="245" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" pref="253" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -93,7 +93,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jScrollPane1" min="-2" pref="202" max="-2" attributes="0"/>
-                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <EmptySpace pref="23" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -121,6 +121,10 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="tblListasPrecios" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblListasPreciosMouseClicked"/>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tblListasPreciosKeyReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -153,9 +157,9 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtFechaDesde" alignment="0" pref="388" max="32767" attributes="0"/>
-                                  <Component id="txtFechaHasta" alignment="0" pref="388" max="32767" attributes="0"/>
+                                  <Component id="txtFechaDesde" pref="388" max="32767" attributes="0"/>
                                   <Component id="cmbEstado" alignment="0" pref="388" max="32767" attributes="0"/>
+                                  <Component id="txtFechaHasta" alignment="0" pref="388" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -167,14 +171,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtFechaDesde" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFechaDesde" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtFechaHasta" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFechaHasta" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -183,7 +187,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAplicar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="105" max="32767" attributes="0"/>
+                      <EmptySpace pref="113" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -207,18 +211,6 @@
                 <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtFechaDesde">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtFechaDesde.text"/>
-                <Property name="name" type="java.lang.String" value="txtFechaDesde" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtFechaHasta">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="txtFechaHasta.text"/>
-                <Property name="name" type="java.lang.String" value="txtFechaHasta" noResource="true"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JComboBox" name="cmbEstado">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -239,6 +231,16 @@
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="btnAplicar.text"/>
                 <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="txtFechaDesde">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txtFechaDesde" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="txtFechaHasta">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="txtFechaHasta" noResource="true"/>
               </Properties>
             </Component>
           </SubComponents>

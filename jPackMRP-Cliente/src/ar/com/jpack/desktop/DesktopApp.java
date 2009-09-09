@@ -476,6 +476,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<RemitosT> getRemitosT(HashMap parametros) {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.getRemitosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Obtiene el siguiente numero de remito
      * @return devuelve el siguiente numero de remito como int

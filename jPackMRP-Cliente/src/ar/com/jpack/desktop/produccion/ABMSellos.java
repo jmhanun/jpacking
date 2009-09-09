@@ -39,6 +39,8 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
     public ABMSellos() {
         super(new SellosT());
         initComponents();
+        btnModificar.setEnabled(false);
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         parametros.put("pJoinEstados", true);
         parametros.put("pJoinArticulos", true);
@@ -117,6 +119,10 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
 
     }
 
+    private void cambiarSellosT() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -142,7 +148,7 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
         jButton6 = new javax.swing.JButton();
         btnAplicar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -189,6 +195,11 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
             }
         ));
         tblSellos.setName("tblSellos"); // NOI18N
+        tblSellos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSellosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSellos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -200,7 +211,7 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addGap(4, 4, 4))
         );
 
@@ -284,7 +295,7 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -293,9 +304,9 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
         btnCancelar.setText(resourceMap.getString("btnCancelar.text")); // NOI18N
         btnCancelar.setName("btnCancelar"); // NOI18N
 
-        jButton2.setAction(actionMap.get("borrar")); // NOI18N
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
+        btnBorrar.setAction(actionMap.get("borrar")); // NOI18N
+        btnBorrar.setText(resourceMap.getString("btnBorrar.text")); // NOI18N
+        btnBorrar.setName("btnBorrar"); // NOI18N
 
         btnModificar.setAction(actionMap.get("modificar")); // NOI18N
         btnModificar.setText(resourceMap.getString("btnModificar.text")); // NOI18N
@@ -322,7 +333,7 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addContainerGap())
@@ -330,11 +341,11 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(jButton2)
+                    .addComponent(btnBorrar)
                     .addComponent(btnModificar)
                     .addComponent(btnSeleccionar)
                     .addComponent(btnAgregar))
@@ -355,6 +366,16 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
+    private void tblSellosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSellosMouseClicked
+        // TODO add your handling code here:
+        //para el caso en que se navegue la tabla con el mouse
+        setDto((SellosT) tableModel.getRow(sorter.convertRowIndexToModel(tblSellos.getSelectedRow())));
+        cambiarSellosT();
+        if (evt.getClickCount() == 2) {
+            this.jTabbedPane1.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblSellosMouseClicked
+
 
     private boolean modificado = false;
     public boolean isModificado() {
@@ -370,11 +391,11 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
+    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox cmbArticulo;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

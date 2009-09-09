@@ -39,6 +39,8 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
     public ABMActividades() {
         super(new ActividadesT());
         initComponents();
+        btnModificar.setEnabled(false);
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<ActividadesT> nuevo = DesktopApp.getApplication().getActividadesT(parametros);
         setListDto((ArrayList<ActividadesT>) nuevo);
@@ -237,6 +239,11 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMActividades.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -313,7 +320,7 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnBorrar)
@@ -357,6 +364,12 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     }
 
 }//GEN-LAST:event_formInternalFrameClosing
+
+private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+    // TODO add your handling code here:
+    getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+    setModificado(true);
+}//GEN-LAST:event_txtDescripcionKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
