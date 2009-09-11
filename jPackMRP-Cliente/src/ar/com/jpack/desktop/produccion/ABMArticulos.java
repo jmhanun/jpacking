@@ -6,6 +6,7 @@
 package ar.com.jpack.desktop.produccion;
 
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.compras.RegistrarCompra;
 import ar.com.jpack.desktop.ventas.RegistrarRemito;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
@@ -15,6 +16,7 @@ import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.UnidadesMedidaT;
 import java.awt.event.ItemEvent;
@@ -251,6 +253,17 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                         ((ABMActividadesPorArticulo) getPadre()).agregarArticulo(art);
                         cancelar();
                     }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.compras.RegistrarCompra")) {
+                        
+                        ((DetRtosIngresoT) getPadre().getDto()).setIdArticulo(art);
+
+                        ((DetRtosIngresoT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+
+                        ((RegistrarCompra) getPadre()).agregarDetalle(((DetRtosIngresoT) getPadre().getDto()));
+
+                        cancelar();
+                    }
+
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
                 }

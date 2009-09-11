@@ -8,7 +8,6 @@
  *
  * Created on 04-sep-2009, 17:58:56
  */
-
 package ar.com.jpack.desktop.compras;
 
 import ar.com.jpack.desktop.DesktopApp;
@@ -19,7 +18,6 @@ import ar.com.jpack.transferencia.ProveedoresT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -40,7 +38,6 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
         super(new ProveedoresT());
         initComponents();
         HashMap parametros = new HashMap();
-        List<ProveedoresT> x= DesktopApp.getApplication().getProveedoresT(parametros);
         setListDto((ArrayList<ProveedoresT>) DesktopApp.getApplication().getProveedoresT(parametros));
 
         tableModel = new ProveedoresTableModel(columnNames, this.getListDto());
@@ -77,29 +74,27 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
 
     @Action
     public void buscar() {
-        JOptionPane.showInternalMessageDialog(this, "buscar");
 
-    /*    HashMap parametros = new HashMap();
+        HashMap parametros = new HashMap();
         if (!txtCuit.getText().isEmpty()) {
             parametros.put("pCuit", txtCuit.getText());
         }
         if (!txtNombre.getText().isEmpty()) {
             parametros.put("pNombres", txtNombre.getText());
         }
-        if (!txtIdCliente.getText().isEmpty()) {
+        if (!txtNumero.getText().isEmpty()) {
             try {
-                parametros.put("pIdCliente", Integer.parseInt(txtIdCliente.getText()));
+                parametros.put("pIdProveedor", Integer.parseInt(txtNumero.getText()));
             } catch (NumberFormatException e) {
                 JOptionPane.showInternalMessageDialog(this, "El valor de id del cliente debe ser numerico");
                 return;
             }
         }
-        setListDto((ArrayList<ClientesT>) DesktopApp.getApplication().getClientesT(parametros));
+        setListDto((ArrayList<ProveedoresT>) DesktopApp.getApplication().getProveedoresT(parametros));
 
-        tableModel = new ClientesTableModel(columnNames, this.getListDto());
+        tableModel = new ProveedoresTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
-
-        tblClientes.setModel(tableModel);
+        tblProveedores.setModel(tableModel);
 
         sorter = new TableRowSorter<TableModel>(tableModel) {
 
@@ -111,14 +106,14 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
                 setRowFilter(f);
             }
         };
-        tblClientes.setRowSorter(sorter);
+        tblProveedores.setRowSorter(sorter);
 
         if ((getPadre() != null) && (getListDto().size() == 1)) {
-            tblClientes.setRowSelectionInterval(0, 0);
-            setDto((ClientesT) tableModel.getRow(sorter.convertRowIndexToModel(tblClientes.getSelectedRow())));
-            cambiarClienteT();
+            tblProveedores.setRowSelectionInterval(0, 0);
+            setDto((ProveedoresT) tableModel.getRow(sorter.convertRowIndexToModel(tblProveedores.getSelectedRow())));
+            cambiarProveedoresT();
             seleccionar();
-        }*/
+        }
     }
 
     @Action
@@ -128,25 +123,26 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
-        /*if (getDto() != null) {
-            if (getDto().getIdCliente() != null) {
-                ClientesT cli = getDto();
-                if (tblClientes.getSelectedRow() != - 1) {
-                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.RegistrarRemito")) {
 
-                        ((RegistrarRemito) getPadre()).agregarCliente(cli);
+        if (getDto() != null) {
+            if (getDto().getIdProveedor() != null) {
+                ProveedoresT pro = getDto();
+                if (tblProveedores.getSelectedRow() != - 1) {
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.compras.RegistrarCompra")) {
+
+                        ((RegistrarCompra) getPadre()).agregarProveedor(pro);
                         cancelar();
                     }
                 } else {
-                    JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
+                    JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un proveedor");
                 }
             } else {
-                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
+                JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un proveedor");
             }
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
-        }*/
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un proveedor");
+        }
+
     }
 
     @Action
@@ -162,6 +158,44 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
     @Action
     public void modificar() {
         JOptionPane.showInternalMessageDialog(this, "editar");
+    }
+
+    void habilitarBtnSeleccionar(boolean valor) {
+        btnSeleccionar.setEnabled(valor);
+        btnAgregar.setEnabled(!valor);
+        btnBorrar.setEnabled(!valor);
+        btnModificar.setEnabled(!valor);
+    }
+
+    private void cambiarProveedoresT() {
+        //Cambia los datos de los txts
+    }
+
+    public String getCuitProveedor() {
+        return cuitProveedor;
+    }
+
+    public void setCuitProveedor(String cuitProveedor) {
+        this.cuitProveedor = cuitProveedor;
+        txtCuit.setText(cuitProveedor);
+    }
+
+    public String getNombreProveedor() {
+        return nombreProveedor;
+    }
+
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+        txtNombre.setText(nombreProveedor);
+    }
+
+    public String getNumeroProveedor() {
+        return numeroProveedor;
+    }
+
+    public void setNumeroProveedor(String numeroProveedor) {
+        this.numeroProveedor = numeroProveedor;
+        txtNumero.setText(numeroProveedor);
     }
 
     /** This method is called from within the constructor to
@@ -260,6 +294,16 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
             }
         ));
         tblProveedores.setName("tblProveedores"); // NOI18N
+        tblProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProveedoresMouseClicked(evt);
+            }
+        });
+        tblProveedores.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblProveedoresKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProveedores);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -304,7 +348,7 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
@@ -319,7 +363,7 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
+            .addGap(0, 324, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -365,7 +409,7 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -380,7 +424,7 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+        
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
@@ -390,7 +434,24 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
+private void tblProveedoresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProveedoresKeyReleased
 
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((ProveedoresT) tableModel.getRow(sorter.convertRowIndexToModel(tblProveedores.getSelectedRow())));
+    cambiarProveedoresT();
+
+}//GEN-LAST:event_tblProveedoresKeyReleased
+
+private void tblProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProveedoresMouseClicked
+
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((ProveedoresT) tableModel.getRow(sorter.convertRowIndexToModel(tblProveedores.getSelectedRow())));
+    cambiarProveedoresT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+}//GEN-LAST:event_tblProveedoresMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;

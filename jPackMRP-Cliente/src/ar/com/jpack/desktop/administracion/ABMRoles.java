@@ -106,10 +106,10 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
 
         cboRolPadre.addItemListener(itemListener);
 
-        timer = new Timer(5000, new ActionListener() {
+        timer = new Timer(50000, new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                System.out.println("hola!");
+//                System.out.println("hola!");
             }
         });
         timer.setRepeats(true);

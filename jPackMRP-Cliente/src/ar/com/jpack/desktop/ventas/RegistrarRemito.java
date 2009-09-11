@@ -144,17 +144,6 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         articulosOpenFrame.buscar();
     }
 
-    public void agregarDetalle(DetalleRemitosT detalle) {
-        tableModel.addRow(detalle);
-    }
-
-    public void agregarCliente(ClientesT cliente) {
-        txtCliente.setText(cliente.getNombres());
-        txtCuit.setText(cliente.getCuit());
-        txtNumeroCliente.setText(cliente.getIdCliente().toString());
-        remito.setIdCliente(cliente);
-    }
-
     @Action
     public void aplicar() {
         //Verificar que haya al menos un item
@@ -262,7 +251,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
                             opT = new OrdenesProduccionT();
                             opT.setFecha(remito.getFecha());
                             opT.setIdEstado(new EstadosT());
-                            opT.getIdEstado().setIdEstado(1);
+                            opT.getIdEstado().setIdEstado(4);
                             opT.setIdTipoComprobante(new TiposComprobantesT());
                             opT.getIdTipoComprobante().setIdTipoComprobante(6);
                             opT.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
@@ -398,6 +387,17 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
     public void setTotal(Double total) {
         this.total = total;
         this.txtImporte.setText(total.toString());
+    }
+
+    public void agregarDetalle(DetalleRemitosT detalle) {
+        tableModel.addRow(detalle);
+    }
+
+    public void agregarCliente(ClientesT cliente) {
+        txtCliente.setText(cliente.getNombres());
+        txtCuit.setText(cliente.getCuit());
+        txtNumeroCliente.setText(cliente.getIdCliente().toString());
+        remito.setIdCliente(cliente);
     }
 
     /** This method is called from within the constructor to

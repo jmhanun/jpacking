@@ -34,7 +34,18 @@ public abstract class CustomTableModel<E> extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
+        
+        Class<?> x = null;
+        try {
+            x = getValueAt(0, column).getClass();
+        } catch (Exception e) {
+            System.out.println("PASAAA POR ACAAAAAAAAAAA");
+            System.out.println("-------------------------------");
+            System.out.println("column " + column);
+            System.out.println("getValueAt(0, column) " + getValueAt(0, column));
+        }
+        
+        return x;
     }
 
     public int getRowCount() {

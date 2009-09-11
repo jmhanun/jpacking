@@ -9,7 +9,6 @@ import ar.com.jpack.helpers.CustomTableModel;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,13 +48,11 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                 if (record.getDetordenesproduccion() == null) {
                     return "";
                 } else {
-
-                    HashMap parametros = new HashMap();
-                    parametros.put("pIdOrdenProduccion", record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion());
-                    return DesktopApp.getApplication().getOrdenesProduccionT(parametros).get(0).getNroOrdenProduccion();
-
-
-//                    return record.getDetordenesproduccion().getDetordenesproduccionPK().getIdOrdenProduccion();
+                    if (record.getDetordenesproduccion().getOrdenesproduccion() == null) {
+                        return "";
+                    } else {
+                        return record.getDetordenesproduccion().getOrdenesproduccion().getNroOrdenProduccion();
+                    }
                 }
             case MAQUINA_INDEX:
                 if (record.getIdMaquina() == null) {
@@ -113,7 +110,7 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                     return fechaFormatter.format(record.getFechaFinProceso());
                 }
             case PROGRESO_INDEX:
-
+//                return "NO";
                 return DesktopApp.getApplication().getAvanceProduccion(record).toString() + " %";
             default:
                 return new Object();

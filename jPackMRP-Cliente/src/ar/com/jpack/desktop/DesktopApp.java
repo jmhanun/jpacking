@@ -36,6 +36,7 @@ import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.ComponentesT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
+import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
@@ -49,6 +50,7 @@ import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.PreciosT;
 import ar.com.jpack.transferencia.ProveedoresT;
+import ar.com.jpack.transferencia.RemitosIngresoT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.transferencia.RolesT;
 import ar.com.jpack.transferencia.SellosT;
@@ -212,6 +214,20 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Apartentemente no tiene conexion a Internet. No es posible enviar el mail. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public Long getDiferenciaSegundos(Date inicial, Date ahora) {
+        GregorianCalendar cal1 = new GregorianCalendar();
+        GregorianCalendar cal2 = new GregorianCalendar();
+
+// Set the date for both of the calendar instance
+        cal1.setTime(inicial);
+        cal2.setTime(ahora);
+
+// Calculate difference in milliseconds
+        Long diff = Math.abs(cal2.getTimeInMillis() - cal1.getTimeInMillis());
+// Calculate difference in seconds
+        return (diff / 1000);
     }
 
     public String getFechaLiteral(Date fechaAcordada) {
@@ -604,6 +620,16 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public void insertDesvioT(Integer idDetalleProduccion, Integer idTipoDesvio, String comentario) {
+        try {
+            tiposDesviosFacade = (TiposdesviosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposdesviosFacadeRemote");
+            tiposDesviosFacade.insertDesvioT(idDetalleProduccion, idTipoDesvio, comentario);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Obtiene la lista de Usuarios filtrados por el Hasmap
      * @param parametros <br>
@@ -875,7 +901,6 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
-
     public List<RolesT> getMenuesT(boolean isMenu) {
         try {
             rolesFacade = (RolesFacadeRemote) lookUp("ar.com.jpack.negocio.RolesFacadeRemote");
@@ -1065,6 +1090,58 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public RemitosIngresoT updateRemitosIngresosT(RemitosIngresoT remito, ArrayList<DetRtosIngresoT> listDto) {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.updateRemitosIngresosT(remito, listDto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public void setEstadoOP(Integer idOP, Integer newEstado) {
+        try {
+            ordenesproduccionFacade = (OrdenesproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenesproduccionFacadeRemote");
+            ordenesproduccionFacade.setEstadoOP(idOP, newEstado);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void setEstadoProduccion(Integer idDetalleProduccion, Integer idEstado, Integer idEstadoAnterior, Date fecha) {
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            detalleProduccionFacade.setEstadoProduccion(idDetalleProduccion, idEstado, idEstadoAnterior, fecha);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion){
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            return detalleProduccionFacade.getTiempoEstimadoProduccion(idDetalleProduccion);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    public Integer getTiempoRealProduccion(Integer idDetalleProduccion) {
+        try {
+            detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
+            return detalleProduccionFacade.getTiempoRealProduccion(idDetalleProduccion);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
@@ -1157,6 +1234,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
             return setupFacade.getSetupT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public String getValorSetup(Integer idSetup) {
+        try {
+            setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
+            return setupFacade.getValorSetup(idSetup);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

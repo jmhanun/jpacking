@@ -848,10 +848,19 @@ public class DesktopView extends FrameView {
     public Task showRegistrarRemitos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistrarRemito", "Registro de Remitos", padre);
     }
+    @Action
+    public Task showRegistrarCompra() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.compras.RegistrarCompra", "Registro de Factura de Compra", padre);
+        
+    }
 
     @Action
     public Task showArticulos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMArticulos", "Articulos", padre);
+    }
+    @Action
+    public Task showTipificarDesvio() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.TipificarDesvio", "Desvios", padre);        
     }
 
     @Action

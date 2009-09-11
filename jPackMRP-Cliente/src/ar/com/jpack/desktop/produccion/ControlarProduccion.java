@@ -10,7 +10,7 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.DetalleProduccionTableModel;
 import ar.com.jpack.transferencia.DetalleProduccionT;
-import ar.com.jpack.transferencia.EstadosT;
+import ar.com.jpack.transferencia.TiposDesviosT;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
@@ -32,12 +32,13 @@ import org.jdesktop.application.Action;
  */
 public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT> {
 
+    private TipificarDesvio desvioOpenFrame;
+
     /** Creates new form ControlarProduccion */
     public ControlarProduccion() {
         super(new DetalleProduccionT());
         initComponents();
         refresh();
-
         setModificado(false);
         setNuevo(false);
 
@@ -54,85 +55,185 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
 
     @Action
     public void iniciar() {
+        timer.stop();
         if (detalleProduccionTable.getSelectedRow() != -1) {
-            
+
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if ((detalleSeleccionado.getIdEstado().getIdEstado() == 22) || (detalleSeleccionado.getIdEstado().getIdEstado() == 21)) {
-                EstadosT estadoIniciado = new EstadosT();
-                estadoIniciado.setIdEstado(14);
-                detalleSeleccionado.setIdEstado(estadoIniciado);
-                detalleSeleccionado.setFechaInicioProceso(new Date());
-                DesktopApp.getApplication().updateDetalleProduccion(detalleSeleccionado);
+                Date ahora = new Date();
+
+                DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 14, detalleSeleccionado.getIdEstado().getIdEstado(), ahora);
+
+                Long tolerancia = Long.parseLong(DesktopApp.getApplication().getValorSetup(18));
+                if (DesktopApp.getApplication().getDiferenciaSegundos(detalleSeleccionado.getFechaInicioEstimada(), ahora) > tolerancia) {
+                    HashMap parametros = new HashMap();
+                    ArrayList<TiposDesviosT> tiposDesvioTs = (ArrayList<TiposDesviosT>) DesktopApp.getApplication().getTiposDesviosT(parametros);
+                    TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
+                            "Tipo desvio",
+                            "Desvio por desfasaje en inicio proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
+                    String comentario = (String) JOptionPane.showInternalInputDialog(this,
+                            "Comentario",
+                            "Desvio por desfasaje en inicio proceso - 2° Paso(Escriba un comentario)",
+                            JOptionPane.PLAIN_MESSAGE);
+                    DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
+                }
+
                 refresh();
+
+
+                timer.setRepeats(true);
+                timer.start();
             } else {
                 JOptionPane.showInternalMessageDialog(this, "La actividad debe estar \"EN ESPERA\" o \"SUSPENDIDA\" para poder iniciarse");
+                timer.setRepeats(true);
+                timer.start();
             }
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
+            timer.setRepeats(true);
+            timer.start();
         }
     }
 
     @Action
     public void finalizar() {
+        timer.stop();
         if (detalleProduccionTable.getSelectedRow() != -1) {
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
-                detalleSeleccionado.setFechaFinProceso(new Date());
-                EstadosT estadoIniciado = new EstadosT();
-                estadoIniciado.setIdEstado(15);
-                detalleSeleccionado.setIdEstado(estadoIniciado);
-                DesktopApp.getApplication().updateDetalleProduccion(detalleSeleccionado);
-                refresh();
+                Date ahora = new Date();
+                DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 15, detalleSeleccionado.getIdEstado().getIdEstado(), ahora);
+
+                Integer tiempoReal = Math.abs(DesktopApp.getApplication().getTiempoRealProduccion(detalleSeleccionado.getIdDetalleProduccion()));
+                Integer tiempoEstimado = Math.abs(DesktopApp.getApplication().getTiempoEstimadoProduccion(detalleSeleccionado.getIdDetalleProduccion()));
+
+
+
+                Long tolerancia = Long.parseLong(DesktopApp.getApplication().getValorSetup(18));
+                HashMap parametros = new HashMap();
+                ArrayList<TiposDesviosT> tiposDesvioTs = (ArrayList<TiposDesviosT>) DesktopApp.getApplication().getTiposDesviosT(parametros);
+                if (DesktopApp.getApplication().getDiferenciaSegundos(detalleSeleccionado.getFechaFinEstimada(), ahora) > tolerancia) {
+                    TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
+                            "Tipo desvio",
+                            "Desvio por desfasaje en fin proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
+                    String comentario = (String) JOptionPane.showInternalInputDialog(this,
+                            "Comentario",
+                            "Desvio por desfasaje en fin proceso - 2° Paso(Escriba un comentario)",
+                            JOptionPane.PLAIN_MESSAGE);
+                    DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
+                }
+
+                if (Math.abs(tiempoEstimado - tiempoReal) > tolerancia) {
+                    TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
+                            "Tipo desvio",
+                            "Desvio en duracion proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
+                    String comentario = (String) JOptionPane.showInternalInputDialog(this,
+                            "Comentario",
+                            "Desvio en duracion proceso - 2° Paso(Escriba un comentario)",
+                            JOptionPane.PLAIN_MESSAGE);
+                    DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
+                }
+
+                parametros = new HashMap();
+                parametros.put("pJoinMaquinas", true);
+                parametros.put("pJoinArticulos", true);
+                parametros.put("pJoinUnidadesMedidas", true);
+                parametros.put("pJoinEstados", true);
+                parametros.put("pJoinOrdenes", true);
+                parametros.put("pIdEstadoOrden", 4);
+
+                ArrayList<DetalleProduccionT> nuevaLista = (ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros);
+
+                boolean actualizaOP = true;
+                for (DetalleProduccionT detalle : nuevaLista) {
+                    if (actualizaOP) {
+                        if (detalle.getDetordenesproduccion().getOrdenesproduccion().getIdOrdenProduccion().equals(detalleSeleccionado.getDetordenesproduccion().getOrdenesproduccion().getIdOrdenProduccion())) {
+                            if (detalle.getFechaFinProceso() == null) {
+                                actualizaOP = false;
+                            }
+                        }
+                    }
+                }
+                if (actualizaOP) {
+                    DesktopApp.getApplication().setEstadoOP(detalleSeleccionado.getDetordenesproduccion().getOrdenesproduccion().getIdOrdenProduccion(), 5);
+                    refresh();
+                    timer.setRepeats(true);
+                    timer.start();
+                } else {
+                    refresh();
+                    timer.setRepeats(true);
+                    timer.start();
+                }
             } else {
                 JOptionPane.showInternalMessageDialog(this, "La actividad debe estar \"INICIADA\"");
+                timer.setRepeats(true);
+                timer.start();
             }
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
+            timer.setRepeats(true);
+            timer.start();
         }
     }
 
     @Action
     public void suspender() {
+        timer.stop();
         if (detalleProduccionTable.getSelectedRow() != -1) {
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
-                EstadosT estadoIniciado = new EstadosT();
-                estadoIniciado.setIdEstado(21);
-                detalleSeleccionado.setIdEstado(estadoIniciado);
-                DesktopApp.getApplication().updateDetalleProduccion(detalleSeleccionado);
+                DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 21, detalleSeleccionado.getIdEstado().getIdEstado(), new Date());
                 refresh();
+                timer.setRepeats(true);
+                timer.start();
             } else {
                 JOptionPane.showInternalMessageDialog(this, "La actividad debe estar \"INICIADO\" para poder iniciarse");
+                timer.setRepeats(true);
+                timer.start();
             }
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
+            timer.setRepeats(true);
+            timer.start();
         }
     }
 
     @Action
     public void deshabilitar() {
+        timer.stop();
         if (detalleProduccionTable.getSelectedRow() != -1) {
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if ((detalleSeleccionado.getIdEstado().getIdEstado() == 22) || (detalleSeleccionado.getIdEstado().getIdEstado() == 21) || (detalleSeleccionado.getIdEstado().getIdEstado() == 14)) {
-                EstadosT estadoIniciado = new EstadosT();
-                estadoIniciado.setIdEstado(17);
-                detalleSeleccionado.setIdEstado(estadoIniciado);
-                DesktopApp.getApplication().updateDetalleProduccion(detalleSeleccionado);
+                DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 17, detalleSeleccionado.getIdEstado().getIdEstado(), new Date());
                 refresh();
+                timer.setRepeats(true);
+                timer.start();
             } else {
                 JOptionPane.showInternalMessageDialog(this, "La actividad debe estar \"EN ESPERA\" o \"INICIADA\" o \"SUSPENDIDA\" para poder iniciarse");
+                timer.setRepeats(true);
+                timer.start();
             }
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
+            timer.setRepeats(true);
+            timer.start();
         }
     }
 
     @Action
     public void modificar() {
+        timer.stop();
         if (detalleProduccionTable.getSelectedRow() != -1) {
             JOptionPane.showInternalMessageDialog(this, "Se modifica la fila seleccinada");
+            timer.setRepeats(true);
+            timer.start();
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar una fila");
+            timer.setRepeats(true);
+            timer.start();
         }
     }
 
@@ -153,13 +254,19 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         parametros.put("pJoinUnidadesMedidas", true);
         parametros.put("pJoinEstados", true);
         parametros.put("pJoinOrdenes", true);
+        parametros.put("pIdEstadoOrden", 4);
         setListDto((ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros));
 
         tableModel = new DetalleProduccionTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
         detalleProduccionTable.setModel(tableModel);
 
-        sorter = new TableRowSorter<TableModel>(
+        sorter = new TableRowSorter 
+
+                
+                <  TableModel   >   (
+                
+                
                 tableModel) {
 
             @Override
@@ -258,10 +365,11 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -273,15 +381,14 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

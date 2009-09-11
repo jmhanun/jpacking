@@ -183,8 +183,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
         JOptionPane.showInternalMessageDialog(this, "editar");
     }
 
-    void habilitarBtnSeleccionar(
-            boolean valor) {
+    void habilitarBtnSeleccionar(boolean valor) {
 
         btnSeleccionar.setEnabled(valor);
         btnAgregar.setEnabled(!valor);
@@ -455,13 +454,13 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
 
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
 // TODO add your handling code here:
-        if (isModificado() || isNuevo()) {
-            if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                dispose();
-            }
-        } else {
+    if (isModificado() || isNuevo()) {
+        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             dispose();
         }
+    } else {
+        dispose();
+    }
 }//GEN-LAST:event_formInternalFrameClosing
 
 private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
