@@ -284,4 +284,9 @@ public class ArticulosT implements Serializable {
     public void setStockMinimo(float stockMinimo) {
         this.stockMinimo = stockMinimo;
     }
+
+    @Override
+    public String toString() {
+        return this.getCodigo();
+    }
 }

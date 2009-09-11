@@ -13,8 +13,8 @@
      detmovimientosstock.`fechaMovimiento` AS detmovimientosstock_fechaMovimiento,
      articulos.`codigo` AS articulos_codigo,
      unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura,
-     case when remitos.idRemito IS NOT null = 1 THEN 'Remito' when notasdebito.idNotaDebito IS NOT null = 1 THEN 'Remito Devolucion de Venta'  when remitosingreso.idRtoIngreso IS NOT null = 1 THEN 'Remito de Ingreso'when notascredito.idNotaCredito IS NOT null = 1 THEN 'Remito Devolucion de Compra'when ordenesproduccion.idOrdenProduccion IS NOT null = 1 THEN 'Orden de Producción'when ordenesdeposito.idOrdenDeposito IS NOT null = 1 THEN 'Orden de Depósito' end tipocomprobante,
-     case when remitos.idRemito IS NOT null = 1 THEN remitos.nroRemito when notasdebito.idNotaDebito IS NOT null = 1 THEN notasdebito.nroNotaDebito when remitosingreso.idRtoIngreso IS NOT null = 1 THEN remitosingreso.nroRemito when notascredito.idNotaCredito IS NOT null = 1 THEN notascredito.nroNotaCredito when ordenesproduccion.idOrdenProduccion IS NOT null = 1 THEN ordenesproduccion.nroOrdenProduccion when ordenesdeposito.idOrdenDeposito IS NOT null = 1 THEN ordenesdeposito.idOrdenDeposito end nrocomprobante
+     case when remitos.idRemito IS NOT null = 1 THEN 'Remito' when notasdebito.idNotaDebito IS NOT null = 1 THEN 'Remito Devolucion de Venta'  when remitosingreso.idRtoIngreso IS NOT null = 1 THEN 'Remito de Ingreso'when notascredito.idNotaCredito IS NOT null = 1 THEN 'Remito Devolucion de Compra'when ordenesproduccion.idOrdenProduccion IS NOT null = 1 THEN 'Orden de Producción'when ordenesdeposito.idOrdenDeposito IS NOT null = 1 THEN 'Orden de Depósito'when ajustesstock.idAjusteStock IS NOT null = 1 THEN 'Ajuste de Stock' end tipocomprobante,
+     case when remitos.idRemito IS NOT null = 1 THEN remitos.nroRemito when notasdebito.idNotaDebito IS NOT null = 1 THEN notasdebito.nroNotaDebito when remitosingreso.idRtoIngreso IS NOT null = 1 THEN remitosingreso.nroRemito when notascredito.idNotaCredito IS NOT null = 1 THEN notascredito.nroNotaCredito when ordenesproduccion.idOrdenProduccion IS NOT null = 1 THEN ordenesproduccion.nroOrdenProduccion when ordenesdeposito.idOrdenDeposito IS NOT null = 1 THEN ordenesdeposito.nroOrdenDep when ajustesstock.idAjusteStock IS NOT null = 1 THEN ajustesstock.nroAjuste end nrocomprobante
 FROM
      `articulos` articulos INNER JOIN `detmovimientosstock` detmovimientosstock ON articulos.`idArticulo` = detmovimientosstock.`idArticulo`
      INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
@@ -25,7 +25,8 @@ FROM
      LEFT OUTER JOIN `ordenesproduccion` ordenesproduccion ON detmovimientosstock.`idOrdenProduccion` = ordenesproduccion.`idOrdenProduccion`
      LEFT OUTER JOIN `remitos` remitos ON detmovimientosstock.`idRemito` = remitos.`idRemito`
      LEFT OUTER JOIN `remitosingreso` remitosingreso ON detmovimientosstock.`idRtoIngreso` = remitosingreso.`idRtoIngreso`
-WHERE detmovimientosstock.`fechaMovimiento` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
+     LEFT OUTER JOIN `ajustesstock` ajustesstock ON detmovimientosstock.`idAjusteStock` = ajustesstock.`idAjusteStock`
+     WHERE detmovimientosstock.`fechaMovimiento` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
 order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion`]]>
 	</queryString>
 	<field name="detmovimientosstock_descripcion" class="java.lang.String">
@@ -66,14 +67,14 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{detmovimientosstock_descripcion}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Group" evaluationGroup="detmovimientosstock_descripcion" hyperlinkType="None">
+				<textField hyperlinkType="None">
 					<reportElement mode="Opaque" x="267" y="0" width="211" height="27" backcolor="#CC9900"/>
 					<textElement>
 						<font fontName="verdana"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipocomprobante}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Group" evaluationGroup="detmovimientosstock_descripcion" pattern="###0" hyperlinkType="None">
+				<textField pattern="00000000" hyperlinkType="None">
 					<reportElement mode="Opaque" x="478" y="0" width="77" height="27" backcolor="#CC9900"/>
 					<textElement textAlignment="Right">
 						<font fontName="verdana"/>
@@ -190,7 +191,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 	</columnFooter>
 	<pageFooter>
 		<band height="46">
-			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
 				<reportElement key="textField" x="516" y="22" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

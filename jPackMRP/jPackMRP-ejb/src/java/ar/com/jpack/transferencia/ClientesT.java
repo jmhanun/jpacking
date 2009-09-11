@@ -191,4 +191,11 @@ public class ClientesT implements Serializable, Comparable<ClientesT> {
         Integer anotherIdCliente = clientesT.getIdCliente();
         return thisIdCliente.compareTo(anotherIdCliente);
     }
+
+    @Override
+    public String toString() {
+        return this.getNombres();
+    }
+
+
 }

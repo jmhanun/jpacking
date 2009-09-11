@@ -5,7 +5,7 @@
 	<parameter name="pfechadesde" class="java.sql.Timestamp"/>
 	<parameter name="pfechahasta" class="java.sql.Timestamp"/>
 	<parameter name="pcliente" class="java.lang.Integer">
-            <defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pimagen" class="java.lang.String"/>
 	<parameter name="pduke" class="java.lang.String"/>
@@ -111,7 +111,7 @@ ORDER BY
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipocomprobante}]]></textFieldExpression>
 				</textField>
-				<textField pattern="###0" hyperlinkType="None">
+				<textField pattern="00000000" hyperlinkType="None">
 					<reportElement mode="Opaque" x="478" y="0" width="77" height="27" backcolor="#FFCC33"/>
 					<textElement textAlignment="Right">
 						<font fontName="verdana"/>
@@ -224,7 +224,7 @@ ORDER BY
 	</columnFooter>
 	<pageFooter>
 		<band height="46">
-			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
 				<reportElement key="textField" x="516" y="22" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

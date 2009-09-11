@@ -156,4 +156,9 @@ public class ProveedoresT implements Serializable {
     public void setTelefonos(String telefonos) {
         this.telefonos = telefonos;
     }
+
+    @Override
+    public String toString() {
+        return this.getNombres();
+    }
 }

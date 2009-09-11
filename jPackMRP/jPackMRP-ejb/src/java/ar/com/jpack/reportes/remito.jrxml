@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
@@ -45,7 +45,7 @@ FROM
      AND clientes.`idCliente` = domicilios.`idCliente`
      INNER JOIN `localidades` localidades ON domicilios.`idLocalidad` = localidades.`idLocalidad`
      INNER JOIN `provincias` provincias ON localidades.`idProvincia` = provincias.`idProvincia`
-WHERE remitos.`idremito` = $P{premito}]]>
+WHERE remitos.`nroremito` = $P{premito}]]>
 	</queryString>
 	<field name="remitos_fecha" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -142,7 +142,7 @@ WHERE remitos.`idremito` = $P{premito}]]>
 					</textElement>
 					<text><![CDATA[Remito Nro.]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true" hyperlinkType="None">
+				<textField pattern="00000000" isBlankWhenNull="true" hyperlinkType="None">
 					<reportElement mode="Opaque" x="418" y="21" width="134" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
 					<textElement>
 						<font fontName="Verdana" size="12" isBold="false"/>
