@@ -6,9 +6,13 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Detalleremitos;
 import ar.com.jpack.persistencia.Detalleremitostemp;
+import ar.com.jpack.persistencia.Detrtosingreso;
 import ar.com.jpack.persistencia.Remitos;
+import ar.com.jpack.persistencia.Remitosingreso;
+import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
+import ar.com.jpack.transferencia.RemitosIngresoT;
 import ar.com.jpack.transferencia.RemitosT;
 import ar.com.jpack.util.DozerUtil;
 import java.sql.CallableStatement;
@@ -176,36 +180,36 @@ public class RemitosFacade implements RemitosFacadeRemote {
         }
     }
 
-    /**
-     * Actualiza o crea un remitoT recibido por parametro
-     * Si existe, se actualiza. Si no existe, se crea.
-     * 
-     * @param remitosT contiene los datos del remito a actualizar
-     * @return devuelve el remitoT actualizado
-     */
-    public RemitosT updateRemitosT(RemitosT remitosT) {
-        HashMap parametros = new HashMap();
-
-        Remitos remitos = (Remitos) DozerUtil.getDozerMapper(false).map(remitosT, Remitos.class);
-
-        //si el numero de id es null significa que es nuevo
-        if (remitos.getIdRemito() != null) {
-            em.merge(remitos);
-        } else {
-            remitos.setNroRemito(getNextRemito());
-            parametros.put("pIdEstados", remitosT.getIdEstado().getIdEstado());
-            remitos.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
-            parametros = new HashMap();
-            parametros.put("pIdTipoComprobante", remitosT.getIdTipoComprobante().getIdTipoComprobante());
-            remitos.setIdTipoComprobante((tiposComprobantesFacade.getTiposComprobantes(parametros)).get(0));
-
-            em.persist(remitos);
-        }
-        parametros.put("pIdRemito", remitos.getIdRemito());
-
-        return getRemitosT(parametros).get(0);
-
-    }
+//    /**
+//     * Actualiza o crea un remitoT recibido por parametro
+//     * Si existe, se actualiza. Si no existe, se crea.
+//     * 
+//     * @param remitosT contiene los datos del remito a actualizar
+//     * @return devuelve el remitoT actualizado
+//     */
+//    public RemitosT updateRemitosT(RemitosT remitosT) {
+//        HashMap parametros = new HashMap();
+//
+//        Remitos remitos = (Remitos) DozerUtil.getDozerMapper(false).map(remitosT, Remitos.class);
+//
+//        //si el numero de id es null significa que es nuevo
+//        if (remitos.getIdRemito() != null) {
+//            em.merge(remitos);
+//        } else {
+//            remitos.setNroRemito(getNextRemito());
+//            parametros.put("pIdEstados", remitosT.getIdEstado().getIdEstado());
+//            remitos.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
+//            parametros = new HashMap();
+//            parametros.put("pIdTipoComprobante", remitosT.getIdTipoComprobante().getIdTipoComprobante());
+//            remitos.setIdTipoComprobante((tiposComprobantesFacade.getTiposComprobantes(parametros)).get(0));
+//
+//            em.persist(remitos);
+//        }
+//        parametros.put("pIdRemito", remitos.getIdRemito());
+//
+//        return getRemitosT(parametros).get(0);
+//
+//    }
 
     public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
         Date fechaAcordada = null;
@@ -234,5 +238,80 @@ public class RemitosFacade implements RemitosFacadeRemote {
         }
 
         return fechaAcordada;
+    }
+
+    public RemitosIngresoT updateRemitosIngresosT(RemitosIngresoT remitosT, ArrayList<DetRtosIngresoT> detallesRemitosT) {
+
+        HashMap parametros = new HashMap();
+        Remitosingreso remitos = (Remitosingreso) DozerUtil.getDozerMapper(false).map(remitosT, Remitosingreso.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (remitos.getIdRtoIngreso() != null) {
+            em.merge(remitos);
+            parametros.put("pIdRemito", remitos.getIdRtoIngreso());
+
+            return getRemitosIngresosT(parametros).get(0);
+        } else {
+            remitos.setNroRemito(getNextRemitoIngreso());
+            parametros.put("pIdEstados", remitosT.getIdEstado().getIdEstado());
+            remitos.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
+            parametros = new HashMap();
+            parametros.put("pIdTipoComprobante", remitosT.getIdTipoComprobante().getIdTipoComprobante());
+            remitos.setIdTipoComprobante((tiposComprobantesFacade.getTiposComprobantes(parametros)).get(0));
+
+            em.persist(remitos);
+            parametros.put("pIdRemito", remitos.getIdRtoIngreso());
+
+            RemitosIngresoT remitoOk = getRemitosIngresosT(parametros).get(0);
+
+            if (detallesRemitosT != null) {
+                em.flush();
+                int nroRemito = remitos.getIdRtoIngreso();
+                for (DetRtosIngresoT item : detallesRemitosT) {
+                    item.getDetrtosingresoPK().setIdRtoIngreso(nroRemito);
+                    item.setRemitosingreso(remitoOk);
+                    Detrtosingreso detalle = (Detrtosingreso) DozerUtil.getDozerMapper(false).map(item, Detrtosingreso.class);
+                    em.persist(detalle);
+                    em.flush();
+                }
+            }
+            return remitoOk;
+        }
+    }
+
+    public List<RemitosIngresoT> getRemitosIngresosT(HashMap parametros) {
+        List<Remitosingreso> remitosList = getRemitosIngresos(parametros);
+        List<RemitosIngresoT> remitosTList = new ArrayList();
+        for (Remitosingreso c : remitosList) {
+            RemitosIngresoT rdo = (RemitosIngresoT) DozerUtil.getDozerMapper(false).map(c, RemitosIngresoT.class);
+            remitosTList.add(rdo);
+        }
+        return remitosTList;
+    }
+    public List<Remitosingreso> getRemitosIngresos(HashMap parametros) {
+        Criteria remitosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Remitosingreso.class);
+        List<Remitosingreso> remitosList;
+        if (parametros.containsKey("pIdRemito")) {
+            remitosCritearia.add(Restrictions.eq("idRtoIngreso", parametros.get("pIdRemito")));
+        }
+        if (parametros.containsKey("pJoinDetalleRemitosIngresos")) {
+            remitosCritearia.setFetchMode("detrtosingresoCollection", FetchMode.JOIN);
+        }
+        remitosList = remitosCritearia.list();
+        return remitosList;
+    }
+
+    public int getNextRemitoIngreso() {
+        String hql = "select max(r.nroRemito) from Remitosingreso r";
+        Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
+        if (maxID != null) {
+            maxID++;
+        } else {
+            return 1;
+        }
+        if (maxID < 0) {
+            return 1;
+        }
+        return maxID;
     }
 }

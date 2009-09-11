@@ -7,16 +7,24 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Setup;
 import ar.com.jpack.transferencia.SetupT;
+import org.hibernate.criterion.MatchMode;
 import ar.com.jpack.util.DozerUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.sql.DataSource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
 
@@ -29,6 +37,8 @@ public class SetupFacade implements SetupFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
+    @Resource(name = "jdbc/remoto.dbjpack")
+    private DataSource jdbcRemotedbjPack;
 
     /**
      * Obtiene la lista de Setup filtrados por el Hasmap
@@ -89,6 +99,28 @@ public class SetupFacade implements SetupFacadeRemote {
         }
         setupList = setupCritearia.list();
         return setupList;
+    }
+
+    public String getValorSetup(Integer idSetup) {
+        String valor = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+//`spsetup`(pidsetup INTEGER, out vvalor VARCHAR(50))
+            CallableStatement cs = conn.prepareCall("{call spsetup(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idSetup);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.VARCHAR);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            valor = new String(cs.getString(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SetupFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return valor;
     }
  
 }

@@ -44,4 +44,6 @@ public interface SetupFacadeRemote {
      * @return devuelve la lista de los Setup que cumplan con el filtro
      */
     public List<Setup> getSetup(HashMap parametros);
+
+    public String getValorSetup(Integer idSetup);
 }

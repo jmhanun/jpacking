@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "tiposdesvios")
 @NamedQueries({@NamedQuery(name = "Tiposdesvios.findByIdTipoDesvio", query = "SELECT t FROM Tiposdesvios t WHERE t.idTipoDesvio = :idTipoDesvio"), @NamedQuery(name = "Tiposdesvios.findByMotivo", query = "SELECT t FROM Tiposdesvios t WHERE t.motivo = :motivo")})
 public class Tiposdesvios implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 10L;
     @Id
     @Column(name = "idTipoDesvio", nullable = false)
     private Integer idTipoDesvio;

@@ -28,4 +28,6 @@ public interface OrdenesproduccionFacadeRemote {
 
     public int getNextOrdenProduccion();
 
+    public void setEstadoOP(Integer idOp, Integer newEstado);
+
 }

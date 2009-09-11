@@ -114,12 +114,20 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         }
         if (parametros.containsKey("pJoinOrdenes")) {
             detalleProduccionCriteria.setFetchMode("detordenesproduccion", FetchMode.JOIN);
+                Criteria detOpCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
             if (parametros.containsKey("pJoinArticulos")) {
-                Criteria articuloCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
-                articuloCriteria.setFetchMode("idArticulo", FetchMode.JOIN);
-
+                detOpCriteria.setFetchMode("idArticulo", FetchMode.JOIN);
+            }
+            if (parametros.containsKey("pIdEstadoOrden")) {
+                detOpCriteria.setFetchMode("ordenesproduccion", FetchMode.JOIN);
+                Criteria opCriteria = detOpCriteria.createCriteria("ordenesproduccion");
+                opCriteria.setFetchMode("idEstado", FetchMode.JOIN);
+                Criteria estadoCriteria = opCriteria.createCriteria("idEstado");
+                estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstadoOrden")));
             }
         }
+
+
         detallesList = detalleProduccionCriteria.list();
 
         return detallesList;
@@ -145,6 +153,71 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
             Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
         return avance;
+    }
+
+    public void setEstadoProduccion(Integer idDetalleProduccion, Integer idEstado, Integer idEstadoAnterior, Date fecha) {
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+//(piddetalleproduccion integer, pidestado integer, pidestadoant integer, pfecha datetime)
+            CallableStatement cs = conn.prepareCall("{call spestadoproduccion(?, ?, ?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idDetalleProduccion);
+            cs.setInt(2, idEstado);
+            cs.setInt(3, idEstadoAnterior);
+            cs.setTimestamp(4, new java.sql.Timestamp(fecha.getTime()));
+            //set outputs
+//            cs.registerOutParameter(2, java.sql.Types.DOUBLE);
+            // execute
+            cs.executeQuery();
+            // display returned values
+//            avance = new Double(cs.getDouble(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public Integer getTiempoRealProduccion(Integer idDetalleProduccion) {
+        Integer tiempoReal = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+//`sptiemporeal`(piddetalleproduccion integer, out vtiemporeal integer)
+            CallableStatement cs = conn.prepareCall("{call sptiemporeal(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idDetalleProduccion);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            tiempoReal = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tiempoReal;
+    }
+    public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion) {
+        Integer tiempoEstimado = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+//`sptiempoestimado`(piddetalleproduccion integer, out vtiempo integer)
+            CallableStatement cs = conn.prepareCall("{call sptiempoestimado(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idDetalleProduccion);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            tiempoEstimado = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tiempoEstimado;
     }
 
     public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT) {

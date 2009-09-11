@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
@@ -69,6 +70,9 @@ public class ProveedoresFacade implements ProveedoresFacadeRemote {
         if (parametros.containsKey("pCuit")) {
             proveedoresCritearia.add(Restrictions.like("cuit", parametros.get("pCuit").toString(), MatchMode.ANYWHERE));
         }
+        proveedoresCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+        Criteria estadoCriteria = proveedoresCritearia.createCriteria("idEstado");
+        estadoCriteria.add(Restrictions.eq("idEstado", 10));
 
         proveedoresList = proveedoresCritearia.list();
         return proveedoresList;

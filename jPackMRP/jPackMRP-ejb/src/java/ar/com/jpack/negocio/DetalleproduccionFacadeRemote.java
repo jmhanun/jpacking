@@ -57,4 +57,10 @@ public interface DetalleproduccionFacadeRemote {
     public Boolean getFeriado(Date fecha);
 
     public void updateDetalleProduccion(DetalleProduccionT detalleProduccionT);
+
+    public void setEstadoProduccion(Integer idDetalleProduccion, Integer idEstado, Integer idEstadoAnterior, Date fecha);
+
+    public Integer getTiempoRealProduccion(Integer idDetalleProduccion);
+
+    public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion);
 }

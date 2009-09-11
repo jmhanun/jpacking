@@ -9,11 +9,18 @@ import ar.com.jpack.persistencia.Ordenesproduccion;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.util.DozerUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.sql.DataSource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
@@ -30,6 +37,8 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
+    @Resource(name = "jdbc/remoto.dbjpack")
+    private DataSource jdbcRemotedbjPack;
     @EJB
     private TiposComprobantesFacadeRemote tiposComprobantesFacade;
     @EJB
@@ -44,9 +53,10 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
 
         //si el numero de id es null significa que es nuevo
         if (ordenesProduccion.getIdOrdenProduccion() != null) {
+            parametros.put("pIdEstados", opT.getIdEstado().getIdEstado());
+            ordenesProduccion.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
             em.merge(ordenesProduccion);
             parametros.put("pIdOrdenProduccion", ordenesProduccion.getIdRemito());
-
             return getOrdenesProduccionT(parametros).get(0);
         } else {
             ordenesProduccion.setNroOrdenProduccion(getNextOrdenProduccion());
@@ -78,6 +88,7 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
             return ordenProduccionOK;
         }
     }
+
     public List<OrdenesProduccionT> getOrdenesProduccionT(HashMap parametros) {
         List<Ordenesproduccion> opList = getOrdenesProduccion(parametros);
         List<OrdenesProduccionT> opTList = new ArrayList();
@@ -97,8 +108,41 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
         if (parametros.containsKey("pJoinDetalleOrdenProduccion")) {
             opCritearia.setFetchMode("detordenesproduccionCollection", FetchMode.JOIN);
         }
+
+        if (parametros.containsKey("pJoinEstados")) {
+            opCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+            if (parametros.containsKey("pIdEstado")) {
+                Criteria estadoCriteria = opCritearia.createCriteria("idEstado");
+                estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+            }
+        }
+
         opList = opCritearia.list();
         return opList;
+    }
+
+    public void setEstadoOP(Integer idOp, Integer newEstado) {
+//        Boolean feriado = null;
+
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spestadoop(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idOp);
+            cs.setInt(2, newEstado);
+            //set outputs
+//            cs.registerOutParameter(2, java.sql.Types.BOOLEAN);
+            // execute
+            cs.executeQuery();
+            // display returned values
+//            feriado = new Boolean(cs.getBoolean(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdenesproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        return feriado;
     }
 
     public int getNextOrdenProduccion() {

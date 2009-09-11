@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Tiposdesvios;
@@ -22,5 +21,5 @@ public interface TiposdesviosFacadeRemote {
 
     public List<Tiposdesvios> getTiposDesvios(HashMap parametros);
 
-
+    public void insertDesvioT(Integer idDetalleProduccion, Integer idTipoDesvio, String comentario);
 }
