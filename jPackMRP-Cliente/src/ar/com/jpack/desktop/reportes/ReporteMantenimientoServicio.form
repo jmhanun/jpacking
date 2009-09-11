@@ -39,7 +39,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jDateChooser1" alignment="0" pref="333" max="32767" attributes="0"/>
                           <Component id="jDateChooser2" alignment="0" pref="333" max="32767" attributes="0"/>
-                          <Component id="txtServicio" alignment="0" pref="333" max="32767" attributes="0"/>
+                          <Component id="cmbTiposServicios" alignment="0" pref="333" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -69,14 +69,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtServicio" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbTiposServicios" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="23" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -110,12 +110,6 @@
         <Property name="name" type="java.lang.String" value="jDateChooser2" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtServicio">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtServicio.text"/>
-        <Property name="name" type="java.lang.String" value="txtServicio" noResource="true"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -132,6 +126,19 @@
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="btnAceptar.text"/>
         <Property name="name" type="java.lang.String" value="btnAceptar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbTiposServicios">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+        <Property name="name" type="java.lang.String" value="cmbTiposServicios" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

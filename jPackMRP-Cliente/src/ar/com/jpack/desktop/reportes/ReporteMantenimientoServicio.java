@@ -14,11 +14,15 @@ package ar.com.jpack.desktop.reportes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.TiposServiciosT;
 import java.beans.PropertyVetoException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -33,6 +37,19 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
     /** Creates new form ReporteMantenimientoServicio */
     public ReporteMantenimientoServicio() {
         initComponents();
+        //Inicio modificacion combo
+        HashMap parametros = new HashMap();
+        ArrayList<TiposServiciosT> tiposServiciosTs = (ArrayList<TiposServiciosT>) DesktopApp.getApplication().getTiposServiciosT(parametros);
+
+
+        DefaultComboBoxModel tiposServiciosComboBoxModel = new DefaultComboBoxModel();
+        tiposServiciosComboBoxModel.addElement("<Todos>");
+        for (TiposServiciosT tipoServicio : tiposServiciosTs) {
+            tiposServiciosComboBoxModel.addElement(tipoServicio);
+        }
+        cmbTiposServicios.setModel(tiposServiciosComboBoxModel);
+        getRootPane().setDefaultButton(btnAceptar);
+        //Fin modificaciones combo
     }
 
     @Action
@@ -74,12 +91,33 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtServicio.getText().isEmpty()) {
-                parametro.put("pservicio", new Integer(txtServicio.getText()));
+            //Inicio modificacion combo maquinas
+            if (!cmbTiposServicios.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pservicio", ((TiposServiciosT) cmbTiposServicios.getSelectedItem()).getIdTipoServicio());
             }
+            //Fin modificaciones combo maquinas
 
-            java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
-            java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
+            //INICIO MODIFICACION DE HORAS!!!! --Nuevo
+            //Creo variables auxiliares para manipular fecha y hora
+            GregorianCalendar gcd = new GregorianCalendar();
+            GregorianCalendar gch = new GregorianCalendar();
+
+            //Inicializo las variables auxiliares
+            gcd.setTime(jDateChooser1.getDate());
+            gch.setTime(jDateChooser2.getDate());
+
+            //Seteo del inicio de la fecha desde
+            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
+            gcd.set(GregorianCalendar.MINUTE, 0);
+            gcd.set(GregorianCalendar.SECOND, 0);
+            //Seteo del fin de la fecha hasta
+            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            gch.set(GregorianCalendar.MINUTE, 0);
+            gch.set(GregorianCalendar.SECOND, 0);
+
+            java.sql.Timestamp d = new Timestamp(gcd.getTimeInMillis());
+            java.sql.Timestamp h = new Timestamp(gch.getTimeInMillis());
+            //FIN MODIFICACIONES FECHAS
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);
@@ -128,9 +166,9 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        txtServicio = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
+        cmbTiposServicios = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -152,9 +190,6 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
 
-        txtServicio.setText(resourceMap.getString("txtServicio.text")); // NOI18N
-        txtServicio.setName("txtServicio"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteMantenimientoServicio.class, this);
         btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
         btnCancelar.setText(resourceMap.getString("btnCancelar.text")); // NOI18N
@@ -163,6 +198,9 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
         btnAceptar.setAction(actionMap.get("aceptar")); // NOI18N
         btnAceptar.setText(resourceMap.getString("btnAceptar.text")); // NOI18N
         btnAceptar.setName("btnAceptar"); // NOI18N
+
+        cmbTiposServicios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTiposServicios.setName("cmbTiposServicios"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,7 +218,7 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                             .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
-                            .addComponent(txtServicio, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)))
+                            .addComponent(cmbTiposServicios, 0, 333, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(222, 222, 222)
                         .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
@@ -202,12 +240,12 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbTiposServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -217,12 +255,12 @@ public class ReporteMantenimientoServicio extends CustomInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox cmbTiposServicios;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtServicio;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -14,10 +14,13 @@ package ar.com.jpack.desktop.reportes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.ClientesT;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -32,6 +35,19 @@ public class ReporteClientes extends CustomInternalFrame {
     /** Creates new form ReporteClientes */
     public ReporteClientes() {
         initComponents();
+        //Inicio modificacion combo
+        HashMap parametros = new HashMap();
+        ArrayList<ClientesT> clientesTs = (ArrayList<ClientesT>) DesktopApp.getApplication().getClientesT(parametros);
+
+
+        DefaultComboBoxModel clientesComboBoxModel = new DefaultComboBoxModel();
+        clientesComboBoxModel.addElement("<Todos>");
+        for (ClientesT cliente : clientesTs) {
+            clientesComboBoxModel.addElement(cliente);
+        }
+        cmbClientes.setModel(clientesComboBoxModel);
+        getRootPane().setDefaultButton(aceptarButton);
+        //Fin modificaciones combo
     }
 
     @Action
@@ -73,11 +89,12 @@ public class ReporteClientes extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtCliente.getText().isEmpty()) {
-                parametro.put("pcliente", new Integer(txtCliente.getText()));
+            //Inicio modificacion combo maquinas
+            if (!cmbClientes.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pcliente", ((ClientesT) cmbClientes.getSelectedItem()).getIdCliente());
             }
 
-            System.out.println("\ncliente: " + txtCliente.getText());
+            //System.out.println("\ncliente: " + cmbClientes.getText());
 
             parametro.put("pduke", "C:\\Logos\\Duke.gif");
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
@@ -115,9 +132,9 @@ public class ReporteClientes extends CustomInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtCliente = new javax.swing.JTextField();
         buttonCancelar = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
+        cmbClientes = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -129,9 +146,6 @@ public class ReporteClientes extends CustomInternalFrame {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtCliente.setText(resourceMap.getString("txtCliente.text")); // NOI18N
-        txtCliente.setName("txtCliente"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteClientes.class, this);
         buttonCancelar.setAction(actionMap.get("cancelar")); // NOI18N
         buttonCancelar.setText(resourceMap.getString("buttonCancelar.text")); // NOI18N
@@ -140,6 +154,9 @@ public class ReporteClientes extends CustomInternalFrame {
         aceptarButton.setAction(actionMap.get("aceptar")); // NOI18N
         aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
+
+        cmbClientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClientes.setName("cmbClientes"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,7 +168,7 @@ public class ReporteClientes extends CustomInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                        .addComponent(cmbClientes, 0, 337, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(222, 222, 222)
                         .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
@@ -165,12 +182,12 @@ public class ReporteClientes extends CustomInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCancelar)
                     .addComponent(aceptarButton))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -180,8 +197,8 @@ public class ReporteClientes extends CustomInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton buttonCancelar;
+    private javax.swing.JComboBox cmbClientes;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField txtCliente;
     // End of variables declaration//GEN-END:variables
 
 }

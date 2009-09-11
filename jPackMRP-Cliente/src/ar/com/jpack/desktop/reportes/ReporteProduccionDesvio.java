@@ -14,11 +14,15 @@ package ar.com.jpack.desktop.reportes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.MaquinasT;
 import java.beans.PropertyVetoException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -34,6 +38,18 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
     /** Creates new form ReporteProduccionDesvio */
     public ReporteProduccionDesvio() {
         initComponents();
+        //Inicio modificacion combo maquinas
+        HashMap parametros = new HashMap();
+        ArrayList<MaquinasT> maquinasTs = (ArrayList<MaquinasT>) DesktopApp.getApplication().getMaquinasT(parametros);
+
+        DefaultComboBoxModel maquinasComboBoxModel = new DefaultComboBoxModel();
+        maquinasComboBoxModel.addElement("<Todos>");
+        for (MaquinasT maquina : maquinasTs) {
+            maquinasComboBoxModel.addElement(maquina);
+        }
+        cmbMaquinas.setModel(maquinasComboBoxModel);
+        getRootPane().setDefaultButton(aceptarButton);
+        //Fin modificaciones combo maquinas
     }
 
     @Action
@@ -56,14 +72,34 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtMaquina.getText().isEmpty()) {
-                parametro.put("pmaquina", new Integer(txtMaquina.getText()));
+            //Inicio modificacion combo maquinas
+            if (!cmbMaquinas.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pmaquina", ((MaquinasT) cmbMaquinas.getSelectedItem()).getIdMaquina());
             }
 
             parametro.put("pdesvia", cmbDesvio.getSelectedItem());
 
-            java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
-            java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
+            //INICIO MODIFICACION DE HORAS!!!! --Nuevo
+            //Creo variables auxiliares para manipular fecha y hora
+            GregorianCalendar gcd = new GregorianCalendar();
+            GregorianCalendar gch = new GregorianCalendar();
+
+            //Inicializo las variables auxiliares
+            gcd.setTime(jDateChooser1.getDate());
+            gch.setTime(jDateChooser2.getDate());
+
+            //Seteo del inicio de la fecha desde
+            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
+            gcd.set(GregorianCalendar.MINUTE, 0);
+            gcd.set(GregorianCalendar.SECOND, 0);
+            //Seteo del fin de la fecha hasta
+            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            gch.set(GregorianCalendar.MINUTE, 0);
+            gch.set(GregorianCalendar.SECOND, 0);
+
+            java.sql.Timestamp d = new Timestamp(gcd.getTimeInMillis());
+            java.sql.Timestamp h = new Timestamp(gch.getTimeInMillis());
+            //FIN MODIFICACIONES FECHAS
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);
@@ -118,11 +154,11 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        txtMaquina = new javax.swing.JTextField();
         cmbDesvio = new javax.swing.JComboBox();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
         ayudaButton = new javax.swing.JButton();
+        cmbMaquinas = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -147,9 +183,6 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
 
-        txtMaquina.setText(resourceMap.getString("txtMaquina.text")); // NOI18N
-        txtMaquina.setName("txtMaquina"); // NOI18N
-
         cmbDesvio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEGUNDOS", "MINUTOS", "HORAS", "DIAS" }));
         cmbDesvio.setName("cmbDesvio"); // NOI18N
 
@@ -165,6 +198,9 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
         ayudaButton.setAction(actionMap.get("ayuda")); // NOI18N
         ayudaButton.setText(resourceMap.getString("ayudaButton.text")); // NOI18N
         ayudaButton.setName("ayudaButton"); // NOI18N
+
+        cmbMaquinas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMaquinas.setName("cmbMaquinas"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,8 +223,8 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
                         .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                     .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                    .addComponent(txtMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                    .addComponent(cmbDesvio, 0, 330, Short.MAX_VALUE))
+                    .addComponent(cmbDesvio, 0, 330, Short.MAX_VALUE)
+                    .addComponent(cmbMaquinas, 0, 330, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -205,7 +241,7 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMaquinas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -215,7 +251,7 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton)
                     .addComponent(ayudaButton))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -227,13 +263,13 @@ public class ReporteProduccionDesvio extends CustomInternalFrame {
     private javax.swing.JButton ayudaButton;
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox cmbDesvio;
+    private javax.swing.JComboBox cmbMaquinas;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtMaquina;
     // End of variables declaration//GEN-END:variables
 
 }

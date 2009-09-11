@@ -32,6 +32,7 @@ public class ReporteRemito extends CustomInternalFrame {
     /** Creates new form ReporteRemito */
     public ReporteRemito() {
         initComponents();
+        getRootPane().setDefaultButton(aceptarButton);
     }
 
     @Action
@@ -97,9 +98,9 @@ public class ReporteRemito extends CustomInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtRemito = new javax.swing.JTextField();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
+        txtRemito = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -111,9 +112,6 @@ public class ReporteRemito extends CustomInternalFrame {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtRemito.setText(resourceMap.getString("txtRemito.text")); // NOI18N
-        txtRemito.setName("txtRemito"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteRemito.class, this);
         cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
         cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
@@ -122,6 +120,9 @@ public class ReporteRemito extends CustomInternalFrame {
         aceptarButton.setAction(actionMap.get("aceptar")); // NOI18N
         aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
+
+        txtRemito.setText(resourceMap.getString("txtRemito.text")); // NOI18N
+        txtRemito.setName("txtRemito"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,7 +153,7 @@ public class ReporteRemito extends CustomInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();

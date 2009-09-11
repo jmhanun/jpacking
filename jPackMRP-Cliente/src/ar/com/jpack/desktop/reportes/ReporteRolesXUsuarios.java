@@ -15,7 +15,10 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.RolesT;
+import ar.com.jpack.transferencia.UsuariosT;
+import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.DefaultComboBoxModel;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -31,7 +34,18 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
     public ReporteRolesXUsuarios() {
         super(new RolesT());
         initComponents();
+        //Inicio modificacion combo
+        HashMap parametros = new HashMap();
+        ArrayList<UsuariosT> usuariosTs = (ArrayList<UsuariosT>) DesktopApp.getApplication().getUsuariosT(parametros);
+
+        DefaultComboBoxModel usuariosComboBoxModel = new DefaultComboBoxModel();
+        usuariosComboBoxModel.addElement("<Todos>");
+        for (UsuariosT usuario : usuariosTs) {
+            usuariosComboBoxModel.addElement(usuario);
+        }
+        cmbUsuarios.setModel(usuariosComboBoxModel);
         getRootPane().setDefaultButton(aceptarButton);
+        //Fin modificaciones combo
     }
 
     @Action
@@ -59,8 +73,9 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtUsuario.getText().isEmpty()) {
-                parametro.put("pusuario", Integer.parseInt(txtUsuario.getText()));
+            //Inicio modificacion combo maquinas
+            if (!cmbUsuarios.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pusuario", ((UsuariosT) cmbUsuarios.getSelectedItem()).getIdUsuario());
             }
             parametro.put("pduke", "C:\\Logos\\Duke.gif");
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
@@ -89,9 +104,9 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
+        cmbUsuarios = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -103,9 +118,6 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtUsuario.setText(resourceMap.getString("txtUsuario.text")); // NOI18N
-        txtUsuario.setName("txtUsuario"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteRolesXUsuarios.class, this);
         cancelarButton.setAction(actionMap.get("cancel")); // NOI18N
         cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
@@ -114,6 +126,9 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
         aceptarButton.setAction(actionMap.get("showReporte")); // NOI18N
         aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
+
+        cmbUsuarios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbUsuarios.setName("cmbUsuarios"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,7 +140,7 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))
+                        .addComponent(cmbUsuarios, 0, 334, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(222, 222, 222)
                         .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
@@ -139,12 +154,12 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -154,8 +169,8 @@ public class ReporteRolesXUsuarios extends CustomInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton cancelarButton;
+    private javax.swing.JComboBox cmbUsuarios;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
 }

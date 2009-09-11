@@ -48,7 +48,7 @@ public class ReporteDesvioFin extends CustomInternalFrame {
             maquinasComboBoxModel.addElement(maquina);
         }
         cboMaquinas.setModel(maquinasComboBoxModel);
-
+        getRootPane().setDefaultButton(aceptarButton);
     //Fin modificaciones combo maquinas
 
     }
@@ -84,7 +84,7 @@ public class ReporteDesvioFin extends CustomInternalFrame {
 
             parametro.put("pdesvio", cmbDesvio.getSelectedItem());
 
-//INICIO MODIFICACION DE HORAS!!!! --Nuevo
+            //INICIO MODIFICACION DE HORAS!!!! --Nuevo
             //Creo variables auxiliares para manipular fecha y hora
             GregorianCalendar gcd = new GregorianCalendar();
             GregorianCalendar gch = new GregorianCalendar();
@@ -104,7 +104,7 @@ public class ReporteDesvioFin extends CustomInternalFrame {
 
             java.sql.Timestamp d = new Timestamp(gcd.getTimeInMillis());
             java.sql.Timestamp h = new Timestamp(gch.getTimeInMillis());
-//FIN MODIFICACIONES FECHAS
+            //FIN MODIFICACIONES FECHAS
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);

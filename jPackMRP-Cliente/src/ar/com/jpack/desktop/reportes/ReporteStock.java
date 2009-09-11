@@ -8,8 +8,11 @@ package ar.com.jpack.desktop.reportes;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.StockT;
+import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.DefaultComboBoxModel;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -25,7 +28,19 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
     public ReporteStock() {
         super(new StockT());
         initComponents();
+        //Inicio modificacion combo
+        HashMap parametros = new HashMap();
+        ArrayList<ArticulosT> articulosTs = (ArrayList<ArticulosT>) DesktopApp.getApplication().getArticulosT(parametros);
+
+
+        DefaultComboBoxModel articulosComboBoxModel = new DefaultComboBoxModel();
+        articulosComboBoxModel.addElement("<Todos>");
+        for (ArticulosT articulo : articulosTs) {
+            articulosComboBoxModel.addElement(articulo);
+        }
+        cmbArticulos.setModel(articulosComboBoxModel);
         getRootPane().setDefaultButton(aceptarButton);
+        //Fin modificaciones combo
     }
 
     @Action
@@ -53,8 +68,9 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!codigoTextField.getText().isEmpty()) {
-                parametro.put("pCodigo", codigoTextField.getText());
+            //Inicio modificacion combo maquinas
+            if (!cmbArticulos.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pCodigo", ((ArticulosT) cmbArticulos.getSelectedItem()).getCodigo());
             }
             parametro.put("pduke", "C:\\Logos\\Duke.gif");
             parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
@@ -83,9 +99,9 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        codigoTextField = new javax.swing.JTextField();
         canelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
+        cmbArticulos = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -98,9 +114,6 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        codigoTextField.setText(resourceMap.getString("codigoTextField.text")); // NOI18N
-        codigoTextField.setName("codigoTextField"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteStock.class, this);
         canelarButton.setAction(actionMap.get("cancel")); // NOI18N
         canelarButton.setText(resourceMap.getString("canelarButton.text")); // NOI18N
@@ -108,6 +121,9 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
 
         aceptarButton.setAction(actionMap.get("showReporte")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
+
+        cmbArticulos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbArticulos.setName("cmbArticulos"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,7 +135,7 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(codigoTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                        .addComponent(cmbArticulos, 0, 314, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(199, 199, 199)
                         .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
@@ -133,7 +149,7 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(codigoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(canelarButton)
@@ -146,7 +162,7 @@ public class ReporteStock extends CustomInternalFrame<StockT> {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton canelarButton;
-    private javax.swing.JTextField codigoTextField;
+    private javax.swing.JComboBox cmbArticulos;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

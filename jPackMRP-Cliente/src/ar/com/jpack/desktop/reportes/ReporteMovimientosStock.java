@@ -15,6 +15,7 @@ import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import java.beans.PropertyVetoException;
 import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ public class ReporteMovimientosStock extends CustomInternalFrame {
     /** Creates new form ReporteMovimientosStock */
     public ReporteMovimientosStock() {
         initComponents();
+        getRootPane().setDefaultButton(aceptarButton);
     }
 
     @Action
@@ -76,8 +78,27 @@ public class ReporteMovimientosStock extends CustomInternalFrame {
 
             System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate());
 
-            java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
-            java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
+            //INICIO MODIFICACION DE HORAS!!!! --Nuevo
+            //Creo variables auxiliares para manipular fecha y hora
+            GregorianCalendar gcd = new GregorianCalendar();
+            GregorianCalendar gch = new GregorianCalendar();
+
+            //Inicializo las variables auxiliares
+            gcd.setTime(jDateChooser1.getDate());
+            gch.setTime(jDateChooser2.getDate());
+
+            //Seteo del inicio de la fecha desde
+            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
+            gcd.set(GregorianCalendar.MINUTE, 0);
+            gcd.set(GregorianCalendar.SECOND, 0);
+            //Seteo del fin de la fecha hasta
+            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            gch.set(GregorianCalendar.MINUTE, 0);
+            gch.set(GregorianCalendar.SECOND, 0);
+
+            java.sql.Timestamp d = new Timestamp(gcd.getTimeInMillis());
+            java.sql.Timestamp h = new Timestamp(gch.getTimeInMillis());
+            //FIN MODIFICACIONES FECHAS
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);

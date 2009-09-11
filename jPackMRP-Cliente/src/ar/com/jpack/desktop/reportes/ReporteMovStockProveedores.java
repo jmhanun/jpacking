@@ -15,11 +15,15 @@ import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
 
+import ar.com.jpack.transferencia.ProveedoresT;
 import java.beans.PropertyVetoException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
@@ -34,6 +38,19 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
     /** Creates new form ReporteMovStockProveedores */
     public ReporteMovStockProveedores() {
         initComponents();
+        //Inicio modificacion combo
+        HashMap parametros = new HashMap();
+        ArrayList<ProveedoresT> proveedoresTs = (ArrayList<ProveedoresT>) DesktopApp.getApplication().getProveedoresT(parametros);
+
+
+        DefaultComboBoxModel proveedoresComboBoxModel = new DefaultComboBoxModel();
+        proveedoresComboBoxModel.addElement("<Todos>");
+        for (ProveedoresT proveedor : proveedoresTs) {
+            proveedoresComboBoxModel.addElement(proveedor);
+        }
+        cmbProveedores.setModel(proveedoresComboBoxModel);
+        getRootPane().setDefaultButton(aceptarButton);
+        //Fin modificaciones combo
     }
 
     @Action
@@ -56,14 +73,34 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
         protected String doInBackground() throws Exception {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
-            if (!txtProveedor.getText().isEmpty()) {
-                parametro.put("pproveedor", new Integer(txtProveedor.getText()));
+            //Inicio modificacion combo maquinas
+            if (!cmbProveedores.getSelectedItem().equals("<Todos>")) {
+                parametro.put("pproveedor", ((ProveedoresT) cmbProveedores.getSelectedItem()).getIdProveedor());
             }
 
-            System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate() + "\nproveedor: " + txtProveedor.getText());
+            //System.out.println("desde: " + jDateChooser1.getDate() + "\nhasta: " + jDateChooser2.getDate() + "\nproveedor: " + txtProveedor.getText());
 
-            java.sql.Timestamp d = new Timestamp(jDateChooser1.getDate().getTime());
-            java.sql.Timestamp h = new Timestamp(jDateChooser2.getDate().getTime());
+            //INICIO MODIFICACION DE HORAS!!!! --Nuevo
+            //Creo variables auxiliares para manipular fecha y hora
+            GregorianCalendar gcd = new GregorianCalendar();
+            GregorianCalendar gch = new GregorianCalendar();
+
+            //Inicializo las variables auxiliares
+            gcd.setTime(jDateChooser1.getDate());
+            gch.setTime(jDateChooser2.getDate());
+
+            //Seteo del inicio de la fecha desde
+            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
+            gcd.set(GregorianCalendar.MINUTE, 0);
+            gcd.set(GregorianCalendar.SECOND, 0);
+            //Seteo del fin de la fecha hasta
+            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            gch.set(GregorianCalendar.MINUTE, 0);
+            gch.set(GregorianCalendar.SECOND, 0);
+
+            java.sql.Timestamp d = new Timestamp(gcd.getTimeInMillis());
+            java.sql.Timestamp h = new Timestamp(gch.getTimeInMillis());
+            //FIN MODIFICACIONES FECHAS
 
             parametro.put("pfechadesde", d);
             parametro.put("pfechahasta", h);
@@ -108,9 +145,9 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        txtProveedor = new javax.swing.JTextField();
         cancelarButton = new javax.swing.JButton();
         aceptarButton = new javax.swing.JButton();
+        cmbProveedores = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -132,9 +169,6 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
 
-        txtProveedor.setText(resourceMap.getString("txtProveedor.text")); // NOI18N
-        txtProveedor.setName("txtProveedor"); // NOI18N
-
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteMovStockProveedores.class, this);
         cancelarButton.setAction(actionMap.get("cancelar")); // NOI18N
         cancelarButton.setText(resourceMap.getString("cancelarButton.text")); // NOI18N
@@ -143,6 +177,9 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
         aceptarButton.setAction(actionMap.get("aceptar")); // NOI18N
         aceptarButton.setText(resourceMap.getString("aceptarButton.text")); // NOI18N
         aceptarButton.setName("aceptarButton"); // NOI18N
+
+        cmbProveedores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProveedores.setName("cmbProveedores"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -160,7 +197,7 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                             .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                            .addComponent(txtProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)))
+                            .addComponent(cmbProveedores, 0, 320, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(222, 222, 222)
                         .addComponent(aceptarButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
@@ -182,12 +219,12 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(aceptarButton))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -197,12 +234,12 @@ public class ReporteMovStockProveedores extends CustomInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarButton;
     private javax.swing.JButton cancelarButton;
+    private javax.swing.JComboBox cmbProveedores;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtProveedor;
     // End of variables declaration//GEN-END:variables
 
 }

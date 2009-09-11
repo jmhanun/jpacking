@@ -694,8 +694,9 @@ public class DesktopView extends FrameView {
     public void showReporteUsuarios() {
         HashMap parametros = new HashMap();
         parametros.put("pduke", "C:\\Logos\\Duke.gif");
-        ResourceMap resourceMap = getResourceMap();
-        parametros.put("pimagen", new ImageIcon(resourceMap.getImageIcon("pimagen").getImage()));
+        parametros.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+//        ResourceMap resourceMap = getResourceMap();
+//        parametros.put("pimagen", new ImageIcon(resourceMap.getImageIcon("pimagen").getImage()));
         JasperPrint jp = DesktopApp.getApplication().getReporte("usuarios", parametros);
         JasperViewer jv = new JasperViewer(jp, false);
         jv.setTitle("Reporte de Usuarios");

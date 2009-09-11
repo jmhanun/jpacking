@@ -36,7 +36,7 @@ public class FacturadorTableModel extends CustomTableModel {
                 return record.getFecha();
             case CLIENTE_INDEX:
                 if (record.getIdCliente() != null) {
-                    if (record.getIdCliente().getIdCliente() != null) {
+                    if (record.getIdCliente().getNombres() != null) {
                         return record.getIdCliente().getNombres();
                     } else {
                         return "";
@@ -44,6 +44,16 @@ public class FacturadorTableModel extends CustomTableModel {
                 } else {
                     return "";
                 }
+//            case UNIDADMEDIDA_INDEX:
+//                if (record.getIdUnidMedida() != null) {
+//                    if (record.getIdUnidMedida().getAbreviatura() != null) {
+//                        return record.getIdUnidMedida().getAbreviatura();
+//                    } else {
+//                        return "";
+//                    }
+//                } else {
+//                    return "";
+//                }
             case IMPORTE_INDEX:
                 return record.getImporte();
             default:
