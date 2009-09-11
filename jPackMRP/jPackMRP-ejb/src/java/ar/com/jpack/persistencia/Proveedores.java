@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -30,6 +29,7 @@ import javax.persistence.TemporalType;
 @Table(name = "proveedores")
 @NamedQueries({@NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor"), @NamedQuery(name = "Proveedores.findByNombres", query = "SELECT p FROM Proveedores p WHERE p.nombres = :nombres"), @NamedQuery(name = "Proveedores.findByApellido", query = "SELECT p FROM Proveedores p WHERE p.apellido = :apellido"), @NamedQuery(name = "Proveedores.findByMails", query = "SELECT p FROM Proveedores p WHERE p.mails = :mails"), @NamedQuery(name = "Proveedores.findByTelefonos", query = "SELECT p FROM Proveedores p WHERE p.telefonos = :telefonos"), @NamedQuery(name = "Proveedores.findByFechaAlta", query = "SELECT p FROM Proveedores p WHERE p.fechaAlta = :fechaAlta"), @NamedQuery(name = "Proveedores.findByObservaciones", query = "SELECT p FROM Proveedores p WHERE p.observaciones = :observaciones"), @NamedQuery(name = "Proveedores.findByCuit", query = "SELECT p FROM Proveedores p WHERE p.cuit = :cuit")})
 public class Proveedores implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idProveedor", nullable = false)
@@ -49,7 +49,9 @@ public class Proveedores implements Serializable {
     private String observaciones;
     @Column(name = "cuit", nullable = false)
     private String cuit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch=FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
+    private Collection<Ordenescompra> ordenescompraCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Facturascompras> facturascomprasCollection;
     @OneToMany(mappedBy = "idProveedor", fetch = FetchType.LAZY)
     private Collection<Domicilios> domiciliosCollection;
@@ -157,6 +159,14 @@ public class Proveedores implements Serializable {
         this.domiciliosCollection = domiciliosCollection;
     }
 
+    public Collection<Ordenescompra> getOrdenescompraCollection() {
+        return ordenescompraCollection;
+    }
+
+    public void setOrdenescompraCollection(Collection<Ordenescompra> ordenescompraCollection) {
+        this.ordenescompraCollection = ordenescompraCollection;
+    }
+
     public Collection<Remitosingreso> getRemitosingresoCollection() {
         return remitosingresoCollection;
     }
@@ -213,5 +223,4 @@ public class Proveedores implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Proveedores[idProveedor=" + idProveedor + "]";
     }
-
 }

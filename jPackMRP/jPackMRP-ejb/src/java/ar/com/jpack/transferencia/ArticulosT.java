@@ -42,6 +42,7 @@ public class ArticulosT implements Serializable {
     private Collection<SellosT> sellosCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
     private Collection<PreciosT> preciosCollection;
+    private Collection<DetalleOrdenesComprasT> detalleordenescomprasCollection;
 
     public ArticulosT() {
     }
@@ -283,6 +284,14 @@ public class ArticulosT implements Serializable {
 
     public void setStockMinimo(float stockMinimo) {
         this.stockMinimo = stockMinimo;
+    }
+
+    public Collection<DetalleOrdenesComprasT> getDetalleordenescomprasCollection() {
+        return detalleordenescomprasCollection;
+    }
+
+    public void setDetalleordenescomprasCollection(Collection<DetalleOrdenesComprasT> detalleordenescomprasCollection) {
+        this.detalleordenescomprasCollection = detalleordenescomprasCollection;
     }
 
     @Override

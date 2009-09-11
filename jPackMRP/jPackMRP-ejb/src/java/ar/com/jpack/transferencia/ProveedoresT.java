@@ -22,6 +22,7 @@ public class ProveedoresT implements Serializable {
     private Date fechaAlta;
     private String observaciones;
     private String cuit;
+    private Collection<OrdenesCompraT> ordenescompraCollection;
     private Collection<FacturasComprasT> facturascomprasCollection;
     private Collection<DomiciliosT> domiciliosCollection;
     private Collection<RemitosIngresoT> remitosingresoCollection;
@@ -139,6 +140,14 @@ public class ProveedoresT implements Serializable {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public Collection<OrdenesCompraT> getOrdenescompraCollection() {
+        return ordenescompraCollection;
+    }
+
+    public void setOrdenescompraCollection(Collection<OrdenesCompraT> ordenescompraCollection) {
+        this.ordenescompraCollection = ordenescompraCollection;
     }
 
     public Collection<RemitosIngresoT> getRemitosingresoCollection() {

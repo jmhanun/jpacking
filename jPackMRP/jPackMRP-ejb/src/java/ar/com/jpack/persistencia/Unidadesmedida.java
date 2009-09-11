@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -25,6 +24,7 @@ import javax.persistence.Table;
 @Table(name = "unidadesmedida")
 @NamedQueries({@NamedQuery(name = "Unidadesmedida.findByIdUnidMedida", query = "SELECT u FROM Unidadesmedida u WHERE u.idUnidMedida = :idUnidMedida"), @NamedQuery(name = "Unidadesmedida.findByDescripcion", query = "SELECT u FROM Unidadesmedida u WHERE u.descripcion = :descripcion"), @NamedQuery(name = "Unidadesmedida.findByAbreviatura", query = "SELECT u FROM Unidadesmedida u WHERE u.abreviatura = :abreviatura")})
 public class Unidadesmedida implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idUnidMedida", nullable = false)
@@ -55,6 +55,8 @@ public class Unidadesmedida implements Serializable {
     private Collection<Detordenesdeposito> detordenesdepositoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
     private Collection<Detrtosingreso> detrtosingresoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUnidMedida", fetch = FetchType.LAZY)
+    private Collection<Detalleordenescompras> detalleordenescomprasCollection;
 
     public Unidadesmedida() {
     }
@@ -181,6 +183,14 @@ public class Unidadesmedida implements Serializable {
         this.detrtosingresoCollection = detrtosingresoCollection;
     }
 
+    public Collection<Detalleordenescompras> getDetalleordenescomprasCollection() {
+        return detalleordenescomprasCollection;
+    }
+
+    public void setDetalleordenescomprasCollection(Collection<Detalleordenescompras> detalleordenescomprasCollection) {
+        this.detalleordenescomprasCollection = detalleordenescomprasCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -205,5 +215,4 @@ public class Unidadesmedida implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Unidadesmedida[idUnidMedida=" + idUnidMedida + "]";
     }
-
 }

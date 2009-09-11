@@ -93,6 +93,8 @@ public class Articulos implements Serializable {
     private Collection<Detrtosingreso> detrtosingresoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
     private Collection<Precios> preciosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArticulo", fetch = FetchType.LAZY)
+    private Collection<Detalleordenescompras> detalleordenescomprasCollection;
 
     public Articulos() {
     }
@@ -335,6 +337,14 @@ public class Articulos implements Serializable {
 
     public void setArticuloFinal(String articuloFinal) {
         this.articuloFinal = articuloFinal;
+    }
+
+    public Collection<Detalleordenescompras> getDetalleordenescomprasCollection() {
+        return detalleordenescomprasCollection;
+    }
+
+    public void setDetalleordenescomprasCollection(Collection<Detalleordenescompras> detalleordenescomprasCollection) {
+        this.detalleordenescomprasCollection = detalleordenescomprasCollection;
     }
 
     @Override

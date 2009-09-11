@@ -27,6 +27,7 @@ public class UnidadesMedidaT implements Serializable {
     private Collection<DetAjustesStockT> detajustesstockCollection;
     private Collection<DetOrdenesDepositoT> detordenesdepositoCollection;
     private Collection<DetRtosIngresoT> detrtosingresoCollection;
+    private Collection<DetalleOrdenesComprasT> detalleordenescomprasCollection;
 
     public UnidadesMedidaT() {
     }
@@ -35,14 +36,6 @@ public class UnidadesMedidaT implements Serializable {
         this.idUnidMedida = idUnidMedida;
         this.descripcion = descripcion;
         this.abreviatura = abreviatura;
-    }
-
-    public Collection<DetAjustesStockT> getDetajustesstockCollection() {
-        return detajustesstockCollection;
-    }
-
-    public void setDetajustesstockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
-        this.detajustesstockCollection = detajustesstockCollection;
     }
 
     public String getAbreviatura() {
@@ -69,6 +62,14 @@ public class UnidadesMedidaT implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Collection<DetAjustesStockT> getDetajustesstockCollection() {
+        return detajustesstockCollection;
+    }
+
+    public void setDetajustesstockCollection(Collection<DetAjustesStockT> detajustesstockCollection) {
+        this.detajustesstockCollection = detajustesstockCollection;
+    }
+
     public Collection<DetalleFactComprasT> getDetallefactcomprasCollection() {
         return detallefactcomprasCollection;
     }
@@ -83,6 +84,14 @@ public class UnidadesMedidaT implements Serializable {
 
     public void setDetallefacturasCollection(Collection<DetalleFacturasT> detallefacturasCollection) {
         this.detallefacturasCollection = detallefacturasCollection;
+    }
+
+    public Collection<DetalleOrdenesComprasT> getDetalleordenescomprasCollection() {
+        return detalleordenescomprasCollection;
+    }
+
+    public void setDetalleordenescomprasCollection(Collection<DetalleOrdenesComprasT> detalleordenescomprasCollection) {
+        this.detalleordenescomprasCollection = detalleordenescomprasCollection;
     }
 
     public Collection<DetalleRemitosT> getDetalleremitosCollection() {
