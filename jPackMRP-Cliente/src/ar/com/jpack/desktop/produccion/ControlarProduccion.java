@@ -69,13 +69,22 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                     HashMap parametros = new HashMap();
                     ArrayList<TiposDesviosT> tiposDesvioTs = (ArrayList<TiposDesviosT>) DesktopApp.getApplication().getTiposDesviosT(parametros);
                     TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
-                            "Tipo desvio",
-                            "Desvio por desfasaje en inicio proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            "Desvio por desfasaje en inicio proceso - 1° Paso(Seleccione el tipo de desvio)" +
+                            "\n\nTipo desvio",
+                            "Desvio por desfasaje en inicio proceso",
                             JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
                     String comentario = (String) JOptionPane.showInternalInputDialog(this,
-                            "Comentario",
-                            "Desvio por desfasaje en inicio proceso - 2° Paso(Escriba un comentario)",
+                            "Desvio por desfasaje en inicio proceso - 2° Paso(Escriba un comentario)" +
+                            "\n\nComentario",
+                            "Desvio por desfasaje en inicio proceso",
                             JOptionPane.PLAIN_MESSAGE);
+                    if (tipo == null) {
+                        tipo = new TiposDesviosT();
+                        tipo.setIdTipoDesvio(1);
+                    }
+                    if (comentario == null) {
+                        comentario = "";
+                    }
                     DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
                 }
 
@@ -115,25 +124,43 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                 ArrayList<TiposDesviosT> tiposDesvioTs = (ArrayList<TiposDesviosT>) DesktopApp.getApplication().getTiposDesviosT(parametros);
                 if (DesktopApp.getApplication().getDiferenciaSegundos(detalleSeleccionado.getFechaFinEstimada(), ahora) > tolerancia) {
                     TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
-                            "Tipo desvio",
-                            "Desvio por desfasaje en fin proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            "Desvio por desfasaje en fin proceso - 1° Paso(Seleccione el tipo de desvio)" +
+                            "\n\nTipo desvio",
+                            "Desvio por desfasaje en fin proceso",
                             JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
                     String comentario = (String) JOptionPane.showInternalInputDialog(this,
-                            "Comentario",
-                            "Desvio por desfasaje en fin proceso - 2° Paso(Escriba un comentario)",
+                            "Desvio por desfasaje en fin proceso - 2° Paso(Escriba un comentario)" +
+                            "\n\nComentario",
+                            "Desvio por desfasaje en fin proceso",
                             JOptionPane.PLAIN_MESSAGE);
+                    if (tipo == null) {
+                        tipo = new TiposDesviosT();
+                        tipo.setIdTipoDesvio(1);
+                    }
+                    if (comentario == null) {
+                        comentario = "";
+                    }
                     DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
                 }
 
                 if (Math.abs(tiempoEstimado - tiempoReal) > tolerancia) {
                     TiposDesviosT tipo = (TiposDesviosT) JOptionPane.showInternalInputDialog(this,
-                            "Tipo desvio",
-                            "Desvio en duracion proceso - 1° Paso(Seleccione el tipo de desvio)",
+                            "Desvio en duracion proceso - 1° Paso(Seleccione el tipo de desvio)" +
+                            "\n\nTipo desvio",
+                            "Desvio en duracion proceso",
                             JOptionPane.PLAIN_MESSAGE, null, tiposDesvioTs.toArray(), tiposDesvioTs.get(0));
                     String comentario = (String) JOptionPane.showInternalInputDialog(this,
-                            "Comentario",
-                            "Desvio en duracion proceso - 2° Paso(Escriba un comentario)",
+                            "Desvio en duracion proceso - 2° Paso(Escriba un comentario)" +
+                            "\n\nComentario",
+                            "Desvio en duracion proceso",
                             JOptionPane.PLAIN_MESSAGE);
+                    if (tipo == null) {
+                        tipo = new TiposDesviosT();
+                        tipo.setIdTipoDesvio(1);
+                    }
+                    if (comentario == null) {
+                        comentario = "";
+                    }
                     DesktopApp.getApplication().insertDesvioT(detalleSeleccionado.getIdDetalleProduccion(), tipo.getIdTipoDesvio(), comentario);
                 }
 
@@ -261,12 +288,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         tableModel.addTableModelListener(new CustomTableModelListener());
         detalleProduccionTable.setModel(tableModel);
 
-        sorter = new TableRowSorter 
-
-                
-                <  TableModel   >   (
-                
-                
+        sorter = new TableRowSorter<TableModel>(
                 tableModel) {
 
             @Override
