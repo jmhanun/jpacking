@@ -23,6 +23,7 @@ import ar.com.jpack.negocio.ListaspreciosFacadeRemote;
 import ar.com.jpack.negocio.MailsFacadeRemote;
 import ar.com.jpack.negocio.MantenimientoFacadeRemote;
 import ar.com.jpack.negocio.MaquinasFacadeRemote;
+import ar.com.jpack.negocio.OrdenescompraFacadeRemote;
 import ar.com.jpack.negocio.OrdenesproduccionFacadeRemote;
 import ar.com.jpack.negocio.PreciosFacadeRemote;
 import ar.com.jpack.negocio.ProveedoresFacadeRemote;
@@ -37,6 +38,7 @@ import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.ComponentesT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetRtosIngresoT;
+import ar.com.jpack.transferencia.DetalleOrdenesComprasT;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
 import ar.com.jpack.transferencia.DetalleRemitosTempT;
@@ -47,6 +49,7 @@ import ar.com.jpack.transferencia.ListasPreciosT;
 import ar.com.jpack.transferencia.MailsT;
 import ar.com.jpack.transferencia.MantenimientoT;
 import ar.com.jpack.transferencia.MaquinasT;
+import ar.com.jpack.transferencia.OrdenesCompraT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.transferencia.PreciosT;
 import ar.com.jpack.transferencia.ProveedoresT;
@@ -148,6 +151,7 @@ public class DesktopApp extends SingleFrameApplication {
     private GruposmailsFacadeRemote gruposmailsFacade;
     private SellosFacadeRemote sellosFacade;
     private ProveedoresFacadeRemote proveedoresFacade;
+    private OrdenescompraFacadeRemote ordenesCompraFacade;
 
     public void sendSSLMessage(ArrayList<String> recipients, String subject,
             String message) {
@@ -530,6 +534,16 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
+        }
+    }
+    public Integer insertFacturaT(Integer idRemito) {
+        try {
+            remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
+            return remitosFacade.insertFacturaT(idRemito);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
@@ -1036,6 +1050,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
             return articulosFacade.updateArticulosT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public OrdenesCompraT updateOrdenCompraT(OrdenesCompraT orden, ArrayList<DetalleOrdenesComprasT> listDto) {
+        try {
+            ordenesCompraFacade = (OrdenescompraFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenescompraFacadeRemote");
+            return ordenesCompraFacade.updateOrdenCompraT(orden, listDto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

@@ -133,6 +133,10 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
                         ((RegistrarCompra) getPadre()).agregarProveedor(pro);
                         cancelar();
                     }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.compras.RegistrarOrdenCompra")) {
+                        ((RegistrarOrdenCompra) getPadre()).agregarProveedor(pro);
+                        cancelar();
+                    }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un proveedor");
                 }

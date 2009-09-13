@@ -24,6 +24,9 @@ public class FeriadosTableModel extends CustomTableModel {
     }
 
     public Object getValueAt(int row, int column) {
+        if (dataVector.isEmpty()) {
+            return new Object();
+        }
         FeriadosT record = (FeriadosT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:

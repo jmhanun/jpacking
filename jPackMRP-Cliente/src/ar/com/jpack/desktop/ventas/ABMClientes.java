@@ -158,6 +158,11 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
                         ((RegistrarRemito) getPadre()).agregarCliente(cli);
                         cancelar();
                     }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.Facturador")) {
+
+                        ((Facturador) getPadre()).agregarCliente(cli);
+                        cancelar();
+                    }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un cliente");
                 }

@@ -33,7 +33,6 @@ import java.util.Iterator;
 import javax.swing.ActionMap;
 import javax.swing.Timer;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -817,6 +816,10 @@ public class DesktopView extends FrameView {
     @Action
     public Task showControlarProduccion() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ControlarProduccion", "Gestión de la Producción", padre);
+    }
+    @Action
+    public Task showOrdenCompra() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.compras.RegistrarOrdenCompra", "Orden de compra", padre);
     }
 
     /**
