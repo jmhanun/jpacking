@@ -90,6 +90,17 @@ public class RemitosFacade implements RemitosFacadeRemote {
         }
         if (parametros.containsKey("pJoinClientes")) {
             remitosCritearia.setFetchMode("idCliente", FetchMode.JOIN);
+            if (parametros.containsKey("pIdCliente")) {
+                Criteria clienteCriteria = remitosCritearia.createCriteria("idCliente");
+                clienteCriteria.add(Restrictions.eq("idCliente", parametros.get("pIdCliente")));
+            }
+        }
+        if (parametros.containsKey("pJoinEstados")) {
+            remitosCritearia.setFetchMode("idEstado", FetchMode.JOIN);
+            if (parametros.containsKey("pIdEstado")) {
+                Criteria clienteCriteria = remitosCritearia.createCriteria("idEstado");
+                clienteCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+            }
         }
         remitosList = remitosCritearia.list();
         return remitosList;
@@ -210,7 +221,6 @@ public class RemitosFacade implements RemitosFacadeRemote {
 //        return getRemitosT(parametros).get(0);
 //
 //    }
-
     public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
         Date fechaAcordada = null;
         for (DetalleRemitosTempT itemT : detalleRemitosTempT) {
@@ -288,6 +298,7 @@ public class RemitosFacade implements RemitosFacadeRemote {
         }
         return remitosTList;
     }
+
     public List<Remitosingreso> getRemitosIngresos(HashMap parametros) {
         Criteria remitosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Remitosingreso.class);
         List<Remitosingreso> remitosList;
@@ -313,5 +324,27 @@ public class RemitosFacade implements RemitosFacadeRemote {
             return 1;
         }
         return maxID;
+    }
+
+    public Integer insertFacturaT(Integer idRemito) {
+        Integer resultado = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+//`spfacturar`(pidremito integer, out vnrofactura integer)
+            CallableStatement cs = conn.prepareCall("{call spfacturar(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idRemito);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            resultado = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FeriadosFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 }

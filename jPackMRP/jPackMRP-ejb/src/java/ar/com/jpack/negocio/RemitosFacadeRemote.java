@@ -77,4 +77,6 @@ public interface RemitosFacadeRemote {
     public List<Remitosingreso> getRemitosIngresos(HashMap parametros);
 
     public int getNextRemitoIngreso();//    public ar.com.jpack.transferencia.RemitosT updateRemitosT(ar.com.jpack.transferencia.RemitosT remitosT);
+
+    public Integer insertFacturaT(Integer idRemito);
 }

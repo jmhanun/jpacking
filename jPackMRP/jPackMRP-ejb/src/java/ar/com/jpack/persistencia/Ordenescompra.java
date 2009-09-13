@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -12,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,8 +31,10 @@ import javax.persistence.TemporalType;
 @Table(name = "ordenescompra")
 @NamedQueries({@NamedQuery(name = "Ordenescompra.findByIdOrdenCompra", query = "SELECT o FROM Ordenescompra o WHERE o.idOrdenCompra = :idOrdenCompra"), @NamedQuery(name = "Ordenescompra.findByNroOrdenCompra", query = "SELECT o FROM Ordenescompra o WHERE o.nroOrdenCompra = :nroOrdenCompra"), @NamedQuery(name = "Ordenescompra.findByFecha", query = "SELECT o FROM Ordenescompra o WHERE o.fecha = :fecha")})
 public class Ordenescompra implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idOrdenCompra", nullable = false)
     private Integer idOrdenCompra;
     @Column(name = "nroOrdenCompra", nullable = false)
@@ -122,5 +125,4 @@ public class Ordenescompra implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Ordenescompra[idOrdenCompra=" + idOrdenCompra + "]";
     }
-
 }

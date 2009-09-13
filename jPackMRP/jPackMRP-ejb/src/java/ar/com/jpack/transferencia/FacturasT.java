@@ -21,6 +21,7 @@ public class FacturasT implements Serializable {
     private double importe;
     private Float descuento;
     private Date fechaModificacion;
+    private Integer idRemito;
     private Collection<RemitosT> idRemitoCollection;
     private Collection<DetalleFacturasT> detallefacturasCollection;
     private ClientesT idCliente;
@@ -147,5 +148,13 @@ public class FacturasT implements Serializable {
 
     public void setNroFactura(int nroFactura) {
         this.nroFactura = nroFactura;
+    }
+
+    public Integer getIdRemito() {
+        return idRemito;
+    }
+
+    public void setIdRemito(Integer idRemito) {
+        this.idRemito = idRemito;
     }
 }

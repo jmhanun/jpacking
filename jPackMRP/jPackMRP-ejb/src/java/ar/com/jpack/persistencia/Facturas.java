@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
@@ -32,6 +31,7 @@ import javax.persistence.TemporalType;
 @Table(name = "facturas")
 @NamedQueries({@NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"), @NamedQuery(name = "Facturas.findByNroFactura", query = "SELECT f FROM Facturas f WHERE f.nroFactura = :nroFactura"), @NamedQuery(name = "Facturas.findByFecha", query = "SELECT f FROM Facturas f WHERE f.fecha = :fecha"), @NamedQuery(name = "Facturas.findByLetra", query = "SELECT f FROM Facturas f WHERE f.letra = :letra"), @NamedQuery(name = "Facturas.findByImporte", query = "SELECT f FROM Facturas f WHERE f.importe = :importe"), @NamedQuery(name = "Facturas.findByDescuento", query = "SELECT f FROM Facturas f WHERE f.descuento = :descuento"), @NamedQuery(name = "Facturas.findByFechaModificacion", query = "SELECT f FROM Facturas f WHERE f.fechaModificacion = :fechaModificacion")})
 public class Facturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "idFactura", nullable = false)
@@ -50,6 +50,8 @@ public class Facturas implements Serializable {
     @Column(name = "fechaModificacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
+    @Column(name = "idRemito")
+    private Integer idRemito;
     @JoinTable(name = "remitosxfactura", joinColumns = {@JoinColumn(name = "idFactura", referencedColumnName = "idFactura")}, inverseJoinColumns = {@JoinColumn(name = "idRemito", referencedColumnName = "idRemito")})
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Remitos> idRemitoCollection;
@@ -188,6 +190,14 @@ public class Facturas implements Serializable {
         this.idUsuario = idUsuario;
     }
 
+    public Integer getIdRemito() {
+        return idRemito;
+    }
+
+    public void setIdRemito(Integer idRemito) {
+        this.idRemito = idRemito;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -212,5 +222,4 @@ public class Facturas implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Facturas[idFactura=" + idFactura + "]";
     }
-
 }
