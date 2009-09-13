@@ -725,6 +725,16 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showReporteOrdenes() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteOrdenesCompra", "Carga de parametros para el reporte de Ordenes de Compra", padre);
+    }
+
+    @Action
+    public Task showReporteCompras() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReportesRemitosIngreso", "Carga de parametros para el reporte de Compras", padre);
+    }
+
+    @Action
     public Task showReporteStockMinimo() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStockMinimo", "Carga de parametros para el reporte Stock Minimo", padre);
     }
@@ -797,6 +807,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showReporteRemito() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteRemito", "Carga de parametros para el reporte Remito", padre);
+    }
+
+    @Action
+    public Task showReporteFactura() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteFactura", "Carga de parametros para el reporte Factura", padre);
     }
 
     @Action
@@ -951,6 +966,11 @@ public class DesktopView extends FrameView {
     @Action
     public Task showABMClientes() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMClientes", "ABM Clientes", padre);
+    }
+
+    @Action
+    public Task showConsultaStock() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.depositos.ConsultaStock", "Consulta de Stock", padre);
     }
 
     @Action

@@ -738,7 +738,7 @@ public class DesktopApp extends SingleFrameApplication {
      * <b>pJoinArticulos</b>  obliga a Joinear con Articulos<br>
      * @return devuelve la lista de los Mails que cumplan con el filtro
      */
-    List<StockT> getStockT(HashMap parametros) {
+    public List<StockT> getStockT(HashMap parametros) {
         try {
             stockFacade = (StockFacadeRemote) lookUp("ar.com.jpack.negocio.StockFacadeRemote");
             return stockFacade.getStockT(parametros);
