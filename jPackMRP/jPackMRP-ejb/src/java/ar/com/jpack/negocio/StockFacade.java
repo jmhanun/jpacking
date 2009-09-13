@@ -65,6 +65,9 @@ public class StockFacade implements StockFacadeRemote {
         if (parametros.containsKey("pJoinArticulos")) {
             stockCritearia.setFetchMode("idArticulo", FetchMode.JOIN);
         }
+        if (parametros.containsKey("pJoinUsuarios")) {
+            stockCritearia.setFetchMode("idUsuario", FetchMode.JOIN);
+        }
         stockList = stockCritearia.list();
         return stockList;
     }

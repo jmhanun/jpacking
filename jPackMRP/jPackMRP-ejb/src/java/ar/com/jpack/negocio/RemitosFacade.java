@@ -252,7 +252,7 @@ public class RemitosFacade implements RemitosFacadeRemote {
 
             return getRemitosIngresosT(parametros).get(0);
         } else {
-            remitos.setNroRemito(getNextRemitoIngreso());
+            //remitos.setNroRemito(getNextRemitoIngreso());
             parametros.put("pIdEstados", remitosT.getIdEstado().getIdEstado());
             remitos.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
             parametros = new HashMap();

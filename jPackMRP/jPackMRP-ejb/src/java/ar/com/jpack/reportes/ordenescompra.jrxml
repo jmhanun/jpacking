@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="report3" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="pfechadesde" class="java.sql.Timestamp"/>
+	<parameter name="pfechahasta" class="java.sql.Timestamp"/>
+	<parameter name="pproveedor" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pordencompra" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pimagen" class="java.lang.String"/>
+	<parameter name="pduke" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     ordenescompra.`idOrdenCompra` AS ordenescompra_idOrdenCompra,
+     ordenescompra.`nroOrdenCompra` AS ordenescompra_nroOrdenCompra,
+     ordenescompra.`fecha` AS ordenescompra_fecha,
+     ordenescompra.`idProveedor` AS ordenescompra_idProveedor,
+     detalleordenescompras.`idDetOrdenCompra` AS detalleordenescompras_idDetOrdenCompra,
+     detalleordenescompras.`idArticulo` AS detalleordenescompras_idArticulo,
+     detalleordenescompras.`idUnidMedida` AS detalleordenescompras_idUnidMedida,
+     detalleordenescompras.`cantidad` AS detalleordenescompras_cantidad,
+     articulos.`codigo` AS articulos_codigo,
+     unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura,
+     proveedores.`nombres` AS proveedores_nombres
+FROM
+     `ordenescompra` ordenescompra INNER JOIN `detalleordenescompras` detalleordenescompras ON ordenescompra.`idOrdenCompra` = detalleordenescompras.`idOrdenCompra`
+     INNER JOIN `articulos` articulos ON detalleordenescompras.`idArticulo` = articulos.`idArticulo`
+     INNER JOIN `unidadesmedida` unidadesmedida ON detalleordenescompras.`idUnidMedida` = unidadesmedida.`idUnidMedida`
+     AND unidadesmedida.`idUnidMedida` = articulos.`idUnidMedida`
+     INNER JOIN `proveedores` proveedores ON ordenescompra.`idProveedor` = proveedores.`idProveedor`
+Where ordenescompra.`fecha` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
+AND proveedores.`idProveedor` = IFNULL($P{pproveedor}, proveedores.`idProveedor`)
+AND ordenescompra.`nroOrdenCompra` = IFNULL($P{pordencompra}, ordenescompra.`nroOrdenCompra`)
+Order by ordenescompra.`idProveedor`, ordenescompra.`nroOrdenCompra`, detalleordenescompras.`idDetOrdenCompra`]]>
+	</queryString>
+	<field name="ordenescompra_idOrdenCompra" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ordenescompra_nroOrdenCompra" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ordenescompra_fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ordenescompra_idProveedor" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalleordenescompras_idDetOrdenCompra" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalleordenescompras_idArticulo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalleordenescompras_idUnidMedida" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="detalleordenescompras_cantidad" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="articulos_codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidadesmedida_abreviatura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedores_nombres" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="proveedores_nombres">
+		<groupExpression><![CDATA[$F{proveedores_nombres}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="139" height="27" forecolor="#000000" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Proveedor]]></text>
+				</staticText>
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="139" y="0" width="416" height="27" forecolor="#000000" backcolor="#CC9900"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedores_nombres}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="8">
+				<line direction="BottomUp">
+					<reportElement key="line" x="1" y="4" width="554" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="ordenescompra_nroOrdenCompra">
+		<groupExpression><![CDATA[$F{ordenescompra_nroOrdenCompra}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<staticText>
+					<reportElement mode="Opaque" x="210" y="0" width="234" height="27" backcolor="#FFCC33"/>
+					<textElement textAlignment="Right">
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField pattern="00000000" hyperlinkType="None">
+					<reportElement mode="Opaque" x="99" y="0" width="111" height="27" backcolor="#FFCC33"/>
+					<textElement>
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Long"><![CDATA[$F{ordenescompra_nroOrdenCompra}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="27" width="555" height="1"/>
+				</line>
+				<textField hyperlinkType="None">
+					<reportElement mode="Opaque" x="444" y="0" width="111" height="27" backcolor="#FFCC33"/>
+					<textElement textAlignment="Center">
+						<font fontName="Verdana" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{ordenescompra_fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="99" height="27" backcolor="#FFCC33"/>
+					<textElement textAlignment="Right">
+						<font fontName="Verdana" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Orden Nro.  ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="8">
+				<line direction="BottomUp">
+					<reportElement key="line" x="1" y="4" width="554" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="88">
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="82" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="158" y="13" width="253" height="35"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ordenes de Compra]]></text>
+			</staticText>
+			<image hyperlinkType="None">
+				<reportElement x="3" y="16" width="135" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
+			</image>
+			<image hyperlinkType="None">
+				<reportElement x="509" y="16" width="43" height="49"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{pduke}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18">
+			<staticText>
+				<reportElement mode="Opaque" x="28" y="0" width="111" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="277" y="0" width="111" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField hyperlinkType="None">
+				<reportElement x="0" y="-1" width="28" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{detalleordenescompras_idDetOrdenCompra}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="28" y="0" width="233" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulos_codigo}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="394" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadesmedida_abreviatura}]]></textFieldExpression>
+			</textField>
+			<textField hyperlinkType="None">
+				<reportElement x="276" y="0" width="111" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{detalleordenescompras_cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="516" y="6" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="342" y="6" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField" x="1" y="6" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

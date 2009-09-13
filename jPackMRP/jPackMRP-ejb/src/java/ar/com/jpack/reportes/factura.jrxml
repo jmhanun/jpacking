@@ -2,18 +2,17 @@
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
 <jasperReport name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="premito" class="java.lang.Integer"/>
+	<parameter name="pfactura" class="java.lang.Integer"/>
 	<parameter name="pimagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-     remitos.`fecha` AS remitos_fecha,
-     remitos.`nroRemito` AS remitos_nroRemito,
-     remitos.`importe` AS remitos_importe,
-     remitos.`fechaAcordada` AS remitos_fechaAcordada,
-     remitos.`fechaEntrega` AS remitos_fechaEntrega,
-     detalleremitos.`cantidad` AS detalleremitos_cantidad,
-     detalleremitos.`precioUnitario` AS detalleremitos_precioUnitario,
-     detalleremitos.`importe` AS detalleremitos_importe,
+     facturas.`fecha` AS facturas_fecha,
+     facturas.`nroFactura` AS facturas_nroFactura,
+     facturas.`importe` AS facturas_importe,
+     facturas.`idRemito` AS facturas_nroRemito,
+     detallefacturas.`cantidad` AS detallefacturas_cantidad,
+     detallefacturas.`precioUnitario` AS detallefacturas_precioUnitario,
+     detallefacturas.`importe` AS detallefacturas_importe,
      clientes.`nombres` AS clientes_nombres,
      clientes.`apellidos` AS clientes_apellidos,
      clientes.`cuit` AS clientes_cuit,
@@ -35,41 +34,38 @@
      articulos.`descripcion` AS articulos_descripcion,
      unidadesmedida.`abreviatura` AS unidadesmedida_abreviatura
 FROM
-     `remitos` remitos INNER JOIN `detalleremitos` detalleremitos ON remitos.`idRemito` = detalleremitos.`idRemito`
-     INNER JOIN `clientes` clientes ON remitos.`idCliente` = clientes.`idCliente`
-     INNER JOIN `tiposcomprobantes` tiposcomprobantes ON remitos.`idTipoComprobante` = tiposcomprobantes.`idTipoComprobante`
-     INNER JOIN `estados` estados ON remitos.`idEstado` = estados.`idEstado`
+     `facturas` facturas INNER JOIN `detallefacturas` detallefacturas ON facturas.`idFactura` = detallefacturas.`idFactura`
+     INNER JOIN `clientes` clientes ON facturas.`idCliente` = clientes.`idCliente`
+     INNER JOIN `tiposcomprobantes` tiposcomprobantes ON facturas.`idTipoComprobante` = tiposcomprobantes.`idTipoComprobante`
+     INNER JOIN `estados` estados ON facturas.`idEstado` = estados.`idEstado`
      INNER JOIN `domicilios` domicilios
-     INNER JOIN `articulos` ON articulos.`idArticulo` = detalleremitos.`idArticulo`
+     INNER JOIN `articulos` ON articulos.`idArticulo` = detallefacturas.`idArticulo`
      INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
-     AND unidadesmedida.`idUnidMedida` = detalleremitos.`idUnidMedida`
+     AND unidadesmedida.`idUnidMedida` = detallefacturas.`idUnidMedida`
      AND clientes.`idCliente` = domicilios.`idCliente`
      INNER JOIN `localidades` localidades ON domicilios.`idLocalidad` = localidades.`idLocalidad`
      INNER JOIN `provincias` provincias ON localidades.`idProvincia` = provincias.`idProvincia`
-WHERE remitos.`nroremito` = $P{premito}]]>
+WHERE facturas.`idFactura` = $P{pfactura}]]>
 	</queryString>
-	<field name="remitos_fecha" class="java.sql.Timestamp">
+	<field name="facturas_fecha" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="remitos_nroRemito" class="java.lang.Long">
+	<field name="facturas_nroFactura" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="remitos_importe" class="java.lang.Double">
+	<field name="facturas_importe" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="remitos_fechaAcordada" class="java.sql.Timestamp">
+	<field name="facturas_nroRemito" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="remitos_fechaEntrega" class="java.sql.Timestamp">
+	<field name="detallefacturas_cantidad" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleremitos_cantidad" class="java.lang.Long">
+	<field name="detallefacturas_precioUnitario" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="detalleremitos_precioUnitario" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="detalleremitos_importe" class="java.lang.Double">
+	<field name="detallefacturas_importe" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="clientes_nombres" class="java.lang.String">
@@ -133,7 +129,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="remitos_nroRemito">
-		<groupExpression><![CDATA[$F{remitos_nroRemito}]]></groupExpression>
+		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band height="309">
 				<staticText>
@@ -141,14 +137,14 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					<textElement>
 						<font fontName="Verdana" size="12"/>
 					</textElement>
-					<text><![CDATA[Remito Nro.]]></text>
+					<text><![CDATA[Factura Nro.]]></text>
 				</staticText>
 				<textField pattern="00000000" isBlankWhenNull="true" hyperlinkType="None">
 					<reportElement mode="Opaque" x="418" y="21" width="134" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="Verdana" size="12" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.Long"><![CDATA[$F{remitos_nroRemito}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.Long"><![CDATA[$F{facturas_nroFactura}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="342" y="5" width="66" height="16" forecolor="#000000"/>
@@ -162,22 +158,8 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					<textElement>
 						<font fontName="Verdana" size="12"/>
 					</textElement>
-					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{remitos_fecha}]]></textFieldExpression>
+					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{facturas_fecha}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement mode="Opaque" x="342" y="37" width="66" height="16"/>
-					<textElement>
-						<font fontName="Verdana" size="12"/>
-					</textElement>
-					<text><![CDATA[Acordada]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="342" y="53" width="66" height="16"/>
-					<textElement>
-						<font fontName="Verdana" size="12"/>
-					</textElement>
-					<text><![CDATA[Entrega]]></text>
-				</staticText>
 				<staticText>
 					<reportElement mode="Opaque" x="342" y="69" width="66" height="16"/>
 					<textElement>
@@ -185,20 +167,6 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					</textElement>
 					<text><![CDATA[Estado]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true" hyperlinkType="None">
-					<reportElement mode="Opaque" x="418" y="37" width="134" height="16"/>
-					<textElement>
-						<font fontName="Verdana" size="12"/>
-					</textElement>
-					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{remitos_fechaAcordada}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true" hyperlinkType="None">
-					<reportElement mode="Opaque" x="418" y="53" width="134" height="16"/>
-					<textElement>
-						<font fontName="Verdana" size="12"/>
-					</textElement>
-					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{remitos_fechaEntrega}]]></textFieldExpression>
-				</textField>
 				<textField isBlankWhenNull="true" hyperlinkType="None">
 					<reportElement mode="Opaque" x="418" y="69" width="134" height="16"/>
 					<textElement>
@@ -242,7 +210,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					<text><![CDATA[Tel. 0351-4650544]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="20" y="118" width="258" height="20"/>
+					<reportElement x="20" y="118" width="256" height="20"/>
 					<textElement>
 						<font fontName="Verdana" size="12"/>
 					</textElement>
@@ -457,6 +425,20 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					<reportElement x="19" y="0" width="170" height="37"/>
 					<imageExpression class="java.lang.String"><![CDATA[$P{pimagen}]]></imageExpression>
 				</image>
+				<staticText>
+					<reportElement mode="Opaque" x="342" y="42" width="76" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement>
+						<font fontName="Verdana" size="12"/>
+					</textElement>
+					<text><![CDATA[Remito Nro.]]></text>
+				</staticText>
+				<textField pattern="00000000" isBlankWhenNull="true" hyperlinkType="None">
+					<reportElement mode="Opaque" x="418" y="42" width="134" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Right">
+						<font fontName="Verdana" size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Long"><![CDATA[$F{facturas_nroRemito}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -469,7 +451,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 					<textElement textAlignment="Right">
 						<font fontName="Verdana" size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.Double"><![CDATA[$F{remitos_importe}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{facturas_importe}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="422" y="5" width="60" height="20"/>
@@ -497,7 +479,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 				<textElement textAlignment="Center">
 					<font fontName="Verdana" size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Remito]]></text>
+				<text><![CDATA[Factura]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -505,7 +487,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 		<band/>
 	</pageHeader>
 	<columnHeader>
-		<band height="14"/>
+		<band height="18"/>
 	</columnHeader>
 	<detail>
 		<band height="22">
@@ -521,7 +503,7 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 				<textElement>
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{detalleremitos_cantidad}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{detallefacturas_cantidad}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
 				<reportElement x="380" y="0" width="38" height="20"/>
@@ -535,14 +517,14 @@ WHERE remitos.`nroremito` = $P{premito}]]>
 				<textElement textAlignment="Right">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{detalleremitos_precioUnitario}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{detallefacturas_precioUnitario}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
 				<reportElement x="489" y="0" width="61" height="20"/>
 				<textElement textAlignment="Right">
 					<font fontName="Verdana" size="10"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{detalleremitos_importe}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{detallefacturas_importe}]]></textFieldExpression>
 			</textField>
 			<textField hyperlinkType="None">
 				<reportElement x="111" y="0" width="200" height="20"/>
