@@ -4,7 +4,9 @@
  */
 package ar.com.jpack.negocio;
 
+import ar.com.jpack.persistencia.Detmovimientosstock;
 import ar.com.jpack.persistencia.Stock;
+import ar.com.jpack.transferencia.DetMovimientosStockT;
 import ar.com.jpack.transferencia.StockT;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
@@ -70,5 +72,33 @@ public class StockFacade implements StockFacadeRemote {
         }
         stockList = stockCritearia.list();
         return stockList;
+    }
+
+    public List<DetMovimientosStockT> getDetMovimientosStockT(HashMap parametros) {
+        List<Detmovimientosstock> detMovimientosStockList = getDetMovmimientosStock(parametros);
+        List<DetMovimientosStockT> detMovimientosStockTList = new ArrayList<DetMovimientosStockT>();
+
+        for (Detmovimientosstock c : detMovimientosStockList) {
+            DetMovimientosStockT rdo = (DetMovimientosStockT) DozerUtil.getDozerMapper(false).map(c, DetMovimientosStockT.class);
+            detMovimientosStockTList.add(rdo);
+        }
+        return detMovimientosStockTList;
+    }
+
+    public List<Detmovimientosstock> getDetMovmimientosStock(HashMap parametros) {
+        Criteria detMovimientosStockCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Detmovimientosstock.class);
+        List<Detmovimientosstock> detMovimientosStockList;
+        if (parametros.containsKey("pIdDetMovStock")) {
+            detMovimientosStockCritearia.add(Restrictions.eq("idDetMovStock", parametros.get("pIdDetMovStock")));
+        }
+        //Con el setFetchMode obliga a que el lazy se ponga las pilas
+        if (parametros.containsKey("pJoinArticulos")) {
+            detMovimientosStockCritearia.setFetchMode("idArticulo", FetchMode.JOIN);
+        }
+        if (parametros.containsKey("pJoinUsuarios")) {
+            detMovimientosStockCritearia.setFetchMode("idUsuario", FetchMode.JOIN);
+        }
+        detMovimientosStockList = detMovimientosStockCritearia.list();
+        return detMovimientosStockList;
     }
 }
