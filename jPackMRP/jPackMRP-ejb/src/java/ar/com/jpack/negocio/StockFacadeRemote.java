@@ -4,7 +4,9 @@
  */
 package ar.com.jpack.negocio;
 
+import ar.com.jpack.persistencia.Detmovimientosstock;
 import ar.com.jpack.persistencia.Stock;
+import ar.com.jpack.transferencia.DetMovimientosStockT;
 import ar.com.jpack.transferencia.StockT;
 import java.util.HashMap;
 import java.util.List;
@@ -36,4 +38,8 @@ public interface StockFacadeRemote {
      * @return devuelve la lista de los Mails que cumplan con el filtro
      */
     public List<Stock> getStock(HashMap parametros);
+
+    public List<DetMovimientosStockT> getDetMovimientosStockT(HashMap parametros);
+
+    public List<Detmovimientosstock> getDetMovmimientosStock(HashMap parametros);
 }
