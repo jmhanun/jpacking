@@ -11,7 +11,6 @@ import ar.com.jpack.transferencia.MaquinasT;
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -49,7 +48,6 @@ public class Gantt extends ApplicationFrameJM {
                 false // urls
                 );
         final CategoryPlot plot = (CategoryPlot) chart.getPlot();
-        //      plot.getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
         final CategoryItemRenderer renderer = plot.getRenderer();
         renderer.setSeriesPaint(0, Color.getHSBColor(0.125f, 1.0f, 0.8f));
 
@@ -93,7 +91,7 @@ public class Gantt extends ApplicationFrameJM {
                     //La tarea comienza y termina el mismo dia?
                     if (fechaInicio.get(GregorianCalendar.DATE) == fechaFin.get(GregorianCalendar.DATE)) {
                         subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaInicio.getTime(), fechaFin.getTime());
-                        subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
+//                        subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
                         tarea.addSubtask(subTarea);
                     } else {
                         Boolean completo = false;
@@ -105,8 +103,7 @@ public class Gantt extends ApplicationFrameJM {
                         fechaTokenFin.set(GregorianCalendar.SECOND, 0);
                         //Crea la tarea en el dia del comienzo hasta que termina el turno
                         subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaInicio.getTime(), fechaTokenFin.getTime());
-                        subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaInicio, fechaTokenFin));
-//                        subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
+//                        subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaInicio, fechaTokenFin));
                         tarea.addSubtask(subTarea);
 
                         do {
@@ -132,14 +129,12 @@ public class Gantt extends ApplicationFrameJM {
                             fechaTokenInicio.set(GregorianCalendar.SECOND, 0);
                             if (fechaTokenInicio.get(GregorianCalendar.DATE) == fechaFin.get(GregorianCalendar.DATE)) {
                                 subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaFin.getTime());
-                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaFin));
-//                            subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
+//                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaFin));
                                 tarea.addSubtask(subTarea);
                                 completo = true;
                             } else {
                                 subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaTokenFin.getTime());
-                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaTokenFin));
-//                            subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
+//                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaTokenFin));
                                 tarea.addSubtask(subTarea);
                             }
                         } while (!completo);
@@ -154,49 +149,5 @@ public class Gantt extends ApplicationFrameJM {
         final TaskSeriesCollection collection = new TaskSeriesCollection();
         collection.add(s1);
         return collection;
-    }
-
-    /**
-     * Utility method for creating <code>Date</code> objects.
-     *
-     * @param day  the date.
-     * @param month  the month.
-     * @param year  the year.
-     *
-     * @return a date.
-     */
-    private static Date date(final int day, final int month, final int year) {
-
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        final Date result = calendar.getTime();
-        return result;
-
-    }
-
-    private Double getAvanceParcial(DetalleProduccionT detalleProduccionT, GregorianCalendar fechaInicioSubPeriodo, GregorianCalendar fechaFinSubPeriodo) {
-        GregorianCalendar gcNow = new GregorianCalendar();
-        if (detalleProduccionT.getFechaInicioProceso() == null) {
-            return 0.0;
-        } else {
-            if (detalleProduccionT.getFechaFinProceso() != null) {
-                return 1.0;
-            } else {
-                if (gcNow.after(fechaFinSubPeriodo)) {
-                    return 1.0;
-                }
-                if (gcNow.before(fechaInicioSubPeriodo)) {
-                    return 0.0;
-                }
-
-                Long ahora = gcNow.getTimeInMillis() / 1000;
-                Long inicio = fechaInicioSubPeriodo.getTimeInMillis() / 1000;
-                Long fin = fechaFinSubPeriodo.getTimeInMillis() / 1000;
-                Long total = fin - inicio;
-                Long avance = ahora - inicio;
-
-                return total.doubleValue() / avance.doubleValue();
-            }
-        }
     }
 }
