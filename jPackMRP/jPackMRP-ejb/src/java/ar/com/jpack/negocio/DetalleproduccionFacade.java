@@ -95,6 +95,12 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         if (parametros.containsKey("pFechaInicioEstimada")) {
             detalleProduccionCriteria.add(Restrictions.between("fechaInicioEstimada", parametros.get("pFechaDesdeEstimada"), parametros.get("pFechaHastaEstimada")));
         }
+        if (parametros.containsKey("pFechaInicioReal")) {
+            detalleProduccionCriteria.add(Restrictions.between("fechaInicioProceso", parametros.get("pFechaDesdeReal"), parametros.get("pFechaHastaReal")));
+        }
+        if (parametros.containsKey("pFechaFinRealVacio")) {
+            detalleProduccionCriteria.add(Restrictions.isNull("fechaFinProceso"));
+        }
         if (parametros.containsKey("pFechaInicioEstimadaLT")) {
             detalleProduccionCriteria.add(Restrictions.lt("fechaInicioEstimada", parametros.get("pFechaInicioEstimadaLT")));
         }
