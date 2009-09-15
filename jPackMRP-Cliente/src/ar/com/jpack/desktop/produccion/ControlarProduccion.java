@@ -117,8 +117,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                 Integer tiempoReal = Math.abs(DesktopApp.getApplication().getTiempoRealProduccion(detalleSeleccionado.getIdDetalleProduccion()));
                 Integer tiempoEstimado = Math.abs(DesktopApp.getApplication().getTiempoEstimadoProduccion(detalleSeleccionado.getIdDetalleProduccion()));
 
-
-
                 Long tolerancia = Long.parseLong(DesktopApp.getApplication().getValorSetup(18));
                 HashMap parametros = new HashMap();
                 ArrayList<TiposDesviosT> tiposDesvioTs = (ArrayList<TiposDesviosT>) DesktopApp.getApplication().getTiposDesviosT(parametros);

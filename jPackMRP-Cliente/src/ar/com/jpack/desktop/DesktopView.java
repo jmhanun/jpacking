@@ -784,6 +784,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showMaestroArticulos() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.MaestroArticulos", "Maestro articulo", padre);
+    }
+
+    @Action
     public Task showReporteClientes() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteClientes", "Carga de parametros para el reporte de Clientes", padre);
     }
@@ -822,6 +827,7 @@ public class DesktopView extends FrameView {
     public Task showControlarProduccion() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ControlarProduccion", "Gestión de la Producción", padre);
     }
+
     @Action
     public Task showOrdenCompra() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.compras.RegistrarOrdenCompra", "Orden de compra", padre);
@@ -871,19 +877,21 @@ public class DesktopView extends FrameView {
     public Task showRegistrarRemitos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.RegistrarRemito", "Registro de Remitos", padre);
     }
+
     @Action
     public Task showRegistrarCompra() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.compras.RegistrarCompra", "Registro de Factura de Compra", padre);
-        
+
     }
 
     @Action
     public Task showArticulos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMArticulos", "Articulos", padre);
     }
+
     @Action
     public Task showTipificarDesvio() {
-        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.TipificarDesvio", "Desvios", padre);        
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.TipificarDesvio", "Desvios", padre);
     }
 
     @Action

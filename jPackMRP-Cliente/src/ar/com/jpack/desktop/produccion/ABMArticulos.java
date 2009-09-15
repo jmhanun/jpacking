@@ -274,6 +274,12 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
                         cancelar();
                     }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.MaestroArticulos")) {
+
+                        ((MaestroArticulos) getPadre()).agregarArticulo(art);
+
+                        cancelar();
+                    }
 
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");

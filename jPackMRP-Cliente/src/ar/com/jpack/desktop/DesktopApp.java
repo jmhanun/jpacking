@@ -36,6 +36,7 @@ import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetMovimientosStockT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleOrdenesComprasT;
@@ -536,6 +537,18 @@ public class DesktopApp extends SingleFrameApplication {
             return 0;
         }
     }
+
+    public Integer getStockOrdenesProduccion(Integer idArticulo) {
+        try {
+            ordenesproduccionFacade = (OrdenesproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenesproduccionFacadeRemote");
+            return ordenesproduccionFacade.getStockOrdenesProduccion(idArticulo);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
     public Integer insertFacturaT(Integer idRemito) {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
@@ -1007,6 +1020,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public List<DetMovimientosStockT> getDetMovimientosStockT(HashMap parametros) {
+        try {
+            stockFacade = (StockFacadeRemote) lookUp("ar.com.jpack.negocio.StockFacadeRemote");
+            return stockFacade.getDetMovimientosStockT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     /**
      * Actualiza o crea un usuarioT recibido por parametro
      * Si existe, se actualiza. Si no existe, se crea.
@@ -1146,7 +1170,8 @@ public class DesktopApp extends SingleFrameApplication {
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion){
+
+    public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");
             return detalleProduccionFacade.getTiempoEstimadoProduccion(idDetalleProduccion);
@@ -1156,6 +1181,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public Integer getTiempoRealProduccion(Integer idDetalleProduccion) {
         try {
             detalleProduccionFacade = (DetalleproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.DetalleproduccionFacadeRemote");

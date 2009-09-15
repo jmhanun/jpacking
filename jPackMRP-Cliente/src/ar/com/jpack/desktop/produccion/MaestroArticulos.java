@@ -3,11 +3,25 @@
  *
  * Created on 13 de septiembre de 2009, 17:34
  */
-
 package ar.com.jpack.desktop.produccion;
 
+import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablemodels.ActividadesArticulosTableModel;
+import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
+import ar.com.jpack.helpers.tablemodels.DetalleMovimientoStockTableModel;
+import ar.com.jpack.helpers.tablemodels.DetalleProduccionResumenTableModel;
+import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ArticulosT;
+import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetMovimientosStockT;
+import ar.com.jpack.transferencia.DetalleProduccionT;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
 
 /**
@@ -16,16 +30,248 @@ import org.jdesktop.application.Action;
  */
 public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
 
+    private ArrayList<ComponentesT> componentesTs;
+    private ComponentesArticulosTableModel tableModelComponentes;
+    private TableRowSorter<TableModel> sorterComponentes;
+    private ArrayList<ActividadesArticulosT> actividadesTs;
+    private ActividadesArticulosTableModel tableModelActividades;
+    private TableRowSorter<TableModel> sorterActividad;
+    private ABMArticulos articulosOpenFrame;
+    private ArrayList<DetalleProduccionT> detalleProduccionTs;
+    private DetalleProduccionResumenTableModel tableModelDetalleProduccion;
+    private TableRowSorter<TableModel> sorterDetalleProduccion;
+    private ArrayList<DetMovimientosStockT> detalleMovimientoTs;
+    private DetalleMovimientoStockTableModel tableModelDetalleMovimiento;
+    private TableRowSorter<TableModel> sorterDetalleMovimiento;
+
     /** Creates new form MaestroArticulos */
     public MaestroArticulos() {
         super(new ArticulosT());
         initComponents();
+
+        componentesTs = new ArrayList<ComponentesT>();
+
+        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes.addTableModelListener(new CustomTableModelListener());
+        tblComponentes.setModel(tableModelComponentes);
+
+        sorterComponentes = new TableRowSorter<TableModel>(tableModelComponentes) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblComponentes.setRowSorter(sorterComponentes);
+
+        actividadesTs = new ArrayList<ActividadesArticulosT>();
+
+        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades.addTableModelListener(new CustomTableModelListener());
+        tblActividades.setModel(tableModelActividades);
+
+        sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblActividades.setRowSorter(sorterActividad);
+
+
+
+        detalleProduccionTs = new ArrayList<DetalleProduccionT>();
+
+        tableModelDetalleProduccion = new DetalleProduccionResumenTableModel(columnNamesDetalleProduccion, detalleProduccionTs);
+        tableModelDetalleProduccion.addTableModelListener(new CustomTableModelListener());
+        tblProduccion.setModel(tableModelDetalleProduccion);
+
+        sorterDetalleProduccion = new TableRowSorter<TableModel>(tableModelDetalleProduccion) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblProduccion.setRowSorter(sorterDetalleProduccion);
+
+
+        detalleMovimientoTs = new ArrayList<DetMovimientosStockT>();
+
+        tableModelDetalleMovimiento = new DetalleMovimientoStockTableModel(columnNamesDetalleMovimiento, detalleMovimientoTs);
+        tableModelDetalleMovimiento.addTableModelListener(new CustomTableModelListener());
+        tblMovimientosStock.setModel(tableModelDetalleMovimiento);
+
+        sorterDetalleMovimiento = new TableRowSorter<TableModel>(tableModelDetalleMovimiento) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblMovimientosStock.setRowSorter(sorterDetalleMovimiento);
+
     }
-    
-    
+
     @Action
-    public void buscar(){
-        
+    public void buscar() {
+
+
+        DesktopApp.getApplication().getDesktopView().setPadre(this);
+        DesktopApp.getApplication().getDesktopView().showArticulos().run();
+
+        articulosOpenFrame = (ABMArticulos) DesktopApp.getApplication().getDesktopView().getInternalFrame("ar.com.jpack.desktop.produccion.ABMArticulos");
+
+        articulosOpenFrame.setPadre(this);
+        articulosOpenFrame.habilitarBtnSeleccionar(true);
+        articulosOpenFrame.setCodigoArticulo(txtCodigo.getText());
+        articulosOpenFrame.buscar();
+
+    }
+
+    public void agregarArticulo(ArticulosT articulo) {
+        setDto(articulo);
+
+        chkFinal.setSelected(stringToBoolean(articulo.getArticuloFinal()));
+        chkImprimible.setSelected(stringToBoolean(articulo.getImprimible()));
+
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtCodigo.setText(getDto().getCodigo());
+        txtStockMinimo.setText(String.valueOf(getDto().getStockMinimo()) + " " + getDto().getIdUnidMedida().getAbreviatura());
+
+        HashMap parametros = new HashMap();
+
+        parametros = new HashMap();
+        parametros.put("pIdArticulo", getDto().getIdArticulo());
+
+        double stockActual = DesktopApp.getApplication().getStockArticulo(articulo);
+        txtStockActual.setText(stockActual + " " + getDto().getIdUnidMedida().getAbreviatura());
+
+        Integer stockProduccion = DesktopApp.getApplication().getStockOrdenesProduccion(getDto().getIdArticulo());
+        txtStockEnProduccion.setText(stockProduccion + ".0 " + getDto().getIdUnidMedida().getAbreviatura());
+
+        double precio = DesktopApp.getApplication().getPrecioArticuloVigente(articulo);
+        if (precio > 0) {
+            txtPrecio.setText("$ " + precio);
+        } else {
+            txtPrecio.setText("--");
+        }
+
+        componentesTs = (ArrayList<ComponentesT>) DesktopApp.getApplication().getComponentesT(parametros);
+
+        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes.addTableModelListener(new CustomTableModelListener());
+        tblComponentes.setModel(tableModelComponentes);
+
+        sorterComponentes = new TableRowSorter<TableModel>(tableModelComponentes) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblComponentes.setRowSorter(sorterComponentes);
+
+        actividadesTs = (ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros);
+
+        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades.addTableModelListener(new CustomTableModelListener());
+        tblActividades.setModel(tableModelActividades);
+
+        sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblActividades.setRowSorter(sorterActividad);
+
+        parametros = new HashMap();
+        parametros.put("pJoinMaquinas", true);
+        parametros.put("pJoinArticulos", true);
+        parametros.put("pJoinUnidadesMedidas", true);
+        parametros.put("pJoinEstados", true);
+        parametros.put("pJoinOrdenes", true);
+        parametros.put("pIdEstadoOrden", 4);
+        parametros.put("pIdArticulo", getDto().getIdArticulo());
+
+        detalleProduccionTs = (ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros);
+
+        tableModelDetalleProduccion = new DetalleProduccionResumenTableModel(columnNamesDetalleProduccion, detalleProduccionTs);
+        tableModelDetalleProduccion.addTableModelListener(new CustomTableModelListener());
+        tblProduccion.setModel(tableModelDetalleProduccion);
+
+        sorterDetalleProduccion = new TableRowSorter<TableModel>(tableModelDetalleProduccion) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblProduccion.setRowSorter(sorterDetalleProduccion);
+
+        parametros = new HashMap();
+        parametros.put("pJoinArticulos", true);
+        parametros.put("pIdArticulo", getDto().getIdArticulo());
+        parametros.put("pResumen", true);
+
+        detalleMovimientoTs = (ArrayList<DetMovimientosStockT>) DesktopApp.getApplication().getDetMovimientosStockT(parametros);
+
+        tableModelDetalleMovimiento = new DetalleMovimientoStockTableModel(columnNamesDetalleMovimiento, detalleMovimientoTs);
+        tableModelDetalleMovimiento.addTableModelListener(new CustomTableModelListener());
+        tblMovimientosStock.setModel(tableModelDetalleMovimiento);
+
+        sorterDetalleMovimiento = new TableRowSorter<TableModel>(tableModelDetalleMovimiento) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblMovimientosStock.setRowSorter(sorterDetalleMovimiento);
+
+    }
+
+    public String booleanToString(Boolean valor) {
+        if (valor) {
+            return "S";
+        } else {
+            return "N";
+        }
+    }
+
+    public Boolean stringToBoolean(String valor) {
+        if (valor.equals("S")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** This method is called from within the constructor to
@@ -84,6 +330,10 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         jTable2.setName("jTable2"); // NOI18N
         jScrollPane2.setViewportView(jTable2);
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(MaestroArticulos.class);
@@ -103,12 +353,15 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         jLabel2.setName("jLabel2"); // NOI18N
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
+        txtDescripcion.setEnabled(false);
         txtDescripcion.setName("txtDescripcion"); // NOI18N
 
         chkImprimible.setText(resourceMap.getString("chkImprimible.text")); // NOI18N
+        chkImprimible.setEnabled(false);
         chkImprimible.setName("chkImprimible"); // NOI18N
 
         chkFinal.setText(resourceMap.getString("chkFinal.text")); // NOI18N
+        chkFinal.setEnabled(false);
         chkFinal.setName("chkFinal"); // NOI18N
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
@@ -152,19 +405,25 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
+        txtStockMinimo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtStockMinimo.setText(resourceMap.getString("txtStockMinimo.text")); // NOI18N
+        txtStockMinimo.setEnabled(false);
         txtStockMinimo.setName("txtStockMinimo"); // NOI18N
 
         jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
 
+        txtStockActual.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtStockActual.setText(resourceMap.getString("txtStockActual.text")); // NOI18N
+        txtStockActual.setEnabled(false);
         txtStockActual.setName("txtStockActual"); // NOI18N
 
         jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
 
+        txtStockEnProduccion.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtStockEnProduccion.setText(resourceMap.getString("txtStockEnProduccion.text")); // NOI18N
+        txtStockEnProduccion.setEnabled(false);
         txtStockEnProduccion.setName("txtStockEnProduccion"); // NOI18N
 
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
@@ -208,7 +467,9 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
+        txtPrecio.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtPrecio.setText(resourceMap.getString("txtPrecio.text")); // NOI18N
+        txtPrecio.setEnabled(false);
         txtPrecio.setName("txtPrecio"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -219,76 +480,63 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar)
                 .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(408, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addGap(22, 22, 22))
+                .addContainerGap(456, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(419, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3)
-                .addGap(22, 22, 22))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStockActual, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStockEnProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(467, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addContainerGap(422, Short.MAX_VALUE))
+                .addContainerGap(470, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addContainerGap(261, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStockMinimo, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStockActual, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStockEnProduccion, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(chkImprimible)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkFinal)
-                        .addGap(18, 18, 18)
+                        .addGap(215, 215, 215)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addContainerGap(335, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane5)
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtPrecio, txtStockActual, txtStockEnProduccion, txtStockMinimo});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -307,16 +555,16 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkImprimible)
                     .addComponent(chkFinal)
-                    .addComponent(jLabel9)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -328,18 +576,16 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JCheckBox chkFinal;
@@ -372,5 +618,16 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
     private javax.swing.JTextField txtStockEnProduccion;
     private javax.swing.JTextField txtStockMinimo;
     // End of variables declaration//GEN-END:variables
-
+    public static final String[] columnNamesComponentes = {
+        "Componente", "Orden", "Cantidad"
+    };
+    public static final String[] columnNamesActividades = {
+        "Actividad", "Orden", "Tiempo"
+    };
+    public static final String[] columnNamesDetalleMovimiento = {
+        "Fecha", "Descripcion", "Cantidad"
+    };
+    public static final String[] columnNamesDetalleProduccion = {
+        "Id", "NroOrden", "Maquina", "Estado", "Cantidad", "Inicio Estimado", "Fin Estimado"
+    };
 }
