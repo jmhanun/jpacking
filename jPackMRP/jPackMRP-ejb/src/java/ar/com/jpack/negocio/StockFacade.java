@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
 
@@ -94,9 +95,17 @@ public class StockFacade implements StockFacadeRemote {
         //Con el setFetchMode obliga a que el lazy se ponga las pilas
         if (parametros.containsKey("pJoinArticulos")) {
             detMovimientosStockCritearia.setFetchMode("idArticulo", FetchMode.JOIN);
+            if (parametros.containsKey("pIdArticulo")) {
+                Criteria artCriteria = detMovimientosStockCritearia.createCriteria("idArticulo");
+                artCriteria.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulo")));
+            }
         }
         if (parametros.containsKey("pJoinUsuarios")) {
             detMovimientosStockCritearia.setFetchMode("idUsuario", FetchMode.JOIN);
+        }
+        if(parametros.containsKey("pResumen")){
+            detMovimientosStockCritearia.addOrder(Order.desc("fechaMovimiento"));
+            detMovimientosStockCritearia.setMaxResults(10);
         }
         detMovimientosStockList = detMovimientosStockCritearia.list();
         return detMovimientosStockList;

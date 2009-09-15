@@ -107,6 +107,14 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
         }
         if (parametros.containsKey("pJoinDetalleOrdenProduccion")) {
             opCritearia.setFetchMode("detordenesproduccionCollection", FetchMode.JOIN);
+            Criteria detOrdenesProduccion = opCritearia.createCriteria("detordenesproduccionCollection");
+            if (parametros.containsKey("pJoinArticulos")) {
+                detOrdenesProduccion.setFetchMode("idArticulo", FetchMode.JOIN);
+                if (parametros.containsKey("pIdArticulo")) {
+                    Criteria articuloCriteria = detOrdenesProduccion.createCriteria("idArticulo");
+                    articuloCriteria.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulo")));
+                }
+            }
         }
 
         if (parametros.containsKey("pJoinEstados")) {
@@ -119,6 +127,25 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
 
         opList = opCritearia.list();
         return opList;
+    }
+
+    public Integer getStockOrdenesProduccion(Integer idArticulo) {
+        HashMap parametros = new HashMap();
+        parametros.put("pJoinDetalleOrdenProduccion", true);
+        parametros.put("pJoinEstados", true);
+        parametros.put("pJoinArticulos", true);
+        parametros.put("pIdEstado", 4);
+        parametros.put("pIdArticulo", idArticulo);
+        ArrayList<Ordenesproduccion> op = (ArrayList<Ordenesproduccion>) getOrdenesProduccion(parametros);
+        Integer cantidad = 0;
+        for (Ordenesproduccion ordenesproduccion : op) {
+            for (Detordenesproduccion detordenesproduccion : ordenesproduccion.getDetordenesproduccionCollection()) {
+                if (detordenesproduccion.getIdArticulo().getIdArticulo().equals(idArticulo)) {
+                    cantidad += detordenesproduccion.getCantidad();
+                }
+            }
+        }
+        return cantidad;
     }
 
     public void setEstadoOP(Integer idOp, Integer newEstado) {

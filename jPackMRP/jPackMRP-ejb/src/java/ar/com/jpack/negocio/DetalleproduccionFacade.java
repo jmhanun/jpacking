@@ -114,9 +114,13 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         }
         if (parametros.containsKey("pJoinOrdenes")) {
             detalleProduccionCriteria.setFetchMode("detordenesproduccion", FetchMode.JOIN);
-                Criteria detOpCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
+            Criteria detOpCriteria = detalleProduccionCriteria.createCriteria("detordenesproduccion");
             if (parametros.containsKey("pJoinArticulos")) {
                 detOpCriteria.setFetchMode("idArticulo", FetchMode.JOIN);
+                if (parametros.containsKey("pIdArticulo")) {
+                    Criteria artCriteria = detOpCriteria.createCriteria("idArticulo");
+                    artCriteria.add(Restrictions.eq("idArticulo", parametros.get("pIdArticulo")));
+                }
             }
             if (parametros.containsKey("pIdEstadoOrden")) {
                 detOpCriteria.setFetchMode("ordenesproduccion", FetchMode.JOIN);
@@ -177,6 +181,7 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
             Logger.getLogger(DetalleproduccionFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public Integer getTiempoRealProduccion(Integer idDetalleProduccion) {
         Integer tiempoReal = null;
         try {
@@ -198,6 +203,7 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         }
         return tiempoReal;
     }
+
     public Integer getTiempoEstimadoProduccion(Integer idDetalleProduccion) {
         Integer tiempoEstimado = null;
         try {

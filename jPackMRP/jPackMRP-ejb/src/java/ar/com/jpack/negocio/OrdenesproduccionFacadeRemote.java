@@ -30,4 +30,6 @@ public interface OrdenesproduccionFacadeRemote {
 
     public void setEstadoOP(Integer idOp, Integer newEstado);
 
+    public Integer getStockOrdenesProduccion(Integer idArticulo);
+
 }
