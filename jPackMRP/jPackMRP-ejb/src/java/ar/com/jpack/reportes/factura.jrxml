@@ -45,7 +45,7 @@ FROM
      AND clientes.`idCliente` = domicilios.`idCliente`
      INNER JOIN `localidades` localidades ON domicilios.`idLocalidad` = localidades.`idLocalidad`
      INNER JOIN `provincias` provincias ON localidades.`idProvincia` = provincias.`idProvincia`
-WHERE facturas.`idFactura` = $P{pfactura}]]>
+WHERE facturas.`nroFactura` = $P{pfactura}]]>
 	</queryString>
 	<field name="facturas_fecha" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
