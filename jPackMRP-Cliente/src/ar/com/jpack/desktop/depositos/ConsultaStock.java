@@ -62,9 +62,9 @@ public class ConsultaStock extends CustomInternalFrame<StockT> {
         setModificado(false);
         setNuevo(false);
 
-        if (getPadre() == null) {
-            consultarButton.setEnabled(false);
-        }
+//        if (getPadre() == null) {
+//            consultarButton.setEnabled(false);
+//        }
 
         parametros = new HashMap();
 

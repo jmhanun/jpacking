@@ -17,6 +17,7 @@ import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleOrdenesComprasT;
 import ar.com.jpack.transferencia.DetalleRemitosT;
@@ -234,6 +235,15 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                         ((DetalleRemitosT) getPadre().getDto()).setPrecioUnitario(DesktopApp.getApplication().getPrecioArticuloVigente(art));
 
                         ((RegistrarRemito) getPadre()).agregarDetalle(((DetalleRemitosT) getPadre().getDto()));
+
+                        cancelar();
+                    }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion")) {
+
+                        ((DetOrdenesProduccionT) getPadre().getDto()).setIdArticulo(art);
+                        ((DetOrdenesProduccionT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+
+                        ((RegistrarOrdenProduccion) getPadre()).agregarDetalle(((DetOrdenesProduccionT) getPadre().getDto()));
 
                         cancelar();
                     }

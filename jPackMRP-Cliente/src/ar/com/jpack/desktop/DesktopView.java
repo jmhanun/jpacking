@@ -749,6 +749,11 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showOrdenProduccion() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion", "Ordenes de Produccion", padre);
+    }
+
+    @Action
     public Task showReporteDesvios() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteProduccionDesvio", "Carga de parametros para el reporte de Desvíos", padre);
     }

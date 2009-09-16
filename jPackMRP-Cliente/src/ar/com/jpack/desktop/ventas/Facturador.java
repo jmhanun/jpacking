@@ -11,6 +11,7 @@
 package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.DesktopView;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablecellrenderer.FacturadorTableCellRenderer;
@@ -31,7 +32,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.application.Action;
+import org.jdesktop.application.Task;
 
 /**
  *
@@ -99,9 +103,10 @@ public class Facturador extends CustomInternalFrame<RemitosT> {
     public void facturar() {
         if (tblRemitos.getSelectedRow() != - 1) {
             RemitosT remitoSeleccionado = (RemitosT) tableModel.getRow(sorter.convertRowIndexToModel(tblRemitos.getSelectedRow()));
-            Integer nroFactura = DesktopApp.getApplication().insertFacturaT(remitoSeleccionado.getIdRemito());
+            nroFactura = DesktopApp.getApplication().insertFacturaT(remitoSeleccionado.getIdRemito());
             JOptionPane.showInternalMessageDialog(this, "Se ha generado exitosamente la factura #" + nroFactura);
             agregarCliente(remitoSeleccionado.getIdCliente());
+            imprimir().run();
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un remito para ser facturado");
         }
@@ -115,6 +120,48 @@ public class Facturador extends CustomInternalFrame<RemitosT> {
             Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @Action
+    public Task imprimir() {
+        return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
+    }
+
+    class Reporte extends Task<String, Void> {
+
+        String mensaje;
+        DesktopView view;
+
+        public Reporte(DesktopApp application, String mensaje) {
+            super(application);
+            this.mensaje = mensaje;
+            this.view = application.getDesktopView();
+        }
+
+        @Override
+        protected String doInBackground() throws Exception {
+            view.setStatusMessage(mensaje);
+            HashMap parametro = new HashMap();
+
+            parametro.put("pfactura", nroFactura);
+
+            System.out.println(parametro);
+
+            parametro.put("pduke", "C:\\Logos\\Duke.gif");
+            parametro.put("pimagen", "C:\\Logos\\logoreporte.jpg");
+            JasperPrint jp = DesktopApp.getApplication().getReporte("factura", parametro);
+            JasperViewer jv = new JasperViewer(jp, false);
+            jv.setTitle("Reporte de Factura");
+            jv.setVisible(true);
+            mensaje = "Reporte finalizado";
+            return mensaje;
+        }
+
+        @Override
+        protected void succeeded(String result) {
+            super.succeeded(result);
+            view.setStatusMessage(result);
+        }
     }
 
     public void agregarCliente(ClientesT cliente) {
@@ -357,4 +404,5 @@ public class Facturador extends CustomInternalFrame<RemitosT> {
     };
     protected FacturadorTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
+    Integer nroFactura;
 }
