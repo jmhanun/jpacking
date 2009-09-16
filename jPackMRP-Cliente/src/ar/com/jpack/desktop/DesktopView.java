@@ -999,6 +999,11 @@ public class DesktopView extends FrameView {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteGantt", "Reporte Gantt", padre);
     }
 
+    @Action
+    public Task showGanttComparativo() {
+            return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteGanttReal", "Reporte Gantt", padre);
+    }
+
     /**
      * InnerClass Task para mostrar los InternalFrame
      * @author jmhanun

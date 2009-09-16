@@ -7,15 +7,12 @@ package ar.com.jpack.desktop.produccion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.ApplicationFrameJM;
 import ar.com.jpack.transferencia.DetalleProduccionT;
-import ar.com.jpack.transferencia.MaquinasT;
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -33,15 +30,18 @@ import org.jfree.data.gantt.TaskSeriesCollection;
  */
 public class GanttReal extends ApplicationFrameJM {
 
-    public GanttReal(String title, List<DetalleProduccionT> listaProduccion, Date d, Date h) {
+    ArrayList<DetalleProduccionT> listaDetalleProduccion;
+
+    public GanttReal(String title, List<DetalleProduccionT> listaProduccion) {
         super(title);
+        listaDetalleProduccion = (ArrayList<DetalleProduccionT>) listaProduccion;
         DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        final IntervalCategoryDataset dataset = createSampleDataset(listaProduccion, d, h);
+        final IntervalCategoryDataset dataset = createSampleDataset(listaProduccion);
 
         // create the chart...
         final JFreeChart chart = ChartFactory.createGanttChart(
-                "Gantt desde " + fechaFormatter.format(d) + " hasta " + fechaFormatter.format(h), // chart title
+                "Gantt de la orden de produccion #" + listaProduccion.get(0).getDetordenesproduccion().getOrdenesproduccion().getNroOrdenProduccion(), // chart title
                 "Maquinas", // domain axis label
                 "Fecha", // range axis label
                 dataset, // data
@@ -61,221 +61,119 @@ public class GanttReal extends ApplicationFrameJM {
 
     }
 
-    private IntervalCategoryDataset createSampleDataset(List<DetalleProduccionT> listaProduccion, Date d, Date h) {
+    private IntervalCategoryDataset createSampleDataset(List<DetalleProduccionT> listaProduccion) {
 
-        final TaskSeries s1 = new TaskSeries("Scheduled");
+        final TaskSeries s1 = new TaskSeries("Estimado");
+        final TaskSeries s2 = new TaskSeries("Real");
 
-        List<MaquinasT> listaMaquinas = DesktopApp.getApplication().getMaquinasT(new HashMap());
-
-        Date maxDate = d;
         ArrayList<Modulo> listaProcesos = new ArrayList<Modulo>();
 
-
-        GregorianCalendar aux1 = new GregorianCalendar();
-        GregorianCalendar aux2 = new GregorianCalendar();
+        GregorianCalendar fechaInicio = new GregorianCalendar();
+        GregorianCalendar fechaFin = new GregorianCalendar();
+        GregorianCalendar fechaTokenInicio = new GregorianCalendar();
+        GregorianCalendar fechaTokenFin = new GregorianCalendar();
+        Modulo modulo;
         Long segundosAlFinTurno;
+        Long duracion;
 //Averigua cual es la fecha maxima del gantt para que no aparezcan tareas cortadas.
         for (DetalleProduccionT detalleProduccionT : listaProduccion) {
-            Modulo modulo = new Modulo();
+            modulo = new Modulo();
             modulo.setIdDetalleProduccion(detalleProduccionT.getIdDetalleProduccion());
-            modulo.setInicio(detalleProduccionT.getFechaInicioProceso());
-            Integer duracion = DesktopApp.getApplication().getTiempoEstimadoProduccion(modulo.getIdDetalleProduccion());
-            aux1.setTime(modulo.getInicio());
-            aux2.setTime(modulo.getInicio());
-            aux2.set(GregorianCalendar.HOUR_OF_DAY, 18);
-            aux2.set(GregorianCalendar.MINUTE, 0);
-            aux2.set(GregorianCalendar.SECOND, 0);
-            segundosAlFinTurno = (aux2.getTimeInMillis() - aux1.getTimeInMillis()) / 1000;
+            modulo.setDescripcion(detalleProduccionT.getIdMaquina().getDescripcion());
+            fechaInicio.setTime(detalleProduccionT.getFechaInicioEstimada());
+            modulo.setInicio(fechaInicio.getTime());
 
-            //Termina en el mismo turno
-            if (segundosAlFinTurno <= duracion) {
-                aux1.add(GregorianCalendar.SECOND, duracion);
-                modulo.setFin(aux1.getTime());
+            duracion = (DesktopApp.getApplication().getTiempoEstimadoProduccion(modulo.getIdDetalleProduccion())).longValue();
+
+            fechaTokenInicio.setTime(modulo.getInicio());
+            fechaTokenFin.setTime(modulo.getInicio());
+            fechaTokenFin.set(GregorianCalendar.HOUR_OF_DAY, 18);
+            fechaTokenFin.set(GregorianCalendar.MINUTE, 0);
+            fechaTokenFin.set(GregorianCalendar.SECOND, 0);
+            segundosAlFinTurno = (fechaTokenFin.getTimeInMillis() - fechaTokenInicio.getTimeInMillis()) / 1000;
+
+            //Comienza y Termina la tarea en el mismo turno
+            if (segundosAlFinTurno >= duracion) {
+                fechaTokenInicio.add(GregorianCalendar.SECOND, duracion.intValue());
+                modulo.setFin(fechaTokenInicio.getTime());
                 listaProcesos.add(modulo);
             } else {
-                while (segundosAlFinTurno <= duracion) {
-                    modulo.setFin(aux2.getTime());
+                do {
+                    modulo.setFin(fechaTokenFin.getTime());
                     listaProcesos.add(modulo);
+                    duracion -= segundosAlFinTurno;
+                    segundosAlFinTurno = 28800L;
                     modulo = new Modulo();
                     modulo.setIdDetalleProduccion(detalleProduccionT.getIdDetalleProduccion());
+                    modulo.setDescripcion(detalleProduccionT.getIdMaquina().getDescripcion());
+                    fechaTokenInicio = getSiguienteDiaHabil(fechaTokenInicio);
+                    fechaTokenFin.setTime(fechaTokenInicio.getTime());
+                    fechaTokenInicio.set(GregorianCalendar.HOUR_OF_DAY, 10);
+                    fechaTokenInicio.set(GregorianCalendar.MINUTE, 0);
+                    fechaTokenInicio.set(GregorianCalendar.SECOND, 0);
+                    fechaTokenFin.set(GregorianCalendar.HOUR_OF_DAY, 18);
+                    fechaTokenFin.set(GregorianCalendar.MINUTE, 0);
+                    fechaTokenFin.set(GregorianCalendar.SECOND, 0);
 
+                    modulo.setInicio(fechaTokenInicio.getTime());
+
+                } while (segundosAlFinTurno <= duracion);
+                if (duracion > 0) {
+                    fechaTokenInicio.add(GregorianCalendar.SECOND, duracion.intValue());
+                    modulo.setFin(fechaTokenInicio.getTime());
+                    listaProcesos.add(modulo);
                 }
             }
         }
-
-        /*
-        fechaTokenInicio.setTime(fechaInicio.getTime());
-        fechaTokenFin.setTime(fechaInicio.getTime());
-        fechaTokenFin.set(GregorianCalendar.HOUR_OF_DAY, 18);
-        fechaTokenFin.set(GregorianCalendar.MINUTE, 0);
-        fechaTokenFin.set(GregorianCalendar.SECOND, 0);
-        //Crea la tarea en el dia del comienzo hasta que termina el turno
-        subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaInicio.getTime(), fechaTokenFin.getTime());
-        //                        subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaInicio, fechaTokenFin));
-        tarea.addSubtask(subTarea);
-        
-        do {
-        //busca el siguiente dia habil
-        do {
-        fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        //es sabado? suma 2
-        if (fechaTokenInicio.get(GregorianCalendar.DAY_OF_WEEK) == 7) {
-        fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 2);
-        fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 2);
-        }
-        //es domingo? suma 1
-        if (fechaTokenInicio.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
-        fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        }
-        } while (DesktopApp.getApplication().getFeriado(fechaTokenInicio.getTime()));
-        
-        //Crea la tarea en el siguiente dia habil
-        fechaTokenInicio.set(GregorianCalendar.HOUR_OF_DAY, 10);
-        fechaTokenInicio.set(GregorianCalendar.MINUTE, 0);
-        fechaTokenInicio.set(GregorianCalendar.SECOND, 0);
-        if (fechaTokenInicio.get(GregorianCalendar.DATE) == fechaFin.get(GregorianCalendar.DATE)) {
-        subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaFin.getTime());
-        //                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaFin));
-        tarea.addSubtask(subTarea);
-        completo = true;
-        } else {
-        subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaTokenFin.getTime());
-        //                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaTokenFin));
-        tarea.addSubtask(subTarea);
-        }
-        
-         */
-
-
-
-
-
-        boolean tieneTarea = false;
-//Recorre todas las maquinas y verifica si hay tareas asignadas en 
-//esas maquinas dentro del periodo consultado
-        for (MaquinasT maquinasT : listaMaquinas) {
-            Task tarea = new Task(maquinasT.getDescripcion(), d, maxDate);
-            for (DetalleProduccionT detalleProduccionT : listaProduccion) {
-                if (detalleProduccionT.getIdMaquina().getIdMaquina().equals(maquinasT.getIdMaquina())) {
-                    tieneTarea = true;
-                    Task subTarea = null;
-                    GregorianCalendar fechaInicio = new GregorianCalendar();
-                    GregorianCalendar fechaFin = new GregorianCalendar();
-                    GregorianCalendar fechaTokenInicio = new GregorianCalendar();
-                    GregorianCalendar fechaTokenFin = new GregorianCalendar();
-
-                    fechaInicio.setTime(detalleProduccionT.getFechaInicioEstimada());
-                    fechaFin.setTime(detalleProduccionT.getFechaFinEstimada());
-                    //La tarea comienza y termina el mismo dia?
-                    if (fechaInicio.get(GregorianCalendar.DATE) == fechaFin.get(GregorianCalendar.DATE)) {
-                        subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaInicio.getTime(), fechaFin.getTime());
-                        subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
-                        tarea.addSubtask(subTarea);
-                    } else {
-                        Boolean completo = false;
-
-                        fechaTokenInicio.setTime(fechaInicio.getTime());
-                        fechaTokenFin.setTime(fechaInicio.getTime());
-                        fechaTokenFin.set(GregorianCalendar.HOUR_OF_DAY, 18);
-                        fechaTokenFin.set(GregorianCalendar.MINUTE, 0);
-                        fechaTokenFin.set(GregorianCalendar.SECOND, 0);
-                        //Crea la tarea en el dia del comienzo hasta que termina el turno
-                        subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaInicio.getTime(), fechaTokenFin.getTime());
-                        subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaInicio, fechaTokenFin));
-//                        subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
-                        tarea.addSubtask(subTarea);
-
-                        do {
-                            //busca el siguiente dia habil
-                            do {
-                                fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
-                                fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 1);
-                                //es sabado? suma 2
-                                if (fechaTokenInicio.get(GregorianCalendar.DAY_OF_WEEK) == 7) {
-                                    fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 2);
-                                    fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 2);
-                                }
-                                //es domingo? suma 1
-                                if (fechaTokenInicio.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
-                                    fechaTokenInicio.add(GregorianCalendar.DAY_OF_MONTH, 1);
-                                    fechaTokenFin.add(GregorianCalendar.DAY_OF_MONTH, 1);
-                                }
-                            } while (DesktopApp.getApplication().getFeriado(fechaTokenInicio.getTime()));
-
-                            //Crea la tarea en el siguiente dia habil
-                            fechaTokenInicio.set(GregorianCalendar.HOUR_OF_DAY, 10);
-                            fechaTokenInicio.set(GregorianCalendar.MINUTE, 0);
-                            fechaTokenInicio.set(GregorianCalendar.SECOND, 0);
-                            if (fechaTokenInicio.get(GregorianCalendar.DATE) == fechaFin.get(GregorianCalendar.DATE)) {
-                                subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaFin.getTime());
-                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaFin));
-//                            subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
-                                tarea.addSubtask(subTarea);
-                                completo = true;
-                            } else {
-                                subTarea = new Task(detalleProduccionT.getIdMaquina().getDescripcion(), fechaTokenInicio.getTime(), fechaTokenFin.getTime());
-                                subTarea.setPercentComplete(getAvanceParcial(detalleProduccionT, fechaTokenInicio, fechaTokenFin));
-//                            subTarea.setPercentComplete(DesktopApp.getApplication().getAvanceProduccion(detalleProduccionT) / 100);
-                                tarea.addSubtask(subTarea);
-                            }
-                        } while (!completo);
-                    }
-                }
-                if (tieneTarea) {
-                    tieneTarea = false;
+        Integer ultimoID = 0;
+        Task tarea = null;
+        Task subTarea = null;
+        for (Modulo mod : listaProcesos) {
+            if (ultimoID != mod.getIdDetalleProduccion()) {
+                if(tarea!=null){
                     s1.add(tarea);
                 }
+                DetalleProduccionT detalle = getDetalle(mod.getIdDetalleProduccion());
+                tarea = new Task(mod.getDescripcion(), detalle.getFechaInicioEstimada(), detalle.getFechaFinEstimada());
+                subTarea = new Task(mod.getDescripcion(), mod.getInicio(), mod.getFin());
+                tarea.addSubtask(subTarea);
+            } else {
+                subTarea = new Task(mod.getDescripcion(), mod.getInicio(), mod.getFin());
+                tarea.addSubtask(subTarea);
             }
+            ultimoID = mod.getIdDetalleProduccion();
         }
+
+
         final TaskSeriesCollection collection = new TaskSeriesCollection();
         collection.add(s1);
+//        collection.add(s2);
         return collection;
     }
 
-    /**
-     * Utility method for creating <code>Date</code> objects.
-     *
-     * @param day  the date.
-     * @param month  the month.
-     * @param year  the year.
-     *
-     * @return a date.
-     */
-    private static Date date(final int day, final int month, final int year) {
-
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        final Date result = calendar.getTime();
-        return result;
-
-    }
-
-    private Double getAvanceParcial(DetalleProduccionT detalleProduccionT, GregorianCalendar fechaInicioSubPeriodo, GregorianCalendar fechaFinSubPeriodo) {
-        GregorianCalendar gcNow = new GregorianCalendar();
-        if (detalleProduccionT.getFechaInicioProceso() == null) {
-            return 0.0;
-        } else {
-            if (detalleProduccionT.getFechaFinProceso() != null) {
-                return 1.0;
-            } else {
-                if (gcNow.after(fechaFinSubPeriodo)) {
-                    return 1.0;
-                }
-                if (gcNow.before(fechaInicioSubPeriodo)) {
-                    return 0.0;
-                }
-
-                Long ahora = gcNow.getTimeInMillis() / 1000;
-                Long inicio = fechaInicioSubPeriodo.getTimeInMillis() / 1000;
-                Long fin = fechaFinSubPeriodo.getTimeInMillis() / 1000;
-                Long total = fin - inicio;
-                Long avance = ahora - inicio;
-
-                return total.doubleValue() / avance.doubleValue();
+    private DetalleProduccionT getDetalle(Integer idDetalleProduccion) {
+        DetalleProduccionT detalle = null;
+        for (DetalleProduccionT detalleProduccionT : listaDetalleProduccion) {
+            if (detalleProduccionT.getIdDetalleProduccion().equals(idDetalleProduccion)) {
+                detalle = detalleProduccionT;
             }
         }
+        return detalle;
+    }
+
+    private GregorianCalendar getSiguienteDiaHabil(GregorianCalendar fecha) {
+        do {
+            fecha.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            //es sabado? suma 2
+            if (fecha.get(GregorianCalendar.DAY_OF_WEEK) == 7) {
+                fecha.add(GregorianCalendar.DAY_OF_MONTH, 2);
+            }
+            //es domingo? suma 1
+            if (fecha.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
+                fecha.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            }
+        } while (DesktopApp.getApplication().getFeriado(fecha.getTime()));
+        return fecha;
     }
 
     class Modulo {

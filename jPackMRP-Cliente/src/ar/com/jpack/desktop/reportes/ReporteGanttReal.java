@@ -7,16 +7,15 @@ package ar.com.jpack.desktop.reportes;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.DesktopView;
-import ar.com.jpack.desktop.produccion.Gantt;
 import ar.com.jpack.desktop.produccion.GanttReal;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.beans.PropertyVetoException;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 import org.jfree.ui.RefineryUtilities;
@@ -34,6 +33,18 @@ public class ReporteGanttReal extends CustomInternalFrame {
 
     @Action
     public Task aceptar() {
+        if (!txtOrden.getText().isEmpty()) {
+            try {
+                Integer x = Integer.parseInt(txtOrden.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showInternalMessageDialog(this, "El valor de la orden de produccion debe ser numerico");
+                return null;
+            }
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe ingresar un numero de orden de produccion");
+            return null;
+        }
+
         return new Reporte(DesktopApp.getApplication(), "Reporte iniciado");
     }
 
@@ -53,33 +64,20 @@ public class ReporteGanttReal extends CustomInternalFrame {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
 
+            parametro.put("pNroOrden", Integer.parseInt(txtOrden.getText()));
             parametro.put("pJoinMaquinas", true);
-            parametro.put("pFechaInicioReal", true);
-            parametro.put("pFechaFinRealVacio", true);
+            parametro.put("pJoinOrdenes", true);
+            parametro.put("pIdEstadoOrden", 5);
 
-            GregorianCalendar gcd = new GregorianCalendar();
-            GregorianCalendar gch = new GregorianCalendar();
-
-            gcd.setTime(jDateChooser1.getDate());
-            gch.setTime(jDateChooser2.getDate());
-
-            gcd.set(GregorianCalendar.HOUR_OF_DAY, 10);
-            gcd.set(GregorianCalendar.MINUTE, 0);
-            gcd.set(GregorianCalendar.SECOND, 0);
-            
-            gch.set(GregorianCalendar.HOUR_OF_DAY, 18);
-            gch.set(GregorianCalendar.MINUTE, 0);
-            gch.set(GregorianCalendar.SECOND, 0);
-            
-            parametro.put("pFechaDesdeReal", gcd.getTime());
-            parametro.put("pFechaHastaReal", gch.getTime());
             List<DetalleProduccionT> listaProduccion = DesktopApp.getApplication().getDetalleProduccionT(parametro);
 
-            GanttReal demo = new GanttReal("Gantt jPack", listaProduccion, gcd.getTime(), gch.getTime());
-            demo.pack();
+            if (listaProduccion.size() > 0) {
+                GanttReal demo = new GanttReal("Gantt jPack", listaProduccion);
+                demo.pack();
 
-            RefineryUtilities.centerFrameOnScreen(demo);
-            demo.setVisible(true);
+                RefineryUtilities.centerFrameOnScreen(demo);
+                demo.setVisible(true);
+            }
 
             mensaje = "Reporte finalizado";
             return mensaje;
@@ -99,8 +97,6 @@ public class ReporteGanttReal extends CustomInternalFrame {
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ReporteDesvioFin.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
     /** This method is called from within the constructor to
@@ -114,10 +110,10 @@ public class ReporteGanttReal extends CustomInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtOrden = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -126,16 +122,9 @@ public class ReporteGanttReal extends CustomInternalFrame {
         setResizable(true);
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteGanttReal.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-
-        jDateChooser1.setName("jDateChooser1"); // NOI18N
-
-        jDateChooser2.setName("jDateChooser2"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ReporteGanttReal.class, this);
         btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
@@ -144,43 +133,53 @@ public class ReporteGanttReal extends CustomInternalFrame {
         btnAceptar.setAction(actionMap.get("aceptar")); // NOI18N
         btnAceptar.setName("btnAceptar"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ReporteGanttReal.class);
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        txtOrden.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtOrden.setText(resourceMap.getString("txtOrden.text")); // NOI18N
+        txtOrden.setName("txtOrden"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtOrden, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(228, 228, 228)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(228, 228, 228)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnAceptar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3)
+                    .addComponent(txtOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCancelar)
+                        .addComponent(btnAceptar))))
         );
 
         pack();
@@ -188,9 +187,9 @@ public class ReporteGanttReal extends CustomInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField txtOrden;
     // End of variables declaration//GEN-END:variables
 }
