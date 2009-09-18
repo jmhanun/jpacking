@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +24,7 @@ import org.hibernate.ejb.EntityManagerImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.SQLException;
+import java.util.Date;
 import org.hibernate.FetchMode;
 
 /**
@@ -31,6 +33,12 @@ import org.hibernate.FetchMode;
  */
 @Stateless
 public class ClientesFacade implements ClientesFacadeRemote {
+    @EJB
+    private TiposDocumentoFacadeRemote tiposDocumentoFacade;
+    @EJB
+    private TiposIvaFacadeRemote tiposIvaFacade;
+    @EJB
+    private EstadosFacadeRemote estadosFacade;
 
     @PersistenceContext
     private EntityManager em;
@@ -105,5 +113,45 @@ public class ClientesFacade implements ClientesFacadeRemote {
             Logger.getLogger(FeriadosFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultado;
+    }
+
+    public ClientesT updateClientesT(ClientesT dto) {
+        Clientes clientes = (Clientes) DozerUtil.getDozerMapper(false).map(dto, Clientes.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (clientes.getIdCliente() != null) {
+            HashMap parametros = new HashMap();
+            parametros.put("pIdEstados", 10);
+            clientes.setIdEstado(estadosFacade.getEstados(parametros).get(0));
+            
+            parametros = new HashMap();
+            parametros.put("pIdTipoDocumento", 2);
+            clientes.setIdTipoDocumento(tiposDocumentoFacade.getTiposDocumento(parametros).get(0));
+            
+            parametros = new HashMap();
+            parametros.put("pIdTipoIva", 1);
+            clientes.setIdTipoIva(tiposIvaFacade.getTiposIva(parametros).get(0));
+
+            em.merge(clientes);
+        } else {
+            clientes.setFechaAlta(new Date());
+            HashMap parametros = new HashMap();
+            parametros.put("pIdEstados", 10);
+            clientes.setIdEstado(estadosFacade.getEstados(parametros).get(0));
+            
+            parametros = new HashMap();
+            parametros.put("pIdTipoDocumento", 2);
+            clientes.setIdTipoDocumento(tiposDocumentoFacade.getTiposDocumento(parametros).get(0));
+            
+            parametros = new HashMap();
+            parametros.put("pIdTipoIva", 1);
+            clientes.setIdTipoIva(tiposIvaFacade.getTiposIva(parametros).get(0));
+
+            em.persist(clientes);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdCliente", clientes.getIdCliente());
+        return getClientesT(parametros).get(0);
+
     }
 }

@@ -28,11 +28,19 @@ public class TiposDocumentoFacade implements TiposDocumentoFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
-
     public List<TiposDocumentoT> getTiposDocumentoT(HashMap parametros) {
+        List<Tiposdocumento> tiposDocumentosList = getTiposDocumento(parametros);
+        List<TiposDocumentoT> tiposDocumentosTList = new ArrayList();
+        for (Tiposdocumento c : tiposDocumentosList) {
+            TiposDocumentoT rdo = (TiposDocumentoT) DozerUtil.getDozerMapper(false).map(c, TiposDocumentoT.class);
+            tiposDocumentosTList.add(rdo);
+        }
+        return tiposDocumentosTList;
+    }
+
+    public List<Tiposdocumento> getTiposDocumento(HashMap parametros) {
         Criteria tiposDocumentoCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Tiposdocumento.class);
         List<Tiposdocumento> tiposDocumentoList;
-        List<TiposDocumentoT> tiposDocumentoTList = new ArrayList();
         if (parametros.containsKey("pIdTipoDocumento")) {
             tiposDocumentoCritearia.add(Restrictions.eq("idTipoDocumento", parametros.get("pIdTipoDocumento")));
         }
@@ -44,14 +52,6 @@ public class TiposDocumentoFacade implements TiposDocumentoFacadeRemote {
         }
 
         tiposDocumentoList = tiposDocumentoCritearia.list();
-        for (Tiposdocumento c : tiposDocumentoList) {
-            TiposDocumentoT rdo = (TiposDocumentoT) DozerUtil.getDozerMapper(false).map(c, TiposDocumentoT.class);
-            tiposDocumentoTList.add(rdo);
-        }
-        return tiposDocumentoTList;
+        return tiposDocumentoList;
     }
-    
-    // Add business logic below. (Right-click in editor and choose
-    // "EJB Methods > Add Business Method" or "Web Service > Add Operation")
- 
 }

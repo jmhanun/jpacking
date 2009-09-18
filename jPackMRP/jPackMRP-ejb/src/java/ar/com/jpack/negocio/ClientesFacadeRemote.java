@@ -40,4 +40,6 @@ public interface ClientesFacadeRemote {
      * @return devuelve la lista de los Clientes que cumplan con el filtro
      */
     public List<Clientes> getClientes(HashMap parametros);
+
+    public ClientesT updateClientesT(ClientesT dto);
 }

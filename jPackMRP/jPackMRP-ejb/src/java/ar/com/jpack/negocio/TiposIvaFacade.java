@@ -31,10 +31,19 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
     private EntityManager em;
 
     public List<TiposIvaT> getTiposIvaT(HashMap parametros) {
+        List<Tiposiva> tiposIvaList = getTiposIva(parametros);
+        List<TiposIvaT> tiposIvaTList = new ArrayList();
+        for (Tiposiva c : tiposIvaList) {
+            TiposIvaT rdo = (TiposIvaT) DozerUtil.getDozerMapper(false).map(c, TiposIvaT.class);
+            tiposIvaTList.add(rdo);
+        }
+        return tiposIvaTList;
+    }
+
+    public List<Tiposiva> getTiposIva(HashMap parametros) {
 
         Criteria tiposIvaCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Tiposiva.class);
         List<Tiposiva> tiposIvaList;
-        List<TiposIvaT> tiposIvaTList = new ArrayList();
         if (parametros.containsKey("pIdTipoIva")) {
             tiposIvaCritearia.add(Restrictions.eq("idTipoIVA", parametros.get("pIdTipoIva")));
         }
@@ -48,11 +57,11 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
         if (parametros.containsKey("pJoinEstados")) {
             //Con el setFetchMode obliga a que el lazy se ponga las pilas
             tiposIvaCritearia.setFetchMode("idEstado", FetchMode.JOIN);
-                if (parametros.containsKey("pIdEstado")) {
-                    //Con esto filtro por el objeto que estaba lazy
-                    Criteria estadoCriteria = tiposIvaCritearia.createCriteria("idEstado");
-                    estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
-                }
+            if (parametros.containsKey("pIdEstado")) {
+                //Con esto filtro por el objeto que estaba lazy
+                Criteria estadoCriteria = tiposIvaCritearia.createCriteria("idEstado");
+                estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstado")));
+            }
         }
         /*
         Criteria estadoCriteria=clienteCritearia.createCriteria("idEstado");
@@ -61,11 +70,7 @@ public class TiposIvaFacade implements TiposIvaFacadeRemote {
          */
 
         tiposIvaList = tiposIvaCritearia.list();
-        for (Tiposiva c : tiposIvaList) {
-            TiposIvaT rdo = (TiposIvaT) DozerUtil.getDozerMapper(false).map(c, TiposIvaT.class);
-            tiposIvaTList.add(rdo);
-        }
-        return tiposIvaTList;
+        return tiposIvaList;
     }
 
     public void addTipoIva(TiposIvaT nuevoIva) {
