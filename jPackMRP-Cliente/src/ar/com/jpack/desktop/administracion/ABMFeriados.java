@@ -17,7 +17,6 @@ import ar.com.jpack.helpers.tablemodels.FeriadosTableModel;
 import ar.com.jpack.transferencia.FeriadosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,6 +38,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     public ABMFeriados() {
         super(new FeriadosT());
         initComponents();
+        btnSeleccionar.setEnabled(false);
         HashMap parametros = new HashMap();
         setListDto((ArrayList<FeriadosT>) DesktopApp.getApplication().getFeriadosT(parametros));
 
@@ -150,7 +150,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     public void aplicar() {
         try {
             if (isNuevo() || isModificado()) {
-                
+
                 setDto(DesktopApp.getApplication().updateFeriadosT(getDto()));
                 if (isNuevo()) {
                     tableModel.addRow(getDto());
@@ -395,7 +395,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
@@ -406,7 +406,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void tableFeriadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFeriadosMouseClicked
-        // TODO add your handling code here:
+
         setDto((FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow())));
         cambiarFeriadosT();
         if (evt.getClickCount() == 2) {
@@ -415,19 +415,18 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
     }//GEN-LAST:event_tableFeriadosMouseClicked
 
     private void tableFeriadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableFeriadosKeyReleased
-        // TODO add your handling code here:
+
         setDto((FeriadosT) tableModel.getRow(sorter.convertRowIndexToModel(tableFeriados.getSelectedRow())));
         cambiarFeriadosT();
     }//GEN-LAST:event_tableFeriadosKeyReleased
 
     private void txtMotivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMotivoKeyReleased
-        // TODO add your handling code here:
+
         getDto().setMotivo(String.valueOf(txtMotivo.getText()));
         setModificado(true);
     }//GEN-LAST:event_txtMotivoKeyReleased
 
     private void txtFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtFechaPropertyChange
-        // TODO add your handling code here:
 
         if (evt.getPropertyName().equals("date")) {
             getDto().setFecha(txtFecha.getDate());

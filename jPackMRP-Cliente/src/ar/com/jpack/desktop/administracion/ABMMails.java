@@ -43,7 +43,6 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
     private ItemListener itemListenerUsr;
     private ArrayList<GruposMailsT> gruposMailsTs;
     private ArrayList<UsuariosT> usuariosTs;
-    private Object usuario;
 
     /** Creates new form ABMMails */
     public ABMMails() {
@@ -67,7 +66,6 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         };
 
         HashMap parametros = new HashMap();
-//        pJoinGruposMails obliga a Joinear con GruposMails pJoinUsuarios obliga a Joinear con Usuario
         parametros.put("pJoinGruposMails", true);
         parametros.put("pJoinUsuarios", true);
         List<MailsT> nuevo = DesktopApp.getApplication().getMailsT(parametros);
@@ -149,23 +147,75 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    cmbGruposMails.setEnabled(false);
+                    cmbUsuarios.setEnabled(false);
+                }
+            }
+            setDto(new MailsT());
+            cambiarMailsT();
+            cmbGruposMails.setEnabled(true);
+            cmbUsuarios.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            cmbGruposMails.requestFocus();
+        }
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
         cmbGruposMails.setEnabled(true);
         cmbUsuarios.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        cmbGruposMails.requestFocus();
     }
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
+        if (tblMails.getSelectedRow() != - 1) {
+            MailsT x = (MailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblMails.getSelectedRow()));
+            Integer z = DesktopApp.getApplication().deleteMailsT(x.getIdMail());
+            if (z == 0) {
+                JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
+            }
+
+
+            HashMap parametros = new HashMap();
+            parametros.put("pJoinGruposMails", true);
+            parametros.put("pJoinUsuarios", true);
+            List<MailsT> nuevo = DesktopApp.getApplication().getMailsT(parametros);
+            setListDto((ArrayList<MailsT>) nuevo);
+
+            tableModel = new MailsTableModel(columnNames, this.getListDto());
+            tableModel.addTableModelListener(new CustomTableModelListener());
+            tblMails.setModel(tableModel);
+
+            sorter = new TableRowSorter<TableModel>(tableModel) {
+
+                @Override
+                public void toggleSortOrder(int column) {
+                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                    setRowFilter(null);
+                    super.toggleSortOrder(column);
+                    setRowFilter(f);
+                }
+            };
+            tblMails.setRowSorter(sorter);
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un mail");
+        }
     }
 
     @Action
@@ -181,35 +231,62 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
 
     @Action
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateMailsT(getDto()));
+                if (isNuevo()) {
+//                    getListDto().add(getDto());
+                    tableModel.addRow(getDto());
+                }
+                setDto(new MailsT());
+                cambiarMailsT();
+
+                setModificado(false);
+                setNuevo(false);
+                cmbGruposMails.setEnabled(false);
+                cmbUsuarios.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblMails.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     private void cambiarMailsT() {
-//        cboRolPadre.removeItemListener(itemListener);
-//        txtRol.setText(getDto().getRol());
-//        txtFuncion.setText(getDto().getFuncion());
-//        txtDescripcion.setText(getDto().getDescripcion());
-//        txtComponente.setText(getDto().getComponente());
-//        rolesPadreTs = (ArrayList<RolesT>) DesktopApp.getApplication().getMenuesT(true);
-//        int index = 0;
-//        int iteration = 1;
-//        for (RolesT rol : rolesPadreTs) {
-//            if (getDto().getIdRolPadre() != null) {
-//                if (rol.getIdRol().equals(getDto().getIdRolPadre().getIdRol())) {
-//                    index = iteration;
-//                }
-//            }
-//            iteration++;
-//        }
-//
-//        cboRolPadre.setSelectedIndex(index);
-//
-//        txtComponente.setEnabled(false);
-//        txtDescripcion.setEnabled(false);
-//        txtFuncion.setEnabled(false);
-//        txtRol.setEnabled(false);
-//        cboRolPadre.setEnabled(false);
-//        cboRolPadre.addItemListener(itemListener);
+        cmbGruposMails.removeItemListener(itemListenerGru);
+        cmbUsuarios.removeItemListener(itemListenerUsr);
+
+        int index = 0;
+        int iteration = 0;
+        for (GruposMailsT grupo : gruposMailsTs) {
+            if (getDto().getIdGrupoMail() != null) {
+                if (grupo.getIdGrupoMail().equals(getDto().getIdGrupoMail().getIdGrupoMail())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+        cmbGruposMails.setSelectedIndex(index);
+
+        index = 0;
+        iteration = 0;
+        for (UsuariosT usuariot : usuariosTs) {
+            if (getDto().getIdUsuario() != null) {
+                if (usuariot.getIdUsuario().equals(getDto().getIdUsuario().getIdUsuario())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+
+        cmbUsuarios.setSelectedIndex(index);
+        cmbGruposMails.setEnabled(false);
+        cmbUsuarios.setEnabled(false);
+        cmbGruposMails.addItemListener(itemListenerGru);
+        cmbUsuarios.addItemListener(itemListenerUsr);
 
     }
 
@@ -421,7 +498,7 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
@@ -429,23 +506,25 @@ public class ABMMails extends CustomInternalFrame<MailsT> {
         } else {
             dispose();
         }
+
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void tblMailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMailsMouseClicked
-        // TODO add your handling code here:
+
         setDto((MailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblMails.getSelectedRow())));
         cambiarMailsT();
         if (evt.getClickCount() == 2) {
             this.jTabbedPane1.setSelectedIndex(1);
         }
+
     }//GEN-LAST:event_tblMailsMouseClicked
 
     private void tblMailsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblMailsKeyReleased
-        // TODO add your handling code here:
+
         setDto((MailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblMails.getSelectedRow())));
         cambiarMailsT();
-    }//GEN-LAST:event_tblMailsKeyReleased
 
+    }//GEN-LAST:event_tblMailsKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

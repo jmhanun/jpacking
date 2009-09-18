@@ -637,6 +637,27 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public MailsT updateMailsT(MailsT dto) {
+        try {
+            mailsFacade = (MailsFacadeRemote) lookUp("ar.com.jpack.negocio.MailsFacadeRemote");
+            return mailsFacade.updateMailsT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Integer deleteMailsT(Integer idMail) {
+        try {
+            mailsFacade = (MailsFacadeRemote) lookUp("ar.com.jpack.negocio.MailsFacadeRemote");
+            return mailsFacade.deleteMailsT(idMail);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public List<TiposDesviosT> getTiposDesviosT(HashMap parametros) {
         try {
@@ -723,6 +744,16 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             gruposmailsFacade = (GruposmailsFacadeRemote) lookUp("ar.com.jpack.negocio.GruposmailsFacadeRemote");
             return gruposmailsFacade.getGruposMailsT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    public GruposMailsT updateGruposMailsT(GruposMailsT dto) {
+        try {
+            gruposmailsFacade = (GruposmailsFacadeRemote) lookUp("ar.com.jpack.negocio.GruposmailsFacadeRemote");
+            return gruposmailsFacade.updateGruposMailsT(dto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);

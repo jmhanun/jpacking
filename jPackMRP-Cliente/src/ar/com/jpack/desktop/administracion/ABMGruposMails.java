@@ -39,8 +39,7 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
         super(new GruposMailsT());
         initComponents();
         HashMap parametros = new HashMap();
-        List<GruposMailsT> nuevo = DesktopApp.getApplication().getGruposMailsT(parametros);
-        setListDto((ArrayList<GruposMailsT>) nuevo);
+        setListDto((ArrayList<GruposMailsT>) DesktopApp.getApplication().getGruposMailsT(parametros));
 
         tableModel = new GruposMailsTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
@@ -66,24 +65,43 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
             btnSeleccionar.setEnabled(false);
         }
 
-        parametros = new HashMap();
-
         tblGruposMails.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtGrupo.setEnabled(false);
+                }
+            }
+            setDto(new GruposMailsT());
+            cambiarGruposMailsT();
+            txtGrupo.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtGrupo.requestFocus();
+        }
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
         txtGrupo.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtGrupo.requestFocus();
     }
 
     @Action
@@ -132,7 +150,27 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
 
     @Action
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+
+                setDto(DesktopApp.getApplication().updateGruposMailsT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new GruposMailsT());
+                cambiarGruposMailsT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtGrupo.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblGruposMails.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     private void cambiarGruposMailsT() {
@@ -333,7 +371,7 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
@@ -341,28 +379,32 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
         } else {
             dispose();
         }
+        
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void tblGruposMailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGruposMailsMouseClicked
-        // TODO add your handling code here:
+        
         //para el caso en que se navegue la tabla con el mouse
         setDto((GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow())));
         cambiarGruposMailsT();
         if (evt.getClickCount() == 2) {
             this.jTabbedPane1.setSelectedIndex(1);
         }
+        
     }//GEN-LAST:event_tblGruposMailsMouseClicked
 
     private void tblGruposMailsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblGruposMailsKeyReleased
-        // TODO add your handling code here:
+        
         setDto((GruposMailsT) tableModel.getRow(sorter.convertRowIndexToModel(tblGruposMails.getSelectedRow())));
         cambiarGruposMailsT();
+        
     }//GEN-LAST:event_tblGruposMailsKeyReleased
 
     private void txtGrupoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGrupoKeyReleased
-        // TODO add your handling code here:
+        
         getDto().setGrupoMail(String.valueOf(txtGrupo.getText()));
         setModificado(true);
+        
     }//GEN-LAST:event_txtGrupoKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
