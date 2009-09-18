@@ -24,6 +24,7 @@ public class CambiarPassword extends CustomInternalFrame<UsuariosT> {
     public CambiarPassword() {
         initComponents();
         setDto(DesktopApp.getApplication().getUsuarioLogueado());
+        getRootPane().setDefaultButton(btnAceptar);
 
     }
 

@@ -45,6 +45,7 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
         Date hoy = new Date();
         txtFecha.setEnabled(false);
         txtFecha.setText(fechaFormat.format(hoy));
+        btnModificar.setEnabled(false);
 
         setListDto(new ArrayList<DetRtosIngresoT>());
 

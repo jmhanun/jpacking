@@ -42,6 +42,7 @@ public class RegistrarOrdenCompra extends CustomInternalFrame<DetalleOrdenesComp
         Date hoy = new Date();
         txtFecha.setEnabled(false);
         txtFecha.setText(fechaFormat.format(hoy));
+        btnModificar.setEnabled(false);
 
         setListDto(new ArrayList<DetalleOrdenesComprasT>());
 

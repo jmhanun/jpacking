@@ -59,6 +59,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
         DateFormat fechaFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date hoy = new Date();
         txtFecha.setText(fechaFormat.format(hoy));
+        btnModificar.setEnabled(false);
 
         setListDto(new ArrayList<DetalleRemitosT>());
 
