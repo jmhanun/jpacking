@@ -140,9 +140,12 @@ public class RolesFacade implements RolesFacadeRemote {
         if (roles.getIdRol() != null) {
             HashMap parametros = new HashMap();
             parametros.put("pIdRol", roles.getIdRol());
-            if (!(roles.getIdRolPadre().getIdRol().equals(getRoles(parametros).get(0).getIdRolPadre().getIdRol()))) {
-                roles.setOrden(getNextOrden(roles));
-                roles.setOrdenHermano(getNextOrdenHermano(roles));
+
+            if (roles.getIdRolPadre() != null) {
+                if (!(roles.getIdRolPadre().getIdRol().equals(getRoles(parametros).get(0).getIdRolPadre().getIdRol()))) {
+                    roles.setOrden(getNextOrden(roles));
+                    roles.setOrdenHermano(getNextOrdenHermano(roles));
+                }
             }
             em.merge(roles);
         } else {

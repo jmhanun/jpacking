@@ -4,8 +4,12 @@
  */
 package ar.com.jpack.negocio;
 
+import ar.com.jpack.persistencia.Ajustesstock;
+import ar.com.jpack.persistencia.Detajustesstock;
 import ar.com.jpack.persistencia.Detordenesproduccion;
 import ar.com.jpack.persistencia.Ordenesproduccion;
+import ar.com.jpack.transferencia.AjustesStockT;
+import ar.com.jpack.transferencia.DetAjustesStockT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import ar.com.jpack.util.DozerUtil;
@@ -184,5 +188,79 @@ public class OrdenesproduccionFacade implements OrdenesproduccionFacadeRemote {
             return 1;
         }
         return maxID;
+    }
+    public int getNextAjuste() {
+        String hql = "select max(aj.nroAjuste) from Ajustesstock aj";
+        Integer maxID = (Integer) ((EntityManagerImpl) em.getDelegate()).getSession().createQuery(hql).uniqueResult();
+        if (maxID != null) {
+            maxID++;
+        } else {
+            return 1;
+        }
+        if (maxID < 0) {
+            return 1;
+        }
+        return maxID;
+    }
+
+    public AjustesStockT updateAjustesStockT(AjustesStockT ajuste, ArrayList<DetAjustesStockT> listaDetAjustesStockT) {
+        HashMap parametros = new HashMap();
+//        Ordenesproduccion ordenesProduccion = (Ordenesproduccion) DozerUtil.getDozerMapper(false).map(opT, Ordenesproduccion.class);
+        Ajustesstock ajustesStock = (Ajustesstock) DozerUtil.getDozerMapper(false).map(ajuste, Ajustesstock.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (ajustesStock.getIdAjusteStock() != null) {
+            parametros.put("pIdEstados", ajuste.getIdEstado().getIdEstado());
+            ajustesStock.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
+            em.merge(ajustesStock);
+            return null;
+        } else {
+            ajustesStock.setNroAjuste(getNextAjuste());
+            parametros.put("pIdEstados", ajuste.getIdEstado().getIdEstado());
+            ajustesStock.setIdEstado((estadosFacade.getEstados(parametros)).get(0));
+            parametros = new HashMap();
+            parametros.put("pIdTipoComprobante", ajuste.getIdTipoComprobante().getIdTipoComprobante());
+            ajustesStock.setIdTipoComprobante((tiposComprobantesFacade.getTiposComprobantes(parametros)).get(0));
+            parametros = new HashMap();
+
+            em.persist(ajustesStock);
+            parametros.put("pIdAjuste", ajustesStock.getIdAjusteStock());
+
+            AjustesStockT ajustesStockTOK = getAjustesStockT(parametros).get(0);
+
+            if (listaDetAjustesStockT != null) {
+                em.flush();
+                int nroAjustesStock = ajustesStock.getIdAjusteStock();
+                for (DetAjustesStockT item : listaDetAjustesStockT) {
+                    item.getDetajustesstockPK().setIdAjusteStock(nroAjustesStock);
+                    item.setAjustesstock(ajustesStockTOK);
+                    Detajustesstock detalle = (Detajustesstock) DozerUtil.getDozerMapper(false).map(item, Detajustesstock.class);
+                    em.persist(detalle);
+                    em.flush();
+                }
+            }
+            return ajustesStockTOK;
+        }
+    }
+
+    public List<AjustesStockT> getAjustesStockT(HashMap parametros) {
+        List<Ajustesstock> ajusteList = getAjustesStock(parametros);
+        List<AjustesStockT> ajusteTList = new ArrayList();
+        for (Ajustesstock c : ajusteList) {
+            AjustesStockT rdo = (AjustesStockT) DozerUtil.getDozerMapper(false).map(c, AjustesStockT.class);
+            ajusteTList.add(rdo);
+        }
+        return ajusteTList;
+    }
+
+    public List<Ajustesstock> getAjustesStock(HashMap parametros) {
+        Criteria ajCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Ajustesstock.class);
+        List<Ajustesstock> ajList;
+        if (parametros.containsKey("pIdAjuste")) {
+            ajCritearia.add(Restrictions.eq("idAjusteStock", parametros.get("pIdAjuste")));
+        }
+
+        ajList = ajCritearia.list();
+        return ajList;
     }
 }

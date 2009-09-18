@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,6 +28,7 @@ import javax.persistence.TemporalType;
 public class Feriados implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue (strategy=GenerationType.AUTO)
     @Column(name = "idFeriado", nullable = false)
     private Integer idFeriado;
     @Column(name = "fecha", nullable = false)

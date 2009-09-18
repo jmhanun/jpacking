@@ -76,7 +76,7 @@ public class FeriadosFacade implements FeriadosFacadeRemote {
             em.persist(feriados);
         }
         HashMap parametros = new HashMap();
-        parametros.put("pIdFeriados", feriados.getIdFeriado());
+        parametros.put("pIdFeriado", feriados.getIdFeriado());
         return getFeriadosT(parametros).get(0);
 
     }

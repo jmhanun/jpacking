@@ -46,4 +46,6 @@ public interface SetupFacadeRemote {
     public List<Setup> getSetup(HashMap parametros);
 
     public String getValorSetup(Integer idSetup);
+
+    public SetupT updateSetupT(SetupT dto);
 }

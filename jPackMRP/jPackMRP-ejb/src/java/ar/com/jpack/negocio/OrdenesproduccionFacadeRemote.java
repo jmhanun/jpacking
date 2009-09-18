@@ -6,6 +6,8 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Ordenesproduccion;
+import ar.com.jpack.transferencia.AjustesStockT;
+import ar.com.jpack.transferencia.DetAjustesStockT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.OrdenesProduccionT;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface OrdenesproduccionFacadeRemote {
+
+    public AjustesStockT updateAjustesStockT(AjustesStockT ajuste, ArrayList<DetAjustesStockT> listaDetAjustesStockT);
 
     public OrdenesProduccionT updateOrdenesProduccionT(OrdenesProduccionT opT, ArrayList<DetOrdenesProduccionT> listaDetalleOPT);
 

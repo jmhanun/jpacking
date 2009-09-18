@@ -122,5 +122,18 @@ public class SetupFacade implements SetupFacadeRemote {
         }
         return valor;
     }
+
+    public SetupT updateSetupT(SetupT dto) {
+        Setup setup = (Setup) DozerUtil.getDozerMapper(false).map(dto, Setup.class);
+        //si el numero de id es null significa que es nuevo
+        if (setup.getIdSetup() != null) {
+            em.merge(setup);
+        } else {
+            em.persist(setup);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdSetup", setup.getIdSetup());
+        return getSetupT(parametros).get(0);
+    }
  
 }
