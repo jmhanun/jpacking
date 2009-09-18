@@ -722,6 +722,10 @@ public class DesktopView extends FrameView {
     public Task showReporteStock() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", padre);
     }
+    @Action
+    public Task showRegistrarAjustes() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.depositos.RegistrarAjustesStock", "Registrar ajustes de stock", padre);
+    }
 
     @Action
     public Task showReporteOrdenes() {

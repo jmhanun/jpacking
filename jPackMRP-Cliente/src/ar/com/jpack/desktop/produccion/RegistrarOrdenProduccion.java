@@ -83,7 +83,7 @@ public class RegistrarOrdenProduccion extends CustomInternalFrame<DetOrdenesProd
     public void modificar() {
         if (tblDetOrdenProd.getSelectedRow() != - 1) {
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }
 
     }
@@ -92,7 +92,7 @@ public class RegistrarOrdenProduccion extends CustomInternalFrame<DetOrdenesProd
     public void eliminar() {
         if (tblDetOrdenProd.getSelectedRow() != - 1) {
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }
     }
 

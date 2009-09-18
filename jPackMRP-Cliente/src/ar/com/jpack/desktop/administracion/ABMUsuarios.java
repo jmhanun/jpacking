@@ -330,26 +330,26 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             //Elimino de la lista de roles asignados al usuario
             //los roles seleccionados en la lista anterior
             getDto().getIdRolCollection().removeAll(quitarRolesFromJList);
-            //Hago una lista con los los roles que me quedaron que sean funcion
-            List<RolesT> nuevos = new ArrayList<RolesT>();
-            for (RolesT rolesT : getDto().getIdRolCollection()) {
-                if (rolesT.getFuncion() != null) {
-                    nuevos.add(rolesT);
-                }
-            }
-            //Agrego los padres que hagan falta
-            //En el hashset me van a quedar todos los roles que quedaron
-            //con los padres que sean necesarios para verlos
-            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
-            for (RolesT rolesT : nuevos) {
-                nuevosRoles.add(rolesT);
-                nuevosRoles = getPadres(nuevosRoles, rolesT);
-            }
-            nuevos = new ArrayList<RolesT>();
-            for (RolesT rolesT : nuevosRoles) {
-                nuevos.add(rolesT);
-            }
-            getDto().setIdRolCollection(nuevos);
+//            //Hago una lista con los los roles que me quedaron que sean funcion
+//            List<RolesT> nuevos = new ArrayList<RolesT>();
+//            for (RolesT rolesT : getDto().getIdRolCollection()) {
+//                if (rolesT.getFuncion() != null) {
+//                    nuevos.add(rolesT);
+//                }
+//            }
+//            //Agrego los padres que hagan falta
+//            //En el hashset me van a quedar todos los roles que quedaron
+//            //con los padres que sean necesarios para verlos
+//            HashSet<RolesT> nuevosRoles = new HashSet<RolesT>();
+//            for (RolesT rolesT : nuevos) {
+//                nuevosRoles.add(rolesT);
+//                nuevosRoles = getPadres(nuevosRoles, rolesT);
+//            }
+//            nuevos = new ArrayList<RolesT>();
+//            for (RolesT rolesT : nuevosRoles) {
+//                nuevos.add(rolesT);
+//            }
+//            getDto().setIdRolCollection(nuevos);
             grabar();
         }
         lstRoles.clearSelection();
@@ -506,7 +506,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -691,13 +691,13 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarRol)
                     .addComponent(btnQuitarRol))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                 .addGap(47, 47, 47))
         );
 
@@ -719,7 +719,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNuevo)
                 .addContainerGap())
@@ -735,7 +735,7 @@ public class ABMUsuarios extends CustomInternalFrame<UsuariosT> {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
 
         pack();

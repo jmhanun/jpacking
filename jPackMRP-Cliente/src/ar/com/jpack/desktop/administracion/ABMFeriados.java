@@ -17,6 +17,7 @@ import ar.com.jpack.helpers.tablemodels.FeriadosTableModel;
 import ar.com.jpack.transferencia.FeriadosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,8 +40,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         super(new FeriadosT());
         initComponents();
         HashMap parametros = new HashMap();
-        List<FeriadosT> nuevo = DesktopApp.getApplication().getFeriadosT(parametros);
-        setListDto((ArrayList<FeriadosT>) nuevo);
+        setListDto((ArrayList<FeriadosT>) DesktopApp.getApplication().getFeriadosT(parametros));
 
         tableModel = new FeriadosTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
@@ -58,33 +58,49 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         };
         tableFeriados.setRowSorter(sorter);
 
-        setModificado(false);
-        setNuevo(false);
         txtFecha.setEnabled(false);
         txtMotivo.setEnabled(false);
-
-        if (getPadre() == null) {
-            btnSeleccionar.setEnabled(false);
-        }
-
-        parametros = new HashMap();
 
         tableFeriados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtFecha.setEnabled(false);
+                    txtMotivo.setEnabled(false);
+                }
+            }
+            setDto(new FeriadosT());
+            cambiarFeriadosT();
+            txtFecha.setEnabled(true);
+            txtMotivo.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtFecha.requestFocus();
+        }
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
         txtFecha.setEnabled(true);
+        txtMotivo.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtFecha.requestFocus();
     }
 
     @Action
@@ -132,7 +148,28 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
 
     @Action
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                
+                setDto(DesktopApp.getApplication().updateFeriadosT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new FeriadosT());
+                cambiarFeriadosT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtFecha.setEnabled(false);
+                txtMotivo.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tableFeriados.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     private void cambiarFeriadosT() {
@@ -398,7 +435,6 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         }
 
     }//GEN-LAST:event_txtFechaPropertyChange
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

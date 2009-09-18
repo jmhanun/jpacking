@@ -18,7 +18,6 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
-    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -33,23 +32,24 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Component id="jScrollPane1" alignment="0" pref="399" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnAgregar" pref="75" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="btnModificar" pref="75" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEliminar" pref="75" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAplicar" pref="75" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="1"/>
+                      <Component id="btnCancelar" pref="75" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="202" max="32767" attributes="0"/>
-                      <Component id="txtFecha" min="-2" pref="97" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cboSigno" min="-2" pref="150" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="btnAgregar" pref="73" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnModificar" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnEliminar" pref="72" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnAplicar" pref="72" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="btnCancelar" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="jScrollPane1" alignment="0" pref="391" max="32767" attributes="0"/>
+                  <Component id="txtFecha" alignment="1" min="-2" pref="102" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -58,26 +58,22 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Component id="txtFecha" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="1">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <Component id="jScrollPane1" pref="276" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="txtFecha" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAplicar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboSigno" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="228" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAplicar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -85,6 +81,14 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
+    <Component class="javax.swing.JTextField" name="txtFecha">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" resourceKey="txtFecha.text"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="txtFecha" noResource="true"/>
+      </Properties>
+    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Properties>
         <Property name="name" type="java.lang.String" value="jScrollPane1" noResource="true"/>
@@ -95,7 +99,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tblDetOrdenProd">
+        <Component class="javax.swing.JTable" name="tblDetAjustesStock">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
@@ -105,67 +109,68 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="name" type="java.lang.String" value="tblDetOrdenProd" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="tblDetAjustesStock" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="txtFecha">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="txtFecha.text"/>
-        <Property name="enabled" type="boolean" value="false"/>
-        <Property name="name" type="java.lang.String" value="txtFecha" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnCancelar">
+    <Component class="javax.swing.JButton" name="btnAgregar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion" id="cancelar" methodName="cancelar"/>
+          <action class="ar.com.jpack.desktop.depositos.RegistrarAjustesStock" id="agregar" methodName="agregar"/>
         </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnCancelar.text"/>
-        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnAplicar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion" id="aplicar" methodName="aplicar"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnAplicar.text"/>
-        <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnEliminar">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion" id="eliminar" methodName="eliminar"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnEliminar.text"/>
-        <Property name="name" type="java.lang.String" value="btnEliminar" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnModificar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion" id="modificar" methodName="modificar"/>
+          <action class="ar.com.jpack.desktop.depositos.RegistrarAjustesStock" id="modificar" methodName="modificar"/>
         </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnModificar.text"/>
         <Property name="name" type="java.lang.String" value="btnModificar" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAgregar">
+    <Component class="javax.swing.JButton" name="btnEliminar">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="ar.com.jpack.desktop.produccion.RegistrarOrdenProduccion" id="agregar" methodName="agregar"/>
+          <action class="ar.com.jpack.desktop.depositos.RegistrarAjustesStock" id="eliminar" methodName="eliminar"/>
         </Property>
-        <Property name="text" type="java.lang.String" resourceKey="btnAgregar.text"/>
-        <Property name="name" type="java.lang.String" value="btnAgregar" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="btnEliminar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAplicar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.depositos.RegistrarAjustesStock" id="aplicar" methodName="aplicar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="btnAplicar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancelar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="ar.com.jpack.desktop.depositos.RegistrarAjustesStock" id="cancelar" methodName="cancelar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="btnCancelar" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
         <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cboSigno">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+        <Property name="name" type="java.lang.String" value="cboSigno" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

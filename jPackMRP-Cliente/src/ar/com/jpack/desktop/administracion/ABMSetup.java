@@ -17,6 +17,7 @@ import ar.com.jpack.helpers.tablemodels.SetupTableModel;
 import ar.com.jpack.transferencia.SetupT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,22 +60,45 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtDescripcion.setEnabled(false);
+                    txtValor.setEnabled(false);
+                }
+            }
+            setDto(new SetupT());
+            cambiarSetupT();
+            txtValor.setEnabled(true);
+            txtDescripcion.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtDescripcion.requestFocus();
+        }
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
-        JOptionPane.showInternalMessageDialog(this, "modificar");
+        txtValor.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtDescripcion.requestFocus();
     }
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
     @Action
@@ -86,20 +110,39 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
         }
     }
 
-    private void cambiarRolT() {
+    @Action
+    public void aplicar() {
+        try {
+            if (isNuevo() || isModificado()) {
+                getDto().setFechaModificacion(new Date());
+                getDto().setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                
+                setDto(DesktopApp.getApplication().updateSetupT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new SetupT());
+                cambiarSetupT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtValor.setEnabled(false);
+                txtDescripcion.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                setupTable.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
+    }
+
+    private void cambiarSetupT() {
         txtDescripcion.setText(getDto().getDescripcion());
         txtValor.setText(getDto().getValor());
         txtDescripcion.setEnabled(false);
         txtValor.setEnabled(false);
-    }
-
-    @Action
-    public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
-    }
-
-    private void cambiarSetupT() {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /** This method is called from within the constructor to
@@ -196,7 +239,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -262,7 +305,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -273,6 +316,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
 
         btnSeleccionar.setAction(actionMap.get("seleccionar")); // NOI18N
         btnSeleccionar.setText(resourceMap.getString("btnSeleccionar.text")); // NOI18N
+        btnSeleccionar.setEnabled(false);
         btnSeleccionar.setName("btnSeleccionar"); // NOI18N
 
         btnModificar.setAction(actionMap.get("modificar")); // NOI18N
@@ -308,7 +352,7 @@ public class ABMSetup extends CustomInternalFrame<SetupT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -336,7 +380,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 
 private void setupTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setupTableMouseClicked
     // TODO add your handling code here:
-        //para el caso en que se navegue la tabla con el mouse
+    //para el caso en que se navegue la tabla con el mouse
     setDto((SetupT) tableModel.getRow(sorter.convertRowIndexToModel(setupTable.getSelectedRow())));
     cambiarSetupT();
     if (evt.getClickCount() == 2) {
@@ -361,7 +405,6 @@ private void txtValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     getDto().setValor(String.valueOf(txtValor.getText()));
     setModificado(true);
 }//GEN-LAST:event_txtValorKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

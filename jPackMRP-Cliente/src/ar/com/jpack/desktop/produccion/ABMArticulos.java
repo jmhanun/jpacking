@@ -8,6 +8,7 @@ package ar.com.jpack.desktop.produccion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.compras.RegistrarCompra;
 import ar.com.jpack.desktop.compras.RegistrarOrdenCompra;
+import ar.com.jpack.desktop.depositos.RegistrarAjustesStock;
 import ar.com.jpack.desktop.ventas.RegistrarRemito;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
@@ -17,6 +18,7 @@ import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetAjustesStockT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetRtosIngresoT;
 import ar.com.jpack.transferencia.DetalleOrdenesComprasT;
@@ -244,6 +246,15 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                         ((DetOrdenesProduccionT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
 
                         ((RegistrarOrdenProduccion) getPadre()).agregarDetalle(((DetOrdenesProduccionT) getPadre().getDto()));
+
+                        cancelar();
+                    }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.depositos.RegistrarAjustesStock")) {
+
+                        ((DetAjustesStockT) getPadre().getDto()).setIdArticulo(art);
+                        ((DetAjustesStockT) getPadre().getDto()).setIdUnidMedida(art.getIdUnidMedida());
+
+                        ((RegistrarAjustesStock) getPadre()).agregarDetalle(((DetAjustesStockT) getPadre().getDto()));
 
                         cancelar();
                     }

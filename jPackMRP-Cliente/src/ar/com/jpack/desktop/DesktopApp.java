@@ -33,9 +33,11 @@ import ar.com.jpack.negocio.TiposdesviosFacadeRemote;
 import ar.com.jpack.negocio.TiposserviciosFacadeRemote;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
 import ar.com.jpack.transferencia.ActividadesT;
+import ar.com.jpack.transferencia.AjustesStockT;
 import ar.com.jpack.transferencia.ArticulosT;
 import ar.com.jpack.transferencia.ClientesT;
 import ar.com.jpack.transferencia.ComponentesT;
+import ar.com.jpack.transferencia.DetAjustesStockT;
 import ar.com.jpack.transferencia.DetMovimientosStockT;
 import ar.com.jpack.transferencia.DetOrdenesProduccionT;
 import ar.com.jpack.transferencia.DetRtosIngresoT;
@@ -1214,6 +1216,17 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public AjustesStockT updateAjustesStockT(AjustesStockT ajuste, ArrayList<DetAjustesStockT> listaDetAjustesStockT) {
+        try {
+            ordenesproduccionFacade = (OrdenesproduccionFacadeRemote) lookUp("ar.com.jpack.negocio.OrdenesproduccionFacadeRemote");
+            return ordenesproduccionFacade.updateAjustesStockT(ajuste, listaDetAjustesStockT);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public Date updateRemitosTempT(List<DetalleRemitosTempT> detalleRemitosTempT) {
         try {
             remitosFacade = (RemitosFacadeRemote) lookUp("ar.com.jpack.negocio.RemitosFacadeRemote");
@@ -1229,6 +1242,16 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
             return feriadosFacade.deleteFeriadoT(idFeriado);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    public FeriadosT updateFeriadosT(FeriadosT dto) {
+        try {
+            feriadosFacade = (FeriadosFacadeRemote) lookUp("ar.com.jpack.negocio.FeriadosFacadeRemote");
+            return feriadosFacade.updateFeriadosT(dto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -1285,6 +1308,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
             return setupFacade.getSetupT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public SetupT updateSetupT(SetupT dto) {
+        try {
+            setupFacade = (SetupFacadeRemote) lookUp("ar.com.jpack.negocio.SetupFacadeRemote");
+            return setupFacade.updateSetupT(dto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
