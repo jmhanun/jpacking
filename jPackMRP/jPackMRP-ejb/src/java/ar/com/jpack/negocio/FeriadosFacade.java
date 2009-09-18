@@ -9,7 +9,6 @@ import ar.com.jpack.transferencia.FeriadosT;
 import ar.com.jpack.util.DozerUtil;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

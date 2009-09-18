@@ -18,6 +18,8 @@ import javax.ejb.Remote;
 @Remote
 public interface MailsFacadeRemote {
 
+    public Integer deleteMailsT(Integer idMail);
+
     /**
      * Obtiene la lista de Mails filtrados por el Hasmap
      * @param parametros <br>
@@ -44,5 +46,6 @@ public interface MailsFacadeRemote {
      */
     public List<Mails> getMails(HashMap parametros);
 
+    public MailsT updateMailsT(MailsT dto);
 
 }

@@ -37,4 +37,6 @@ public interface GruposmailsFacadeRemote {
 
     public java.lang.Integer deleteGruposMailsT(java.lang.Integer idGruposMails);
 
+    public GruposMailsT updateGruposMailsT(GruposMailsT dto);
+
 }

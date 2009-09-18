@@ -92,4 +92,19 @@ public class GruposmailsFacade implements GruposmailsFacadeRemote {
         }
         return resultado;
     }
+
+    public GruposMailsT updateGruposMailsT(GruposMailsT dto) {
+        Gruposmails gruposMails = (Gruposmails) DozerUtil.getDozerMapper(false).map(dto, Gruposmails.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (gruposMails.getIdGrupoMail()!= null) {
+            em.merge(gruposMails);
+        } else {
+            em.persist(gruposMails);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdGrupoMail", gruposMails.getIdGrupoMail());
+        return getGruposMailsT(parametros).get(0);
+
+    }
 }

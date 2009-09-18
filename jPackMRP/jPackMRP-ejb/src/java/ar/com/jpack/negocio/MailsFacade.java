@@ -6,17 +6,24 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Mails;
 import ar.com.jpack.transferencia.MailsT;
+import org.hibernate.FetchMode;
 import ar.com.jpack.util.DozerUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.SQLException;
 
 /**
  *
@@ -27,6 +34,8 @@ public class MailsFacade implements MailsFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
+    @Resource(name = "jdbc/remoto.dbjpack")
+    private DataSource jdbcRemotedbjPack;
 
     /**
      * Obtiene la lista de Mails filtrados por el Hasmap
@@ -91,5 +100,42 @@ public class MailsFacade implements MailsFacadeRemote {
         }
         mailsList = mailsCritearia.list();
         return mailsList;
+    }
+
+    public MailsT updateMailsT(MailsT dto) {
+        Mails mails = (Mails) DozerUtil.getDozerMapper(false).map(dto, Mails.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (mails.getIdMail() != null) {
+            em.merge(mails);
+        } else {
+            em.persist(mails);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdMail", mails.getIdMail());
+        return getMailsT(parametros).get(0);
+
+    }
+
+    public Integer deleteMailsT(Integer idMail) {
+        Integer resultado = null;
+        try {
+            Connection conn = jdbcRemotedbjPack.getConnection();
+
+            CallableStatement cs = conn.prepareCall("{call spabmmails(?, ?)}");
+
+            //set inputs
+            cs.setInt(1, idMail);
+            //set outputs
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            // execute
+            cs.executeQuery();
+            // display returned values
+            resultado = new Integer(cs.getInt(2));
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(GruposmailsFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 }
