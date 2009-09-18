@@ -146,7 +146,7 @@ public class ABMFeriados extends CustomInternalFrame<FeriadosT> {
         }
     }
 
-    @Action
+    @Action(enabledProperty = "modificado")
     public void aplicar() {
         try {
             if (isNuevo() || isModificado()) {

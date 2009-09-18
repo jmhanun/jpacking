@@ -59,6 +59,7 @@ public class ABMComponentes extends CustomInternalFrame<ComponentesT> {
 
         articuloT = new ArticulosT();
 
+        btnModificar.setEnabled(false);
     }
 
     @Action
@@ -102,7 +103,11 @@ public class ABMComponentes extends CustomInternalFrame<ComponentesT> {
 
     @Action
     public void eliminar() {
-        JOptionPane.showInternalMessageDialog(this, "eliminar");
+        if (tblComponentes.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblComponentes.getSelectedRow()));
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
+        }
     }
 
     @Action

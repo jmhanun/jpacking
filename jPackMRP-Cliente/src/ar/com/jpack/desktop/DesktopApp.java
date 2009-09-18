@@ -949,6 +949,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public ClientesT updateClientesT(ClientesT dto) {
+        try {
+            clientesFacade = (ClientesFacadeRemote) lookUp("ar.com.jpack.negocio.ClientesFacadeRemote");
+            return clientesFacade.updateClientesT(dto) ;
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public List<ProveedoresT> getProveedoresT(HashMap parametros) {
         try {

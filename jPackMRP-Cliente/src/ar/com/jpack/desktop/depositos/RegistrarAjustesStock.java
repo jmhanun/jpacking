@@ -78,6 +78,8 @@ public class RegistrarAjustesStock extends CustomInternalFrame<DetAjustesStockT>
         cboSigno.setSelectedIndex(0);
 
         ajuste = new AjustesStockT();
+
+        btnModificar.setEnabled(false);
     }
 
     @Action
@@ -131,6 +133,7 @@ public class RegistrarAjustesStock extends CustomInternalFrame<DetAjustesStockT>
     @Action
     public void eliminar() {
         if (tblDetAjustesStock.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblDetAjustesStock.getSelectedRow()));
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }

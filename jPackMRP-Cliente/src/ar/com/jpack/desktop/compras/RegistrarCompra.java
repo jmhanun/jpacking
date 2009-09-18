@@ -79,15 +79,16 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
     public void modificar() {
         if (tblDetalleRemitoIngreso.getSelectedRow() != - 1) {
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }
     }
 
     @Action
     public void eliminar() {
         if (tblDetalleRemitoIngreso.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblDetalleRemitoIngreso.getSelectedRow()));
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar al menos un articulo");
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }
     }
 
@@ -133,57 +134,57 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
         //Verificar que haya al menos un item
         importeTotal = 0.0;
         if (tableModel.getRowCount() > 0) {
-           Boolean vflag=false;
-           Integer numero=null;
+            Boolean vflag = false;
+            Integer numero = null;
             try {
                 numero = new Integer(txtNumeroRemito.getText());
             } catch (NumberFormatException numberFormatException) {
-                vflag=true;
+                vflag = true;
             }
-           if (!vflag){
-            //Verificar que haya cliente seleccionado
-            if (remito.getIdProveedor() != null) {
-                //Verificar que haya cantidades y precios en los items
-                //Verificar que haya stock
-                boolean cantidadOk = true;
-                ArrayList<DetRtosIngresoT> items = getListDto();
-                for (DetRtosIngresoT detalleRemitoSeleccionado : items) {
-                    importeTotal += detalleRemitoSeleccionado.getImporte();
-                    if (detalleRemitoSeleccionado.getCantidad() <= 0) {
-                        cantidadOk = false;
+            if (!vflag) {
+                //Verificar que haya cliente seleccionado
+                if (remito.getIdProveedor() != null) {
+                    //Verificar que haya cantidades y precios en los items
+                    //Verificar que haya stock
+                    boolean cantidadOk = true;
+                    ArrayList<DetRtosIngresoT> items = getListDto();
+                    for (DetRtosIngresoT detalleRemitoSeleccionado : items) {
+                        importeTotal += detalleRemitoSeleccionado.getImporte();
+                        if (detalleRemitoSeleccionado.getCantidad() <= 0) {
+                            cantidadOk = false;
+                        }
+                        if (detalleRemitoSeleccionado.getPrecioUnitario() <= 0) {
+                            cantidadOk = false;
+                        }
                     }
-                    if (detalleRemitoSeleccionado.getPrecioUnitario() <= 0) {
-                        cantidadOk = false;
+                    if (cantidadOk) {
+                        remito.setImporte(importeTotal);
+                        remito.setFecha(new Date());
+                        remito.setIdEstado(new EstadosT());
+                        remito.getIdEstado().setIdEstado(5);
+                        remito.setIdTipoComprobante(new TiposComprobantesT());
+                        remito.getIdTipoComprobante().setIdTipoComprobante(2);
+                        remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                        remito.setFechaModificacion(remito.getFecha());
+                        remito.setIdRtoIngreso(null);
+                        remito.setDescuento(0);
+                        remito.setLetra("R");
+                        remito.setNroRemito(numero);
+
+                        remito = DesktopApp.getApplication().updateRemitosIngresosT(remito, getListDto());
+                        JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito exitosamente");
+
+                        cancelar();
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "Hay cantidades o precios igual o menor a cero!");
                     }
-                }
-                if (cantidadOk) {
-                    remito.setImporte(importeTotal);
-                    remito.setFecha(new Date());
-                    remito.setIdEstado(new EstadosT());
-                    remito.getIdEstado().setIdEstado(5);
-                    remito.setIdTipoComprobante(new TiposComprobantesT());
-                    remito.getIdTipoComprobante().setIdTipoComprobante(2);
-                    remito.setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
-                    remito.setFechaModificacion(remito.getFecha());
-                    remito.setIdRtoIngreso(null);
-                    remito.setDescuento(0);
-                    remito.setLetra("R");
-                    remito.setNroRemito(numero);
-
-                    remito = DesktopApp.getApplication().updateRemitosIngresosT(remito, getListDto());
-                    JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito exitosamente");
-
-                    cancelar();
                 } else {
-                    JOptionPane.showInternalMessageDialog(this, "Hay cantidades o precios igual o menor a cero!");
+                    JOptionPane.showInternalMessageDialog(this, "No hay un proveedor seleccionado");
                 }
-            } else {
-                JOptionPane.showInternalMessageDialog(this, "No hay un proveedor seleccionado");
-            }
 
-           } else{
-               JOptionPane.showInternalMessageDialog(this, "El valor de la factura debe ser numérico");
-           }
+            } else {
+                JOptionPane.showInternalMessageDialog(this, "El valor de la factura debe ser numérico");
+            }
 
         } else {
             JOptionPane.showInternalMessageDialog(this, "No hay ningun item en el remito!");
@@ -406,18 +407,17 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
     }// </editor-fold>//GEN-END:initComponents
 
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-    
-    
+
+
     if (isModificado() || isNuevo()) {
-            if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                dispose();
-            }
-        } else {
+        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             dispose();
         }
-    
-}//GEN-LAST:event_formInternalFrameClosing
+    } else {
+        dispose();
+    }
 
+}//GEN-LAST:event_formInternalFrameClosing
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;

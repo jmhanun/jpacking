@@ -111,7 +111,7 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                 }
             case PROGRESO_INDEX:
 //                return "NO";
-                return DesktopApp.getApplication().getAvanceProduccion(record).toString() + " %";
+                return DesktopApp.getApplication().getAvanceProduccion(record);
             default:
                 return new Object();
         }

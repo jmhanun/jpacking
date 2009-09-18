@@ -68,6 +68,7 @@ public class RegistrarOrdenCompra extends CustomInternalFrame<DetalleOrdenesComp
 
         orden = new OrdenesCompraT();
 
+        btnModificar.setEnabled(false);
     }
 
     @Action
@@ -119,6 +120,7 @@ public class RegistrarOrdenCompra extends CustomInternalFrame<DetalleOrdenesComp
     @Action
     public void eliminar() {
         if (tblDetalleOrdenCompra.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblDetalleOrdenCompra.getSelectedRow()));
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }

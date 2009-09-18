@@ -56,36 +56,18 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
             }
         };
         tiposIvaTable.setRowSorter(sorter);
+        btnAgregar.setEnabled(false);
+        btnBorrar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        btnSeleccionar.setEnabled(false);
     }
 
     @Action
     public void agregar() {
-        // <editor-fold defaultstate="collapsed" desc="Hard Code - Nuevo TipoIVA (nuevoIva)">
-        //Inicio de carga hard-code
-        HashMap parametros = new HashMap();
-        parametros.put("pIdEstados", new Integer(1));
-        EstadosT estado = (EstadosT) DesktopApp.getApplication().getEstadosT(parametros).get(0);
-        TiposIvaT nuevoIva = new TiposIvaT(99, "Nuevo", "N", estado);
-        //Fin de carga hard-code
-        // </editor-fold>
-
-        DesktopApp.getApplication().addTipoIva(nuevoIva);
-
-        tableModel.addRow(nuevoIva);
-        JOptionPane.showInternalMessageDialog(this, "agregar");
     }
 
     @Action
     public void borrar() {
-        int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaT editado = (TiposIvaT) tableModel.getRow(sorter.convertRowIndexToModel(indiceAEditar));
-        HashMap parametros = new HashMap();
-        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
-
-        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
-
-//        DesktopApp.getApplication().removeTipoIva(tipoIvaT);
-        tableModel.deleteRow(indiceAEditar);
         JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
@@ -105,17 +87,7 @@ public class ABMTiposIva extends CustomInternalFrame<TiposIvaT> {
 
     @Action
     public void modificar() {
-        int indiceAEditar = tiposIvaTable.getSelectedRow();
-        TiposIvaT editado = (TiposIvaT) tableModel.getRow(sorter.convertRowIndexToModel(indiceAEditar));
-
-
-
-        HashMap parametros = new HashMap();
-        parametros.put("pIdTipoIva", editado.getIdTipoIVA());
-
-        ArrayList<TiposIvaT> lista = (ArrayList<TiposIvaT>) DesktopApp.getApplication().getTiposIvaT(parametros);
-
-        JOptionPane.showInternalMessageDialog(this, "editar: " + lista.get(0).getDescripcion());
+        JOptionPane.showInternalMessageDialog(this, "editar");
     }
 
     /** This method is called from within the constructor to

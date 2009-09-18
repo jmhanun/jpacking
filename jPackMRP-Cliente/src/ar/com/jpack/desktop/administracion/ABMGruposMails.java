@@ -148,7 +148,7 @@ public class ABMGruposMails extends CustomInternalFrame<GruposMailsT> {
 
     }
 
-    @Action
+    @Action(enabledProperty = "modificado")
     public void aplicar() {
         try {
             if (isNuevo() || isModificado()) {

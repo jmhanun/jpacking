@@ -8,6 +8,7 @@ package ar.com.jpack.desktop.produccion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablecellrenderer.DetalleProduccionTableCellRenderer;
 import ar.com.jpack.helpers.tablemodels.DetalleProduccionTableModel;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import ar.com.jpack.transferencia.TiposDesviosT;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -31,8 +33,6 @@ import org.jdesktop.application.Action;
  * @author  jmhanun
  */
 public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT> {
-
-    private TipificarDesvio desvioOpenFrame;
 
     /** Creates new form ControlarProduccion */
     public ControlarProduccion() {
@@ -298,6 +298,13 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             }
         };
         detalleProduccionTable.setRowSorter(sorter);
+
+        detalleProduccionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        //Para poner formato en la tabla...
+        DetalleProduccionTableCellRenderer tableCellRenderer = new DetalleProduccionTableCellRenderer();
+        detalleProduccionTable.setDefaultRenderer(Double.class, tableCellRenderer);
+
     }
 
     /** This method is called from within the constructor to
@@ -315,7 +322,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         btnSuspender = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
         btnIniciar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
 
@@ -372,9 +378,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         btnIniciar.setAction(actionMap.get("iniciar")); // NOI18N
         btnIniciar.setName("btnIniciar"); // NOI18N
 
-        btnModificar.setAction(actionMap.get("modificar")); // NOI18N
-        btnModificar.setName("btnModificar"); // NOI18N
-
         btnCancelar.setAction(actionMap.get("cancelar")); // NOI18N
         btnCancelar.setName("btnCancelar"); // NOI18N
 
@@ -388,8 +391,8 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -399,8 +402,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeshabilitar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -408,7 +409,7 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -417,7 +418,6 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
                     .addComponent(btnFinalizar)
                     .addComponent(btnSuspender)
                     .addComponent(btnDeshabilitar)
-                    .addComponent(btnModificar)
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
@@ -444,7 +444,6 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JButton btnDeshabilitar;
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton btnIniciar;
-    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSuspender;
     private javax.swing.JTable detalleProduccionTable;
     private javax.swing.JScrollPane jScrollPane1;

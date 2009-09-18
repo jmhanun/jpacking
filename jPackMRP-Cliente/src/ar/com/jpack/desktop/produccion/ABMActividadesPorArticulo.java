@@ -83,6 +83,7 @@ public class ABMActividadesPorArticulo extends CustomInternalFrame<ActividadesAr
 
         articuloT = new ArticulosT();
 
+        btnModificar.setEnabled(false);
     }
 
     @Action
@@ -123,7 +124,11 @@ public class ABMActividadesPorArticulo extends CustomInternalFrame<ActividadesAr
 
     @Action
     public void eliminar() {
-        JOptionPane.showInternalMessageDialog(this, "eliminar");
+        if (tblActividades.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblActividades.getSelectedRow()));
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
+        }
     }
 
     @Action
@@ -183,11 +188,11 @@ public class ABMActividadesPorArticulo extends CustomInternalFrame<ActividadesAr
         txtDescripcion.setText(art.getDescripcion());
         articuloT = art;
 
-        
+
         HashMap parametros = new HashMap();
-        
+
         parametros.put("pIdArticulo", art.getIdArticulo());
-        
+
         setListDto((ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros));
 
         tableModel = new ActividadesArticulosTableModel(columnNames, this.getListDto()) {
@@ -232,8 +237,8 @@ public class ABMActividadesPorArticulo extends CustomInternalFrame<ActividadesAr
         };
         tblActividades.setRowSorter(sorter);
         tblActividades.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        
+
+
     }
 
     /** This method is called from within the constructor to
