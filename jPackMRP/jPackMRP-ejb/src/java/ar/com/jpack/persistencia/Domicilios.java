@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ar.com.jpack.persistencia;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,8 +25,10 @@ import javax.persistence.Table;
 @Table(name = "domicilios")
 @NamedQueries({@NamedQuery(name = "Domicilios.findByIdDomicilio", query = "SELECT d FROM Domicilios d WHERE d.idDomicilio = :idDomicilio"), @NamedQuery(name = "Domicilios.findByCalle", query = "SELECT d FROM Domicilios d WHERE d.calle = :calle"), @NamedQuery(name = "Domicilios.findByNumero", query = "SELECT d FROM Domicilios d WHERE d.numero = :numero"), @NamedQuery(name = "Domicilios.findByBarrio", query = "SELECT d FROM Domicilios d WHERE d.barrio = :barrio"), @NamedQuery(name = "Domicilios.findByPiso", query = "SELECT d FROM Domicilios d WHERE d.piso = :piso"), @NamedQuery(name = "Domicilios.findByDepartamento", query = "SELECT d FROM Domicilios d WHERE d.departamento = :departamento"), @NamedQuery(name = "Domicilios.findByTorre", query = "SELECT d FROM Domicilios d WHERE d.torre = :torre")})
 public class Domicilios implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idDomicilio", nullable = false)
     private Integer idDomicilio;
     @Column(name = "calle")
@@ -172,5 +175,4 @@ public class Domicilios implements Serializable {
     public String toString() {
         return "ar.com.jpack.persistencia.Domicilios[idDomicilio=" + idDomicilio + "]";
     }
-
 }
