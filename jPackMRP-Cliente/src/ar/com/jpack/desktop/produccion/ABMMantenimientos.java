@@ -42,6 +42,7 @@ public class ABMMantenimientos extends CustomInternalFrame<MantenimientoT> {
     public ABMMantenimientos() {
         super(new MantenimientoT());
         initComponents();
+        btnEliminar.setEnabled(false);
         itemMaquinaListener = new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
