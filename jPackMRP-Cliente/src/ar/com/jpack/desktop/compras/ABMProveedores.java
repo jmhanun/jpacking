@@ -164,7 +164,7 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
         JOptionPane.showInternalMessageDialog(this, "editar");
     }
 
-    void habilitarBtnSeleccionar(boolean valor) {
+    public void habilitarBtnSeleccionar(boolean valor) {
         btnSeleccionar.setEnabled(valor);
         btnAgregar.setEnabled(!valor);
         btnBorrar.setEnabled(!valor);

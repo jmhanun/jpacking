@@ -184,6 +184,11 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
                         ((RegistrarRemito) getPadre()).agregarCliente(cli);
                         cancelar();
                     }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.ABMDomicilios")) {
+
+                        ((ABMDomicilios) getPadre()).agregarPersona(cli);
+                        cancelar();
+                    }
                     if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.Facturador")) {
 
                         ((Facturador) getPadre()).agregarCliente(cli);
@@ -647,7 +652,7 @@ public class ABMClientes extends CustomInternalFrame<ClientesT> {
     }// </editor-fold>//GEN-END:initComponents
 
 private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-// TODO add your handling code here:
+
     if (isModificado() || isNuevo()) {
         if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             dispose();
@@ -688,7 +693,6 @@ private void txtCuitEdicionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST
 
     getDto().setCuit(String.valueOf(txtCuitEdicion.getText()));
     setModificado(true);
-
 
 
 }//GEN-LAST:event_txtCuitEdicionKeyReleased

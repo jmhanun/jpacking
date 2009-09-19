@@ -722,6 +722,7 @@ public class DesktopView extends FrameView {
     public Task showReporteStock() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteStock", "Carga de parametros para el reporte Stock", padre);
     }
+
     @Action
     public Task showRegistrarAjustes() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.depositos.RegistrarAjustesStock", "Registrar ajustes de stock", padre);
@@ -894,6 +895,12 @@ public class DesktopView extends FrameView {
     }
 
     @Action
+    public Task showDomicilios() {
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.ventas.ABMDomicilios", "Domicilios", padre);
+
+    }
+
+    @Action
     public Task showArticulos() {
         return new ShowFrame(getApplication(), "ar.com.jpack.desktop.produccion.ABMArticulos", "Articulos", padre);
     }
@@ -1005,7 +1012,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public Task showGanttComparativo() {
-            return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteGanttReal", "Reporte Gantt", padre);
+        return new ShowFrame(getApplication(), "ar.com.jpack.desktop.reportes.ReporteGanttReal", "Reporte Gantt", padre);
     }
 
     /**
