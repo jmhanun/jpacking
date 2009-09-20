@@ -26,6 +26,8 @@ public interface ActividadesFacadeRemote {
 
     public List<Actividades> getActividades(HashMap parametros);
 
+    public ActividadesT updateActividadesT(ActividadesT dto);
+
     public List<Actividadesxarticulos> getActividadesArticulos(HashMap parametros);
 
     public void updateActividadesArticulosT(ArrayList<ActividadesArticulosT> listDto);

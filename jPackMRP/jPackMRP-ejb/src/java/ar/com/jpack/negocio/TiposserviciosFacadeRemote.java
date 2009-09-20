@@ -34,4 +34,6 @@ public interface TiposserviciosFacadeRemote {
      * @return devuelve la lista de los TiposServicios que cumplan con el filtro
      */
     public List<Tiposservicios> getTiposServicios(HashMap parametros);
+
+    public TiposServiciosT updateTiposServiciosT(TiposServiciosT dto);
 }

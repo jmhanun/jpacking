@@ -94,6 +94,20 @@ public class ActividadesFacade implements ActividadesFacadeRemote {
         return actividadesArticulosList;
     }
 
+    public ActividadesT updateActividadesT(ActividadesT dto) {
+        Actividades actividades = (Actividades) DozerUtil.getDozerMapper(false).map(dto, Actividades.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (actividades.getIdActividad() != null) {
+            em.merge(actividades);
+        } else {         
+            em.persist(actividades);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdActividad", actividades.getIdActividad());
+        return getActividadesT(parametros).get(0);
+    }
+
     public void updateActividadesArticulosT(ArrayList<ActividadesArticulosT> listDto) {
         HashMap parametros = new HashMap();
         

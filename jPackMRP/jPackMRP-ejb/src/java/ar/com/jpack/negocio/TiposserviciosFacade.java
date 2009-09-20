@@ -56,10 +56,24 @@ public class TiposserviciosFacade implements TiposserviciosFacadeRemote {
         Criteria tiposServiciosCritearia = ((EntityManagerImpl) em.getDelegate()).getSession().createCriteria(Tiposservicios.class);
         List<Tiposservicios> tiposServiciosList;
         if (parametros.containsKey("pIdTipoServicio")) {
-            tiposServiciosCritearia.add(Restrictions.eq("idTipoServicio", parametros.get("pIdTiposServicio")));
+            tiposServiciosCritearia.add(Restrictions.eq("idTipoServicio", parametros.get("pIdTipoServicio")));
         }
         tiposServiciosList = tiposServiciosCritearia.list();
         return tiposServiciosList;
+    }
+
+    public TiposServiciosT updateTiposServiciosT(TiposServiciosT dto) {
+        Tiposservicios tiposservicios = (Tiposservicios) DozerUtil.getDozerMapper(false).map(dto, Tiposservicios.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (tiposservicios.getIdTipoServicio() != null) {
+            em.merge(tiposservicios);
+        } else {
+            em.persist(tiposservicios);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdTipoServicio", tiposservicios.getIdTipoServicio());
+        return getTiposServiciosT(parametros).get(0);
     }
 
 }

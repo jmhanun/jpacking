@@ -22,4 +22,6 @@ public interface TiposdesviosFacadeRemote {
     public List<Tiposdesvios> getTiposDesvios(HashMap parametros);
 
     public void insertDesvioT(Integer idDetalleProduccion, Integer idTipoDesvio, String comentario);
+
+    public TiposDesviosT updateTiposDesviosT(TiposDesviosT dto);
 }

@@ -38,4 +38,6 @@ public interface ProveedoresFacadeRemote {
      * @return devuelve la lista de los Proveedores que cumplan con el filtro
      */
     public List<Proveedores> getProveedores(HashMap parametros);
+
+    public ProveedoresT updateProveedoresT(ProveedoresT dto);
 }

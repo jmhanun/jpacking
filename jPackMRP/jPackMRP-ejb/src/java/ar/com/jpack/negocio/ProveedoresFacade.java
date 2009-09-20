@@ -8,8 +8,10 @@ import ar.com.jpack.persistencia.Proveedores;
 import ar.com.jpack.transferencia.ProveedoresT;
 import ar.com.jpack.util.DozerUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +30,12 @@ public class ProveedoresFacade implements ProveedoresFacadeRemote {
 
     @PersistenceContext
     private EntityManager em;
+    @EJB
+    private TiposDocumentoFacadeRemote tiposDocumentoFacade;
+    @EJB
+    private TiposIvaFacadeRemote tiposIvaFacade;
+    @EJB
+    private EstadosFacadeRemote estadosFacade;
 
     /**
      * Obtiene la lista de Proveedores filtrados por el Hasmap
@@ -76,5 +84,37 @@ public class ProveedoresFacade implements ProveedoresFacadeRemote {
 
         proveedoresList = proveedoresCritearia.list();
         return proveedoresList;
+    }
+
+    public ProveedoresT updateProveedoresT(ProveedoresT dto) {
+        Proveedores proveedor = (Proveedores) DozerUtil.getDozerMapper(false).map(dto, Proveedores.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (proveedor.getIdProveedor() != null) {
+            HashMap parametros = new HashMap();
+            parametros.put("pIdEstados", 10);
+            proveedor.setIdEstado(estadosFacade.getEstados(parametros).get(0));
+
+            parametros = new HashMap();
+            parametros.put("pIdTipoDocumento", 2);
+            proveedor.setIdTipoDocumento(tiposDocumentoFacade.getTiposDocumento(parametros).get(0));
+
+
+            em.merge(proveedor);
+        } else {
+            proveedor.setFechaAlta(new Date());
+            HashMap parametros = new HashMap();
+            parametros.put("pIdEstados", 10);
+            proveedor.setIdEstado(estadosFacade.getEstados(parametros).get(0));
+
+            parametros = new HashMap();
+            parametros.put("pIdTipoDocumento", 2);
+            proveedor.setIdTipoDocumento(tiposDocumentoFacade.getTiposDocumento(parametros).get(0));
+
+            em.persist(proveedor);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdProveedor", proveedor.getIdProveedor());
+        return getProveedoresT(parametros).get(0);
     }
 }

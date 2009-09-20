@@ -83,4 +83,19 @@ public class TiposdesviosFacade implements TiposdesviosFacadeRemote {
             Logger.getLogger(TiposdesviosFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public TiposDesviosT updateTiposDesviosT(TiposDesviosT dto) {
+        Tiposdesvios tiposdesvios = (Tiposdesvios) DozerUtil.getDozerMapper(false).map(dto, Tiposdesvios.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (tiposdesvios.getIdTipoDesvio() != null) {
+            em.merge(tiposdesvios);
+        } else {         
+            em.persist(tiposdesvios);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdTipoDesvio", tiposdesvios.getIdTipoDesvio());
+        return getTiposDesviosT(parametros).get(0);
+    }
+
 }
