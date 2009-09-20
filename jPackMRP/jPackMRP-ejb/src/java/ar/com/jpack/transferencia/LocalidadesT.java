@@ -71,7 +71,6 @@ public class LocalidadesT implements Serializable {
 
     @Override
     public String toString() {
-        return this.getLocalidad();
+        return (this.getLocalidad() + " (" + this.getCodigoPostal() + ")");
     }
-    
 }
