@@ -5,7 +5,9 @@
 package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Domicilios;
+import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Localidades;
+import ar.com.jpack.persistencia.Paises;
 import ar.com.jpack.persistencia.Provincias;
 import ar.com.jpack.transferencia.DomiciliosT;
 import ar.com.jpack.transferencia.LocalidadesT;
@@ -117,5 +119,23 @@ public class DomiciliosFacade implements DomiciliosFacadeRemote {
 
         provinciasList = provinciasCritearia.list();
         return provinciasList;
+    }
+
+    public DomiciliosT updateDomicilioT(DomiciliosT dto) {
+        Domicilios domicilio = (Domicilios) DozerUtil.getDozerMapper(false).map(dto, Domicilios.class);
+        Paises pais = em.find(Paises.class, 1);
+        domicilio.getIdLocalidad().getIdProvincia().setIdPais(pais);
+        Estados estado = em.find(Estados.class, 18);
+        domicilio.setIdEstado(estado);
+
+        //si el numero de id es null significa que es nuevo
+        if (domicilio.getIdDomicilio() != null) {
+            em.merge(domicilio);
+        } else {
+            em.persist(domicilio);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdDomicilio", domicilio.getIdDomicilio());
+        return getDomiciliosT(parametros).get(0);
     }
 }

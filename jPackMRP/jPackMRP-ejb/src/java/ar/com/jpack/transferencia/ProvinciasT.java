@@ -68,4 +68,9 @@ public class ProvinciasT implements Serializable {
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
+
+    @Override
+    public String toString() {
+        return this.getProvincia();
+    }
 }

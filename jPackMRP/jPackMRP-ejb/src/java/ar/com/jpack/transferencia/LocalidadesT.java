@@ -68,4 +68,10 @@ public class LocalidadesT implements Serializable {
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
     }
+
+    @Override
+    public String toString() {
+        return this.getLocalidad();
+    }
+    
 }
