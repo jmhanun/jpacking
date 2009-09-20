@@ -55,6 +55,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
     public ABMArticulos() {
         super(new ArticulosT());
         initComponents();
+        btnEliminar.setEnabled(false);
 
         itemFinalListener = new ItemListener() {
 

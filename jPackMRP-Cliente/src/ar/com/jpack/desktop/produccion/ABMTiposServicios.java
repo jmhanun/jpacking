@@ -39,7 +39,6 @@ public class ABMTiposServicios extends CustomInternalFrame<TiposServiciosT> {
     public ABMTiposServicios() {
         super(new TiposServiciosT());
         initComponents();
-        btnModificar.setEnabled(false);
         btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<TiposServiciosT> nuevo = DesktopApp.getApplication().getTiposServiciosT(parametros);
@@ -76,12 +75,49 @@ public class ABMTiposServicios extends CustomInternalFrame<TiposServiciosT> {
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateTiposServiciosT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new TiposServiciosT());
+                cambiarTiposServiciosT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtDescripcion.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblTiposServicios.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtDescripcion.setEnabled(false);
+                }
+            }
+            setDto(new TiposServiciosT());
+            cambiarTiposServiciosT();
+            txtDescripcion.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtDescripcion.requestFocus();
+        }
     }
 
     @Action
@@ -92,6 +128,10 @@ public class ABMTiposServicios extends CustomInternalFrame<TiposServiciosT> {
     @Action
     public void modificar() {
         txtDescripcion.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtDescripcion.requestFocus();
     }
 
     @Action

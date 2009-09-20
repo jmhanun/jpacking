@@ -48,6 +48,7 @@ public class RegistrarOrdenProduccion extends CustomInternalFrame<DetOrdenesProd
     public RegistrarOrdenProduccion() {
         super(new DetOrdenesProduccionT());
         initComponents();
+        btnModificar.setEnabled(false);
         DateFormat fechaFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date hoy = new Date();
         txtFecha.setText(fechaFormat.format(hoy));

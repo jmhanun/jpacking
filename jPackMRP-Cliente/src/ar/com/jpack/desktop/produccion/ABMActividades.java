@@ -39,7 +39,6 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
     public ABMActividades() {
         super(new ActividadesT());
         initComponents();
-        btnModificar.setEnabled(false);
         btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<ActividadesT> nuevo = DesktopApp.getApplication().getActividadesT(parametros);
@@ -76,12 +75,49 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateActividadesT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new ActividadesT());
+                cambiarActividadT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtDescripcion.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblActividades.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtDescripcion.setEnabled(false);
+                }
+            }
+            setDto(new ActividadesT());
+            cambiarActividadT();
+            txtDescripcion.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtDescripcion.requestFocus();
+        }
     }
 
     @Action
@@ -111,6 +147,10 @@ public class ABMActividades extends CustomInternalFrame<ActividadesT> {
     @Action
     public void modificar() {
         txtDescripcion.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtDescripcion.requestFocus();
     }
 
     @Action

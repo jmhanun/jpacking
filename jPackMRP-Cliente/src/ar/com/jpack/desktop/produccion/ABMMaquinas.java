@@ -40,6 +40,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
     public ABMMaquinas() {
         super(new MaquinasT());
         initComponents();
+        btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         parametros.put("pJoinEstados", true);
         parametros.put("pJoinActividades", true);

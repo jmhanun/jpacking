@@ -39,6 +39,7 @@ public class ABMSellos extends CustomInternalFrame<SellosT> {
     public ABMSellos() {
         super(new SellosT());
         initComponents();
+        btnAgregar.setEnabled(false);
         btnModificar.setEnabled(false);
         btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();

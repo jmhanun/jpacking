@@ -39,7 +39,6 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
     public ABMTiposDesvios() {
         super(new TiposDesviosT());
         initComponents();
-        btnModificar.setEnabled(false);
         btnBorrar.setEnabled(false);
         HashMap parametros = new HashMap();
         List<TiposDesviosT> nuevo = DesktopApp.getApplication().getTiposDesviosT(parametros);
@@ -76,12 +75,49 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateTiposDesviosT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new TiposDesviosT());
+                cambiarTiposDesviosT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtMotivo.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tiposDesviosTable.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtMotivo.setEnabled(false);
+                }
+            }
+            setDto(new TiposDesviosT());
+            cambiarTiposDesviosT();
+            txtMotivo.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtMotivo.requestFocus();
+        }
     }
 
     @Action
@@ -92,6 +128,10 @@ public class ABMTiposDesvios extends CustomInternalFrame<TiposDesviosT> {
     @Action
     public void modificar() {
         txtMotivo.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtMotivo.requestFocus();
     }
 
     @Action
