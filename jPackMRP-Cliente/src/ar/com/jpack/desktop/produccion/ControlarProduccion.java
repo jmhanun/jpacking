@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -61,6 +62,20 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if ((detalleSeleccionado.getIdEstado().getIdEstado() == 22) || (detalleSeleccionado.getIdEstado().getIdEstado() == 21)) {
                 Date ahora = new Date();
+
+                GregorianCalendar limite = new GregorianCalendar();
+                limite.setTime(ahora);
+                limite.set(GregorianCalendar.HOUR_OF_DAY, 18);
+                limite.set(GregorianCalendar.MINUTE, 0);
+                limite.set(GregorianCalendar.SECOND, 0);
+
+                if (ahora.after(limite.getTime())) {
+                    limite.add(GregorianCalendar.DATE, 1);
+                    limite.set(GregorianCalendar.HOUR_OF_DAY, 10);
+                    limite.set(GregorianCalendar.MINUTE, 0);
+                    limite.set(GregorianCalendar.SECOND, 0);
+                    ahora = limite.getTime();
+                }
 
                 DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 14, detalleSeleccionado.getIdEstado().getIdEstado(), ahora);
 
@@ -112,6 +127,21 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
             DetalleProduccionT detalleSeleccionado = (DetalleProduccionT) tableModel.getRow(sorter.convertRowIndexToModel(detalleProduccionTable.getSelectedRow()));
             if (detalleSeleccionado.getIdEstado().getIdEstado() == 14) {
                 Date ahora = new Date();
+
+                GregorianCalendar limite = new GregorianCalendar();
+                limite.setTime(ahora);
+                limite.set(GregorianCalendar.HOUR_OF_DAY, 18);
+                limite.set(GregorianCalendar.MINUTE, 0);
+                limite.set(GregorianCalendar.SECOND, 0);
+
+                if (ahora.after(limite.getTime())) {
+                    limite.add(GregorianCalendar.DATE, 1);
+                    limite.set(GregorianCalendar.HOUR_OF_DAY, 10);
+                    limite.set(GregorianCalendar.MINUTE, 0);
+                    limite.set(GregorianCalendar.SECOND, 0);
+                    ahora = limite.getTime();
+                }
+
                 DesktopApp.getApplication().setEstadoProduccion(detalleSeleccionado.getIdDetalleProduccion(), 15, detalleSeleccionado.getIdEstado().getIdEstado(), ahora);
 
                 Integer tiempoReal = Math.abs(DesktopApp.getApplication().getTiempoRealProduccion(detalleSeleccionado.getIdDetalleProduccion()));
@@ -286,7 +316,11 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         tableModel.addTableModelListener(new CustomTableModelListener());
         detalleProduccionTable.setModel(tableModel);
 
-        sorter = new TableRowSorter<TableModel>(
+        sorter = new TableRowSorter 
+
+                
+                <  TableModel   >   (
+                
                 tableModel) {
 
             @Override
@@ -304,6 +338,8 @@ public class ControlarProduccion extends CustomInternalFrame<DetalleProduccionT>
         //Para poner formato en la tabla...
         DetalleProduccionTableCellRenderer tableCellRenderer = new DetalleProduccionTableCellRenderer();
         detalleProduccionTable.setDefaultRenderer(Double.class, tableCellRenderer);
+        detalleProduccionTable.setDefaultRenderer(Integer.class, tableCellRenderer);
+        detalleProduccionTable.setDefaultRenderer(String.class, tableCellRenderer);
 
     }
 
@@ -449,7 +485,7 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
-        "Id", "Orden", "Maquina", "Prioridad", "Estado",
+        "Id", "Orden", "Maquina", "Estado",
         "Cantidad", "Articulo",
         "Fecha Inicio Estimada", "Fecha Fin Estimada",
         "Fecha Inicio Real", "Fecha Fin Real",

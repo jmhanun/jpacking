@@ -4,7 +4,6 @@
  */
 package ar.com.jpack.helpers.tablecellrenderer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -12,7 +11,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -29,7 +27,7 @@ public class FacturadorTableCellRenderer implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
         JLabel lbl = new JLabel();
-        lbl.setHorizontalAlignment(JTextField.RIGHT);
+        lbl.setHorizontalAlignment(JLabel.RIGHT);
 
         NumberFormat nroFactura = new DecimalFormat("00000000");
         NumberFormat importe = new DecimalFormat("#,##0.00");

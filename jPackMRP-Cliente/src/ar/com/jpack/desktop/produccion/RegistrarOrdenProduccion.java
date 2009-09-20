@@ -91,6 +91,7 @@ public class RegistrarOrdenProduccion extends CustomInternalFrame<DetOrdenesProd
     @Action
     public void eliminar() {
         if (tblDetOrdenProd.getSelectedRow() != - 1) {
+            tableModel.removeRow(sorter.convertRowIndexToModel(tblDetOrdenProd.getSelectedRow()));
         } else {
             JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un articulo");
         }

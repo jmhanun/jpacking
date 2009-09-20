@@ -11,6 +11,7 @@
 package ar.com.jpack.desktop.compras;
 
 import ar.com.jpack.desktop.DesktopApp;
+import ar.com.jpack.desktop.ventas.ABMDomicilios;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.ProveedoresTableModel;
@@ -131,6 +132,11 @@ public class ABMProveedores extends CustomInternalFrame<ProveedoresT> {
                     if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.compras.RegistrarCompra")) {
 
                         ((RegistrarCompra) getPadre()).agregarProveedor(pro);
+                        cancelar();
+                    }
+                    if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.ventas.ABMDomicilios")) {
+
+                        ((ABMDomicilios) getPadre()).agregarPersona(pro);
                         cancelar();
                     }
                     if (getPadre().getClass().getCanonicalName().equals("ar.com.jpack.desktop.compras.RegistrarOrdenCompra")) {

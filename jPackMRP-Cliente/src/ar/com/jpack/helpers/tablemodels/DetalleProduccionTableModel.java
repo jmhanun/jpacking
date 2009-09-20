@@ -20,15 +20,14 @@ public class DetalleProduccionTableModel extends CustomTableModel {
     public static final int ID_INDEX = 0;
     public static final int NUMEROORDEN_INDEX = 1;
     public static final int MAQUINA_INDEX = 2;
-    public static final int PRIORIDAD_INDEX = 3;
-    public static final int ESTADO_INDEX = 4;
-    public static final int CANTIDAD_INDEX = 5;
-    public static final int ARTICULO_INDEX = 6;
-    public static final int FECHAINICIOEST_INDEX = 7;
-    public static final int FECHAFINEST_INDEX = 8;
-    public static final int FECHAINICIO_INDEX = 9;
-    public static final int FECHAFIN_INDEX = 10;
-    public static final int PROGRESO_INDEX = 11;
+    public static final int ESTADO_INDEX = 3;
+    public static final int CANTIDAD_INDEX = 4;
+    public static final int ARTICULO_INDEX = 5;
+    public static final int FECHAINICIOEST_INDEX = 6;
+    public static final int FECHAFINEST_INDEX = 7;
+    public static final int FECHAINICIO_INDEX = 8;
+    public static final int FECHAFIN_INDEX = 9;
+    public static final int PROGRESO_INDEX = 10;
 
     public DetalleProduccionTableModel(String[] columnNames, List<DetalleProduccionT> datos) {
         super(columnNames, datos);
@@ -60,8 +59,6 @@ public class DetalleProduccionTableModel extends CustomTableModel {
                 } else {
                     return record.getIdMaquina().getDescripcion();
                 }
-            case PRIORIDAD_INDEX:
-                return record.getPrioridad();
             case ESTADO_INDEX:
                 if (record.getIdEstado() == null) {
                     return "";

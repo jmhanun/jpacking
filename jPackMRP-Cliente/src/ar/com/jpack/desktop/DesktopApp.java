@@ -1044,6 +1044,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public DomiciliosT updateDomicilioT(DomiciliosT dto) {
+        try {
+            domiciliosFacade = (DomiciliosFacadeRemote) lookUp("ar.com.jpack.negocio.DomiciliosFacadeRemote");
+            return domiciliosFacade.updateDomicilioT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public List<LocalidadesT> getLocalidadesT(HashMap parametros) {
         try {

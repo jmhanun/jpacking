@@ -37,17 +37,41 @@ public class DomiciliosTableModel extends CustomTableModel {
             case ID_INDEX:
                 return record.getIdDomicilio();
             case CALLE_INDEX:
-                return record.getCalle();
+                if (record.getCalle() == null) {
+                    return "";
+                } else {
+                    return record.getCalle();
+                }
             case NUMERO_INDEX:
-                return record.getNumero();
+                if (record.getNumero() == null) {
+                    return "";
+                } else {
+                    return record.getNumero();
+                }
             case PISO_INDEX:
-                return record.getPiso();
+                if (record.getPiso() == null) {
+                    return "";
+                } else {
+                    return record.getPiso();
+                }
             case DEPARTAMENTO_INDEX:
-                return record.getDepartamento();
+                if (record.getDepartamento() == null) {
+                    return "";
+                } else {
+                    return record.getDepartamento();
+                }
             case TORRE_INDEX:
-                return record.getTorre();
+                if (record.getTorre() == null) {
+                    return "";
+                } else {
+                    return record.getTorre();
+                }
             case BARRIO_INDEX:
-                return record.getBarrio();
+                if (record.getBarrio() == null) {
+                    return "";
+                } else {
+                    return record.getBarrio();
+                }
             case LOCALIDAD_INDEX:
                 if (record.getIdLocalidad() == null) {
                     return "";

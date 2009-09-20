@@ -9,8 +9,12 @@ import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.DomiciliosTableModel;
 import ar.com.jpack.transferencia.DomiciliosT;
+import java.awt.event.ItemEvent;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -21,8 +25,11 @@ import org.jdesktop.application.Action;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.desktop.compras.ABMProveedores;
 import ar.com.jpack.transferencia.ClientesT;
+import ar.com.jpack.transferencia.LocalidadesT;
 import ar.com.jpack.transferencia.ProveedoresT;
-import java.util.List;
+import ar.com.jpack.transferencia.ProvinciasT;
+import java.awt.event.ItemListener;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -32,17 +39,78 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
 
     private ABMClientes clientesOpenFrame;
     private ABMProveedores proveedoresOpenFrame;
+    private ItemListener itemLocalidadesListener;
+    private ItemListener itemProvinciasListener;
+    private ArrayList<LocalidadesT> localidadesTs;
+    private ArrayList<ProvinciasT> provinciasTs;
+    private DefaultComboBoxModel provinciasComboBoxModel;
 
     /** Creates new form ABMDomicilios */
     public ABMDomicilios() {
         super(new DomiciliosT());
         initComponents();
 
+        itemProvinciasListener = new ItemListener() {
+
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItem().toString().equals("<Ninguno>")) {
+                    cboLocalidades.setEnabled(false);
+                    cargaLocalidades(0);
+                } else {
+                    cboLocalidades.setEnabled(true);
+                    cargaLocalidades(((ProvinciasT) e.getItem()).getIdProvincia());
+                }
+                cboLocalidades.setSelectedIndex(0);
+                setModificado(true);
+            }
+        };
+
+        itemLocalidadesListener = new ItemListener() {
+
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItem().toString().equals("<Ninguno>")) {
+                    getDto().setIdLocalidad(null);
+                } else {
+                    getDto().setIdLocalidad((LocalidadesT) e.getItem());
+                    getDto().getIdLocalidad().setIdProvincia((ProvinciasT) cboProvincias.getSelectedItem());
+                }
+                setModificado(true);
+            }
+        };
+
+        cboLocalidades.setEnabled(false);
+
+        HashMap parametros = new HashMap();
+        provinciasTs = (ArrayList<ProvinciasT>) DesktopApp.getApplication().getProvinciasT(parametros);
+
+        provinciasComboBoxModel = new DefaultComboBoxModel();
+        int index = 0;
+        int iteration = 0;
+        provinciasComboBoxModel.addElement("<Ninguno>");
+        for (ProvinciasT provincia : provinciasTs) {
+            provinciasComboBoxModel.addElement(provincia);
+            if (getDto().getIdLocalidad() != null) {
+                if (getDto().getIdLocalidad().getIdProvincia() != null) {
+                    if (provincia.getIdProvincia().equals(getDto().getIdLocalidad().getIdProvincia().getIdProvincia())) {
+                        index = iteration;
+                    }
+                }
+            }
+            iteration++;
+        }
+        cboProvincias.setModel(provinciasComboBoxModel);
+        cboProvincias.setSelectedIndex(index);
+
+        cargaLocalidades(0);
+
         DefaultComboBoxModel personasComboBoxModel = new DefaultComboBoxModel();
         personasComboBoxModel.addElement("Cliente");
         personasComboBoxModel.addElement("Proveedor");
         cboTipoPersona.setModel(personasComboBoxModel);
         cboTipoPersona.setSelectedIndex(0);
+
+        txtPersonaDetalle.setEnabled(false);
+        txtPersonaLista.setEnabled(false);
 
         setListDto(new ArrayList<DomiciliosT>());
 
@@ -69,7 +137,7 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
             btnSeleccionar.setEnabled(false);
         }
         tblDomicilios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        btnEliminar.setEnabled(false);
     }
 
     @Action
@@ -105,6 +173,43 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
 
     @Action
     public void agregar() {
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtBarrio.setEnabled(false);
+                    txtCalle.setEnabled(false);
+                    txtDepto.setEnabled(false);
+                    txtNumero.setEnabled(false);
+                    txtPiso.setEnabled(false);
+                    txtTorre.setEnabled(false);
+                    cboLocalidades.setEnabled(false);
+                    cboProvincias.setEnabled(false);
+
+                }
+            }
+            setDto(new DomiciliosT());
+            getDto().setIdCliente(cliente);
+            getDto().setIdProveedor(proveedor);
+
+            cambiarDomicilioT();
+            txtBarrio.setEnabled(true);
+            txtCalle.setEnabled(true);
+            txtDepto.setEnabled(true);
+            txtNumero.setEnabled(true);
+            txtPiso.setEnabled(true);
+            txtTorre.setEnabled(true);
+//            cboLocalidades.setEnabled(true);
+            cboProvincias.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtCalle.requestFocus();
+        }
     }
 
     @Action
@@ -113,6 +218,20 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
 
     @Action
     public void modificar() {
+        txtBarrio.setEnabled(true);
+        txtCalle.setEnabled(true);
+        txtDepto.setEnabled(true);
+        txtNumero.setEnabled(true);
+        txtPiso.setEnabled(true);
+        txtTorre.setEnabled(true);
+//      cboLocalidades.setEnabled(true);
+        cboProvincias.setEnabled(true);
+
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtCalle.requestFocus();
+
     }
 
     @Action
@@ -121,31 +240,75 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
 
     @Action
     public void cancelar() {
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMDomicilios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
+        try {
+            if (isNuevo() || isModificado()) {
+
+                setDto(DesktopApp.getApplication().updateDomicilioT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new DomiciliosT());
+                cambiarDomicilioT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtBarrio.setEnabled(false);
+                txtCalle.setEnabled(false);
+                txtDepto.setEnabled(false);
+                txtNumero.setEnabled(false);
+                txtPiso.setEnabled(false);
+                txtTorre.setEnabled(false);
+                cboLocalidades.setEnabled(false);
+                cboProvincias.setEnabled(false);
+
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblDomicilios.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     public void agregarPersona(Object persona) {
         HashMap parametros = new HashMap();
-
+        String datos;
         if (persona instanceof ClientesT) {
             cliente = (ClientesT) persona;
             proveedor = null;
+            datos = "Cliente: " + cliente.getNombres();
             parametros.put("pIdCliente", cliente.getIdCliente());
+
         } else {
             proveedor = (ProveedoresT) persona;
             cliente = null;
+            datos = "Proveedor: " + proveedor.getNombres();
             parametros.put("pIdProveedor", proveedor.getIdProveedor());
         }
-        setListDto((ArrayList<DomiciliosT>)DesktopApp.getApplication().getDomiciliosT(parametros));
+        getDto().setIdCliente(cliente);
+        getDto().setIdProveedor(proveedor);
+
+        txtPersonaDetalle.setText(datos);
+        txtPersonaLista.setText(datos);
+
+        setListDto((ArrayList<DomiciliosT>) DesktopApp.getApplication().getDomiciliosT(parametros));
 
         tableModel = new DomiciliosTableModel(columnNames, this.getListDto());
         tableModel.addTableModelListener(new CustomTableModelListener());
         tblDomicilios.setModel(tableModel);
 
-        sorter = new TableRowSorter<TableModel>(tableModel) {
+        sorter = new TableRowSorter<TableModel>(
+                tableModel) {
 
             @Override
             public void toggleSortOrder(int column) {
@@ -156,7 +319,87 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
             }
         };
         tblDomicilios.setRowSorter(sorter);
-        
+
+    }
+
+    private void cambiarDomicilioT() {
+        cboProvincias.removeItemListener(itemProvinciasListener);
+        cboLocalidades.removeItemListener(itemLocalidadesListener);
+        txtBarrio.setText(getDto().getBarrio());
+        txtCalle.setText(getDto().getCalle());
+        txtDepto.setText(getDto().getDepartamento());
+        txtNumero.setText(getDto().getNumero());
+        txtPiso.setText(getDto().getPiso());
+        txtTorre.setText(getDto().getTorre());
+
+        HashMap parametros = new HashMap();
+        provinciasTs = (ArrayList<ProvinciasT>) DesktopApp.getApplication().getProvinciasT(parametros);
+        int index = 0;
+        int iteration = 1;
+        for (ProvinciasT provincia : provinciasTs) {
+            if (getDto().getIdLocalidad() != null) {
+                if (getDto().getIdLocalidad().getIdProvincia() != null) {
+                    if (provincia.getIdProvincia().equals(getDto().getIdLocalidad().getIdProvincia().getIdProvincia())) {
+                        index = iteration;
+                    }
+                }
+            }
+            iteration++;
+        }
+        cboProvincias.setSelectedIndex(index);
+
+
+        int idProvincia;
+        if (getDto().getIdLocalidad() != null) {
+            if (getDto().getIdLocalidad().getIdProvincia() != null) {
+                idProvincia = getDto().getIdLocalidad().getIdProvincia().getIdProvincia();
+            } else {
+                idProvincia = 0;
+            }
+        } else {
+            idProvincia = 0;
+        }
+        cargaLocalidades(idProvincia);
+
+        index = 0;
+        iteration = 1;
+        for (LocalidadesT localidad : localidadesTs) {
+            if (getDto().getIdLocalidad() != null) {
+                if (localidad.getIdLocalidad().equals(getDto().getIdLocalidad().getIdLocalidad())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+
+        cboLocalidades.setSelectedIndex(index);
+
+        txtBarrio.setEnabled(false);
+        txtCalle.setEnabled(false);
+        txtDepto.setEnabled(false);
+        txtNumero.setEnabled(false);
+        txtPiso.setEnabled(false);
+        txtTorre.setEnabled(false);
+        cboProvincias.setEnabled(false);
+        cboProvincias.addItemListener(itemProvinciasListener);
+        cboLocalidades.setEnabled(false);
+        cboLocalidades.addItemListener(itemLocalidadesListener);
+
+    }
+
+    private void cargaLocalidades(Integer idProvincia) {
+
+
+        HashMap parametros = new HashMap();
+        parametros.put("pIdProvincia", idProvincia);
+        localidadesTs = (ArrayList<LocalidadesT>) DesktopApp.getApplication().getLocalidadesT(parametros);
+
+        DefaultComboBoxModel localidadesComboBoxModel = new DefaultComboBoxModel();
+        localidadesComboBoxModel.addElement("<Ninguno>");
+        for (LocalidadesT localidad : localidadesTs) {
+            localidadesComboBoxModel.addElement(localidad);
+        }
+        cboLocalidades.setModel(localidadesComboBoxModel);
     }
 
     /** This method is called from within the constructor to
@@ -277,6 +520,16 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
             }
         ));
         tblDomicilios.setName("tblDomicilios"); // NOI18N
+        tblDomicilios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDomiciliosMouseClicked(evt);
+            }
+        });
+        tblDomicilios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblDomiciliosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDomicilios);
 
         cboTipoPersona.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -341,7 +594,7 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPersonaLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -357,36 +610,66 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
 
         txtCalle.setText(resourceMap.getString("txtCalle.text")); // NOI18N
         txtCalle.setName("txtCalle"); // NOI18N
+        txtCalle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCalleKeyReleased(evt);
+            }
+        });
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
         txtNumero.setText(resourceMap.getString("txtNumero.text")); // NOI18N
         txtNumero.setName("txtNumero"); // NOI18N
+        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyReleased(evt);
+            }
+        });
 
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
         txtPiso.setText(resourceMap.getString("txtPiso.text")); // NOI18N
         txtPiso.setName("txtPiso"); // NOI18N
+        txtPiso.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPisoKeyReleased(evt);
+            }
+        });
 
         jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
 
         txtDepto.setText(resourceMap.getString("txtDepto.text")); // NOI18N
         txtDepto.setName("txtDepto"); // NOI18N
+        txtDepto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDeptoKeyReleased(evt);
+            }
+        });
 
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
 
         txtTorre.setText(resourceMap.getString("txtTorre.text")); // NOI18N
         txtTorre.setName("txtTorre"); // NOI18N
+        txtTorre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTorreKeyReleased(evt);
+            }
+        });
 
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
         txtBarrio.setText(resourceMap.getString("txtBarrio.text")); // NOI18N
         txtBarrio.setName("txtBarrio"); // NOI18N
+        txtBarrio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBarrioKeyReleased(evt);
+            }
+        });
 
         jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
@@ -436,14 +719,14 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
                     .addComponent(cboLocalidades, 0, 406, Short.MAX_VALUE)
                     .addComponent(cboProvincias, 0, 406, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(399, Short.MAX_VALUE)
-                .addComponent(btnAplicar)
-                .addGap(10, 10, 10))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(txtPersonaDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
                 .addContainerGap(10, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(399, Short.MAX_VALUE)
+                .addComponent(btnAplicar)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -473,14 +756,12 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
                     .addComponent(jLabel11)
                     .addComponent(cboProvincias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(btnAplicar))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel12)
-                        .addComponent(cboLocalidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(cboLocalidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAplicar)
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -521,7 +802,7 @@ public class ABMDomicilios extends CustomInternalFrame<DomiciliosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -547,6 +828,66 @@ private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) 
 
 
 }//GEN-LAST:event_formInternalFrameClosing
+
+private void tblDomiciliosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblDomiciliosKeyReleased
+
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((DomiciliosT) tableModel.getRow(sorter.convertRowIndexToModel(tblDomicilios.getSelectedRow())));
+    cambiarDomicilioT();
+
+
+}//GEN-LAST:event_tblDomiciliosKeyReleased
+
+private void tblDomiciliosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDomiciliosMouseClicked
+
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((DomiciliosT) tableModel.getRow(sorter.convertRowIndexToModel(tblDomicilios.getSelectedRow())));
+    cambiarDomicilioT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+
+}//GEN-LAST:event_tblDomiciliosMouseClicked
+
+private void txtCalleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCalleKeyReleased
+
+    getDto().setCalle(String.valueOf(txtCalle.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtCalleKeyReleased
+
+private void txtBarrioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBarrioKeyReleased
+
+    getDto().setBarrio(String.valueOf(txtBarrio.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtBarrioKeyReleased
+
+private void txtNumeroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyReleased
+
+    getDto().setNumero(String.valueOf(txtNumero.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtNumeroKeyReleased
+
+private void txtPisoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPisoKeyReleased
+
+    getDto().setPiso(String.valueOf(txtPiso.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtPisoKeyReleased
+
+private void txtDeptoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDeptoKeyReleased
+
+    getDto().setDepartamento(String.valueOf(txtDepto.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtDeptoKeyReleased
+
+private void txtTorreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTorreKeyReleased
+// TODO add your handling code here:
+}//GEN-LAST:event_txtTorreKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
