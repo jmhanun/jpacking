@@ -57,7 +57,7 @@ Order by ordenesdeposito.`nroOrdenDep`, detordenesdeposito.`idDetOrdDeposito`]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="ordenescompra_nroOrdenCompra">
-		<groupExpression><![CDATA[]]></groupExpression>
+		<groupExpression><![CDATA[$F{ordenesdeposito_nroOrdenDeposito}]]></groupExpression>
 		<groupHeader>
 			<band height="28">
 				<staticText>
