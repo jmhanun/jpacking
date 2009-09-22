@@ -108,6 +108,9 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
         if (parametros.containsKey("pFechaFinEstimadaGT")) {
             detalleProduccionCriteria.add(Restrictions.gt("fechaFinEstimada", parametros.get("pFechaFinEstimadaGT")));
         }
+        if (parametros.containsKey("pFechaFinEstimadaLT")) {
+            detalleProduccionCriteria.add(Restrictions.lt("fechaFinEstimada", parametros.get("pFechaFinEstimadaLT")));
+        }
         if (parametros.containsKey("pJoinMaquinas")) {
             detalleProduccionCriteria.setFetchMode("idMaquina", FetchMode.JOIN);
         }
