@@ -8,16 +8,24 @@
  *
  * Created on 19-sep-2009, 10:18:10
  */
-
 package ar.com.jpack.desktop.administracion;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
+import ar.com.jpack.helpers.CustomTableModelListener;
+import ar.com.jpack.helpers.tablemodels.ProvinciasTableModel;
 import ar.com.jpack.transferencia.ProvinciasT;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
 
 /**
@@ -31,122 +39,118 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
         super(new ProvinciasT());
         initComponents();
         btnBorrar.setEnabled(false);
+
+        btnSeleccionar.setEnabled(false);
+        HashMap parametros = new HashMap();
+        setListDto((ArrayList<ProvinciasT>) DesktopApp.getApplication().getProvinciasT(parametros));
+
+        tableModel = new ProvinciasTableModel(columnNames, this.getListDto());
+        tableModel.addTableModelListener(new CustomTableModelListener());
+        tblProvincias.setModel(tableModel);
+
+        sorter = new TableRowSorter<TableModel>(tableModel) {
+
+            @Override
+            public void toggleSortOrder(int column) {
+                RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                setRowFilter(null);
+                super.toggleSortOrder(column);
+                setRowFilter(f);
+            }
+        };
+        tblProvincias.setRowSorter(sorter);
+
+        txtLetra.setEnabled(false);
+        txtProvincia.setEnabled(false);
+
+        tblProvincias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
     }
 
-//    @Action
-//    public void agregar() {
-//        if (!isNuevo()) {
-//            if (isModificado()) {
-//                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-//                    aplicar();
-//                } else {
-//                    setDto(getOldDto());
-//                    cmbPais.setEnabled(false);
-//                    txtLetra.setEnabled(false);
-//                }
-//            }
-//            setDto(new ProvinciasT());
-//            cambiarProvinciasT();
-//            cmbPais.setEnabled(true);
-//            txtLetra.setEnabled(true);
-//            jTabbedPane1.setSelectedIndex(1);
-//            setNuevo(true);
-//            setModificado(true);
-//            btnAgregar.setEnabled(false);
-//            btnModificar.setEnabled(false);
-//            cmbPais.requestFocus();
-//        }
-//    }
-//
-//    @Action
-//    public void seleccionar() {
-//    }
-//
-//    @Action
-//    public void modificar() {
-//        cmbPais.setEnabled(true);
-//        txtLetra.setEnabled(true);
-//        jTabbedPane1.setSelectedIndex(1);
-//        btnAgregar.setEnabled(false);
-//        btnModificar.setEnabled(false);
-//        cmbPais.requestFocus();
-//    }
-//
-//    @Action
-//    public void borrar() {
-//        if (tblProvincias.getSelectedRow() != - 1) {
-//            ProvinciasT x = (ProvinciasT) tableModel.getRow(sorter.convertRowIndexToModel(tblProvincias.getSelectedRow()));
-//            Integer z = DesktopApp.getApplication().deleteProvinciaT(x.getIdProvincia());
-//            if (z == 0) {
-//                JOptionPane.showInternalMessageDialog(this, "No se puede eliminar el registro porque tiene datos asociados");
-//            }
-//
-//
-//            HashMap parametros = new HashMap();
-//            List<ProvinciasT> nuevo = DesktopApp.getApplication().getProvinciasT(parametros);
-//            setListDto((ArrayList<ProvinicasT>) nuevo);
-//
-//            tableModel = new FeriadosTableModel(columnNames, this.getListDto());
-//            tableModel.addTableModelListener(new CustomTableModelListener());
-//            tableFeriados.setModel(tableModel);
-//
-//            sorter = new TableRowSorter<TableModel>(tableModel) {
-//
-//                @Override
-//                public void toggleSortOrder(int column) {
-//                    RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-//                    setRowFilter(null);
-//                    super.toggleSortOrder(column);
-//                    setRowFilter(f);
-//                }
-//            };
-//            tableFeriados.setRowSorter(sorter);
-//        } else {
-//            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un feriado");
-//        }
-//    }
-//
-//    @Action
-//    public void cancelar() {
-//        try {
-//            this.setClosed(true);
-//        } catch (PropertyVetoException ex) {
-//            Logger.getLogger(ABMFeriados.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//
-//    @Action(enabledProperty = "modificado")
-//    public void aplicar() {
-//        try {
-//            if (isNuevo() || isModificado()) {
-//
-//                setDto(DesktopApp.getApplication().updateFeriadosT(getDto()));
-//                if (isNuevo()) {
-//                    tableModel.addRow(getDto());
-//                }
-//                setDto(new FeriadosT());
-//                cambiarFeriadosT();
-//
-//                setModificado(false);
-//                setNuevo(false);
-//                txtFecha.setEnabled(false);
-//                txtMotivo.setEnabled(false);
-//                btnAgregar.setEnabled(true);
-//                btnModificar.setEnabled(true);
-//                jTabbedPane1.setSelectedIndex(0);
-//                tableFeriados.clearSelection();
-//            }
-//        } catch (javax.ejb.EJBException ex) {
-//            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
-//        }
-//    }
-//
-//    private void cambiarFeriadosT() {
-//        txtFecha.setDate(getDto().getFecha());
-//        txtMotivo.setText(getDto().getMotivo());
-//        txtFecha.setEnabled(false);
-//        txtMotivo.setEnabled(false);
-//    }
+    @Action
+    public void agregar() {
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtLetra.setEnabled(false);
+                    txtProvincia.setEnabled(false);
+                }
+            }
+            setDto(new ProvinciasT());
+            cambiarProvinciasT();
+            txtLetra.setEnabled(true);
+            txtProvincia.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtProvincia.requestFocus();
+        }
+    }
+
+    @Action
+    public void seleccionar() {
+    }
+
+    @Action
+    public void modificar() {
+        txtLetra.setEnabled(true);
+        txtProvincia.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtProvincia.requestFocus();
+    }
+
+    @Action
+    public void borrar() {
+    }
+
+    @Action
+    public void cancelar() {
+        try {
+            this.setClosed(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ABMProvincias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Action(enabledProperty = "modificado")
+    public void aplicar() {
+        try {
+            if (isNuevo() || isModificado()) {
+
+                setDto(DesktopApp.getApplication().updateProvinciasT(getDto()));
+                if (isNuevo()) {
+                    tableModel.addRow(getDto());
+                }
+                setDto(new ProvinciasT());
+                cambiarProvinciasT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtLetra.setEnabled(false);
+                txtProvincia.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblProvincias.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
+    }
+
+    private void cambiarProvinciasT() {
+        txtLetra.setText(getDto().getLetra());
+        txtProvincia.setText(getDto().getProvincia());
+        txtLetra.setEnabled(false);
+        txtProvincia.setEnabled(false);
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -163,10 +167,10 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
         tblProvincias = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        cmbPais = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         txtLetra = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
+        txtProvincia = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -215,6 +219,16 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
             }
         ));
         tblProvincias.setName("tblProvincias"); // NOI18N
+        tblProvincias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProvinciasMouseClicked(evt);
+            }
+        });
+        tblProvincias.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblProvinciasKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProvincias);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -222,8 +236,8 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -242,17 +256,27 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        cmbPais.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbPais.setName("cmbPais"); // NOI18N
-
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
         txtLetra.setText(resourceMap.getString("txtLetra.text")); // NOI18N
         txtLetra.setName("txtLetra"); // NOI18N
+        txtLetra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLetraKeyReleased(evt);
+            }
+        });
 
         btnAplicar.setText(resourceMap.getString("btnAplicar.text")); // NOI18N
         btnAplicar.setName("btnAplicar"); // NOI18N
+
+        txtProvincia.setText(resourceMap.getString("txtProvincia.text")); // NOI18N
+        txtProvincia.setName("txtProvincia"); // NOI18N
+        txtProvincia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtProvinciaKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -267,8 +291,8 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbPais, 0, 425, Short.MAX_VALUE)
-                            .addComponent(txtLetra, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)))
+                            .addComponent(txtProvincia, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                            .addComponent(txtLetra, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)))
                     .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -278,7 +302,7 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cmbPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -311,25 +335,22 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
+                .addContainerGap()
+                .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSeleccionar)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificar)
+                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
+                .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAgregar, btnBorrar, btnCancelar, btnModificar, btnSeleccionar});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -337,24 +358,56 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
                     .addComponent(btnModificar)
                     .addComponent(btnSeleccionar)
                     .addComponent(btnAgregar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
-        if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no ha sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no ha sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                dispose();
+            }
+        } else {
             dispose();
         }
-    } else {
-        dispose();
-    }
+
     }//GEN-LAST:event_formInternalFrameClosing
 
+private void tblProvinciasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProvinciasKeyReleased
 
+    setDto((ProvinciasT) tableModel.getRow(sorter.convertRowIndexToModel(tblProvincias.getSelectedRow())));
+    cambiarProvinciasT();
+
+
+}//GEN-LAST:event_tblProvinciasKeyReleased
+
+private void tblProvinciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProvinciasMouseClicked
+
+    setDto((ProvinciasT) tableModel.getRow(sorter.convertRowIndexToModel(tblProvincias.getSelectedRow())));
+    cambiarProvinciasT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+
+}//GEN-LAST:event_tblProvinciasMouseClicked
+
+private void txtProvinciaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProvinciaKeyReleased
+
+    getDto().setProvincia(String.valueOf(txtProvincia.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtProvinciaKeyReleased
+
+private void txtLetraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLetraKeyReleased
+
+    getDto().setLetra(String.valueOf(txtLetra.getText()));
+    setModificado(true);
+
+}//GEN-LAST:event_txtLetraKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
@@ -362,7 +415,6 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JComboBox cmbPais;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -371,6 +423,11 @@ public class ABMProvincias extends CustomInternalFrame<ProvinciasT> {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tblProvincias;
     private javax.swing.JTextField txtLetra;
+    private javax.swing.JTextField txtProvincia;
     // End of variables declaration//GEN-END:variables
-
+    public static final String[] columnNames = {
+        "Id", "Provincia", "Letras"
+    };
+    protected ProvinciasTableModel tableModel;
+    private TableRowSorter<TableModel> sorter;
 }

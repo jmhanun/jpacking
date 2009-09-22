@@ -191,6 +191,8 @@ public class ABMRoles extends CustomInternalFrame<RolesT> {
         txtRol.setEnabled(true);
         cboRolPadre.setEnabled(true);
         jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
         txtRol.requestFocus();
     }
 

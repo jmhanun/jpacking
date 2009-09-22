@@ -140,9 +140,15 @@ public class ABMComponentes extends CustomInternalFrame<ComponentesT> {
 
                 }
                 if (cantidadOk) {
-                    DesktopApp.getApplication().updateComponentesT(getListDto());
-                    JOptionPane.showInternalMessageDialog(this, "Se ha generado los componentes exitosamente");
-                    cancelar();
+                    if (DesktopApp.getApplication().validarComponentes(getListDto())) {
+                        DesktopApp.getApplication().updateComponentesT(getListDto());
+                        JOptionPane.showInternalMessageDialog(this, "Se ha generado los componentes exitosamente");
+                        cancelar();
+
+                    } else {
+                        JOptionPane.showInternalMessageDialog(this, "Articulos seleccionados como componentes son de nivel superior");
+
+                    }
                 } else {
                     JOptionPane.showInternalMessageDialog(this, "Hay orden o cantidades igual o menor a cero!");
                 }

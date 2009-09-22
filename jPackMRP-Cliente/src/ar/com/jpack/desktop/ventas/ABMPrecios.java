@@ -8,7 +8,6 @@
  *
  * Created on 27-ago-2009, 20:18:42
  */
-
 package ar.com.jpack.desktop.ventas;
 
 import ar.com.jpack.desktop.DesktopApp;
@@ -18,10 +17,12 @@ import ar.com.jpack.helpers.tablemodels.PreciosTableModel;
 import ar.com.jpack.transferencia.PreciosT;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -64,7 +65,6 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
 
         setModificado(false);
         setNuevo(false);
-        cmbListaPrecios.setEnabled(false);
         txtArticulo.setEnabled(false);
         txtPrecio.setEnabled(false);
 
@@ -75,33 +75,57 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         parametros = new HashMap();
 
         tblPrecios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        btnAgregar.setEnabled(false);
     }
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                getDto().setFechaModificacion(new Date());
+                getDto().setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
+                
+                setDto(DesktopApp.getApplication().updatePreciosT(getDto()));
+                if (isNuevo()) {
+//                    getListDto().add(getDto());
+                    tableModel.addRow(getDto());
+                }
+                setDto(new PreciosT());
+                cambiarPreciosT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtPrecio.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblPrecios.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
-        cmbListaPrecios.setEnabled(true);
-        txtArticulo.setEnabled(true);
         txtPrecio.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtPrecio.requestFocus();
     }
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
     @Action
@@ -111,6 +135,16 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ABMPrecios.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void cambiarPreciosT() {
+        if (getDto().getIdArticulo() != null) {
+            txtArticulo.setText(getDto().getIdArticulo().getCodigo());
+        } else {
+            txtArticulo.setText("");
+        }
+        txtPrecio.setText(String.valueOf(getDto().getPrecio()));
+        txtPrecio.setEnabled(false);
     }
 
     /** This method is called from within the constructor to
@@ -127,11 +161,9 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPrecios = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtArticulo = new javax.swing.JTextField();
-        cmbListaPrecios = new javax.swing.JComboBox();
         txtPrecio = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -182,6 +214,16 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
             }
         ));
         tblPrecios.setName("tblPrecios"); // NOI18N
+        tblPrecios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPreciosMouseClicked(evt);
+            }
+        });
+        tblPrecios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblPreciosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblPrecios);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -192,16 +234,13 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMPrecios.class);
         jTabbedPane1.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
 
         jPanel2.setName("jPanel2"); // NOI18N
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
@@ -212,11 +251,14 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         txtArticulo.setText(resourceMap.getString("txtArticulo.text")); // NOI18N
         txtArticulo.setName("txtArticulo"); // NOI18N
 
-        cmbListaPrecios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbListaPrecios.setName("cmbListaPrecios"); // NOI18N
-
+        txtPrecio.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtPrecio.setText(resourceMap.getString("txtPrecio.text")); // NOI18N
         txtPrecio.setName("txtPrecio"); // NOI18N
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMPrecios.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -233,27 +275,20 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbListaPrecios, 0, 414, Short.MAX_VALUE)
                             .addComponent(txtArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
-                        .addContainerGap())
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(389, 389, 389)
-                        .addComponent(btnAplicar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(10, 10, 10))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 389, Short.MAX_VALUE)
+                        .addComponent(btnAplicar)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(cmbListaPrecios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -263,7 +298,7 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -309,7 +344,7 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -324,28 +359,47 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
+            } else {
+                this.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
             }
         } else {
             dispose();
         }
+
     }//GEN-LAST:event_formInternalFrameClosing
 
+private void tblPreciosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblPreciosKeyReleased
 
-    private boolean modificado = false;
-    public boolean isModificado() {
-        return modificado;
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((PreciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblPrecios.getSelectedRow())));
+    cambiarPreciosT();
+
+
+}//GEN-LAST:event_tblPreciosKeyReleased
+
+private void tblPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPreciosMouseClicked
+
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((PreciosT) tableModel.getRow(sorter.convertRowIndexToModel(tblPrecios.getSelectedRow())));
+    cambiarPreciosT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
     }
 
-    public void setModificado(boolean b) {
-        boolean old = isModificado();
-        this.modificado = b;
-        firePropertyChange("modificado", old, isModificado());
-    }
 
+}//GEN-LAST:event_tblPreciosMouseClicked
+
+private void txtPrecioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyReleased
+
+    getDto().setPrecio(Double.valueOf(txtPrecio.getText()));
+    setModificado(true);
+
+
+}//GEN-LAST:event_txtPrecioKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
@@ -353,8 +407,6 @@ public class ABMPrecios extends CustomInternalFrame<PreciosT> {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JComboBox cmbListaPrecios;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

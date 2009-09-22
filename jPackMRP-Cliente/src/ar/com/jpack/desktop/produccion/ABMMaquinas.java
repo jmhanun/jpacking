@@ -8,21 +8,25 @@
  *
  * Created on 25-ago-2009, 20:09:26
  */
-
 package ar.com.jpack.desktop.produccion;
 
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
 import ar.com.jpack.helpers.tablemodels.MaquinasTableModel;
+import ar.com.jpack.transferencia.ActividadesT;
 import ar.com.jpack.transferencia.MaquinasT;
 
+import ar.com.jpack.transferencia.RolesT;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -36,11 +40,26 @@ import org.jdesktop.application.Action;
  */
 public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
 
+    private ItemListener itemListener;
+    private ArrayList<ActividadesT> actividadesTs;
+
     /** Creates new form ABMMaquinas */
     public ABMMaquinas() {
         super(new MaquinasT());
         initComponents();
         btnBorrar.setEnabled(false);
+        itemListener = new ItemListener() {
+
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItem().toString().equals("<Ninguno>")) {
+                    getDto().setIdActividad(null);
+                } else {
+                    getDto().setIdActividad((ActividadesT) e.getItem());
+                }
+                setModificado(true);
+            }
+        };
+
         HashMap parametros = new HashMap();
         parametros.put("pJoinEstados", true);
         parametros.put("pJoinActividades", true);
@@ -66,7 +85,6 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         setModificado(false);
         setNuevo(false);
         txtDescripcion.setEnabled(false);
-        cmbEstado.setEnabled(false);
         cmbActividad.setEnabled(false);
         txtHorasMantenimiento.setEnabled(false);
         txtHorasUso.setEnabled(false);
@@ -76,37 +94,103 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         }
 
         parametros = new HashMap();
+        actividadesTs = (ArrayList<ActividadesT>) DesktopApp.getApplication().getActividadesT(parametros);
+
+        DefaultComboBoxModel actividadesComboBoxModel = new DefaultComboBoxModel();
+        int index = 0;
+        int iteration = 0;
+        actividadesComboBoxModel.addElement("<Ninguno>");
+        for (ActividadesT actividad : actividadesTs) {
+            actividadesComboBoxModel.addElement(actividad);
+            if (getDto().getIdActividad() != null) {
+                if (actividad.getIdActividad().equals(getDto().getIdActividad().getIdActividad())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+        cmbActividad.setModel(actividadesComboBoxModel);
+        cmbActividad.setSelectedIndex(index);
+        cmbActividad.addItemListener(itemListener);
 
         tblMaquinas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     @Action(enabledProperty = "modificado")
     public void aplicar() {
-        JOptionPane.showInternalMessageDialog(this, "aplicar");
+        try {
+            if (isNuevo() || isModificado()) {
+                setDto(DesktopApp.getApplication().updateMaquinasT(getDto()));
+                if (isNuevo()) {
+//                    getListDto().add(getDto());
+                    tableModel.addRow(getDto());
+                }
+                setDto(new MaquinasT());
+                cambiarMaquinasT();
+
+                setModificado(false);
+                setNuevo(false);
+                txtDescripcion.setEnabled(false);
+                txtHorasMantenimiento.setEnabled(false);
+                txtHorasUso.setEnabled(false);
+                cmbActividad.setEnabled(false);
+                btnAgregar.setEnabled(true);
+                btnModificar.setEnabled(true);
+                jTabbedPane1.setSelectedIndex(0);
+                tblMaquinas.clearSelection();
+            }
+        } catch (javax.ejb.EJBException ex) {
+            JOptionPane.showInternalMessageDialog(this, "No es posible agregar el nuevo registro.\nVerifique que los datos sean los correctos");
+        }
     }
 
     @Action
     public void agregar() {
-        JOptionPane.showInternalMessageDialog(this, "agregar");
+        if (!isNuevo()) {
+            if (isModificado()) {
+                if (JOptionPane.showInternalConfirmDialog(this, "Algunos datos han sido modificados.\n¿Desea conservar esos cambios?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    aplicar();
+                } else {
+                    setDto(getOldDto());
+                    txtDescripcion.setEnabled(false);
+                    txtHorasMantenimiento.setEnabled(false);
+                    txtHorasUso.setEnabled(false);
+                    cmbActividad.setEnabled(false);
+                }
+            }
+            setDto(new MaquinasT());
+            cambiarMaquinasT();
+            txtDescripcion.setEnabled(true);
+            txtHorasMantenimiento.setEnabled(true);
+            txtHorasUso.setEnabled(true);
+            cmbActividad.setEnabled(true);
+            jTabbedPane1.setSelectedIndex(1);
+            setNuevo(true);
+            setModificado(true);
+            btnAgregar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            txtDescripcion.requestFocus();
+        }
     }
 
     @Action
     public void seleccionar() {
-        JOptionPane.showInternalMessageDialog(this, "seleccionar");
     }
 
     @Action
     public void modificar() {
         txtDescripcion.setEnabled(true);
-        cmbEstado.setEnabled(true);
         cmbActividad.setEnabled(true);
         txtHorasMantenimiento.setEnabled(true);
         txtHorasUso.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtDescripcion.requestFocus();
     }
 
     @Action
     public void borrar() {
-        JOptionPane.showInternalMessageDialog(this, "borrar");
     }
 
     @Action
@@ -116,7 +200,33 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ABMMaquinas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    private void cambiarMaquinasT() {
+        cmbActividad.removeItemListener(itemListener);
+        txtDescripcion.setText(getDto().getDescripcion());
+        txtHorasMantenimiento.setText(String.valueOf(getDto().getHorasMantenimiento()));
+        txtHorasUso.setText(String.valueOf(getDto().getHorasUso()));
+
+        int index = 0;
+        int iteration = 1;
+        for (ActividadesT actividadesT : actividadesTs) {
+            if (getDto().getIdActividad() != null) {
+                if (actividadesT.getIdActividad().equals(getDto().getIdActividad().getIdActividad())) {
+                    index = iteration;
+                }
+            }
+            iteration++;
+        }
+
+        cmbActividad.setSelectedIndex(index);
+
+        txtDescripcion.setEnabled(false);
+        cmbActividad.setEnabled(false);
+        txtHorasMantenimiento.setEnabled(false);
+        txtHorasUso.setEnabled(false);
+
+        cmbActividad.addItemListener(itemListener);
 
     }
 
@@ -135,12 +245,10 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         tblMaquinas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
-        cmbEstado = new javax.swing.JComboBox();
         cmbActividad = new javax.swing.JComboBox();
         txtHorasMantenimiento = new javax.swing.JTextField();
         txtHorasUso = new javax.swing.JTextField();
@@ -193,6 +301,16 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
             }
         ));
         tblMaquinas.setName("tblMaquinas"); // NOI18N
+        tblMaquinas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMaquinasMouseClicked(evt);
+            }
+        });
+        tblMaquinas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblMaquinasKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMaquinas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -203,7 +321,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
         );
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ABMMaquinas.class);
@@ -213,9 +331,6 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
@@ -228,18 +343,32 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
 
         txtDescripcion.setText(resourceMap.getString("txtDescripcion.text")); // NOI18N
         txtDescripcion.setName("txtDescripcion"); // NOI18N
-
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbEstado.setName("cmbEstado"); // NOI18N
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
 
         cmbActividad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbActividad.setName("cmbActividad"); // NOI18N
 
+        txtHorasMantenimiento.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtHorasMantenimiento.setText(resourceMap.getString("txtHorasMantenimiento.text")); // NOI18N
         txtHorasMantenimiento.setName("txtHorasMantenimiento"); // NOI18N
+        txtHorasMantenimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtHorasMantenimientoKeyReleased(evt);
+            }
+        });
 
+        txtHorasUso.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtHorasUso.setText(resourceMap.getString("txtHorasUso.text")); // NOI18N
         txtHorasUso.setName("txtHorasUso"); // NOI18N
+        txtHorasUso.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtHorasUsoKeyReleased(evt);
+            }
+        });
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getActionMap(ABMMaquinas.class, this);
         btnAplicar.setAction(actionMap.get("aplicar")); // NOI18N
@@ -254,19 +383,22 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                            .addComponent(cmbEstado, 0, 349, Short.MAX_VALUE)
                             .addComponent(cmbActividad, 0, 349, Short.MAX_VALUE)
-                            .addComponent(txtHorasMantenimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                            .addComponent(txtHorasUso, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtHorasUso, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                            .addComponent(txtHorasMantenimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
                     .addComponent(btnAplicar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -277,10 +409,6 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -295,7 +423,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
                     .addComponent(txtHorasUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAplicar)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -341,7 +469,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -356,7 +484,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        // TODO add your handling code here:
+
         if (isModificado() || isNuevo()) {
             if (JOptionPane.showInternalConfirmDialog(this, "Hay informacion que no han sido guardada\n¿Desea cerrar de todos modos?", "Alerta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 dispose();
@@ -366,8 +494,50 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
+private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+
+    getDto().setDescripcion(String.valueOf(txtDescripcion.getText()));
+    setModificado(true);
 
 
+}//GEN-LAST:event_txtDescripcionKeyReleased
+
+private void txtHorasMantenimientoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHorasMantenimientoKeyReleased
+
+    getDto().setHorasMantenimiento(Float.valueOf(txtHorasMantenimiento.getText()));
+    setModificado(true);
+
+
+}//GEN-LAST:event_txtHorasMantenimientoKeyReleased
+
+private void txtHorasUsoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHorasUsoKeyReleased
+
+    getDto().setHorasUso(Float.valueOf(txtHorasUso.getText()));
+    setModificado(true);
+
+
+}//GEN-LAST:event_txtHorasUsoKeyReleased
+
+private void tblMaquinasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMaquinasMouseClicked
+
+    //para el caso en que se navegue la tabla con el mouse
+    setDto((MaquinasT) tableModel.getRow(sorter.convertRowIndexToModel(tblMaquinas.getSelectedRow())));
+    cambiarMaquinasT();
+    if (evt.getClickCount() == 2) {
+        this.jTabbedPane1.setSelectedIndex(1);
+    }
+
+
+}//GEN-LAST:event_tblMaquinasMouseClicked
+
+private void tblMaquinasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblMaquinasKeyReleased
+
+    //para el caso en que se navegue la tabla con las flechas
+    setDto((MaquinasT) tableModel.getRow(sorter.convertRowIndexToModel(tblMaquinas.getSelectedRow())));
+    cambiarMaquinasT();
+
+
+}//GEN-LAST:event_tblMaquinasKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAplicar;
@@ -376,9 +546,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox cmbActividad;
-    private javax.swing.JComboBox cmbEstado;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -392,8 +560,7 @@ public class ABMMaquinas extends CustomInternalFrame<MaquinasT> {
     private javax.swing.JTextField txtHorasUso;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
-        "Id", "Descripcion", "Estado", "Actividad", "Horas Mantenimiento"
-      , "Horas Uso"
+        "Id", "Descripcion", "Estado", "Actividad", "Horas Mantenimiento", "Horas Uso"
     };
     protected MaquinasTableModel tableModel;
     private TableRowSorter<TableModel> sorter;

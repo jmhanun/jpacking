@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -111,6 +112,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             }
         };
         tblArticulos.setRowSorter(sorter);
+        tblArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         componentesTs = new ArrayList<ComponentesT>();
 
@@ -153,6 +155,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         txtDescripcion.setEnabled(false);
         txtCodigo.setEnabled(false);
         txtStockMinimo.setEnabled(false);
+        chkFinalEdicion.setEnabled(false);
+        chkImprimibleEdicion.setEnabled(false);
         cboMedida.setEnabled(false);
 
         parametros = new HashMap();
@@ -195,7 +199,16 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
 
     @Action
     public void modificar() {
-        JOptionPane.showInternalMessageDialog(this, "modificar");
+        txtCodigo.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtStockMinimo.setEnabled(true);
+        cboMedida.setEnabled(true);
+        chkFinalEdicion.setEnabled(true);
+        chkImprimibleEdicion.setEnabled(true);
+        jTabbedPane1.setSelectedIndex(1);
+        btnAgregar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        txtCodigo.requestFocus();
     }
 
     @Action
@@ -209,6 +222,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                     txtDescripcion.setEnabled(false);
                     txtCodigo.setEnabled(false);
                     txtStockMinimo.setEnabled(false);
+                    chkFinalEdicion.setEnabled(false);
+                    chkImprimibleEdicion.setEnabled(false);
                     cboMedida.setEnabled(false);
                 }
             }
@@ -218,6 +233,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             txtCodigo.setEnabled(true);
             txtStockMinimo.setEnabled(true);
             cboMedida.setEnabled(true);
+            chkFinalEdicion.setEnabled(true);
+            chkImprimibleEdicion.setEnabled(true);
             jTabbedPane1.setSelectedIndex(1);
             setNuevo(true);
             setModificado(true);
@@ -351,6 +368,7 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
             }
         };
         tblArticulos.setRowSorter(sorter);
+        tblArticulos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         if ((btnSeleccionar.isEnabled()) && (getListDto().size() == 1)) {
             tblArticulos.setRowSelectionInterval(0, 0);
@@ -365,12 +383,6 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         try {
             if (isNuevo() || isModificado()) {
 
-                if (getDto().getArticuloFinal() == null) {
-                    getDto().setArticuloFinal("N");
-                }
-                if (getDto().getImprimible() == null) {
-                    getDto().setImprimible("N");
-                }
                 getDto().setIdUsuario(DesktopApp.getApplication().getUsuarioLogueado());
                 setDto(DesktopApp.getApplication().updateArticulosT(getDto()));
                 if (isNuevo()) {
@@ -385,6 +397,8 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
                 txtDescripcion.setEnabled(false);
                 txtCodigo.setEnabled(false);
                 txtStockMinimo.setEnabled(false);
+                chkFinalEdicion.setEnabled(false);
+                chkImprimibleEdicion.setEnabled(false);
                 cboMedida.setEnabled(false);
                 btnAgregar.setEnabled(true);
                 btnModificar.setEnabled(true);
@@ -400,6 +414,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         cboMedida.removeItemListener(itemMedidaListener);
         chkFinalEdicion.removeItemListener(itemFinalListener);
         chkImprimibleEdicion.removeItemListener(itemImprimibleListener);
+
+        chkFinalEdicion.setSelected(stringToBoolean(getDto().getArticuloFinal()));
+        chkImprimibleEdicion.setSelected(stringToBoolean(getDto().getImprimible()));
 
         txtDescripcion.setText(getDto().getDescripcion());
         txtCodigo.setText(getDto().getCodigo());
@@ -461,6 +478,9 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
         txtDescripcion.setEnabled(false);
         txtCodigo.setEnabled(false);
         txtStockMinimo.setEnabled(false);
+        chkFinalEdicion.setEnabled(false);
+        chkImprimibleEdicion.setEnabled(false);
+
         cboMedida.setEnabled(false);
 
         cboMedida.addItemListener(itemMedidaListener);
@@ -482,10 +502,26 @@ public class ABMArticulos extends CustomInternalFrame<ArticulosT> {
     }
 
     public String booleanToString(Boolean valor) {
-        if (valor) {
-            return "S";
+        if (valor != null) {
+            if (valor) {
+                return "S";
+            } else {
+                return "N";
+            }
         } else {
             return "N";
+        }
+    }
+
+    public Boolean stringToBoolean(String valor) {
+        if (valor != null) {
+            if (valor.equals("S")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 

@@ -8,8 +8,8 @@ package ar.com.jpack.desktop.produccion;
 import ar.com.jpack.desktop.DesktopApp;
 import ar.com.jpack.helpers.CustomInternalFrame;
 import ar.com.jpack.helpers.CustomTableModelListener;
-import ar.com.jpack.helpers.tablemodels.ActividadesArticulosTableModel;
-import ar.com.jpack.helpers.tablemodels.ComponentesArticulosTableModel;
+import ar.com.jpack.helpers.tablemodels.ActividadesArticulosMaestroTableModel;
+import ar.com.jpack.helpers.tablemodels.ComponentesMaestroTableModel;
 import ar.com.jpack.helpers.tablemodels.DetalleMovimientoStockTableModel;
 import ar.com.jpack.helpers.tablemodels.DetalleProduccionResumenTableModel;
 import ar.com.jpack.transferencia.ActividadesArticulosT;
@@ -19,7 +19,10 @@ import ar.com.jpack.transferencia.DetMovimientosStockT;
 import ar.com.jpack.transferencia.DetalleProduccionT;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JSpinner;
 import javax.swing.RowFilter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.application.Action;
@@ -31,10 +34,10 @@ import org.jdesktop.application.Action;
 public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
 
     private ArrayList<ComponentesT> componentesTs;
-    private ComponentesArticulosTableModel tableModelComponentes;
+    private ComponentesMaestroTableModel tableModelComponentes;
     private TableRowSorter<TableModel> sorterComponentes;
     private ArrayList<ActividadesArticulosT> actividadesTs;
-    private ActividadesArticulosTableModel tableModelActividades;
+    private ActividadesArticulosMaestroTableModel tableModelActividades;
     private TableRowSorter<TableModel> sorterActividad;
     private ABMArticulos articulosOpenFrame;
     private ArrayList<DetalleProduccionT> detalleProduccionTs;
@@ -49,9 +52,60 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         super(new ArticulosT());
         initComponents();
 
+        cantidad = 1;
+        // Add the listener
+        spnCantidad.addChangeListener(new ChangeListener() {
+
+            public void stateChanged(ChangeEvent e) {
+                JSpinner spinner = (JSpinner) e.getSource();
+//                System.out.println("cambio valor: " + spinner.getValue());
+                // Get the new value
+                cantidad = (Integer) spinner.getValue();
+                Float tiempo = new Float(0);
+                if (getDto().getIdArticulo() != null) {
+                    for (ActividadesArticulosT act : actividadesTs) {
+                        tiempo += act.getTiempo() * cantidad;
+                    }
+                    tableModelActividades = new ActividadesArticulosMaestroTableModel(columnNamesActividades, actividadesTs, cantidad);
+                    tableModelActividades.addTableModelListener(new CustomTableModelListener());
+                    tblActividades.setModel(tableModelActividades);
+
+                    sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+
+                        @Override
+                        public void toggleSortOrder(int column) {
+                            RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                            setRowFilter(null);
+                            super.toggleSortOrder(column);
+                            setRowFilter(f);
+                        }
+                    };
+                    tblActividades.setRowSorter(sorterActividad);
+
+                    tableModelComponentes = new ComponentesMaestroTableModel(columnNamesComponentes, componentesTs, cantidad);
+                    tableModelComponentes.addTableModelListener(new CustomTableModelListener());
+                    tblComponentes.setModel(tableModelComponentes);
+
+                    sorterComponentes = new TableRowSorter<TableModel>(tableModelComponentes) {
+
+                        @Override
+                        public void toggleSortOrder(int column) {
+                            RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+                            setRowFilter(null);
+                            super.toggleSortOrder(column);
+                            setRowFilter(f);
+                        }
+                    };
+                    tblComponentes.setRowSorter(sorterComponentes);
+
+                }
+                txtTiempo.setText(tiempo.toString() + " seg");
+
+            }
+        });
         componentesTs = new ArrayList<ComponentesT>();
 
-        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes = new ComponentesMaestroTableModel(columnNamesComponentes, componentesTs, cantidad);
         tableModelComponentes.addTableModelListener(new CustomTableModelListener());
         tblComponentes.setModel(tableModelComponentes);
 
@@ -69,7 +123,7 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
 
         actividadesTs = new ArrayList<ActividadesArticulosT>();
 
-        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades = new ActividadesArticulosMaestroTableModel(columnNamesActividades, actividadesTs, cantidad);
         tableModelActividades.addTableModelListener(new CustomTableModelListener());
         tblActividades.setModel(tableModelActividades);
 
@@ -123,7 +177,11 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
             }
         };
         tblMovimientosStock.setRowSorter(sorterDetalleMovimiento);
-
+        Float tiempo = new Float(0);
+        for (ActividadesArticulosT act : actividadesTs) {
+            tiempo += act.getTiempo() * cantidad;
+        }
+        txtTiempo.setText(tiempo.toString() + " seg");
     }
 
     @Action
@@ -172,11 +230,12 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
 
         componentesTs = (ArrayList<ComponentesT>) DesktopApp.getApplication().getComponentesT(parametros);
 
-        tableModelComponentes = new ComponentesArticulosTableModel(columnNamesComponentes, componentesTs);
+        tableModelComponentes = new ComponentesMaestroTableModel(columnNamesComponentes, componentesTs, cantidad);
         tableModelComponentes.addTableModelListener(new CustomTableModelListener());
         tblComponentes.setModel(tableModelComponentes);
 
-        sorterComponentes = new TableRowSorter<TableModel>(tableModelComponentes) {
+        sorterComponentes = new TableRowSorter<TableModel>(
+                tableModelComponentes) {
 
             @Override
             public void toggleSortOrder(int column) {
@@ -190,11 +249,12 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
 
         actividadesTs = (ArrayList<ActividadesArticulosT>) DesktopApp.getApplication().getActividadesArticulosT(parametros);
 
-        tableModelActividades = new ActividadesArticulosTableModel(columnNamesActividades, actividadesTs);
+        tableModelActividades = new ActividadesArticulosMaestroTableModel(columnNamesActividades, actividadesTs, cantidad);
         tableModelActividades.addTableModelListener(new CustomTableModelListener());
         tblActividades.setModel(tableModelActividades);
 
-        sorterActividad = new TableRowSorter<TableModel>(tableModelActividades) {
+        sorterActividad = new TableRowSorter<TableModel>(
+                tableModelActividades) {
 
             @Override
             public void toggleSortOrder(int column) {
@@ -221,7 +281,8 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         tableModelDetalleProduccion.addTableModelListener(new CustomTableModelListener());
         tblProduccion.setModel(tableModelDetalleProduccion);
 
-        sorterDetalleProduccion = new TableRowSorter<TableModel>(tableModelDetalleProduccion) {
+        sorterDetalleProduccion = new TableRowSorter<TableModel>(
+                tableModelDetalleProduccion) {
 
             @Override
             public void toggleSortOrder(int column) {
@@ -244,7 +305,8 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         tableModelDetalleMovimiento.addTableModelListener(new CustomTableModelListener());
         tblMovimientosStock.setModel(tableModelDetalleMovimiento);
 
-        sorterDetalleMovimiento = new TableRowSorter<TableModel>(tableModelDetalleMovimiento) {
+        sorterDetalleMovimiento = new TableRowSorter<TableModel>(
+                tableModelDetalleMovimiento) {
 
             @Override
             public void toggleSortOrder(int column) {
@@ -256,6 +318,11 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         };
         tblMovimientosStock.setRowSorter(sorterDetalleMovimiento);
 
+        Float tiempo = new Float(0);
+        for (ActividadesArticulosT act : actividadesTs) {
+            tiempo += act.getTiempo() * cantidad;
+        }
+        txtTiempo.setText(tiempo.toString() + " seg");
     }
 
     public String booleanToString(Boolean valor) {
@@ -313,6 +380,10 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         tblMovimientosStock = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        spnCantidad = new javax.swing.JSpinner();
+        jLabel12 = new javax.swing.JLabel();
+        txtTiempo = new javax.swing.JTextField();
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -472,6 +543,20 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
         txtPrecio.setEnabled(false);
         txtPrecio.setName("txtPrecio"); // NOI18N
 
+        jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
+        jLabel11.setName("jLabel11"); // NOI18N
+
+        spnCantidad.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        spnCantidad.setName("spnCantidad"); // NOI18N
+
+        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
+        jLabel12.setName("jLabel12"); // NOI18N
+
+        txtTiempo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTiempo.setText(resourceMap.getString("txtTiempo.text")); // NOI18N
+        txtTiempo.setEnabled(false);
+        txtTiempo.setName("txtTiempo"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -491,10 +576,6 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addContainerGap(456, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
-                .addContainerGap(467, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel8)
                 .addContainerGap(470, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -505,11 +586,17 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addContainerGap()
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtStockMinimo, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
@@ -521,20 +608,24 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtStockEnProduccion, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(chkImprimible)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkFinal)
-                        .addGap(215, 215, 215)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -555,6 +646,8 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkImprimible)
                     .addComponent(chkFinal)
+                    .addComponent(jLabel11)
+                    .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -562,7 +655,10 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel12)
+                    .addComponent(txtTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -580,7 +676,7 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -592,6 +688,8 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
     private javax.swing.JCheckBox chkImprimible;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -607,6 +705,7 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JSpinner spnCantidad;
     private javax.swing.JTable tblActividades;
     private javax.swing.JTable tblComponentes;
     private javax.swing.JTable tblMovimientosStock;
@@ -617,12 +716,13 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
     private javax.swing.JTextField txtStockActual;
     private javax.swing.JTextField txtStockEnProduccion;
     private javax.swing.JTextField txtStockMinimo;
+    private javax.swing.JTextField txtTiempo;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNamesComponentes = {
-        "Componente", "Orden", "Cantidad"
+        "Componente", "Orden", "Cantidad unitario", "Cantidad total"
     };
     public static final String[] columnNamesActividades = {
-        "Actividad", "Orden", "Tiempo"
+        "Actividad", "Orden", "Tiempo unitario", "Tiempo total"
     };
     public static final String[] columnNamesDetalleMovimiento = {
         "Fecha", "Descripcion", "Cantidad"
@@ -630,4 +730,5 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
     public static final String[] columnNamesDetalleProduccion = {
         "Id", "NroOrden", "Maquina", "Estado", "Cantidad", "Inicio Estimado", "Fin Estimado"
     };
+    private Integer cantidad;
 }

@@ -675,7 +675,8 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
- public TiposDesviosT updateTiposDesviosT(TiposDesviosT dto) {
+
+    public TiposDesviosT updateTiposDesviosT(TiposDesviosT dto) {
         try {
             tiposDesviosFacade = (TiposdesviosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposdesviosFacadeRemote");
             return tiposDesviosFacade.updateTiposDesviosT(dto);
@@ -686,7 +687,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
- public ActividadesT updateActividadesT(ActividadesT dto) {
+    public ActividadesT updateActividadesT(ActividadesT dto) {
         try {
             actividadesFacade = (ActividadesFacadeRemote) lookUp("ar.com.jpack.negocio.ActividadesFacadeRemote");
             return actividadesFacade.updateActividadesT(dto);
@@ -697,7 +698,7 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
- public TiposServiciosT updateTiposServiciosT(TiposServiciosT dto) {
+    public TiposServiciosT updateTiposServiciosT(TiposServiciosT dto) {
         try {
             tiposServiciosFacade = (TiposserviciosFacadeRemote) lookUp("ar.com.jpack.negocio.TiposserviciosFacadeRemote");
             return tiposServiciosFacade.updateTiposServiciosT(dto);
@@ -767,10 +768,32 @@ public class DesktopApp extends SingleFrameApplication {
         }
     }
 
+    public MaquinasT updateMaquinasT(MaquinasT dto) {
+        try {
+            maquinasFacade = (MaquinasFacadeRemote) lookUp("ar.com.jpack.negocio.MaquinasFacadeRemote");
+            return maquinasFacade.updateMaquinasT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public List<PreciosT> getPreciosT(HashMap parametros) {
         try {
             preciosFacade = (PreciosFacadeRemote) lookUp("ar.com.jpack.negocio.PreciosFacadeRemote");
             return preciosFacade.getPreciosT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public PreciosT updatePreciosT(PreciosT dto) {
+        try {
+            preciosFacade = (PreciosFacadeRemote) lookUp("ar.com.jpack.negocio.PreciosFacadeRemote");
+            return preciosFacade.updatePreciosT(dto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -808,6 +831,17 @@ public class DesktopApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+
+    public void insertarListasPreciosT(Double porcentaje, UsuariosT usuarioLogueado) {
+//                `splistaprecios`(paumento DOUBLE, pidusuario INTEGER, plistaant INTEGER, out vidlista integer)
+        try {
+            listaspreciosFacade = (ListaspreciosFacadeRemote) lookUp("ar.com.jpack.negocio.ListaspreciosFacadeRemote");
+            listaspreciosFacade.insertarListasPreciosT(porcentaje, usuarioLogueado);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -999,6 +1033,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public ProveedoresT updateProveedoresT(ProveedoresT dto) {
         try {
             proveedoresFacade = (ProveedoresFacadeRemote) lookUp("ar.com.jpack.negocio.ProveedoresFacadeRemote");
@@ -1036,6 +1071,17 @@ public class DesktopApp extends SingleFrameApplication {
         try {
             articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
             return articulosFacade.getComponentesT(parametros);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Boolean validarComponentes(List<ComponentesT> listDto) {
+        try {
+            articulosFacade = (ArticulosFacadeRemote) lookUp("ar.com.jpack.negocio.ArticulosFacadeRemote");
+            return articulosFacade.validarComponentes(listDto);
         } catch (NamingException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
             Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -1086,6 +1132,7 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+
     public DomiciliosT updateDomicilioT(DomiciliosT dto) {
         try {
             domiciliosFacade = (DomiciliosFacadeRemote) lookUp("ar.com.jpack.negocio.DomiciliosFacadeRemote");
@@ -1096,7 +1143,6 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
-
 
     public List<LocalidadesT> getLocalidadesT(HashMap parametros) {
         try {
@@ -1119,6 +1165,17 @@ public class DesktopApp extends SingleFrameApplication {
             return null;
         }
     }
+    public ProvinciasT updateProvinciasT(ProvinciasT dto) {
+        try {
+            domiciliosFacade = (DomiciliosFacadeRemote) lookUp("ar.com.jpack.negocio.DomiciliosFacadeRemote");
+            return domiciliosFacade.updateProvinciasT(dto);
+        } catch (NamingException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un NamingException. Consulte al administrador.");
+            Logger.getLogger(DesktopApp.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 
     public List<OrdenesProduccionT> getOrdenesProduccionT(HashMap parametros) {
         try {

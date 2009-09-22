@@ -7,6 +7,8 @@ package ar.com.jpack.helpers.tablemodels;
 
 import ar.com.jpack.helpers.CustomTableModel;
 import ar.com.jpack.transferencia.ListasPreciosT;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -31,17 +33,19 @@ public class ListasPreciosTableModel extends CustomTableModel {
         if (dataVector.isEmpty()) {
             return new Object();
         }
+        DateFormat fechaFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         ListasPreciosT record = (ListasPreciosT) dataVector.get(row);
         switch (column) {
             case ID_INDEX:
                 return record.getIdLista();
             case FECHADESDE_INDEX:
-                return record.getFechaDesde();
+                return fechaFormatter.format(record.getFechaDesde());
             case FECHAHASTA_INDEX:
                 if (record.getFechaHasta()== null) {
                     return "";
                 } else {
-                    return record.getFechaHasta();
+                    return fechaFormatter.format(record.getFechaHasta());
                 }
             case ESTADO_INDEX:
                 if (record.getIdEstado() == null) {

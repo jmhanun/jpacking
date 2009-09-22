@@ -8,7 +8,6 @@
  *
  * Created on 13-sep-2009, 12:10:42
  */
-
 package ar.com.jpack.desktop.depositos;
 
 import ar.com.jpack.desktop.DesktopApp;
@@ -24,8 +23,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
-
 
 /**
  *
@@ -70,9 +67,6 @@ public class ConsultaStock extends CustomInternalFrame<StockT> {
 
         tblStock.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-    
-
-
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -85,9 +79,6 @@ public class ConsultaStock extends CustomInternalFrame<StockT> {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblStock = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        consultarButton = new javax.swing.JButton();
-        txtArticulo = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -129,41 +120,21 @@ public class ConsultaStock extends CustomInternalFrame<StockT> {
         tblStock.setName("tblStock"); // NOI18N
         jScrollPane1.setViewportView(tblStock);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(ar.com.jpack.desktop.DesktopApp.class).getContext().getResourceMap(ConsultaStock.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        consultarButton.setText(resourceMap.getString("consultarButton.text")); // NOI18N
-        consultarButton.setName("consultarButton"); // NOI18N
-
-        txtArticulo.setText(resourceMap.getString("txtArticulo.text")); // NOI18N
-        txtArticulo.setName("txtArticulo"); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consultarButton)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(consultarButton)
-                    .addComponent(txtArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -179,14 +150,9 @@ public class ConsultaStock extends CustomInternalFrame<StockT> {
             dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton consultarButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblStock;
-    private javax.swing.JTextField txtArticulo;
     // End of variables declaration//GEN-END:variables
     public static final String[] columnNames = {
         "Id", "Articulo", "Cantidad", "Usuario", "Fecha Ult. Modif."
