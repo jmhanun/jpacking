@@ -182,7 +182,7 @@ public class MaestroArticulos extends CustomInternalFrame<ArticulosT> {
             tiempo += act.getTiempo() * cantidad;
         }
         txtTiempo.setText(tiempo.toString() + " seg");
-    }
+        }
 
     @Action
     public void buscar() {
