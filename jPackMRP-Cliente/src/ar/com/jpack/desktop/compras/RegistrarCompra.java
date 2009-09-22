@@ -172,7 +172,7 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
                         remito.setNroRemito(numero);
 
                         remito = DesktopApp.getApplication().updateRemitosIngresosT(remito, getListDto());
-                        JOptionPane.showInternalMessageDialog(this, "Se ha generado el remito exitosamente");
+                        JOptionPane.showInternalMessageDialog(this, "Se ha generado la factura exitosamente");
 
                         cancelar();
                     } else {
@@ -187,7 +187,7 @@ public class RegistrarCompra extends CustomInternalFrame<DetRtosIngresoT> {
             }
 
         } else {
-            JOptionPane.showInternalMessageDialog(this, "No hay ningun item en el remito!");
+            JOptionPane.showInternalMessageDialog(this, "No hay ningun item en la factura!");
         }
     }
 
