@@ -354,7 +354,7 @@ public class RegistrarRemito extends CustomInternalFrame<DetalleRemitosT> {
             view.setStatusMessage(mensaje);
             HashMap parametro = new HashMap();
 
-            parametro.put("premito", remito.getIdRemito());
+            parametro.put("premito", remito.getNroRemito());
 
             System.out.println(parametro);
 
