@@ -519,7 +519,7 @@ public class DesktopView extends FrameView {
                         parametros.put("pJoinEstados", true);
                         parametros.put("pJoinMaquinas", true);
                         parametros.put("pIdEstado", 14);
-                        parametros.put("pFechaFinEstimadaGT", new Date());
+                        parametros.put("pFechaFinEstimadaLT", new Date());
                         StringBuffer detalle = new StringBuffer();
                         ArrayList<DetalleProduccionT> detalleProduccionList = (ArrayList<DetalleProduccionT>) DesktopApp.getApplication().getDetalleProduccionT(parametros);
                         if (!detalleProduccionList.isEmpty()) {
