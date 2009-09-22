@@ -27,7 +27,7 @@ FROM
      INNER JOIN `unidadesmedida` unidadesmedida ON articulos.`idUnidMedida` = unidadesmedida.`idUnidMedida`
 WHERE
      articulos.`idEstado` <> 2
-  AND stock.`cantidad` < (select a.stockminimo
+  AND stock.`cantidad` <= (select a.stockminimo
                             from articulos a
                            where a.idarticulo=stock.`idArticulo`)
   AND articulos.`codigo`=IFNULL($P{pCodigo}, articulos.`codigo`)
