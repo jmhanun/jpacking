@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.ejb.EntityManagerImpl;
 
@@ -134,13 +135,13 @@ public class DetalleproduccionFacade implements DetalleproduccionFacadeRemote {
                 opCriteria.setFetchMode("idEstado", FetchMode.JOIN);
                 Criteria estadoCriteria = opCriteria.createCriteria("idEstado");
                 estadoCriteria.add(Restrictions.eq("idEstado", parametros.get("pIdEstadoOrden")));
-                if(parametros.containsKey("pNroOrden")){
+                if (parametros.containsKey("pNroOrden")) {
                     opCriteria.add(Restrictions.eq("nroOrdenProduccion", parametros.get("pNroOrden")));
                 }
             }
         }
 
-
+        detalleProduccionCriteria.addOrder(Order.asc("fechaInicioEstimada"));
         detallesList = detalleProduccionCriteria.list();
 
         return detallesList;
