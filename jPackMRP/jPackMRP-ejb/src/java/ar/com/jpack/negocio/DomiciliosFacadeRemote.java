@@ -34,4 +34,6 @@ public interface DomiciliosFacadeRemote {
     public List<Provincias> getProvincias(HashMap parametros);
 
     public DomiciliosT updateDomicilioT(DomiciliosT dto);
+
+    public ProvinciasT updateProvinciasT(ProvinciasT dto);
 }

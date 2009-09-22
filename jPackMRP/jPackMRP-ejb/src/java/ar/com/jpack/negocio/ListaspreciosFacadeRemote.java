@@ -6,6 +6,7 @@ package ar.com.jpack.negocio;
 
 import ar.com.jpack.persistencia.Listasprecios;
 import ar.com.jpack.transferencia.ListasPreciosT;
+import ar.com.jpack.transferencia.UsuariosT;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
@@ -34,4 +35,6 @@ public interface ListaspreciosFacadeRemote {
      * @return devuelve la lista de los ListasPrecios que cumplan con el filtro
      */
     public List<Listasprecios> getListasPrecios(HashMap parametros);
+
+    public void insertarListasPreciosT(Double porcentaje, UsuariosT usuarioLogueado);
 }

@@ -4,6 +4,7 @@
  */
 package ar.com.jpack.negocio;
 
+import ar.com.jpack.persistencia.Estados;
 import ar.com.jpack.persistencia.Maquinas;
 import ar.com.jpack.transferencia.MaquinasT;
 import ar.com.jpack.util.DozerUtil;
@@ -67,7 +68,7 @@ public class MaquinasFacade implements MaquinasFacadeRemote {
         List<Maquinas> maquinasList;
 
         if (parametros.containsKey("pIdMaquina")) {
-            maquinaCriteria.add(Restrictions.eq("idMaquina", parametros.get("pIdMaquinas")));
+            maquinaCriteria.add(Restrictions.eq("idMaquina", parametros.get("pIdMaquina")));
         }
         if (parametros.containsKey("pJoinEstados")) {
             maquinaCriteria.setFetchMode("idEstado", FetchMode.JOIN);
@@ -91,5 +92,21 @@ public class MaquinasFacade implements MaquinasFacadeRemote {
             }
         }
         return maquinasList;
+    }
+
+    public MaquinasT updateMaquinasT(MaquinasT dto) {
+        Maquinas maquinas = (Maquinas) DozerUtil.getDozerMapper(false).map(dto, Maquinas.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (maquinas.getIdMaquina() != null) {
+            em.merge(maquinas);
+        } else {
+            Estados estado = em.find(Estados.class, 22);
+            maquinas.setIdEstado(estado);
+            em.persist(maquinas);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdMaquina", maquinas.getIdMaquina());
+        return getMaquinasT(parametros).get(0);
     }
 }

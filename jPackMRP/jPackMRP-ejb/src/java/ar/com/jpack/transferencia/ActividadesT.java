@@ -58,4 +58,9 @@ public class ActividadesT implements Serializable{
         this.maquinasCollection = maquinasCollection;
     }
 
+    @Override
+    public String toString() {
+        return this.getDescripcion();
+    }
+
 }

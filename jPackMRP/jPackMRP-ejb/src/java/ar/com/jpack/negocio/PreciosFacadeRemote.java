@@ -40,4 +40,6 @@ public interface PreciosFacadeRemote {
      * @return devuelve la lista de los Precios que cumplan con el filtro
      */
     public List<Precios> getPrecios(HashMap parametros);
+
+    public PreciosT updatePreciosT(PreciosT dto);
 }

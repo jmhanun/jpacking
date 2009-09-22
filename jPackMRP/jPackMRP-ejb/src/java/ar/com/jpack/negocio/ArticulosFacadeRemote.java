@@ -65,4 +65,6 @@ public interface ArticulosFacadeRemote {
 
     public void updateComponentesT(ArrayList<ComponentesT> listDto);
 
+    public Boolean validarComponentes(List<ComponentesT> listDto);
+
 }

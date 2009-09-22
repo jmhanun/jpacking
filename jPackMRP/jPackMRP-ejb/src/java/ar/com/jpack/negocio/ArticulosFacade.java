@@ -218,7 +218,7 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
     public void updateComponentesT(ArrayList<ComponentesT> listDto) {
         HashMap parametros = new HashMap();
         parametros.put("pIdArticulo", listDto.get(0).getArticulos().getIdArticulo());
-        ArrayList<Componentes> comp =(ArrayList<Componentes>) getComponentes(parametros);
+        ArrayList<Componentes> comp = (ArrayList<Componentes>) getComponentes(parametros);
         for (Componentes componente : comp) {
             em.remove(componente);
         }
@@ -227,5 +227,30 @@ public class ArticulosFacade implements ArticulosFacadeRemote {
             Componentes componentes = (Componentes) DozerUtil.getDozerMapper(false).map(componentesT, Componentes.class);
             em.persist(componentes);
         }
+    }
+
+    public Boolean validarComponentes(List<ComponentesT> listDto) {
+        HashMap parametros;
+        Boolean valido = true;
+        Articulos articulo = em.find(Articulos.class, listDto.get(0).getArticulos().getIdArticulo());
+        for (ComponentesT componentesT : listDto) {
+            if (componentesT.getComponentes().getIdArticulo().equals(articulo.getIdArticulo())) {
+                valido = false;
+            }
+        }
+        if (valido) {
+            for (ComponentesT componentesT : listDto) {
+                parametros = new HashMap();
+                parametros.put("pIdArticulo", componentesT.getComponentes().getIdArticulo());
+                ArrayList<Componentes> comp = (ArrayList<Componentes>) getComponentes(parametros);
+                for (Componentes componentes : comp) {
+                    if (componentes.getComponentes().getIdArticulo().equals(articulo.getIdArticulo())) {
+                        valido = false;
+                    }
+                }
+            }
+        }
+
+        return valido;
     }
 }

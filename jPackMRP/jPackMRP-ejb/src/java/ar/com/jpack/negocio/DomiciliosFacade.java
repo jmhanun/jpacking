@@ -138,4 +138,21 @@ public class DomiciliosFacade implements DomiciliosFacadeRemote {
         parametros.put("pIdDomicilio", domicilio.getIdDomicilio());
         return getDomiciliosT(parametros).get(0);
     }
+
+    public ProvinciasT updateProvinciasT(ProvinciasT dto) {
+        Provincias provincias = (Provincias) DozerUtil.getDozerMapper(false).map(dto, Provincias.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (provincias.getIdProvincia()!= null) {
+            em.merge(provincias);
+        } else {
+            Paises pais = em.find(Paises.class, 1);
+            provincias.setIdPais(pais);
+            em.persist(provincias);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdProvincia", provincias.getIdProvincia());
+        return getProvinciasT(parametros).get(0);
+
+    }
 }

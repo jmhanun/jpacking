@@ -42,4 +42,6 @@ public interface MaquinasFacadeRemote {
      * @return devuelve la lista de los Maquinas que cumplan con el filtro
      */
     public List<Maquinas> getMaquinas(HashMap parametros);
+
+    public MaquinasT updateMaquinasT(MaquinasT dto);
 }

@@ -68,6 +68,8 @@ public class PreciosFacade implements PreciosFacadeRemote {
         }
         if (parametros.containsKey("pJoinListasPrecios")) {
             preciosCriteria.setFetchMode("idLista", FetchMode.JOIN);
+            Criteria listasCriteria = preciosCriteria.createCriteria("idLista");
+            listasCriteria.add(Restrictions.isNull("fechaHasta"));
         }
         if (parametros.containsKey("pJoinArticulos")) {
             preciosCriteria.setFetchMode("idArticulo", FetchMode.JOIN);
@@ -78,5 +80,19 @@ public class PreciosFacade implements PreciosFacadeRemote {
 
         preciosList = preciosCriteria.list();
         return preciosList;
+    }
+
+    public PreciosT updatePreciosT(PreciosT dto) {
+        Precios precios = (Precios) DozerUtil.getDozerMapper(false).map(dto, Precios.class);
+
+        //si el numero de id es null significa que es nuevo
+        if (precios.getIdPrecio()!= null) {
+            em.merge(precios);
+        } else {
+            em.persist(precios);
+        }
+        HashMap parametros = new HashMap();
+        parametros.put("pIdPrecio", precios.getIdPrecio());
+        return getPreciosT(parametros).get(0);
     }
 }
