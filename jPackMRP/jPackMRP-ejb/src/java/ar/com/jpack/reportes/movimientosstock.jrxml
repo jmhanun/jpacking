@@ -27,7 +27,7 @@ FROM
      LEFT OUTER JOIN `remitosingreso` remitosingreso ON detmovimientosstock.`idRtoIngreso` = remitosingreso.`idRtoIngreso`
      LEFT OUTER JOIN `ajustesstock` ajustesstock ON detmovimientosstock.`idAjusteStock` = ajustesstock.`idAjusteStock`
 WHERE detmovimientosstock.`fechaMovimiento` BETWEEN $P{pfechadesde} AND $P{pfechahasta}
-order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion`]]>
+order by detmovimientosstock.`descripcion`]]>
 	</queryString>
 	<field name="detmovimientosstock_descripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -235,7 +235,7 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<pie3DChart>
-				<chart evaluationTime="Report" renderType="image">
+				<chart evaluationTime="Report" hyperlinkType="None" renderType="image">
 					<reportElement x="68" y="49" width="415" height="208"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -244,8 +244,8 @@ order by detmovimientosstock.`fechaMovimiento`, detmovimientosstock.`descripcion
 				<pieDataset>
 					<keyExpression><![CDATA[$F{detmovimientosstock_descripcion}]]></keyExpression>
 					<valueExpression><![CDATA[$V{detmovimientosstock_descripcion_COUNT}]]></valueExpression>
-					<labelExpression><![CDATA["Cant" + " " + $V{detmovimientosstock_descripcion_COUNT}]]></labelExpression>
-					<sectionHyperlink/>
+					<labelExpression><![CDATA["Cant " + $V{detmovimientosstock_descripcion_COUNT}]]></labelExpression>
+					<sectionHyperlink hyperlinkType="None"/>
 				</pieDataset>
 				<pie3DPlot>
 					<plot>
